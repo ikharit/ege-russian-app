@@ -1,0 +1,83 @@
+export interface Question {
+  id: string
+  type: 'single' | 'multiple' | 'text' | 'ege-multiple'
+  text: string
+  options?: string[]
+  correctAnswer: string[]
+  explanation: string
+  theory?: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  xpReward: number
+  atoms?: string[]        // ← atom IDs this question tests (e.g. ['prefix_pre_pri', 'pre_pri_dictionary'])
+}
+
+export interface UserAtomProgress {
+  atomId: string
+  totalAttempts: number
+  correctCount: number
+  accuracy: number        // 0–100
+  lastAttemptAt: string   // ISO date
+  masteryLevel: 'new' | 'learning' | 'review' | 'mastered'
+}
+
+export interface Lesson {
+  id: string
+  sectionId: string
+  title: string
+  type: 'theory' | 'practice' | 'test'
+  description: string
+  theory?: string
+  questions: Question[]
+  xpReward: number
+  prerequisites: string[]
+}
+
+export interface Section {
+  id: string
+  courseId: string
+  title: string
+  subtitle: string
+  order: number
+  icon: string
+  color: string
+  lessons: Lesson[]
+}
+
+export interface Course {
+  id: string
+  title: string
+  description: string
+  sections: Section[]
+}
+
+export interface LessonProgress {
+  lessonId: string
+  status: 'locked' | 'available' | 'started' | 'completed'
+  score: number
+  bestScore: number
+  attempts: number
+  xpEarned: number
+  completedAt?: string
+}
+
+export interface UserStats {
+  xp: number
+  level: number
+  streak: number
+  maxStreak: number
+  lastActivityDate: string
+  hearts: number
+  maxHearts: number
+  achievements: string[]
+  name: string
+  lastHeartRestore?: string
+  infiniteHearts?: boolean
+}
+
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon: string
+  condition: string
+}

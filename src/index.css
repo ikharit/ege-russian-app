@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-duo-snow text-gray-800 font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-duo-green text-white font-bold py-3 px-6 rounded-2xl shadow-[0_4px_0_#58a700] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wide;
+  }
+  .btn-secondary {
+    @apply bg-white text-duo-green border-2 border-duo-gray font-bold py-3 px-6 rounded-2xl active:bg-gray-50 transition-all uppercase tracking-wide;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-4;
+  }
+  .lesson-node {
+    @apply w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg transition-all cursor-pointer;
+  }
+  .lesson-node.locked {
+    @apply bg-gray-300 scale-95 cursor-not-allowed;
+  }
+  .lesson-node.available {
+    @apply bg-duo-green hover:scale-105;
+  }
+  .lesson-node.completed {
+    @apply bg-duo-yellow text-gray-900;
+  }
+  .lesson-node.current {
+    @apply bg-duo-green ring-4 ring-duo-green/30 animate-pulse;
+  }
+}
