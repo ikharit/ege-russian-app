@@ -3,6 +3,8 @@ import { orthographySections } from './sections/orthography'
 import { punctuationSections } from './sections/punctuation'
 import { grammarSections } from './sections/grammar'
 import { atomizationSections } from './sections/atomization'
+import { stressSections } from './sections/stress'
+import { nnnSections } from './sections/n_nn'
 
 export const course: Course = {
   id: 'ege-russian-2025',
@@ -12,6 +14,9 @@ export const course: Course = {
     ...orthographySections,
     ...punctuationSections,
     ...grammarSections,
+    ...atomizationSections,
+    ...stressSections,
+    ...nnnSections,
   ]
 }
 

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronRight, Sparkles } from 'lucide-react'
+import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronRight, Sparkles, Volume2, SpellCheck, GraduationCap } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   BookOpen,
@@ -8,6 +8,9 @@ const iconMap: Record<string, any> = {
   Trophy,
   Zap,
   Sparkles,
+  Volume2,
+  SpellCheck,
+  GraduationCap,
 }
 
 function SectionIcon({ icon, size = 20 }: { icon: string; size?: number }) {

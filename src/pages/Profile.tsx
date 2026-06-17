@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Award } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
+import { getAchievementIcon } from '../data/achievementIcons'
+import { Popover } from '../components/Popover'
 
 export function Profile() {
   const navigate = useNavigate()
@@ -156,12 +158,121 @@ export function Profile() {
         </div>
       </div>
 
-      {/* Achievements */}
+      {/* Achievements with popover */}
+      <Popover
+        position="top"
+        content={
+          <div className="space-y-3 max-h-80 overflow-y-auto">
+            <p className="font-bold text-white">🏆 Достижения: {achievements.length} / {allAchievements.length}</p>
+            <div className="w-full bg-gray-700 rounded-full h-2">
+              <div 
+                className="bg-duo-green h-2 rounded-full" 
+                style={{ width: `${(achievements.length / allAchievements.length) * 100}%` }}
+              />
+            </div>
+            
+            {achievements.length > 0 ? (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-400">Собранные:</p>
+                {allAchievements
+                  .filter(ach => achievements.includes(ach.id))
+                  .map(ach => {
+                    const Icon = getAchievementIcon(ach.id)
+                    return (
+                      <div key={ach.id} className="flex items-center gap-2 bg-gray-800 rounded-lg p-2">
+                        <div className="w-8 h-8 rounded-full bg-duo-green/20 flex items-center justify-center">
+                          <Icon size={16} className="text-duo-green" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-white">{ach.title}</p>
+                          <p className="text-xs text-gray-400">{ach.description}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+            ) : (
+              <p className="text-xs text-gray-400">Пока нет достижений. Продолжай учиться!</p>
+            )}
+            
+            {allAchievements.filter(ach => !achievements.includes(ach.id)).length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-400">Осталось:</p>
+                {allAchievements
+                  .filter(ach => !achievements.includes(ach.id))
+                  .slice(0, 5)
+                  .map(ach => {
+                    const Icon = getAchievementIcon(ach.id)
+                    const progress = getAchievementProgress(ach.id, stats, lessonProgress)
+                    const pct = progress.target > 1 ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
+                    return (
+                      <div key={ach.id} className="flex items-center gap-2 bg-gray-800/50 rounded-lg p-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                          <Icon size={16} className="text-gray-500" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-400">{ach.title}</p>
+                          {progress.target > 1 && (
+                            <div className="w-full bg-gray-700 rounded-full h-1 mt-1">
+                              <div className="bg-gray-500 h-1 rounded-full" style={{ width: `${pct}%` }} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                {allAchievements.filter(ach => !achievements.includes(ach.id)).length > 5 && (
+                  <p className="text-xs text-gray-500 text-center">
+                    +{allAchievements.filter(ach => !achievements.includes(ach.id)).length - 5} ещё...
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        }
+      >
+        <div className="card cursor-pointer hover:bg-gray-50 transition-colors">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-gray-700">Достижения</h3>
+            <span className="text-sm font-bold text-duo-green">{achievements.length}/{allAchievements.length}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+            <div 
+              className="bg-duo-green h-2.5 rounded-full transition-all"
+              style={{ width: `${(achievements.length / allAchievements.length) * 100}%` }}
+            />
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {allAchievements
+              .filter(ach => achievements.includes(ach.id))
+              .slice(0, 6)
+              .map(ach => {
+                const Icon = getAchievementIcon(ach.id)
+                return (
+                  <div key={ach.id} className="w-9 h-9 rounded-full bg-duo-green/10 flex items-center justify-center">
+                    <Icon size={18} className="text-duo-green" />
+                  </div>
+                )
+              })}
+            {achievements.length > 6 && (
+              <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+                <span className="text-xs font-bold text-gray-500">+{achievements.length - 6}</span>
+              </div>
+            )}
+            {achievements.length === 0 && (
+              <p className="text-xs text-gray-400">Нет достижений</p>
+            )}
+          </div>
+        </div>
+      </Popover>
+
+      {/* Full achievement list */}
       <div className="card">
-        <h3 className="font-bold text-gray-700 mb-3">Достижения</h3>
+        <h3 className="font-bold text-gray-700 mb-3">Все достижения</h3>
         <div className="flex flex-col gap-2">
           {allAchievements.map((ach) => {
             const unlocked = achievements.includes(ach.id)
+            const Icon = getAchievementIcon(ach.id)
             const progress = getAchievementProgress(ach.id, stats, lessonProgress)
             const hasProgress = progress.target > 1
             const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
@@ -170,7 +281,7 @@ export function Profile() {
               <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg ${unlocked ? 'bg-green-50' : 'bg-gray-50'}`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${unlocked ? 'bg-duo-green text-white' : 'bg-gray-200 text-gray-400'}`}>
-                    <Award size={16} />
+                    <Icon size={16} />
                   </div>
                   <div className="flex-1">
                     <p className={`font-bold text-sm ${unlocked ? 'text-gray-800' : 'text-gray-400'}`}>{ach.title}</p>
