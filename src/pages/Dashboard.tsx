@@ -1,16 +1,23 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight } from 'lucide-react'
-import { useEffect } from 'react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
+import { RankBadge } from '../components/RankBadge'
+import { XPDetailModal } from '../components/XPDetailModal'
+import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 
 export function Dashboard() {
   const navigate = useNavigate()
+  const [showXPModal, setShowXPModal] = useState(false)
   const stats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const achievements = useProgressStore((s) => s.achievements)
   const checkHeartRestore = useProgressStore((s) => s.checkHeartRestore)
+
+  const rank = getRankByLevel(stats.level)
+  const xpInfo = getXPToNextLevel(stats.xp)
 
   useEffect(() => {
     checkHeartRestore()
@@ -50,9 +57,16 @@ export function Dashboard() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6 flex flex-col gap-6">
-      {/* Welcome */}
+      {/* Welcome with rank */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring' }}
+        >
+          <RankBadge level={stats.level} size="md" showName />
+        </motion.div>
+        <h1 className="text-2xl font-bold text-gray-800 mt-2">
           Привет, {stats.name || 'ученик'}! 👋
         </h1>
         <p className="text-gray-500 mt-1">Готов к ЕГЭ по русскому?</p>
@@ -68,14 +82,25 @@ export function Dashboard() {
           <span className="text-xl font-bold">{stats.streak}</span>
           <span className="text-xs text-gray-500">Дней подряд</span>
         </motion.div>
+
+        {/* Level/XP — clickable */}
         <motion.div
-          className="card flex flex-col items-center gap-1"
-          whileHover={{ scale: 1.02 }}
+          className="card flex flex-col items-center gap-1 cursor-pointer relative overflow-hidden"
+          whileHover={{ scale: 1.05 }}
+          onClick={() => setShowXPModal(true)}
         >
-          <Trophy size={24} className="text-duo-yellow" />
+          <div className="absolute inset-0 opacity-10" style={{ backgroundColor: rank.color }} />
+          <Zap size={24} className="text-duo-yellow" fill="currentColor" />
           <span className="text-xl font-bold">{stats.level}</span>
           <span className="text-xs text-gray-500">Уровень</span>
+          <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
+            <div 
+              className="h-full rounded-full bg-duo-yellow"
+              style={{ width: `${(xpInfo.current / 100) * 100}%` }}
+            />
+          </div>
         </motion.div>
+
         <motion.div
           className="card flex flex-col items-center gap-1"
           whileHover={{ scale: 1.02 }}
@@ -155,6 +180,8 @@ export function Dashboard() {
           )
         })}
       </div>
+
+      <XPDetailModal isOpen={showXPModal} onClose={() => setShowXPModal(false)} />
     </div>
   )
 }

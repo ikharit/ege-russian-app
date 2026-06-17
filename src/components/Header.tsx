@@ -1,4 +1,4 @@
-import { Flame, Heart, Gem, User } from 'lucide-react'
+import { Flame, Heart, Zap, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from './Popover'
@@ -80,11 +80,11 @@ export function Header() {
             }
           >
             <motion.div
-              className="flex items-center gap-1 text-duo-blue cursor-pointer"
+              className="flex items-center gap-1 text-duo-yellow cursor-pointer"
               whileHover={{ scale: 1.15, rotate: 360 }}
               transition={{ duration: 0.5 }}
             >
-              <Gem size={20} />
+              <Zap size={20} fill="currentColor" />
               <span className="font-bold text-sm">{stats.xp}</span>
             </motion.div>
           </Popover>

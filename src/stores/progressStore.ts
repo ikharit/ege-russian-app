@@ -72,6 +72,7 @@ interface ProgressState {
   setUserName: (name: string) => void
   toggleInfiniteHearts: () => void
   incrementExportCount: () => void
+  recordQuestionAnswered: () => void
 }
 
 const getToday = () => new Date().toISOString().split('T')[0]
@@ -87,7 +88,10 @@ const getInitialStats = (): UserStats => ({
   achievements: [],
   name: 'ученик',
   lastHeartRestore: '',
-  infiniteHearts: false
+  infiniteHearts: false,
+  totalLessonTimeMinutes: 0,
+  totalQuestionsAnswered: 0,
+  totalHeartsLost: 0,
 })
 
 const defaultLeaderboard: LeaderboardEntry[] = [
@@ -195,6 +199,15 @@ export const useProgressStore = create<ProgressState>()(
         }))
       },
 
+      recordQuestionAnswered: () => {
+        set((s) => ({
+          userStats: {
+            ...s.userStats,
+            totalQuestionsAnswered: (s.userStats.totalQuestionsAnswered || 0) + 1
+          }
+        }))
+      },
+
       startLesson: (lessonId) => {
         set((state) => ({
           currentLessonId: lessonId,
@@ -220,6 +233,14 @@ export const useProgressStore = create<ProgressState>()(
         const existing = state.lessonProgress[lessonId]
         const newBestScore = existing?.bestScore ? Math.max(existing.bestScore, score) : score
 
+        // Calculate lesson duration
+        let extraMinutes = 0
+        if (state.currentLessonStartTime) {
+          const start = new Date(state.currentLessonStartTime)
+          const durationMin = Math.round((Date.now() - start.getTime()) / (1000 * 60))
+          extraMinutes = Math.max(0, durationMin)
+        }
+
         set((s) => ({
           lessonProgress: {
             ...s.lessonProgress,
@@ -232,7 +253,13 @@ export const useProgressStore = create<ProgressState>()(
               xpEarned: (existing?.xpEarned || 0) + xpEarned,
               completedAt: new Date().toISOString()
             }
-          }
+          },
+          userStats: {
+            ...s.userStats,
+            totalLessonTimeMinutes: (s.userStats.totalLessonTimeMinutes || 0) + extraMinutes
+          },
+          currentLessonStartTime: null,
+          currentLessonHeartsLost: 0
         }))
 
         get().addXP(xpEarned)
@@ -254,7 +281,11 @@ export const useProgressStore = create<ProgressState>()(
         const state = get()
         if (state.userStats.hearts <= 0) return false
         set((s) => ({
-          userStats: { ...s.userStats, hearts: s.userStats.hearts - 1 },
+          userStats: { 
+            ...s.userStats, 
+            hearts: s.userStats.hearts - 1,
+            totalHeartsLost: (s.userStats.totalHeartsLost || 0) + 1
+          },
           currentLessonHeartsLost: s.currentLessonHeartsLost + 1
         }))
         return true

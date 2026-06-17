@@ -72,6 +72,9 @@ export interface UserStats {
   name: string
   lastHeartRestore?: string
   infiniteHearts?: boolean
+  totalLessonTimeMinutes?: number
+  totalQuestionsAnswered?: number
+  totalHeartsLost?: number
 }
 
 export interface Achievement {

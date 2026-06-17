@@ -49,7 +49,10 @@ export function Lesson() {
     startLesson(lesson.id)
   }, [lesson.id, startLesson])
 
+  const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+
   const handleAnswer = useCallback((isCorrect: boolean) => {
+    recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
     } else if (!infiniteHearts) {
