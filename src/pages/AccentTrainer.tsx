@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   Volume2, VolumeX, RotateCcw, Settings, ArrowLeft,
   Star, Trophy, Zap, Heart, ChevronRight, BrainCircuit
@@ -18,49 +18,44 @@ export function AccentTrainer() {
   const [showSettings, setShowSettings] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [explanation, setExplanation] = useState('')
+  const [wordId, setWordId] = useState<string | null>(null)
 
-  // Zustand store — subscribe to shallow slices
   const currentWordId = useAccentTrainerStore((s) => s.currentWordId)
   const stats = useAccentTrainerStore((s) => s.stats)
   const settings = useAccentTrainerStore((s) => s.settings)
   const hardWordsMode = useAccentTrainerStore((s) => s.hardWordsMode)
   const wordProgress = useAccentTrainerStore((s) => s.wordProgress)
 
-  // Use ref for actions to avoid stale closures without useCallback
-  const storeRef = useRef(useAccentTrainerStore.getState())
-  useEffect(() => {
-    const unsub = useAccentTrainerStore.subscribe((state) => {
-      storeRef.current = state
-    })
-    return unsub
-  }, [])
-
   const addXP = useProgressStore((s) => s.addXP)
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
 
   const currentWord = currentWordId ? accentWordsById[currentWordId] : null
-  const overall = storeRef.current.getOverallProgress()
+  const overall = useAccentTrainerStore.getState().getOverallProgress()
 
   // Initialize session on mount
   useEffect(() => {
-    const store = storeRef.current
+    const store = useAccentTrainerStore.getState()
     if (!store.currentWordId) {
       store.startSession(false)
       store.getNextWord()
     }
   }, [])
 
+  // Sync local wordId with store currentWordId
+  useEffect(() => {
+    setWordId(currentWordId)
+  }, [currentWordId])
+
   const handleLetterClick = (index: number) => {
     if (answerState !== 'idle' || !currentWord) return
 
     const isCorrect = index === currentWord.stressIndex
-
     setSelectedIndex(index)
     setAnswerState(isCorrect ? 'correct' : 'wrong')
     setExplanation(currentWord.explanation)
 
-    const store = storeRef.current
+    const store = useAccentTrainerStore.getState()
     store.answerWord(currentWord.id, isCorrect)
     recordQuestionAnswered()
 
@@ -71,47 +66,51 @@ export function AccentTrainer() {
   }
 
   const handleNext = () => {
-    const store = storeRef.current
+    const store = useAccentTrainerStore.getState()
     const next = store.getNextWord()
     if (next) {
       setAnswerState('idle')
       setSelectedIndex(null)
       setExplanation('')
+      setWordId(next)
     } else {
       setShowCompleted(true)
     }
   }
 
   const handleRestart = () => {
-    const store = storeRef.current
+    const store = useAccentTrainerStore.getState()
     setShowCompleted(false)
     setAnswerState('idle')
     setSelectedIndex(null)
     setExplanation('')
     store.startSession(false)
-    store.getNextWord()
+    const next = store.getNextWord()
+    setWordId(next)
   }
 
   const handleHardWords = () => {
-    const store = storeRef.current
+    const store = useAccentTrainerStore.getState()
     setShowCompleted(false)
     setAnswerState('idle')
     setSelectedIndex(null)
     setExplanation('')
     store.startSession(true)
-    store.getNextWord()
+    const next = store.getNextWord()
+    setWordId(next)
   }
 
   const handleReset = () => {
     if (confirm('Сбросить весь прогресс тренажёра?')) {
-      const store = storeRef.current
+      const store = useAccentTrainerStore.getState()
       store.resetProgress()
       setAnswerState('idle')
       setSelectedIndex(null)
       setExplanation('')
       setShowCompleted(false)
       store.startSession(false)
-      store.getNextWord()
+      const next = store.getNextWord()
+      setWordId(next)
     }
   }
 
@@ -162,7 +161,6 @@ export function AccentTrainer() {
             </div>
           </div>
 
-          {/* Progress */}
           <div className="bg-gray-50 rounded-xl p-4">
             <div className="flex justify-between text-sm mb-2">
               <span className="font-bold text-gray-700">Прогресс</span>
@@ -189,13 +187,13 @@ export function AccentTrainer() {
               <RotateCcw size={18} />
               Начать заново
             </button>
-            {storeRef.current.getHardWords().length > 0 && (
+            {useAccentTrainerStore.getState().getHardWords().length > 0 && (
               <button
                 onClick={handleHardWords}
                 className="btn-secondary w-full flex items-center justify-center gap-2"
               >
                 <BrainCircuit size={18} />
-                Сложные слова ({storeRef.current.getHardWords().length})
+                Сложные слова ({useAccentTrainerStore.getState().getHardWords().length})
               </button>
             )}
             <button
@@ -228,7 +226,6 @@ export function AccentTrainer() {
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${bgColor} flex flex-col`}>
-      {/* Header */}
       <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           <button
@@ -239,17 +236,14 @@ export function AccentTrainer() {
           </button>
 
           <div className="flex items-center gap-4">
-            {/* Progress mini */}
             <div className="flex items-center gap-1">
               <Star size={14} className="text-duo-yellow fill-current" />
               <span className="text-sm font-bold text-gray-700">{overall.mastered}/{overall.total}</span>
             </div>
-            {/* Streak */}
             <div className="flex items-center gap-1">
               <Zap size={14} className="text-orange-500 fill-current" />
               <span className="text-sm font-bold text-orange-500">{stats.streak}</span>
             </div>
-            {/* Settings */}
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -259,7 +253,6 @@ export function AccentTrainer() {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="max-w-md mx-auto px-4 pb-2">
           <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
@@ -270,65 +263,54 @@ export function AccentTrainer() {
         </div>
       </div>
 
-      {/* Settings panel */}
-      <AnimatePresence>
-        {showSettings && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden bg-white border-b border-gray-100"
-          >
-            <div className="max-w-md mx-auto px-4 py-4 space-y-3">
-              <h3 className="font-bold text-gray-700 text-sm uppercase">Настройки</h3>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Звук</span>
-                <button
-                  onClick={() => storeRef.current.updateSettings({ sound: !settings.sound })}
-                  className="p-2 rounded-lg hover:bg-gray-100"
-                >
-                  {settings.sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Изменение фона</span>
-                <button
-                  onClick={() => storeRef.current.updateSettings({ changeBackground: !settings.changeBackground })}
-                  className={`w-12 h-6 rounded-full transition-colors ${settings.changeBackground ? 'bg-duo-green' : 'bg-gray-300'}`}
-                >
-                  <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.changeBackground ? 'translate-x-6' : 'translate-x-0.5'}`} />
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Показывать пояснение</span>
-                <button
-                  onClick={() => storeRef.current.updateSettings({ showExplanation: !settings.showExplanation })}
-                  className={`w-12 h-6 rounded-full transition-colors ${settings.showExplanation ? 'bg-duo-green' : 'bg-gray-300'}`}
-                >
-                  <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.showExplanation ? 'translate-x-6' : 'translate-x-0.5'}`} />
-                </button>
-              </div>
+      {showSettings && (
+        <div className="bg-white border-b border-gray-100">
+          <div className="max-w-md mx-auto px-4 py-4 space-y-3">
+            <h3 className="font-bold text-gray-700 text-sm uppercase">Настройки</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Звук</span>
               <button
-                onClick={handleReset}
-                className="text-red-400 text-sm hover:text-red-600 transition-colors"
+                onClick={() => useAccentTrainerStore.getState().updateSettings({ sound: !settings.sound })}
+                className="p-2 rounded-lg hover:bg-gray-100"
               >
-                Сбросить прогресс
+                {settings.sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
               </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Изменение фона</span>
+              <button
+                onClick={() => useAccentTrainerStore.getState().updateSettings({ changeBackground: !settings.changeBackground })}
+                className={`w-12 h-6 rounded-full transition-colors ${settings.changeBackground ? 'bg-duo-green' : 'bg-gray-300'}`}
+              >
+                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.changeBackground ? 'translate-x-6' : 'translate-x-0.5'}`} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Показывать пояснение</span>
+              <button
+                onClick={() => useAccentTrainerStore.getState().updateSettings({ showExplanation: !settings.showExplanation })}
+                className={`w-12 h-6 rounded-full transition-colors ${settings.showExplanation ? 'bg-duo-green' : 'bg-gray-300'}`}
+              >
+                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.showExplanation ? 'translate-x-6' : 'translate-x-0.5'}`} />
+              </button>
+            </div>
+            <button
+              onClick={handleReset}
+              className="text-red-400 text-sm hover:text-red-600 transition-colors"
+            >
+              Сбросить прогресс
+            </button>
+          </div>
+        </div>
+      )}
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-md mx-auto w-full">
-        {/* Mode badge */}
         {hardWordsMode && (
           <div className="mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold uppercase tracking-wide">
             Режим сложных слов
           </div>
         )}
 
-        {/* Word level indicator */}
         <div className="mb-4 flex items-center gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
@@ -339,7 +321,6 @@ export function AccentTrainer() {
           ))}
         </div>
 
-        {/* The word */}
         <div className="mb-8">
           <p className="text-center text-gray-400 text-sm mb-4 uppercase tracking-wide">
             Выберите ударную букву
@@ -376,54 +357,36 @@ export function AccentTrainer() {
           </div>
         </div>
 
-        {/* Explanation */}
-        <AnimatePresence>
-          {answerState !== 'idle' && settings.showExplanation && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className={`w-full rounded-xl p-4 mb-4 ${answerState === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-            >
-              <p className="font-bold text-sm">
-                {answerState === 'correct' ? '✓ Правильно!' : '✗ Неправильно'}
-              </p>
-              <p className="text-sm mt-1">{explanation}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Explanation — простой условный рендеринг без AnimatePresence */}
+        {answerState !== 'idle' && settings.showExplanation && (
+          <div className={`w-full rounded-xl p-4 mb-4 animate-fade-in ${answerState === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            <p className="font-bold text-sm">
+              {answerState === 'correct' ? '✓ Правильно!' : '✗ Неправильно'}
+            </p>
+            <p className="text-sm mt-1">{explanation}</p>
+          </div>
+        )}
 
-        {/* Next button — только после ответа */}
-        <AnimatePresence>
-          {answerState !== 'idle' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="w-full"
-            >
-              <button
-                onClick={handleNext}
-                className="btn-primary w-full flex items-center justify-center gap-2"
-              >
-                Дальше <ChevronRight size={18} />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {answerState !== 'idle' && (
+          <button
+            onClick={handleNext}
+            className="btn-primary w-full flex items-center justify-center gap-2"
+          >
+            Дальше <ChevronRight size={18} />
+          </button>
+        )}
 
-        {/* Hard words quick access */}
-        {!hardWordsMode && storeRef.current.getHardWords().length > 0 && answerState === 'idle' && (
+        {!hardWordsMode && useAccentTrainerStore.getState().getHardWords().length > 0 && answerState === 'idle' && (
           <button
             onClick={handleHardWords}
             className="mt-6 text-sm text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors"
           >
             <BrainCircuit size={14} />
-            Сложные слова: {storeRef.current.getHardWords().length}
+            Сложные слова: {useAccentTrainerStore.getState().getHardWords().length}
           </button>
         )}
       </div>
 
-      {/* Footer stats */}
       <div className="bg-white border-t border-gray-100 py-3">
         <div className="max-w-md mx-auto px-4 flex justify-around text-center">
           <div>

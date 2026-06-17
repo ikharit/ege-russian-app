@@ -126,6 +126,18 @@ export function validateQuestion(q: Question, taskId: string): ValidationError[]
     })
   }
 
+  // 8. Проверка: если текст "Вставьте пропущенную букву", а варианты — целые слова (>3 символов) — несоответствие
+  if (q.text.includes('Вставьте пропущенную букву') && q.options && q.options.length > 0) {
+    const avgLen = q.options.reduce((sum, o) => sum + o.length, 0) / q.options.length
+    if (avgLen > 3) {
+      errors.push({
+        questionId: q.id, type: 'FORM_MISMATCH',
+        message: 'Текст "Вставьте пропущенную букву" с вариантами-целыми-словами — форма вопроса не соответствует вариантам. Используйте "Как правильно написать слово?"',
+        text: q.text, options: q.options,
+      })
+    }
+  }
+
   return errors
 }
 

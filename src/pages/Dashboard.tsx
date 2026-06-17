@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { course } from '../data/courseData'
@@ -12,6 +11,7 @@ import { Popover } from '../components/Popover'
 import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 import { getAchievementIcon } from '../data/achievementIcons'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
+import { allHomework, studentsWithHomework } from '../data/gsheets/homeworkData'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -173,6 +173,50 @@ export function Dashboard() {
           />
         </div>
       </div>
+
+      {/* Homework from Google Sheets */}
+      <motion.div
+        className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/teacher')}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white">
+              <Calendar size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">Google Sheets</p>
+              <p className="font-bold text-gray-800">Домашнее задание</p>
+              <p className="text-xs text-gray-500">
+                {studentsWithHomework.length} учеников • актуально на сегодня
+              </p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-blue-400" />
+        </div>
+        {studentsWithHomework.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-blue-100 flex flex-col gap-2">
+            {studentsWithHomework.slice(0, 3).map(name => {
+              const hw = allHomework[name]?.current
+              return hw ? (
+                <div key={name} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-gray-700">{name}</span>
+                    <span className="text-xs text-gray-500 truncate max-w-[140px]">{hw.homework}</span>
+                  </div>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${hw.status === 'да' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'}`}>
+                    {hw.status === 'да' ? '✅' : '⏳'}
+                  </span>
+                </div>
+              ) : null
+            })}
+            {studentsWithHomework.length > 3 && (
+              <p className="text-xs text-gray-400 text-center">+{studentsWithHomework.length - 3} ещё...</p>
+            )}
+          </div>
+        )}
+      </motion.div>
 
       {/* Continue lesson */}
       {nextLesson && (

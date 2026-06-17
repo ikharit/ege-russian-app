@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock, ChevronRight } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { useNavigate } from 'react-router-dom'
@@ -257,7 +257,11 @@ export function Teacher() {
               {Object.entries(allHomework)
                 .filter(([_, hw]) => hw.current !== null)
                 .map(([name, hw]) => (
-                  <div key={name} className="p-3 bg-duo-snow rounded-xl">
+                  <div
+                    key={name}
+                    onClick={() => navigate(`/teacher/${name}`)}
+                    className="p-3 bg-duo-snow rounded-xl cursor-pointer hover:bg-duo-blue/5 transition-colors"
+                  >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <p className="font-bold text-sm text-gray-800">{name}</p>
@@ -267,20 +271,23 @@ export function Teacher() {
                           <p className="text-xs text-gray-500 mt-1">💬 {hw.current!.comment}</p>
                         )}
                       </div>
-                      <div className="flex flex-col items-end gap-1">
-                        {hw.current!.status === 'да' ? (
-                          <span className="px-2 py-1 bg-duo-green/20 text-duo-green text-xs rounded-full font-bold flex items-center gap-1">
-                            <CheckCircle size={12} /> Сдано
-                          </span>
-                        ) : hw.current!.status === 'нет' ? (
-                          <span className="px-2 py-1 bg-duo-red/20 text-duo-red text-xs rounded-full font-bold flex items-center gap-1">
-                            <XCircle size={12} /> Не сдано
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 bg-duo-yellow/20 text-duo-yellow text-xs rounded-full font-bold flex items-center gap-1">
-                            <Clock size={12} /> {hw.current!.status || '—'}
-                          </span>
-                        )}
+                      <div className="flex flex-col items-end gap-1 ml-2">
+                        <div className="flex flex-col items-end gap-1">
+                          {hw.current!.status === 'да' ? (
+                            <span className="px-2 py-1 bg-duo-green/20 text-duo-green text-xs rounded-full font-bold flex items-center gap-1">
+                              <CheckCircle size={12} /> Сдано
+                            </span>
+                          ) : hw.current!.status === 'нет' ? (
+                            <span className="px-2 py-1 bg-duo-red/20 text-duo-red text-xs rounded-full font-bold flex items-center gap-1">
+                              <XCircle size={12} /> Не сдано
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 bg-duo-yellow/20 text-duo-yellow text-xs rounded-full font-bold flex items-center gap-1">
+                              <Clock size={12} /> {hw.current!.status || '—'}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronRight size={20} className="text-gray-400 mt-1" />
                       </div>
                     </div>
                   </div>

@@ -8,17 +8,12 @@ export async function getAtomizedWords(): Promise<import('./atoms').AtomizedWord
   if (_atomizedWords) return _atomizedWords
   const data = await import('./atomizedWords.json')
   _atomizedWords = (data.words || []).map((w: any) => {
-    const raw = w.rawForm || ''
-    const dots = (raw.match(/\./g) || []).length
-    let questionText = 'Вопрос:'
-    if (w.taskNumber === 4) {
+    const taskNum = w.taskNumber || 9
+    let questionText = 'Как правильно написать слово:'
+    if (taskNum === 4) {
       questionText = 'Как правильно?'
-    } else if (w.taskNumber === 5) {
+    } else if (taskNum === 5) {
       questionText = 'Выберите правильное слово:'
-    } else if (dots > 0) {
-      questionText = dots === 1 ? 'Вставьте пропущенную букву:' : 'Вставьте пропущенные буквы:'
-    } else {
-      questionText = 'Как правильно?'
     }
     return {
       ...w,
