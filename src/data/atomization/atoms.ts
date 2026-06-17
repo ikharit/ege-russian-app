@@ -161,6 +161,157 @@ export const atoms: Atom[] = [
     taskNumbers: [10],
     parentAtom: 'prefix_unchangeable',
     difficulty: 'easy'
+  },
+  // Задание №12 — грамматика (спряжение, причастия, краткие причастия)
+  {
+    id: 'conjugation_1',
+    name: '1-е спряжение',
+    description: 'Глаголы с личными окончаниями -Е/У/Ю (читаю, идёшь, строят).',
+    taskNumbers: [12],
+    difficulty: 'easy'
+  },
+  {
+    id: 'conjugation_2',
+    name: '2-е спряжение',
+    description: 'Глаголы с личными окончаниями -И/А/Я (говорю, смотришь, гуляют).',
+    taskNumbers: [12],
+    difficulty: 'easy'
+  },
+  {
+    id: 'past_tense',
+    name: 'Прошедшее время',
+    description: 'Суффиксы -ВШ-, -В-, -Л- (читал, пришёл, развёл).',
+    taskNumbers: [12],
+    difficulty: 'medium'
+  },
+  {
+    id: 'participle_short',
+    name: 'Краткие причастия',
+    description: 'Причастные суффиксы -ЕН-/-Н- (сделан, куплен, записан).',
+    taskNumbers: [12],
+    difficulty: 'hard'
+  },
+  // Задание №13 — НЕ с разными частями речи
+  {
+    id: 'ne_adjective',
+    name: 'НЕ с прилагательными',
+    description: 'Слитно и раздельно: НЕ с прилагательными и причастиями.',
+    taskNumbers: [13],
+    difficulty: 'medium'
+  },
+  {
+    id: 'ne_adverb',
+    name: 'НЕ с наречиями',
+    description: 'Слитно и раздельно: НЕ с наречиями.',
+    taskNumbers: [13],
+    difficulty: 'medium'
+  },
+  {
+    id: 'ne_verb',
+    name: 'НЕ с глаголами',
+    description: 'Слитно и раздельно: НЕ с глаголами.',
+    taskNumbers: [13],
+    difficulty: 'easy'
+  },
+  {
+    id: 'ne_participle',
+    name: 'НЕ с причастиями',
+    description: 'Слитно и раздельно: НЕ с причастиями.',
+    taskNumbers: [13],
+    difficulty: 'hard'
+  },
+  {
+    id: 'ne_noun',
+    name: 'НЕ с существительными',
+    description: 'Слитно и раздельно: НЕ с существительными.',
+    taskNumbers: [13],
+    difficulty: 'medium'
+  },
+  {
+    id: 'ne_deeprich',
+    name: 'НЕ с деепричастиями',
+    description: 'Слитно и раздельно: НЕ с деепричастиями.',
+    taskNumbers: [13],
+    difficulty: 'hard'
+  },
+  {
+    id: 'ne_opposition',
+    name: 'НЕ при противопоставлении',
+    description: 'НЕ раздельно при противопоставлении (не красный, а зелёный).',
+    taskNumbers: [13],
+    difficulty: 'easy'
+  },
+  {
+    id: 'ne_particle',
+    name: 'Частица НЕ',
+    description: 'Частица НЕ (слитно): нет, некого, нечего, негде, незачем.',
+    taskNumbers: [13],
+    difficulty: 'medium'
+  },
+  // Задание №14 — НИ/НЕ, слитно/раздельно/дефис
+  {
+    id: 'ni_words',
+    name: 'Слова с НИ',
+    description: 'Слитные слова с НИ: никто, ничего, никуда, низко, низкий.',
+    taskNumbers: [14],
+    difficulty: 'easy'
+  },
+  {
+    id: 'ni_phrases',
+    name: 'Устойчивые выражения с НИ',
+    description: 'Устойчивые выражения: ни при чём, ни к чему, ни к селу, ни к городу.',
+    taskNumbers: [14],
+    difficulty: 'medium'
+  },
+  {
+    id: 'defis_compound',
+    name: 'Дефисное написание',
+    description: 'Дефис: по-русски, из-за, до-а, в-третьих, ещё, северо-запад, пол-яблока, кое-кто, кто-то, что-либо.',
+    taskNumbers: [14],
+    difficulty: 'hard'
+  },
+  {
+    id: 'solid_writing',
+    name: 'Слитное написание',
+    description: 'Слитно: полдень, полночи, полуготы, ибо, зато, либо, нисколько, нечего, негде, нечем, некого, нет.',
+    taskNumbers: [14],
+    difficulty: 'medium'
+  },
+  {
+    id: 'prepositions_derived',
+    name: 'Производные предлоги',
+    description: 'Производные предлоги: благодаря, вопреки, согласно, подобно, ввиду, вследствие.',
+    taskNumbers: [14],
+    difficulty: 'medium'
+  },
+  // Задание №15 — н/нн
+  {
+    id: 'n_nn_verb_adj',
+    name: 'Отглагольные прилагательные и причастия',
+    description: 'Н/НН в отглагольных прилагательных и причастиях (кованый, кошеный).',
+    taskNumbers: [15],
+    difficulty: 'hard'
+  },
+  {
+    id: 'n_nn_noun_adj',
+    name: 'Отымённые прилагательные',
+    description: 'Н/НН в отымённых прилагательных (ветреный, деревянный, стеклянный).',
+    taskNumbers: [15],
+    difficulty: 'medium'
+  },
+  {
+    id: 'n_nn_adverb',
+    name: 'Наречия с н/нн',
+    description: 'Н/НН в наречиях (отчасти, вовсе, поныне).',
+    taskNumbers: [15],
+    difficulty: 'medium'
+  },
+  {
+    id: 'n_nn_short',
+    name: 'Краткие прилагательные',
+    description: 'Н/НН в кратких прилагательных и причастиях (красив, уверен, убеждён).',
+    taskNumbers: [15],
+    difficulty: 'hard'
   }
 ]
 

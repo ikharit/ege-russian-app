@@ -8,6 +8,7 @@ import { Leaderboard } from './pages/Leaderboard'
 import { Teacher } from './pages/Teacher'
 import { Profile } from './pages/Profile'
 import { AdaptivePractice } from './pages/AdaptivePractice'
+import { AccentTrainer } from './pages/AccentTrainer'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap } from 'lucide-react'
@@ -51,7 +52,7 @@ function BottomNav() {
 
 export default function App() {
   const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/')
+  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer'
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/practice" element={<AdaptivePractice />} />
+          <Route path="/accent-trainer" element={<AccentTrainer />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

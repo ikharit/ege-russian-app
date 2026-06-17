@@ -1,22 +1,18 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
-  BookOpen,
-  Pencil,
-  Trophy,
-  Zap,
-  Volume2: BookOpen,
-  SpellCheck: BookOpen,
-  GraduationCap: BookOpen,
+  BookOpen, Pencil, Trophy, Zap,
+  Volume2: BookOpen, SpellCheck: BookOpen, GraduationCap: BookOpen,
 }
 
 function SectionIcon({ icon, size = 20 }: { icon: string; size?: number }) {
   const Icon = iconMap[icon] || BookOpen
   return <Icon size={size} />
 }
+
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { Popover } from '../components/Popover'
@@ -24,14 +20,33 @@ import type { Lesson } from '../types'
 
 export function CourseMap() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const isLessonAvailable = useProgressStore((s) => s.isLessonAvailable)
-  const userStats = useProgressStore((s) => s.userStats)
 
+  const [focusedSection, setFocusedSection] = useState<string | null>(null)
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+
+  // Read section from URL on mount
+  useEffect(() => {
+    const sectionId = searchParams.get('section')
+    if (sectionId && course.sections.some(s => s.id === sectionId)) {
+      setFocusedSection(sectionId)
+    }
+  }, [searchParams])
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }))
+  }
+
+  const toggleSection = (sectionId: string) => {
+    setCollapsedSections(prev => {
+      const next = new Set(prev)
+      if (next.has(sectionId)) next.delete(sectionId)
+      else next.add(sectionId)
+      return next
+    })
   }
 
   const getNodeStatus = (lesson: Lesson) => {
@@ -69,18 +84,15 @@ export function CourseMap() {
         <p className="text-gray-300 text-xs">{lesson.description}</p>
         <div className="flex items-center gap-3 mt-2">
           <div className="flex items-center gap-1 text-xs text-duo-yellow">
-            <Zap size={12} />
-            <span>{lesson.xpReward} XP</span>
+            <Zap size={12} /><span>{lesson.xpReward} XP</span>
           </div>
           <div className="flex items-center gap-1 text-xs text-gray-400">
-            <TrendingUp size={12} />
-            <span>{lesson.questions.length} вопр.</span>
+            <TrendingUp size={12} /><span>{lesson.questions.length} вопр.</span>
           </div>
         </div>
         {prog?.bestScore > 0 && (
           <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
-            <Trophy size={12} />
-            <span>Лучший: {prog.bestScore}%</span>
+            <Trophy size={12} /><span>Лучший: {prog.bestScore}%</span>
           </div>
         )}
         {lesson.prerequisites.length > 0 && (
@@ -104,11 +116,7 @@ export function CourseMap() {
           <motion.button
             whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
             whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
-            onClick={() => {
-              if (status !== 'locked') {
-                navigate(`/lesson/${lesson.id}`)
-              }
-            }}
+            onClick={() => { if (status !== 'locked') navigate(`/lesson/${lesson.id}`) }}
             className={`lesson-node ${status}`}
             style={status === 'available' ? { backgroundColor: sectionColor } : {}}
           >
@@ -130,9 +138,7 @@ export function CourseMap() {
           </div>
         </Popover>
 
-        {!isLast && (
-          <div className="absolute left-6 top-14 w-0.5 h-6 bg-gray-200" />
-        )}
+        {!isLast && <div className="absolute left-6 top-14 w-0.5 h-6 bg-gray-200" />}
       </div>
     )
   }
@@ -141,104 +147,158 @@ export function CourseMap() {
     <div className="max-w-md mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Карта курса</h1>
 
+      {focusedSection && (
+        <motion.div
+          className="mb-4 bg-duo-green/10 border border-duo-green/30 rounded-xl p-3 text-center"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="text-sm text-gray-700">
+            🔍 Показан раздел <span className="font-bold">{course.sections.find(s => s.id === focusedSection)?.title}</span>
+          </p>
+          <button
+            onClick={() => setFocusedSection(null)}
+            className="text-xs text-duo-green font-bold mt-1 hover:underline"
+          >
+            Показать все разделы
+          </button>
+        </motion.div>
+      )}
+
       <div className="flex flex-col gap-8">
         {course.sections.map((section) => {
           const prog = getSectionProgress(section)
+          const isCollapsed = collapsedSections.has(section.id)
+          const isFocused = focusedSection === section.id
+          const isOtherFocused = focusedSection !== null && !isFocused
+
           return (
-            <div key={section.id} className="flex flex-col gap-4">
+            <motion.div
+              key={section.id}
+              className={`flex flex-col gap-4 transition-all duration-300 ${
+                isOtherFocused ? 'opacity-15 pointer-events-none' : ''
+              } ${isFocused ? 'scale-[1.02]' : ''}`}
+              layout
+            >
               {/* Section header */}
-              <Popover
-                position="right"
-                content={
-                  <div className="space-y-2">
-                    <p className="font-bold text-white">{section.title}</p>
-                    <p className="text-gray-300 text-xs">{section.subtitle}</p>
-                    <div className="mt-2 space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-400">Пройдено</span>
-                        <span className="text-duo-green font-bold">{prog.completed}/{prog.total}</span>
-                      </div>
-                      <div className="w-full bg-gray-700 rounded-full h-1.5">
-                        <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${prog.pct}%` }} />
-                      </div>
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-400">Средний балл</span>
-                        <span className="text-duo-yellow font-bold">{prog.avgScore > 0 ? `${prog.avgScore}%` : '—'}</span>
+              <div className="flex items-center gap-3">
+                <Popover
+                  position="right"
+                  content={
+                    <div className="space-y-2">
+                      <p className="font-bold text-white">{section.title}</p>
+                      <p className="text-gray-300 text-xs">{section.subtitle}</p>
+                      <div className="mt-2 space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-gray-400">Пройдено</span>
+                          <span className="text-duo-green font-bold">{prog.completed}/{prog.total}</span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-1.5">
+                          <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${prog.pct}%` }} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                }
-              >
-                <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                  }
+                >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
-                    style={{ backgroundColor: section.color }}
+                    className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity flex-1"
+                    onClick={() => {
+                      if (isOtherFocused) {
+                        setFocusedSection(null) // Click on dimmed section resets focus
+                      } else {
+                        setFocusedSection(isFocused ? null : section.id)
+                      }
+                    }}
                   >
-                    <SectionIcon icon={section.icon} size={20} />
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                      style={{ backgroundColor: section.color }}
+                    >
+                      <SectionIcon icon={section.icon} size={20} />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="font-bold text-gray-800">{section.title}</h2>
+                      <p className="text-xs text-gray-500">{section.subtitle}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-bold text-duo-green">{prog.pct}%</span>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h2 className="font-bold text-gray-800">{section.title}</h2>
-                    <p className="text-xs text-gray-500">{section.subtitle}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs font-bold text-duo-green">{prog.pct}%</span>
-                  </div>
-                </div>
-              </Popover>
+                </Popover>
 
-              {/* Groups or flat lessons */}
-              {section.groups && section.groups.length > 0 ? (
-                <div className="flex flex-col gap-2">
-                  {section.groups.map((group) => {
-                    const isExpanded = expandedGroups[group.id] ?? false
-                    const gProg = getGroupProgress(group)
-                    return (
-                      <div key={group.id} className="border border-gray-200 rounded-xl overflow-hidden">
-                        <button
-                          onClick={() => toggleGroup(group.id)}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
-                        >
-                          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500">
-                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                          </div>
-                          <div className="flex-1 text-left">
-                            <p className="font-bold text-sm text-gray-800">{group.title}</p>
-                            <p className="text-xs text-gray-500">{group.subtitle}</p>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-xs font-bold text-duo-green">{gProg.pct}%</span>
-                            <span className="text-xs text-gray-400 ml-1">({gProg.completed}/{gProg.total})</span>
-                          </div>
-                        </button>
-                        <AnimatePresence>
-                          {isExpanded && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
+                {/* Collapse button */}
+                <button
+                  onClick={() => toggleSection(section.id)}
+                  className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  {isCollapsed
+                    ? <ChevronDown size={18} className="text-gray-400" />
+                    : <ChevronUp size={18} className="text-gray-400" />
+                  }
+                </button>
+              </div>
+
+              {/* Content */}
+              {!isCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  {section.groups && section.groups.length > 0 ? (
+                    <div className="flex flex-col gap-2">
+                      {section.groups.map((group) => {
+                        const isExpanded = expandedGroups[group.id] ?? false
+                        const gProg = getGroupProgress(group)
+                        return (
+                          <div key={group.id} className="border border-gray-200 rounded-xl overflow-hidden">
+                            <button
+                              onClick={() => toggleGroup(group.id)}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                             >
-                              <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-                                {group.lessons.map((lesson: any, lIdx: number) =>
-                                  renderLessonNode(lesson, lIdx, group.lessons.length, section.color)
-                                )}
+                              <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500">
+                                {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                               </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )
-                  })}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  {section.lessons.map((lesson, lIdx) =>
-                    renderLessonNode(lesson, lIdx, section.lessons.length, section.color)
+                              <div className="flex-1 text-left">
+                                <p className="font-bold text-sm text-gray-800">{group.title}</p>
+                                <p className="text-xs text-gray-500">{group.subtitle}</p>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-xs font-bold text-duo-green">{gProg.pct}%</span>
+                                <span className="text-xs text-gray-400 ml-1">({gProg.completed}/{gProg.total})</span>
+                              </div>
+                            </button>
+                            <AnimatePresence>
+                              {isExpanded && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: 'auto', opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                                    {group.lessons.map((lesson: any, lIdx: number) =>
+                                      renderLessonNode(lesson, lIdx, group.lessons.length, section.color)
+                                    )}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {section.lessons.map((lesson, lIdx) =>
+                        renderLessonNode(lesson, lIdx, section.lessons.length, section.color)
+                      )}
+                    </div>
                   )}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           )
         })}
       </div>

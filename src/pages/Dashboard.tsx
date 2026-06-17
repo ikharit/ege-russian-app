@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useProgressStore } from '../stores/progressStore'
+import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
@@ -198,6 +199,30 @@ export function Dashboard() {
         </motion.div>
       )}
 
+      {/* Accent Trainer Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/accent-trainer')}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-rose-400 flex items-center justify-center text-white">
+              <Volume2 size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-rose-500 uppercase tracking-wide font-bold">Тренажёр</p>
+              <p className="font-bold text-gray-800">Ударения</p>
+              <p className="text-xs text-gray-500">Кликай на ударную букву</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <AccentTrainerMiniProgress />
+            <ChevronRight size={24} className="text-rose-400" />
+          </div>
+        </div>
+      </motion.div>
+
       {/* Sections overview */}
       <div className="flex flex-col gap-3">
         <h3 className="font-bold text-gray-700">Разделы курса</h3>
@@ -209,7 +234,7 @@ export function Dashboard() {
               key={section.id}
               className="card flex items-center gap-3"
               whileHover={{ scale: 1.01 }}
-              onClick={() => navigate('/course')}
+              onClick={() => navigate(`/course?section=${section.id}`)}
             >
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg"
@@ -230,6 +255,21 @@ export function Dashboard() {
       </div>
 
       <XPDetailModal isOpen={showXPModal} onClose={() => setShowXPModal(false)} />
+    </div>
+  )
+}
+
+function AccentTrainerMiniProgress() {
+  const { getOverallProgress } = useAccentTrainerStore()
+  const { total, mastered } = getOverallProgress()
+  const pct = total > 0 ? (mastered / total) * 100 : 0
+
+  return (
+    <div className="w-16">
+      <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="bg-rose-400 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="text-[10px] text-gray-400 mt-0.5 text-right">{mastered}/{total}</p>
     </div>
   )
 }
