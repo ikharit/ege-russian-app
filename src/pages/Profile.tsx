@@ -12,6 +12,7 @@ export function Profile() {
   const achievements = useProgressStore((s) => s.achievements)
   const setUserName = useProgressStore((s) => s.setUserName)
   const toggleInfiniteHearts = useProgressStore((s) => s.toggleInfiniteHearts)
+  const incrementExportCount = useProgressStore((s) => s.incrementExportCount)
   const name = useProgressStore((s) => s.userStats.name || 'ученик')
 
   const [isEditing, setIsEditing] = useState(false)
@@ -37,6 +38,7 @@ export function Profile() {
   }
 
   const handleExport = () => {
+    incrementExportCount()
     const data = {
       userStats: stats,
       lessonProgress,

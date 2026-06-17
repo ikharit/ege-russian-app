@@ -2,6 +2,7 @@ import { Course } from '../types'
 import { orthographySections } from './sections/orthography'
 import { punctuationSections } from './sections/punctuation'
 import { grammarSections } from './sections/grammar'
+import { atomizationSections } from './sections/atomization'
 
 export const course: Course = {
   id: 'ege-russian-2025',

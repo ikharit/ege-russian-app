@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { UserStats, LessonProgress, Achievement, UserAtomProgress } from '../types'
-import { achievements as allAchievements } from '../data/courseData'
+import { achievements as allAchievements, course } from '../data/courseData'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 interface LeaderboardEntry {
@@ -12,6 +12,7 @@ interface LeaderboardEntry {
   level: number
   streak: number
   lessonsCompleted: number
+  updatedAt: string
 }
 
 interface TeacherStudent {
@@ -31,6 +32,10 @@ interface ProgressState {
   achievements: string[]
   lastUnlockedAchievement: string | null
   currentLessonId: string | null
+  currentLessonStartTime: string | null
+  currentLessonHeartsLost: number
+  heartRestoreCount: number
+  exportCount: number
   leaderboard: LeaderboardEntry[]
   teacherStudents: TeacherStudent[]
   isTeacher: boolean
@@ -42,7 +47,7 @@ interface ProgressState {
   loseHeart: () => boolean
   restoreHearts: () => void
   addXP: (amount: number) => void
-  checkAchievements: () => string[]
+  checkAchievements: (lessonId?: string) => string[]
   updateStreak: () => void
   getLessonProgress: (lessonId: string) => LessonProgress
   isLessonAvailable: (lessonId: string, prerequisites: string[]) => boolean
@@ -66,6 +71,7 @@ interface ProgressState {
   checkHeartRestore: () => void
   setUserName: (name: string) => void
   toggleInfiniteHearts: () => void
+  incrementExportCount: () => void
 }
 
 const getToday = () => new Date().toISOString().split('T')[0]
@@ -85,14 +91,14 @@ const getInitialStats = (): UserStats => ({
 })
 
 const defaultLeaderboard: LeaderboardEntry[] = [
-  { id: '1', name: 'Анна М.', avatar: '👩‍🎓', xp: 450, level: 5, streak: 7, lessonsCompleted: 12 },
-  { id: '2', name: 'Дмитрий К.', avatar: '👨‍🎓', xp: 380, level: 4, streak: 5, lessonsCompleted: 10 },
-  { id: '3', name: 'Мария С.', avatar: '👩‍🎓', xp: 320, level: 4, streak: 3, lessonsCompleted: 9 },
-  { id: '4', name: 'Иван П.', avatar: '👨‍🎓', xp: 290, level: 3, streak: 4, lessonsCompleted: 8 },
-  { id: '5', name: 'Елена В.', avatar: '👩‍🎓', xp: 250, level: 3, streak: 2, lessonsCompleted: 7 },
-  { id: '6', name: 'Алексей Н.', avatar: '👨‍🎓', xp: 210, level: 3, streak: 1, lessonsCompleted: 6 },
-  { id: '7', name: 'Ольга Р.', avatar: '👩‍🎓', xp: 180, level: 2, streak: 3, lessonsCompleted: 5 },
-  { id: '8', name: 'Павел Д.', avatar: '👨‍🎓', xp: 150, level: 2, streak: 0, lessonsCompleted: 4 },
+  { id: '1', name: 'Анна М.', avatar: '👩‍🎓', xp: 450, level: 5, streak: 7, lessonsCompleted: 12, updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '2', name: 'Дмитрий К.', avatar: '👨‍🎓', xp: 380, level: 4, streak: 5, lessonsCompleted: 10, updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '3', name: 'Мария С.', avatar: '👩‍🎓', xp: 320, level: 4, streak: 3, lessonsCompleted: 9, updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '4', name: 'Иван П.', avatar: '👨‍🎓', xp: 290, level: 3, streak: 4, lessonsCompleted: 8, updatedAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '5', name: 'Елена В.', avatar: '👩‍🎓', xp: 250, level: 3, streak: 2, lessonsCompleted: 7, updatedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '6', name: 'Алексей Н.', avatar: '👨‍🎓', xp: 210, level: 3, streak: 1, lessonsCompleted: 6, updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '7', name: 'Ольга Р.', avatar: '👩‍🎓', xp: 180, level: 2, streak: 3, lessonsCompleted: 5, updatedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '8', name: 'Павел Д.', avatar: '👨‍🎓', xp: 150, level: 2, streak: 0, lessonsCompleted: 4, updatedAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString() },
 ]
 
 const defaultTeacherStudents: TeacherStudent[] = [
@@ -112,6 +118,10 @@ export const useProgressStore = create<ProgressState>()(
       achievements: [],
       lastUnlockedAchievement: null,
       currentLessonId: null,
+      currentLessonStartTime: null,
+      currentLessonHeartsLost: 0,
+      heartRestoreCount: 0,
+      exportCount: 0,
       leaderboard: defaultLeaderboard,
       teacherStudents: defaultTeacherStudents,
       isTeacher: false,
@@ -179,9 +189,17 @@ export const useProgressStore = create<ProgressState>()(
         }))
       },
 
+      incrementExportCount: () => {
+        set((s) => ({
+          exportCount: s.exportCount + 1
+        }))
+      },
+
       startLesson: (lessonId) => {
         set((state) => ({
           currentLessonId: lessonId,
+          currentLessonStartTime: new Date().toISOString(),
+          currentLessonHeartsLost: 0,
           lessonProgress: {
             ...state.lessonProgress,
             [lessonId]: {
@@ -219,7 +237,7 @@ export const useProgressStore = create<ProgressState>()(
 
         get().addXP(xpEarned)
         get().updateStreak()
-        const newAchievements = get().checkAchievements()
+        const newAchievements = get().checkAchievements(lessonId)
         if (newAchievements.length > 0) {
           set((s) => ({
             achievements: [...new Set([...s.achievements, ...newAchievements])],
@@ -236,14 +254,16 @@ export const useProgressStore = create<ProgressState>()(
         const state = get()
         if (state.userStats.hearts <= 0) return false
         set((s) => ({
-          userStats: { ...s.userStats, hearts: s.userStats.hearts - 1 }
+          userStats: { ...s.userStats, hearts: s.userStats.hearts - 1 },
+          currentLessonHeartsLost: s.currentLessonHeartsLost + 1
         }))
         return true
       },
 
       restoreHearts: () => {
         set((s) => ({
-          userStats: { ...s.userStats, hearts: s.userStats.maxHearts }
+          userStats: { ...s.userStats, hearts: s.userStats.maxHearts },
+          heartRestoreCount: s.heartRestoreCount + 1
         }))
       },
 
@@ -261,7 +281,7 @@ export const useProgressStore = create<ProgressState>()(
         })
       },
 
-      checkAchievements: () => {
+      checkAchievements: (lessonId?: string) => {
         const state = get()
         const unlocked: string[] = []
         const completedLessons = Object.values(state.lessonProgress).filter(l => l.status === 'completed')
@@ -271,43 +291,91 @@ export const useProgressStore = create<ProgressState>()(
         const level = state.userStats.level
         const currentAchs = state.achievements
 
+        const addIfNew = (id: string) => {
+          if (!currentAchs.includes(id) && !unlocked.includes(id)) unlocked.push(id)
+        }
+
         // Lessons
-        if (completedCount >= 1 && !currentAchs.includes('ach-first-lesson')) unlocked.push('ach-first-lesson')
-        if (completedCount >= 5 && !currentAchs.includes('ach-lessons-5')) unlocked.push('ach-lessons-5')
-        if (completedCount >= 10 && !currentAchs.includes('ach-lessons-10')) unlocked.push('ach-lessons-10')
-        if (completedCount >= 25 && !currentAchs.includes('ach-lessons-25')) unlocked.push('ach-lessons-25')
-        if (completedCount >= 50 && !currentAchs.includes('ach-lessons-50')) unlocked.push('ach-lessons-50')
+        if (completedCount >= 1) addIfNew('ach-first-lesson')
+        if (completedCount >= 5) addIfNew('ach-lessons-5')
+        if (completedCount >= 10) addIfNew('ach-lessons-10')
+        if (completedCount >= 25) addIfNew('ach-lessons-25')
+        if (completedCount >= 50) addIfNew('ach-lessons-50')
 
         // Streak
-        if (streak >= 3 && !currentAchs.includes('ach-streak-3')) unlocked.push('ach-streak-3')
-        if (streak >= 7 && !currentAchs.includes('ach-streak-7')) unlocked.push('ach-streak-7')
-        if (streak >= 14 && !currentAchs.includes('ach-streak-14')) unlocked.push('ach-streak-14')
-        if (streak >= 30 && !currentAchs.includes('ach-streak-30')) unlocked.push('ach-streak-30')
+        if (streak >= 3) addIfNew('ach-streak-3')
+        if (streak >= 7) addIfNew('ach-streak-7')
+        if (streak >= 14) addIfNew('ach-streak-14')
+        if (streak >= 30) addIfNew('ach-streak-30')
 
         // XP
-        if (xp >= 100 && !currentAchs.includes('ach-xp-100')) unlocked.push('ach-xp-100')
-        if (xp >= 500 && !currentAchs.includes('ach-xp-500')) unlocked.push('ach-xp-500')
-        if (xp >= 1000 && !currentAchs.includes('ach-xp-1000')) unlocked.push('ach-xp-1000')
-        if (xp >= 5000 && !currentAchs.includes('ach-xp-5000')) unlocked.push('ach-xp-5000')
+        if (xp >= 100) addIfNew('ach-xp-100')
+        if (xp >= 500) addIfNew('ach-xp-500')
+        if (xp >= 1000) addIfNew('ach-xp-1000')
+        if (xp >= 5000) addIfNew('ach-xp-5000')
 
         // Levels
-        if (level >= 5 && !currentAchs.includes('ach-level-5')) unlocked.push('ach-level-5')
-        if (level >= 10 && !currentAchs.includes('ach-level-10')) unlocked.push('ach-level-10')
-        if (level >= 20 && !currentAchs.includes('ach-level-20')) unlocked.push('ach-level-20')
+        if (level >= 5) addIfNew('ach-level-5')
+        if (level >= 10) addIfNew('ach-level-10')
+        if (level >= 20) addIfNew('ach-level-20')
 
         // Perfect lessons
         const perfectCount = completedLessons.filter(l => l.score === 100).length
-        if (perfectCount >= 1 && !currentAchs.includes('ach-perfect')) unlocked.push('ach-perfect')
-        if (perfectCount >= 5 && !currentAchs.includes('ach-perfect-5')) unlocked.push('ach-perfect-5')
-        if (perfectCount >= 10 && !currentAchs.includes('ach-perfect-10')) unlocked.push('ach-perfect-10')
+        if (perfectCount >= 1) addIfNew('ach-perfect')
+        if (perfectCount >= 5) addIfNew('ach-perfect-5')
+        if (perfectCount >= 10) addIfNew('ach-perfect-10')
 
         // Infinite hearts
-        if (state.userStats.infiniteHearts && !currentAchs.includes('ach-infinite')) unlocked.push('ach-infinite')
+        if (state.userStats.infiniteHearts) addIfNew('ach-infinite')
 
-        // Set last unlocked for toast notification
-        if (unlocked.length > 0) {
-          // Don't set here — caller will handle it to avoid race condition
+        // Sections
+        const sectionIds = ['section-orth-1', 'section-punct-1', 'section-gram-1']
+        const sectionAchievements = ['ach-section-1', 'ach-section-2', 'ach-section-3']
+        const allSectionsComplete = sectionIds.every((sid, idx) => {
+          const section = course.sections.find(s => s.id === sid)
+          if (!section) return false
+          const allCompleted = section.lessons.every(l => state.lessonProgress[l.id]?.status === 'completed')
+          if (allCompleted) addIfNew(sectionAchievements[idx])
+          return allCompleted
+        })
+        if (allSectionsComplete) addIfNew('ach-all-sections')
+
+        // Atoms
+        const atomValues = Object.values(state.atomProgress)
+        if (atomValues.some(a => a.totalAttempts > 0)) addIfNew('ach-atom-first')
+        const masteredAtoms = atomValues.filter(a => a.masteryLevel === 'mastered').length
+        if (masteredAtoms >= 5) addIfNew('ach-atom-master')
+
+        // Time-based (check current time at completion)
+        const now = new Date()
+        const hour = now.getHours()
+        const day = now.getDay() // 0 = Sunday, 6 = Saturday
+        if (hour >= 22 || hour < 6) addIfNew('ach-night-owl')
+        if (hour >= 5 && hour < 9) addIfNew('ach-early-bird')
+        if (day === 0 || day === 6) addIfNew('ach-weekend')
+
+        // Speedrun
+        if (lessonId && state.currentLessonStartTime) {
+          const start = new Date(state.currentLessonStartTime)
+          const durationMin = (now.getTime() - start.getTime()) / (1000 * 60)
+          if (durationMin < 2) addIfNew('ach-speedrun')
         }
+
+        // Persistent (10+ attempts on any lesson)
+        if (Object.values(state.lessonProgress).some(l => (l.attempts || 0) >= 10)) {
+          addIfNew('ach-persistent')
+        }
+
+        // No hearts lost in current lesson
+        if (lessonId && state.currentLessonHeartsLost === 0 && state.userStats.hearts > 0) {
+          addIfNew('ach-no-hearts-lost')
+        }
+
+        // Heart restore (3+ times)
+        if (state.heartRestoreCount >= 3) addIfNew('ach-heart-restore')
+
+        // Export progress
+        if (state.exportCount >= 1) addIfNew('ach-export')
 
         return unlocked
       },

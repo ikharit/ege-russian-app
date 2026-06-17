@@ -1,13 +1,32 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame } from 'lucide-react'
+import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { Popover } from '../components/Popover'
+
+function getPeriodStart(period: 'week' | 'month' | 'all'): Date {
+  const now = new Date()
+  if (period === 'week') {
+    const d = new Date(now)
+    d.setDate(d.getDate() - 7)
+    return d
+  }
+  if (period === 'month') {
+    const d = new Date(now)
+    d.setDate(d.getDate() - 30)
+    return d
+  }
+  return new Date(0)
+}
 
 export function Leaderboard() {
   const leaderboard = useProgressStore((s) => s.leaderboard)
   const userStats = useProgressStore((s) => s.userStats)
+  const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
   const [mode, setMode] = useState<'xp' | 'streak'>('xp')
+
+  const completedCount = Object.values(lessonProgress).filter(l => l.status === 'completed').length
 
   const currentUserEntry = {
     id: 'me',
@@ -16,14 +35,22 @@ export function Leaderboard() {
     xp: userStats.xp,
     level: userStats.level,
     streak: userStats.streak,
-    maxStreak: userStats.maxStreak,
-    lessonsCompleted: Object.values(useProgressStore.getState().lessonProgress).filter(l => l.status === 'completed').length
+    lessonsCompleted: completedCount,
+    updatedAt: userStats.lastActivityDate || new Date().toISOString()
   }
 
-  const sortedByXP = [...leaderboard, currentUserEntry].sort((a, b) => b.xp - a.xp)
+  const periodStart = getPeriodStart(period)
+
+  const filtered = useMemo(() => {
+    const all = [...leaderboard, currentUserEntry]
+      .filter(e => period === 'all' || new Date(e.updatedAt) >= periodStart)
+    return all
+  }, [leaderboard, currentUserEntry, period, periodStart])
+
+  const sortedByXP = [...filtered].sort((a, b) => b.xp - a.xp)
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
-  const sortedByStreak = [...leaderboard, currentUserEntry].sort((a, b) => (b.streak || 0) - (a.streak || 0))
+  const sortedByStreak = [...filtered].sort((a, b) => (b.streak || 0) - (a.streak || 0))
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
   const fullLeaderboard = mode === 'xp' ? sortedByXP : sortedByStreak
@@ -42,6 +69,48 @@ export function Leaderboard() {
     if (trend === 'down') return <ArrowDown size={14} className="text-duo-red" />
     return <Minus size={14} className="text-gray-400" />
   }
+
+  const getPlayerPopover = (entry: typeof fullLeaderboard[0]) => (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">{entry.avatar}</span>
+        <div>
+          <p className="font-bold text-white">{entry.name}</p>
+          <p className="text-xs text-gray-400">Уровень {entry.level}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2 mt-2">
+        <div className="bg-gray-800 rounded-lg p-2 text-center">
+          <div className="flex items-center justify-center gap-1 text-duo-yellow">
+            <Zap size={12} />
+            <span className="font-bold">{entry.xp}</span>
+          </div>
+          <p className="text-xs text-gray-400">XP</p>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-2 text-center">
+          <div className="flex items-center justify-center gap-1 text-orange-400">
+            <Flame size={12} />
+            <span className="font-bold">{entry.streak || 0}</span>
+          </div>
+          <p className="text-xs text-gray-400">Страйк</p>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-2 text-center">
+          <div className="flex items-center justify-center gap-1 text-duo-green">
+            <Target size={12} />
+            <span className="font-bold">{entry.lessonsCompleted}</span>
+          </div>
+          <p className="text-xs text-gray-400">Уроков</p>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-2 text-center">
+          <div className="flex items-center justify-center gap-1 text-duo-blue">
+            <Calendar size={12} />
+            <span className="font-bold">{new Date(entry.updatedAt).toLocaleDateString('ru-RU')}</span>
+          </div>
+          <p className="text-xs text-gray-400">Активность</p>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
@@ -92,79 +161,91 @@ export function Leaderboard() {
         ))}
       </div>
 
-      {/* Top 3 podium */}
-      <div className="flex items-end justify-center gap-3 mb-8">
-        {fullLeaderboard.slice(0, 3).map((entry, idx) => {
-          const heights = ['h-24', 'h-32', 'h-28']
-          const positions = [2, 1, 3]
-          const actualIdx = positions.indexOf(entry.rank)
-          return (
-            <motion.div
-              key={entry.id}
-              className="flex flex-col items-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <div className="text-2xl mb-1">{entry.avatar}</div>
-              <div className={`${heights[actualIdx]} w-20 bg-duo-snow rounded-t-xl flex items-center justify-center relative border-2 border-b-0 ${
-                entry.rank === 1 ? 'border-yellow-400 bg-yellow-50' : 
-                entry.rank === 2 ? 'border-gray-300 bg-gray-50' : 'border-amber-600 bg-orange-50'
-              }`}>
-                <span className="text-2xl font-bold text-gray-700">{entry.rank}</span>
-              </div>
-              <div className="w-20 bg-white rounded-b-xl p-2 shadow-sm text-center">
-                <p className="text-xs font-bold text-gray-800 truncate">{entry.name}</p>
-                {mode === 'xp' ? (
-                  <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
-                ) : (
-                  <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
-                )}
-              </div>
-            </motion.div>
-          )
-        })}
-      </div>
+      {fullLeaderboard.length === 0 ? (
+        <div className="card text-center py-12">
+          <p className="text-gray-500">Нет данных за выбранный период</p>
+          <p className="text-xs text-gray-400 mt-2">Попробуйте выбрать другой период</p>
+        </div>
+      ) : (
+        <>
+          {/* Top 3 podium */}
+          {fullLeaderboard.length >= 3 && (
+            <div className="flex items-end justify-center gap-3 mb-8">
+              {[1, 0, 2].map(podiumIdx => {
+                const entry = fullLeaderboard[podiumIdx]
+                if (!entry) return null
+                const heights = ['h-28', 'h-32', 'h-24']
+                return (
+                  <motion.div
+                    key={entry.id}
+                    className="flex flex-col items-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: podiumIdx * 0.1 }}
+                  >
+                    <div className="text-2xl mb-1">{entry.avatar}</div>
+                    <div className={`${heights[podiumIdx]} w-20 bg-duo-snow rounded-t-xl flex items-center justify-center relative border-2 border-b-0 ${
+                      entry.rank === 1 ? 'border-yellow-400 bg-yellow-50' : 
+                      entry.rank === 2 ? 'border-gray-300 bg-gray-50' : 'border-amber-600 bg-orange-50'
+                    }`}>
+                      <span className="text-2xl font-bold text-gray-700">{entry.rank}</span>
+                    </div>
+                    <div className="w-20 bg-white rounded-b-xl p-2 shadow-sm text-center">
+                      <p className="text-xs font-bold text-gray-800 truncate">{entry.name}</p>
+                      {mode === 'xp' ? (
+                        <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
+                      ) : (
+                        <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          )}
 
-      {/* Full list */}
-      <div className="flex flex-col gap-2">
-        {fullLeaderboard.map((entry, idx) => (
-          <motion.div
-            key={entry.id}
-            className={`flex items-center gap-3 p-3 rounded-xl ${
-              entry.id === 'me' ? 'bg-duo-green/10 border border-duo-green/20' : 'bg-white border border-gray-100'
-            }`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: idx * 0.05 }}
-          >
-            <div className="w-8 flex justify-center">{getRankIcon(entry.rank)}</div>
-            <div className="text-2xl">{entry.avatar}</div>
-            <div className="flex-1">
-              <p className={`font-bold text-sm ${entry.id === 'me' ? 'text-duo-green' : 'text-gray-800'}`}>
-                {entry.name}
-              </p>
-              <p className="text-xs text-gray-500">Уровень {entry.level} • {entry.lessonsCompleted} уроков</p>
-            </div>
-            <div className="text-right flex items-center gap-2">
-              <div className="text-xs text-gray-400">{getTrend(entry.rank)}</div>
-              <div>
-                {mode === 'xp' ? (
-                  <>
-                    <p className="font-bold text-sm text-gray-800">{entry.xp}</p>
-                    <p className="text-xs text-gray-400">XP</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="font-bold text-sm text-orange-500">🔥 {entry.streak || 0}</p>
-                    <p className="text-xs text-gray-400">дней</p>
-                  </>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+          {/* Full list */}
+          <div className="flex flex-col gap-2">
+            {fullLeaderboard.map((entry, idx) => (
+              <Popover key={entry.id} position="left" content={getPlayerPopover(entry)}>
+                <motion.div
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:shadow-md transition-shadow ${
+                    entry.id === 'me' ? 'bg-duo-green/10 border border-duo-green/20' : 'bg-white border border-gray-100'
+                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                >
+                  <div className="w-8 flex justify-center">{getRankIcon(entry.rank)}</div>
+                  <div className="text-2xl">{entry.avatar}</div>
+                  <div className="flex-1">
+                    <p className={`font-bold text-sm ${entry.id === 'me' ? 'text-duo-green' : 'text-gray-800'}`}>
+                      {entry.name}
+                    </p>
+                    <p className="text-xs text-gray-500">Уровень {entry.level} • {entry.lessonsCompleted} уроков</p>
+                  </div>
+                  <div className="text-right flex items-center gap-2">
+                    <div className="text-xs text-gray-400">{getTrend(entry.rank)}</div>
+                    <div>
+                      {mode === 'xp' ? (
+                        <>
+                          <p className="font-bold text-sm text-gray-800">{entry.xp}</p>
+                          <p className="text-xs text-gray-400">XP</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-bold text-sm text-orange-500">🔥 {entry.streak || 0}</p>
+                          <p className="text-xs text-gray-400">дней</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </Popover>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* User position */}
       <div className="mt-6 card bg-duo-green/5 border border-duo-green/20">

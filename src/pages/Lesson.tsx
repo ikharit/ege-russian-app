@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Heart } from 'lucide-react'
@@ -36,12 +36,18 @@ export function Lesson() {
     )
   }
 
-  const questions = lesson.questions.map(q => {
-    // Shuffle options so correct answer isn't always first
-    const shuffledOptions = q.options ? [...q.options].sort(() => Math.random() - 0.5) : q.options
-    return { ...q, options: shuffledOptions }
-  })
+  const questions = useMemo(() => {
+    return lesson.questions.map(q => {
+      const shuffledOptions = q.options ? [...q.options].sort(() => Math.random() - 0.5) : q.options
+      return { ...q, options: shuffledOptions }
+    })
+  }, [lesson.id])
+
   const currentQuestion = questions[currentQuestionIdx]
+
+  useEffect(() => {
+    startLesson(lesson.id)
+  }, [lesson.id, startLesson])
 
   const handleAnswer = useCallback((isCorrect: boolean) => {
     if (isCorrect) {
