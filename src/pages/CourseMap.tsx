@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronRight, Sparkles, Volume2, SpellCheck, GraduationCap } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronRight, Sparkles, Volume2, SpellCheck, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   BookOpen,
@@ -20,6 +21,7 @@ function SectionIcon({ icon, size = 20 }: { icon: string; size?: number }) {
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { Popover } from '../components/Popover'
+import type { Lesson, LessonGroup } from '../types'
 
 export function CourseMap() {
   const navigate = useNavigate()
@@ -27,7 +29,13 @@ export function CourseMap() {
   const isLessonAvailable = useProgressStore((s) => s.isLessonAvailable)
   const userStats = useProgressStore((s) => s.userStats)
 
-  const getNodeStatus = (lesson: any) => {
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }))
+  }
+
+  const getNodeStatus = (lesson: Lesson) => {
     const prog = lessonProgress[lesson.id]
     if (prog?.status === 'completed') return 'completed'
     if (prog?.status === 'started') return 'current'
@@ -45,6 +53,91 @@ export function CourseMap() {
     return { completed, total, avgScore, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
+  const getGroupProgress = (group: LessonGroup) => {
+    const completed = group.lessons.filter(l => lessonProgress[l.id]?.status === 'completed').length
+    const total = group.lessons.length
+    return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
+  }
+
+  const renderLessonNode = (lesson: Lesson, lIdx: number, totalLessons: number, sectionColor: string) => {
+    const status = getNodeStatus(lesson)
+    const isLast = lIdx === totalLessons - 1
+    const prog = lessonProgress[lesson.id]
+
+    const popoverContent = (
+      <div className="space-y-2">
+        <p className="font-bold text-white">{lesson.title}</p>
+        <p className="text-gray-300 text-xs">{lesson.description}</p>
+        <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-1 text-xs text-duo-yellow">
+            <Zap size={12} />
+            <span>{lesson.xpReward} XP</span>
+          </div>
+          <div className="flex items-center gap-1 text-xs text-gray-400">
+            <TrendingUp size={12} />
+            <span>{lesson.questions.length} вопр.</span>
+          </div>
+        </div>
+        {prog?.bestScore > 0 && (
+          <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
+            <Trophy size={12} />
+            <span>Лучший: {prog.bestScore}%</span>
+          </div>
+        )}
+        {lesson.prerequisites.length > 0 && (
+          <p className="text-xs text-gray-400 mt-1">
+            Требует: {lesson.prerequisites.map(prId => {
+              const allLessons = course.sections.flatMap(s => s.lessons)
+              const pr = allLessons.find(l => l.id === prId)
+              return pr?.title || prId
+            }).join(', ')}
+          </p>
+        )}
+        {status === 'locked' && (
+          <p className="text-xs text-red-400 mt-1">🔒 Нужно пройти предыдущие уроки</p>
+        )}
+      </div>
+    )
+
+    return (
+      <div key={lesson.id} className="flex items-center gap-4 relative">
+        <Popover position="right" content={popoverContent}>
+          <motion.button
+            whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
+            whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
+            onClick={() => {
+              if (status !== 'locked') {
+                navigate(`/lesson/${lesson.id}`)
+              }
+            }}
+            className={`lesson-node ${status}`}
+            style={status === 'available' ? { backgroundColor: sectionColor } : {}}
+          >
+            {status === 'locked' && <Lock size={20} />}
+            {status === 'completed' && <Check size={20} />}
+            {status === 'current' && <Star size={20} />}
+            {status === 'available' && <span>{lIdx + 1}</span>}
+          </motion.button>
+        </Popover>
+
+        <Popover position="right" content={popoverContent}>
+          <div className="flex-1 cursor-pointer hover:opacity-80 transition-opacity">
+            <p className={`font-bold ${status === 'locked' ? 'text-gray-400' : 'text-gray-800'}`}>
+              {lesson.title}
+            </p>
+            <p className="text-xs text-gray-500">
+              {status === 'locked' ? 'Заблокировано' : status === 'completed' ? `✅ Пройдено · ${prog?.bestScore || 0}%` : `${lesson.questions.length} вопросов · ${lesson.xpReward} XP`}
+            </p>
+          </div>
+        </Popover>
+
+        {!isLast && (
+          <div className="absolute left-6 top-14 w-0.5 h-6 bg-gray-200" />
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-md mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Карта курса</h1>
@@ -54,7 +147,7 @@ export function CourseMap() {
           const prog = getSectionProgress(section)
           return (
             <div key={section.id} className="flex flex-col gap-4">
-              {/* Section header with popover */}
+              {/* Section header */}
               <Popover
                 position="right"
                 content={
@@ -94,87 +187,58 @@ export function CourseMap() {
                 </div>
               </Popover>
 
-              {/* Lesson nodes */}
-              <div className="flex flex-col gap-3">
-                {section.lessons.map((lesson, lIdx) => {
-                  const status = getNodeStatus(lesson)
-                  const isLast = lIdx === section.lessons.length - 1
-                  const prog = lessonProgress[lesson.id]
-
-                  const popoverContent = (
-                    <div className="space-y-2">
-                      <p className="font-bold text-white">{lesson.title}</p>
-                      <p className="text-gray-300 text-xs">{lesson.description}</p>
-                      <div className="flex items-center gap-3 mt-2">
-                        <div className="flex items-center gap-1 text-xs text-duo-yellow">
-                          <Zap size={12} />
-                          <span>{lesson.xpReward} XP</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-400">
-                          <TrendingUp size={12} />
-                          <span>{lesson.questions.length} вопр.</span>
-                        </div>
-                      </div>
-                      {prog?.bestScore > 0 && (
-                        <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
-                          <Trophy size={12} />
-                          <span>Лучший: {prog.bestScore}%</span>
-                        </div>
-                      )}
-                      {lesson.prerequisites.length > 0 && (
-                        <p className="text-xs text-gray-400 mt-1">
-                          Требует: {lesson.prerequisites.map(prId => {
-                            const allLessons = course.sections.flatMap(s => s.lessons)
-                            const pr = allLessons.find(l => l.id === prId)
-                            return pr?.title || prId
-                          }).join(', ')}
-                        </p>
-                      )}
-                      {status === 'locked' && (
-                        <p className="text-xs text-red-400 mt-1">🔒 Нужно пройти предыдущие уроки</p>
-                      )}
-                    </div>
-                  )
-
-                  return (
-                    <div key={lesson.id} className="flex items-center gap-4 relative">
-                      <Popover position="right" content={popoverContent}>
-                        <motion.button
-                          whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
-                          whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
-                          onClick={() => {
-                            if (status !== 'locked') {
-                              navigate(`/lesson/${lesson.id}`)
-                            }
-                          }}
-                          className={`lesson-node ${status}`}
-                          style={status === 'available' ? { backgroundColor: section.color } : {}}
+              {/* Groups or flat lessons */}
+              {section.groups && section.groups.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  {section.groups.map((group) => {
+                    const isExpanded = expandedGroups[group.id] ?? false
+                    const gProg = getGroupProgress(group)
+                    return (
+                      <div key={group.id} className="border border-gray-200 rounded-xl overflow-hidden">
+                        <button
+                          onClick={() => toggleGroup(group.id)}
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                         >
-                          {status === 'locked' && <Lock size={20} />}
-                          {status === 'completed' && <Check size={20} />}
-                          {status === 'current' && <Star size={20} />}
-                          {status === 'available' && <span>{lIdx + 1}</span>}
-                        </motion.button>
-                      </Popover>
-
-                      <Popover position="right" content={popoverContent}>
-                        <div className="flex-1 cursor-pointer hover:opacity-80 transition-opacity">
-                          <p className={`font-bold ${status === 'locked' ? 'text-gray-400' : 'text-gray-800'}`}>
-                            {lesson.title}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {status === 'locked' ? 'Заблокировано' : status === 'completed' ? `✅ Пройдено · ${prog?.bestScore || 0}%` : `${lesson.questions.length} вопросов · ${lesson.xpReward} XP`}
-                          </p>
-                        </div>
-                      </Popover>
-
-                      {!isLast && (
-                        <div className="absolute left-6 top-14 w-0.5 h-6 bg-gray-200" />
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
+                          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500">
+                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </div>
+                          <div className="flex-1 text-left">
+                            <p className="font-bold text-sm text-gray-800">{group.title}</p>
+                            <p className="text-xs text-gray-500">{group.subtitle}</p>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-xs font-bold text-duo-green">{gProg.pct}%</span>
+                            <span className="text-xs text-gray-400 ml-1">({gProg.completed}/{gProg.total})</span>
+                          </div>
+                        </button>
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                                {group.lessons.map((lesson, lIdx) =>
+                                  renderLessonNode(lesson, lIdx, group.lessons.length, section.color)
+                                )}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {section.lessons.map((lesson, lIdx) =>
+                    renderLessonNode(lesson, lIdx, section.lessons.length, section.color)
+                  )}
+                </div>
+              )}
             </div>
           )
         })}

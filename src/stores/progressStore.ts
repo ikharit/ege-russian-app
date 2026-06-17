@@ -368,7 +368,7 @@ export const useProgressStore = create<ProgressState>()(
         if (state.userStats.infiniteHearts) addIfNew('ach-infinite')
 
         // Sections
-        const sectionIds = ['section-orth-1', 'section-punct-1', 'section-gram-1']
+        const sectionIds = ['section-text-work', 'section-orth-grammar', 'section-punctuation']
         const sectionAchievements = ['ach-section-1', 'ach-section-2', 'ach-section-3']
         const allSectionsComplete = sectionIds.every((sid, idx) => {
           const section = course.sections.find(s => s.id === sid)

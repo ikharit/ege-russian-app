@@ -7,7 +7,10 @@ import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
 import { DailyQuests } from '../components/DailyQuests'
+import { Popover } from '../components/Popover'
 import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
+import { getAchievementIcon } from '../data/achievementIcons'
+import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -102,14 +105,55 @@ export function Dashboard() {
           </div>
         </motion.div>
 
-        <motion.div
-          className="card flex flex-col items-center gap-1"
-          whileHover={{ scale: 1.02 }}
+        {/* Achievements — with popover */}
+        <Popover
+          position="bottom"
+          content={
+            <div className="space-y-3 max-h-72 overflow-y-auto">
+              <p className="font-bold text-white">🏆 Достижения: {achievements.length} / {allAchievements.length}</p>
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-duo-green h-2 rounded-full" 
+                  style={{ width: `${(achievements.length / allAchievements.length) * 100}%` }}
+                />
+              </div>
+              
+              {achievements.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-400">Собранные:</p>
+                  {allAchievements
+                    .filter(ach => achievements.includes(ach.id))
+                    .slice(0, 5)
+                    .map(ach => {
+                      const Icon = getAchievementIcon(ach.id)
+                      return (
+                        <div key={ach.id} className="flex items-center gap-2 bg-gray-800 rounded-lg p-2">
+                          <div className="w-7 h-7 rounded-full bg-duo-green/20 flex items-center justify-center">
+                            <Icon size={14} className="text-duo-green" />
+                          </div>
+                          <p className="text-sm text-white">{ach.title}</p>
+                        </div>
+                      )
+                    })}
+                  {achievements.length > 5 && (
+                    <p className="text-xs text-gray-500 text-center">+{achievements.length - 5} ещё...</p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400">Пока нет достижений. Продолжай учиться!</p>
+              )}
+            </div>
+          }
         >
-          <Star size={24} className="text-duo-purple" />
-          <span className="text-xl font-bold">{achievements.length}</span>
-          <span className="text-xs text-gray-500">Достижения</span>
-        </motion.div>
+          <motion.div
+            className="card flex flex-col items-center gap-1 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Star size={24} className="text-duo-purple" />
+            <span className="text-xl font-bold">{achievements.length}</span>
+            <span className="text-xs text-gray-500">Достижения</span>
+          </motion.div>
+        </Popover>
       </div>
 
       {/* Daily Quests */}
