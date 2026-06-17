@@ -1,13 +1,13 @@
+// STOREV2
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { allAccentWords } from '../data/accentWords'
 
 export interface WordProgress {
   wordId: string
-  level: number          // 0-5 spaced repetition level (5 = mastered)
-  errors: number         // сколько раз ошиблись
-  lastShown: string      // ISO date
-  correctStreak: number  // подряд правильных ответов
+  stars: number        // 0-5, +1 за правильный, -1 за неправильный
+  totalCorrect: number
+  totalWrong: number
 }
 
 export interface AccentTrainerStats {
@@ -17,6 +17,7 @@ export interface AccentTrainerStats {
   bestStreak: number
   sessionStarted: string
   wordsMastered: number
+  currentStage: number
 }
 
 export interface AccentTrainerSettings {
@@ -26,31 +27,31 @@ export interface AccentTrainerSettings {
 }
 
 interface AccentTrainerState {
-  // Progress
   wordProgress: Record<string, WordProgress>
   stats: AccentTrainerStats
   settings: AccentTrainerSettings
-
-  // Current session
   currentWordId: string | null
-  sessionQueue: string[]        // очередь слов для текущей сессии
+  sessionQueue: string[]
   sessionIndex: number
-  hardWordsMode: boolean       // режим "сложных слов"
-
-  // Actions
   getNextWord: () => string | null
   answerWord: (wordId: string, correct: boolean) => void
-  startSession: (hardWordsOnly?: boolean) => void
+  startSession: () => void
   resetProgress: () => void
   resetWord: (wordId: string) => void
   updateSettings: (settings: Partial<AccentTrainerSettings>) => void
   getProgressForWord: (wordId: string) => WordProgress
-  getHardWords: () => string[]
   getOverallProgress: () => { total: number; mastered: number; learning: number; newWords: number }
 }
 
-const MAX_LEVEL = 5
-const NEW_WORD_PRIORITY = 10
+const WORDS_PER_STAGE = 30
+const MAX_STARS = 5
+const MIN_STARS = 0
+
+function getStageWords(stage: number): typeof allAccentWords {
+  const start = stage * WORDS_PER_STAGE
+  const end = start + WORDS_PER_STAGE
+  return allAccentWords.slice(start, end)
+}
 
 function getInitialProgress(): AccentTrainerStats {
   return {
@@ -60,6 +61,7 @@ function getInitialProgress(): AccentTrainerStats {
     bestStreak: 0,
     sessionStarted: new Date().toISOString(),
     wordsMastered: 0,
+    currentStage: 0,
   }
 }
 
@@ -68,6 +70,15 @@ function getDefaultSettings(): AccentTrainerSettings {
     sound: true,
     changeBackground: true,
     showExplanation: true,
+  }
+}
+
+function getDefaultWordProgress(wordId: string): WordProgress {
+  return {
+    wordId,
+    stars: 0,
+    totalCorrect: 0,
+    totalWrong: 0,
   }
 }
 
@@ -80,204 +91,163 @@ export const useAccentTrainerStore = create<AccentTrainerState>()(
       currentWordId: null,
       sessionQueue: [],
       sessionIndex: 0,
-      hardWordsMode: false,
 
       getNextWord: () => {
         const state = get()
-        const { sessionQueue, sessionIndex, hardWordsMode } = state
+        const { sessionQueue, sessionIndex } = state
 
-        // If we have a pre-built queue, use it
         if (sessionQueue.length > 0 && sessionIndex < sessionQueue.length) {
           const wordId = sessionQueue[sessionIndex]
           set({ currentWordId: wordId, sessionIndex: sessionIndex + 1 })
           return wordId
         }
 
-        // Build new queue
-        const pool = hardWordsMode
-          ? get().getHardWords()
-          : allAccentWords.map(w => w.id)
+        const currentStage = state.stats.currentStage
+        const stageWords = getStageWords(currentStage)
+        const stageWordIds = stageWords.map(w => w.id)
 
-        if (pool.length === 0) return null
-
-        // Filter out mastered words (unless in hard mode)
-        const activePool = pool.filter(id => {
-          const prog = state.wordProgress[id]
-          if (!prog) return true
-          if (hardWordsMode) return prog.errors > 0
-          return prog.level < MAX_LEVEL
+        const currentStageQueue: string[] = []
+        const stageProgress = stageWordIds.map(id => {
+          const prog = state.wordProgress[id] || getDefaultWordProgress(id)
+          return { id, stars: prog.stars }
         })
 
-        if (activePool.length === 0) {
-          // All words mastered!
-          return null
+        const notMasteredInStage = stageProgress.filter(w => w.stars < MAX_STARS).map(w => w.id)
+        currentStageQueue.push(...notMasteredInStage)
+
+        const leakingWords: string[] = []
+        for (let s = 0; s < currentStage; s++) {
+          const prevStageWords = getStageWords(s)
+          for (const w of prevStageWords) {
+            const prog = state.wordProgress[w.id] || getDefaultWordProgress(w.id)
+            if (prog.stars < MAX_STARS) {
+              leakingWords.push(w.id)
+            }
+          }
         }
 
-        // Score each word: lower level = higher priority, errors = boost priority
-        const scored = activePool.map(id => {
-          const prog = state.wordProgress[id]
-          let score = 0
-          if (!prog) {
-            score = NEW_WORD_PRIORITY + Math.random() * 5
-          } else {
-            score = (MAX_LEVEL - prog.level) * 2 + prog.errors * 3
-            // Boost words that haven't been shown recently
-            const hoursSinceLast = prog.lastShown
-              ? (Date.now() - new Date(prog.lastShown).getTime()) / (1000 * 60 * 60)
-              : 48
-            score += Math.min(hoursSinceLast / 4, 5)
-            // Randomize to avoid repetition
-            score += Math.random() * 2
+        for (let i = currentStageQueue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[currentStageQueue[i], currentStageQueue[j]] = [currentStageQueue[j], currentStageQueue[i]]
+        }
+
+        for (let i = leakingWords.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[leakingWords[i], leakingWords[j]] = [leakingWords[j], leakingWords[i]]
+        }
+
+        const queue: string[] = []
+        let currentIdx = 0
+        let leakIdx = 0
+        const alternateEvery = 3
+
+        while (currentIdx < currentStageQueue.length || leakIdx < leakingWords.length) {
+          for (let i = 0; i < alternateEvery && currentIdx < currentStageQueue.length; i++) {
+            queue.push(currentStageQueue[currentIdx++])
           }
-          return { id, score }
-        })
+          if (leakIdx < leakingWords.length) {
+            queue.push(leakingWords[leakIdx++])
+          }
+        }
 
-        scored.sort((a, b) => b.score - a.score)
+        if (queue.length === 0) {
+          const nextStage = currentStage + 1
+          const nextStageWords = getStageWords(nextStage)
+          if (nextStageWords.length === 0) {
+            return null
+          }
+          set(prev => ({
+            stats: { ...prev.stats, currentStage: nextStage },
+          }))
+          return get().getNextWord()
+        }
 
-        // Build a session queue of ~20 words
-        const queueSize = Math.min(20, scored.length)
-        const newQueue = scored.slice(0, queueSize).map(s => s.id)
-
-        set({
-          sessionQueue: newQueue,
-          sessionIndex: 1,
-          currentWordId: newQueue[0],
-        })
-        return newQueue[0]
+        set({ sessionQueue: queue, sessionIndex: 0, currentWordId: queue[0] })
+        return queue[0]
       },
 
-      answerWord: (wordId, correct) => {
-        set((state) => {
-          const existing = state.wordProgress[wordId]
-          let newLevel = existing?.level ?? 0
-          let newErrors = existing?.errors ?? 0
-          let newCorrectStreak = existing?.correctStreak ?? 0
-
+      answerWord: (wordId: string, correct: boolean) => {
+        set(prev => {
+          const existing = prev.wordProgress[wordId] || getDefaultWordProgress(wordId)
+          let newStars = existing.stars
           if (correct) {
-            newCorrectStreak += 1
-            // Advance level on correct answers (streak-based)
-            if (newCorrectStreak >= 2) {
-              newLevel = Math.min(MAX_LEVEL, newLevel + 1)
-              newCorrectStreak = 0
-            }
+            newStars = Math.min(MAX_STARS, newStars + 1)
           } else {
-            newErrors += 1
-            newCorrectStreak = 0
-            // Drop level on error (but not below 0)
-            newLevel = Math.max(0, newLevel - 1)
+            newStars = Math.max(MIN_STARS, newStars - 1)
           }
-
-          const newProgress: WordProgress = {
-            wordId,
-            level: newLevel,
-            errors: newErrors,
-            lastShown: new Date().toISOString(),
-            correctStreak: newCorrectStreak,
+          const updated: WordProgress = {
+            ...existing,
+            stars: newStars,
+            totalCorrect: existing.totalCorrect + (correct ? 1 : 0),
+            totalWrong: existing.totalWrong + (correct ? 0 : 1),
           }
-
-          const masteredDelta =
-            (!existing || existing.level < MAX_LEVEL) && newLevel === MAX_LEVEL ? 1 : 0
-
           return {
-            wordProgress: {
-              ...state.wordProgress,
-              [wordId]: newProgress,
-            },
+            wordProgress: { ...prev.wordProgress, [wordId]: updated },
             stats: {
-              ...state.stats,
-              totalCorrect: state.stats.totalCorrect + (correct ? 1 : 0),
-              totalWrong: state.stats.totalWrong + (correct ? 0 : 1),
-              streak: correct ? state.stats.streak + 1 : 0,
+              ...prev.stats,
+              totalCorrect: prev.stats.totalCorrect + (correct ? 1 : 0),
+              totalWrong: prev.stats.totalWrong + (correct ? 0 : 1),
+              streak: correct ? prev.stats.streak + 1 : 0,
               bestStreak: correct
-                ? Math.max(state.stats.bestStreak, state.stats.streak + 1)
-                : state.stats.bestStreak,
-              wordsMastered: state.stats.wordsMastered + masteredDelta,
+                ? Math.max(prev.stats.bestStreak, prev.stats.streak + 1)
+                : prev.stats.bestStreak,
+              wordsMastered: Object.values({ ...prev.wordProgress, [wordId]: updated }).filter(
+                p => p.stars >= MAX_STARS
+              ).length,
             },
           }
         })
       },
 
-      startSession: (hardWordsOnly = false) => {
-        set({
-          sessionQueue: [],
-          sessionIndex: 0,
-          hardWordsMode: hardWordsOnly,
-          stats: {
-            ...get().stats,
-            sessionStarted: new Date().toISOString(),
-          },
-        })
-        get().getNextWord()
+      startSession: () => {
+        const next = get().getNextWord()
+        if (!next) {
+          set({ currentWordId: null })
+        }
       },
 
       resetProgress: () => {
         set({
           wordProgress: {},
           stats: getInitialProgress(),
+          currentWordId: null,
           sessionQueue: [],
           sessionIndex: 0,
         })
       },
 
       resetWord: (wordId: string) => {
-        set((state) => {
-          const { [wordId]: _, ...rest } = state.wordProgress
-          return {
-            wordProgress: rest,
-            stats: {
-              ...state.stats,
-              wordsMastered: Math.max(0, state.stats.wordsMastered - (state.wordProgress[wordId]?.level === MAX_LEVEL ? 1 : 0)),
-            },
-          }
-        })
-      },
-
-      updateSettings: (newSettings) => {
-        set((state) => ({
-          settings: { ...state.settings, ...newSettings },
+        set(prev => ({
+          wordProgress: { ...prev.wordProgress, [wordId]: getDefaultWordProgress(wordId) },
         }))
       },
 
-      getProgressForWord: (wordId) => {
-        return get().wordProgress[wordId] || {
-          wordId,
-          level: 0,
-          errors: 0,
-          lastShown: '',
-          correctStreak: 0,
-        }
+      updateSettings: (settings) => {
+        set(prev => ({ settings: { ...prev.settings, ...settings } }))
       },
 
-      getHardWords: () => {
-        return Object.entries(get().wordProgress)
-          .filter(([, prog]) => prog.errors > 0)
-          .sort((a, b) => b[1].errors - a[1].errors)
-          .map(([id]) => id)
+      getProgressForWord: (wordId: string) => {
+        return get().wordProgress[wordId] || getDefaultWordProgress(wordId)
       },
 
       getOverallProgress: () => {
-        const progress = get().wordProgress
+        const state = get()
         const total = allAccentWords.length
-        let mastered = 0
-        let learning = 0
-        let newWords = 0
-
-        for (const word of allAccentWords) {
-          const prog = progress[word.id]
-          if (!prog) {
-            newWords += 1
-          } else if (prog.level >= MAX_LEVEL) {
-            mastered += 1
-          } else {
-            learning += 1
-          }
-        }
-
+        const mastered = Object.values(state.wordProgress).filter(p => p.stars >= MAX_STARS).length
+        const learning = Object.values(state.wordProgress).filter(
+          p => p.stars > 0 && p.stars < MAX_STARS
+        ).length
+        const newWords = total - Object.keys(state.wordProgress).length
         return { total, mastered, learning, newWords }
       },
     }),
     {
-      name: 'accent-trainer-storage',
+      name: 'accent-trainer-v2',
+      partialize: (state) => ({
+        wordProgress: state.wordProgress,
+        stats: state.stats,
+        settings: state.settings,
+      }),
     }
   )
 )

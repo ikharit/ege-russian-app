@@ -1,15 +1,24 @@
-import { useEffect, useState, useRef } from 'react'
+// UPDATED V3
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Volume2, VolumeX, RotateCcw, Settings, ArrowLeft,
-  Star, Trophy, Zap, Heart, ChevronRight, BrainCircuit
+  Star, Trophy, Zap, Heart, ChevronRight
 } from 'lucide-react'
-import { accentWordsById } from '../data/accentWords'
+import { accentWordsById, allAccentWords } from '../data/accentWords'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { useProgressStore } from '../stores/progressStore'
 
 type AnswerState = 'idle' | 'correct' | 'wrong'
+
+const WORDS_PER_STAGE = 30
+
+function getStageWords(stage: number): typeof allAccentWords {
+  const start = stage * WORDS_PER_STAGE
+  const end = start + WORDS_PER_STAGE
+  return allAccentWords.slice(start, end)
+}
 
 export function AccentTrainer() {
   const navigate = useNavigate()
@@ -23,7 +32,6 @@ export function AccentTrainer() {
   const currentWordId = useAccentTrainerStore((s) => s.currentWordId)
   const stats = useAccentTrainerStore((s) => s.stats)
   const settings = useAccentTrainerStore((s) => s.settings)
-  const hardWordsMode = useAccentTrainerStore((s) => s.hardWordsMode)
   const wordProgress = useAccentTrainerStore((s) => s.wordProgress)
 
   const addXP = useProgressStore((s) => s.addXP)
@@ -32,12 +40,13 @@ export function AccentTrainer() {
 
   const currentWord = currentWordId ? accentWordsById[currentWordId] : null
   const overall = useAccentTrainerStore.getState().getOverallProgress()
+  const currentStage = stats.currentStage ?? 0
 
   // Initialize session on mount
   useEffect(() => {
     const store = useAccentTrainerStore.getState()
     if (!store.currentWordId) {
-      store.startSession(false)
+      store.startSession()
       store.getNextWord()
     }
   }, [])
@@ -84,18 +93,7 @@ export function AccentTrainer() {
     setAnswerState('idle')
     setSelectedIndex(null)
     setExplanation('')
-    store.startSession(false)
-    const next = store.getNextWord()
-    setWordId(next)
-  }
-
-  const handleHardWords = () => {
-    const store = useAccentTrainerStore.getState()
-    setShowCompleted(false)
-    setAnswerState('idle')
-    setSelectedIndex(null)
-    setExplanation('')
-    store.startSession(true)
+    store.startSession()
     const next = store.getNextWord()
     setWordId(next)
   }
@@ -108,7 +106,7 @@ export function AccentTrainer() {
       setSelectedIndex(null)
       setExplanation('')
       setShowCompleted(false)
-      store.startSession(false)
+      store.startSession()
       const next = store.getNextWord()
       setWordId(next)
     }
@@ -120,6 +118,23 @@ export function AccentTrainer() {
       : answerState === 'wrong' ? 'bg-red-50'
       : 'bg-duo-snow'
     : 'bg-duo-snow'
+
+  // Stage progress
+  const stageWords = getStageWords(currentStage)
+  const stageWordIds = stageWords.map(w => w.id)
+  const stageMastered = stageWordIds.filter(
+    id => (wordProgress[id]?.stars || 0) >= 5
+  ).length
+  const stageTotal = stageWords.length
+
+  // Word stage info for leaking badge
+  const wordStage = currentWord
+    ? Math.floor(allAccentWords.findIndex(w => w.id === currentWord.id) / WORDS_PER_STAGE)
+    : -1
+  const isLeakingWord = currentWord && wordStage !== currentStage && wordStage >= 0
+
+  // Current word stars for header
+  const currentWordStars = currentWord ? (wordProgress[currentWord.id]?.stars || 0) : 0
 
   if (showCompleted) {
     return (
@@ -187,15 +202,6 @@ export function AccentTrainer() {
               <RotateCcw size={18} />
               Начать заново
             </button>
-            {useAccentTrainerStore.getState().getHardWords().length > 0 && (
-              <button
-                onClick={handleHardWords}
-                className="btn-secondary w-full flex items-center justify-center gap-2"
-              >
-                <BrainCircuit size={18} />
-                Сложные слова ({useAccentTrainerStore.getState().getHardWords().length})
-              </button>
-            )}
             <button
               onClick={() => navigate('/')}
               className="text-gray-400 hover:text-gray-600 text-sm"
@@ -220,9 +226,9 @@ export function AccentTrainer() {
 
   const letters = currentWord.normalized.split('')
   const progress = wordProgress[currentWord.id] || {
-    wordId: currentWord.id, level: 0, errors: 0, lastShown: '', correctStreak: 0
+    wordId: currentWord.id, stars: 0, totalCorrect: 0, totalWrong: 0
   }
-  const levelStars = Math.min(progress.level, 5)
+  const levelStars = progress.stars
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${bgColor} flex flex-col`}>
@@ -236,6 +242,19 @@ export function AccentTrainer() {
           </button>
 
           <div className="flex items-center gap-4">
+            {/* Stage + stars */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-bold text-duo-purple">Ур. {currentStage + 1}</span>
+              <div className="flex items-center gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    size={10}
+                    className={i < currentWordStars ? 'text-duo-yellow fill-current' : 'text-gray-200'}
+                  />
+                ))}
+              </div>
+            </div>
             <div className="flex items-center gap-1">
               <Star size={14} className="text-duo-yellow fill-current" />
               <span className="text-sm font-bold text-gray-700">{overall.mastered}/{overall.total}</span>
@@ -254,10 +273,14 @@ export function AccentTrainer() {
         </div>
 
         <div className="max-w-md mx-auto px-4 pb-2">
+          <div className="flex justify-between text-xs text-gray-400 mb-1">
+            <span>Уровень {currentStage + 1}</span>
+            <span>{stageMastered}/{stageTotal}</span>
+          </div>
           <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
               className="bg-duo-green h-1.5 rounded-full transition-all"
-              style={{ width: `${(overall.mastered / overall.total) * 100}%` }}
+              style={{ width: `${stageTotal > 0 ? (stageMastered / stageTotal) * 100 : 0}%` }}
             />
           </div>
         </div>
@@ -305,9 +328,9 @@ export function AccentTrainer() {
       )}
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-md mx-auto w-full">
-        {hardWordsMode && (
-          <div className="mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold uppercase tracking-wide">
-            Режим сложных слов
+        {isLeakingWord && (
+          <div className="mb-4 px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-xs font-bold uppercase tracking-wide">
+            Повторение из уровня {wordStage + 1}
           </div>
         )}
 
@@ -373,16 +396,6 @@ export function AccentTrainer() {
             className="btn-primary w-full flex items-center justify-center gap-2"
           >
             Дальше <ChevronRight size={18} />
-          </button>
-        )}
-
-        {!hardWordsMode && useAccentTrainerStore.getState().getHardWords().length > 0 && answerState === 'idle' && (
-          <button
-            onClick={handleHardWords}
-            className="mt-6 text-sm text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors"
-          >
-            <BrainCircuit size={14} />
-            Сложные слова: {useAccentTrainerStore.getState().getHardWords().length}
           </button>
         )}
       </div>

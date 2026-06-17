@@ -14,8 +14,11 @@ interface QuestionCardProps {
 
 export function QuestionCard({ question, questionNumber, totalQuestions, onAnswer, onNext, heartsLeft }: QuestionCardProps) {
   const [selected, setSelected] = useState<string[]>([])
+  const [textInput, setTextInput] = useState('')
   const [isChecked, setIsChecked] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
+
+  const isTextType = question.type === 'text'
 
   const handleOptionClick = (option: string) => {
     if (isChecked) return
@@ -27,21 +30,37 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   }
 
   const handleCheck = () => {
-    if (selected.length === 0) return
-    const correct = question.type === 'single'
-      ? selected[0] === question.correctAnswer[0]
-      : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
-    setIsCorrect(correct)
-    setIsChecked(true)
-    onAnswer(correct, selected)
+    if (isTextType) {
+      if (textInput.trim() === '') return
+      const userAnswer = textInput.trim()
+      const correct = question.correctAnswer.some(
+        ans => ans.toLowerCase() === userAnswer.toLowerCase()
+      )
+      setIsCorrect(correct)
+      setIsChecked(true)
+      onAnswer(correct, [userAnswer])
+    } else {
+      if (selected.length === 0) return
+      const correct = question.type === 'single'
+        ? selected[0] === question.correctAnswer[0]
+        : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
+      setIsCorrect(correct)
+      setIsChecked(true)
+      onAnswer(correct, selected)
+    }
   }
 
   const handleNext = () => {
     setSelected([])
+    setTextInput('')
     setIsChecked(false)
     setIsCorrect(false)
     onNext()
   }
+
+  const canCheck = isTextType
+    ? textInput.trim().length > 0
+    : selected.length > 0
 
   return (
     <div className="flex flex-col gap-4 max-w-md mx-auto">
@@ -66,47 +85,76 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
         </div>
       )}
 
-      <div className="flex flex-col gap-2">
-        <AnimatePresence>
-          {question.options?.map((option, idx) => {
-            const isSelected = selected.includes(option)
-            const isCorrectOption = question.correctAnswer.includes(option)
-            let buttonClass = 'border-2 rounded-xl p-4 text-left font-medium transition-all '
+      {/* Text input for type === 'text' */}
+      {isTextType && (
+        <div className="flex flex-col gap-2">
+          <input
+            type="text"
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            disabled={isChecked}
+            placeholder="Впишите ответ..."
+            className={`w-full border-2 rounded-xl p-4 text-lg font-medium text-center uppercase transition-all focus:outline-none focus:ring-2 focus:ring-duo-blue/20 ${
+              isChecked
+                ? isCorrect
+                  ? 'border-duo-green bg-green-50 text-duo-green'
+                  : 'border-duo-red bg-red-50 text-duo-red'
+                : 'border-gray-200 bg-white focus:border-duo-blue'
+            }`}
+            maxLength={5}
+          />
+          {isChecked && (
+            <p className="text-sm text-gray-500 text-center">
+              Ваш ответ: <span className={isCorrect ? 'text-duo-green font-bold' : 'text-duo-red font-bold'}>{textInput}</span>
+            </p>
+          )}
+        </div>
+      )}
 
-            if (!isChecked) {
-              buttonClass += isSelected
-                ? 'border-duo-blue bg-blue-50 text-duo-blue'
-                : 'border-gray-200 bg-white hover:bg-gray-50'
-            } else {
-              if (isCorrectOption) {
-                buttonClass += 'border-duo-green bg-green-50 text-duo-green'
-              } else if (isSelected && !isCorrectOption) {
-                buttonClass += 'border-duo-red bg-red-50 text-duo-red'
+      {/* Options for single/multiple/ege-multiple */}
+      {!isTextType && (
+        <div className="flex flex-col gap-2">
+          <AnimatePresence>
+            {question.options?.map((option, idx) => {
+              const isSelected = selected.includes(option)
+              const isCorrectOption = question.correctAnswer.includes(option)
+              let buttonClass = 'border-2 rounded-xl p-4 text-left font-medium transition-all '
+
+              if (!isChecked) {
+                buttonClass += isSelected
+                  ? 'border-duo-blue bg-blue-50 text-duo-blue'
+                  : 'border-gray-200 bg-white hover:bg-gray-50'
               } else {
-                buttonClass += 'border-gray-200 bg-white opacity-60'
+                if (isCorrectOption) {
+                  buttonClass += 'border-duo-green bg-green-50 text-duo-green'
+                } else if (isSelected && !isCorrectOption) {
+                  buttonClass += 'border-duo-red bg-red-50 text-duo-red'
+                } else {
+                  buttonClass += 'border-gray-200 bg-white opacity-60'
+                }
               }
-            }
 
-            return (
-              <motion.button
-                key={option}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                onClick={() => handleOptionClick(option)}
-                className={buttonClass}
-                disabled={isChecked}
-              >
-                <div className="flex items-center justify-between">
-                  <span>{option}</span>
-                  {isChecked && isCorrectOption && <Check size={20} className="text-duo-green" />}
-                  {isChecked && isSelected && !isCorrectOption && <X size={20} className="text-duo-red" />}
-                </div>
-              </motion.button>
-            )
-          })}
-        </AnimatePresence>
-      </div>
+              return (
+                <motion.button
+                  key={option}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  onClick={() => handleOptionClick(option)}
+                  className={buttonClass}
+                  disabled={isChecked}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>{option}</span>
+                    {isChecked && isCorrectOption && <Check size={20} className="text-duo-green" />}
+                    {isChecked && isSelected && !isCorrectOption && <X size={20} className="text-duo-red" />}
+                  </div>
+                </motion.button>
+              )
+            })}
+          </AnimatePresence>
+        </div>
+      )}
 
       {isChecked && (
         <motion.div
@@ -136,7 +184,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
 
       <button
         onClick={isChecked ? handleNext : handleCheck}
-        disabled={selected.length === 0}
+        disabled={!canCheck}
         className={`btn-primary w-full ${isChecked ? (isCorrect ? '' : 'bg-duo-red shadow-[0_4px_0_#d32f2f]') : ''}`}
       >
         {isChecked ? (

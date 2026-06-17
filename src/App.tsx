@@ -12,7 +12,6 @@ import { AccentTrainer } from './pages/AccentTrainer'
 import { MiniGames } from './pages/MiniGames'
 import { MistakesReview } from './pages/MistakesReview'
 import { StudentHomework } from './pages/StudentHomework'
-import { MyHomework } from './pages/MyHomework'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2 } from 'lucide-react'
@@ -72,7 +71,6 @@ export default function App() {
       <main className="flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/course" element={<CourseMap />} />
           <Route path="/lesson/:lessonId" element={<Lesson />} />
           <Route path="/stats" element={<Statistics />} />
@@ -80,10 +78,10 @@ export default function App() {
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/teacher/:studentName" element={<StudentHomework />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
           <Route path="/games" element={<MiniGames />} />
+          <Route path="/accent-trainer" element={<AccentTrainer />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}
