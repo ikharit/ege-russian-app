@@ -6,7 +6,7 @@ export const grammarSections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Грамматика: окончания, НЕ/НИ, слитно/раздельно',
     subtitle: 'Задания 12–14 ЕГЭ',
-    order: 5,
+    order: 12,
     icon: 'GraduationCap',
     color: '#ce82ff',
     lessons: [

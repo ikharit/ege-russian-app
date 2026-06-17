@@ -1,22 +1,16 @@
 import { Course } from '../types'
-import { orthographySections } from './sections/orthography'
-import { punctuationSections } from './sections/punctuation'
-import { grammarSections } from './sections/grammar'
-import { atomizationSections } from './sections/atomization'
-import { stressSections } from './sections/stress'
-import { nnnSections } from './sections/n_nn'
+import { textWorkSections } from './sections/textWork'
+import { orthographyGrammarSections } from './sections/orthographyGrammar'
+import { punctuationAllSections } from './sections/punctuationAll'
 
 export const course: Course = {
   id: 'ege-russian-2025',
-  title: 'ЕГЭ Русский язык 2025',
+  title: 'ЕГЭ Русский язык 2026',
   description: 'Подготовка к экзамену по русскому языку в формате Duolingo',
   sections: [
-    ...orthographySections,
-    ...punctuationSections,
-    ...grammarSections,
-    ...atomizationSections,
-    ...stressSections,
-    ...nnnSections,
+    ...textWorkSections,
+    ...orthographyGrammarSections,
+    ...punctuationAllSections,
   ]
 }
 

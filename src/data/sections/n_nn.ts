@@ -6,7 +6,7 @@ export const nnnSections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Н / НН',
     subtitle: 'Задание 15: правописание -н- и -нн-',
-    order: 8,
+    order: 15,
     icon: 'SpellCheck',
     color: '#9b59b6',
     lessons: [

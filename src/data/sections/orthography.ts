@@ -1,4 +1,4 @@
-﻿import { Section } from '../../types'
+import { Section } from '../../types'
 
 export const orthographySections: Section[] = [
   {
@@ -6,7 +6,7 @@ export const orthographySections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Орфография: корни',
     subtitle: 'Чередование гласных, проверяемые и непроверяемые',
-    order: 1,
+    order: 9,
     icon: 'BookOpen',
     color: '#58cc02',
     lessons: [
@@ -81,24 +81,24 @@ export const orthographySections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Орфография: суффиксы',
     subtitle: 'Прилагательные, деепричастия, существительные',
-    order: 2,
+    order: 11,
     icon: 'BookOpen',
     color: '#2E75B6',
     lessons: [
       {
-        id: 'lesson-orth-10-1',
+        id: 'lesson-orth-11-1',
         sectionId: 'section-orth-2',
-        title: 'Задание 10. Суффиксы',
+        title: 'Задание 11. Суффиксы',
         type: 'practice',
         description: 'Выберите правильное написание с пропущенными буквами',
         xpReward: 60,
         prerequisites: [],
         questions: [
-          { id: 'q10-1', type: 'single', text: 'Вставьте пропущенные буквы: щегол..ватый', options: ['щеголеватый', 'щеголиватый'], correctAnswer: ['щеголеватый'], explanation: 'Суффикс -еват-: щеголеватый.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
-          { id: 'q10-2', type: 'single', text: 'Вставьте пропущенные буквы: находч..вый', options: ['находчивый', 'находчевый'], correctAnswer: ['находчивый'], explanation: 'Суффикс -ив-: находчивый.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
-          { id: 'q10-3', type: 'single', text: 'Вставьте пропущенные буквы: застр..вать', options: ['застревать', 'застраивать'], correctAnswer: ['застревать'], explanation: 'Деепричастие: застревать.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
-          { id: 'q10-4', type: 'single', text: 'Вставьте пропущенные буквы: гел..вая (ручка)', options: ['гелевая', 'гелиевая'], correctAnswer: ['гелевая'], explanation: 'От гель: гелевая.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
-          { id: 'q10-5', type: 'single', text: 'Вставьте пропущенные буквы: испыт..вать', options: ['испытывать', 'испытевать'], correctAnswer: ['испытывать'], explanation: 'Суффикс -ыв-: испытывать.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
+          { id: 'q11-1', type: 'single', text: 'Вставьте пропущенные буквы: щегол..ватый', options: ['щеголеватый', 'щеголиватый'], correctAnswer: ['щеголеватый'], explanation: 'Суффикс -еват-: щеголеватый.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
+          { id: 'q11-2', type: 'single', text: 'Вставьте пропущенные буквы: находч..вый', options: ['находчивый', 'находчевый'], correctAnswer: ['находчивый'], explanation: 'Суффикс -ив-: находчивый.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
+          { id: 'q11-3', type: 'single', text: 'Вставьте пропущенные буквы: застр..вать', options: ['застревать', 'застраивать'], correctAnswer: ['застревать'], explanation: 'Деепричастие: застревать.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
+          { id: 'q11-4', type: 'single', text: 'Вставьте пропущенные буквы: гел..вая (ручка)', options: ['гелевая', 'гелиевая'], correctAnswer: ['гелевая'], explanation: 'От гель: гелевая.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
+          { id: 'q11-5', type: 'single', text: 'Вставьте пропущенные буквы: испыт..вать', options: ['испытывать', 'испытевать'], correctAnswer: ['испытывать'], explanation: 'Суффикс -ыв-: испытывать.', difficulty: 'easy', xpReward: 10, atoms: ['suffixes'] },
         ]
       }
     ]

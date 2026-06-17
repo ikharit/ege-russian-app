@@ -6,6 +6,7 @@ import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
+import { DailyQuests } from '../components/DailyQuests'
 import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 
 export function Dashboard() {
@@ -110,6 +111,9 @@ export function Dashboard() {
           <span className="text-xs text-gray-500">Достижения</span>
         </motion.div>
       </div>
+
+      {/* Daily Quests */}
+      <DailyQuests />
 
       {/* Progress */}
       <div className="card">

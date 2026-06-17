@@ -50,11 +50,13 @@ export function Lesson() {
   }, [lesson.id, startLesson])
 
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+  const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
 
   const handleAnswer = useCallback((isCorrect: boolean) => {
     recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
+      updateQuestProgress('quest-questions-5')
     } else if (!infiniteHearts) {
       const hasHeart = loseHeart()
       if (!hasHeart) {
@@ -82,8 +84,15 @@ export function Lesson() {
     const score = Math.round((correctCount / questions.length) * 100)
     const xpEarned = Math.round((correctCount / questions.length) * lesson.xpReward)
     completeLesson(lesson.id, score, xpEarned)
+    
+    // Update daily quests
+    updateQuestProgress('quest-lessons-1')
+    if (score === 100) {
+      updateQuestProgress('quest-perfect-1')
+    }
+    
     navigate('/')
-  }, [correctCount, questions.length, lesson.id, lesson.xpReward, completeLesson, navigate])
+  }, [correctCount, questions.length, lesson.id, lesson.xpReward, completeLesson, navigate, updateQuestProgress])
 
   const handleRetry = useCallback(() => {
     restoreHearts()

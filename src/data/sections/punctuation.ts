@@ -6,7 +6,7 @@ export const punctuationSections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Пунктуация: простое предложение',
     subtitle: 'Однородные члены, обособленные члены, вводные слова',
-    order: 3,
+    order: 16,
     icon: 'Pencil',
     color: '#ce82ff',
     lessons: [
@@ -43,7 +43,7 @@ export const punctuationSections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Пунктуация: сложное предложение',
     subtitle: 'ССП, СПП, бессоюзные',
-    order: 4,
+    order: 16,
     icon: 'Pencil',
     color: '#ce82ff',
     lessons: [

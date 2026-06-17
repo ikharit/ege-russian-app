@@ -32,6 +32,13 @@ export interface Lesson {
   prerequisites: string[]
 }
 
+export interface LessonGroup {
+  id: string
+  title: string
+  subtitle?: string
+  lessons: Lesson[]
+}
+
 export interface Section {
   id: string
   courseId: string
@@ -41,6 +48,7 @@ export interface Section {
   icon: string
   color: string
   lessons: Lesson[]
+  groups?: LessonGroup[]
 }
 
 export interface Course {

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { UserStats, LessonProgress, Achievement, UserAtomProgress } from '../types'
 import { achievements as allAchievements, course } from '../data/courseData'
+import { dailyQuests } from '../data/dailyQuests'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 interface LeaderboardEntry {
@@ -36,6 +37,7 @@ interface ProgressState {
   currentLessonHeartsLost: number
   heartRestoreCount: number
   exportCount: number
+  dailyQuestProgress: Record<string, { current: number; completed: boolean; claimed: boolean; date: string }>
   leaderboard: LeaderboardEntry[]
   teacherStudents: TeacherStudent[]
   isTeacher: boolean
@@ -73,6 +75,11 @@ interface ProgressState {
   toggleInfiniteHearts: () => void
   incrementExportCount: () => void
   recordQuestionAnswered: () => void
+  // Daily quests
+  getDailyQuests: () => Record<string, { current: number; completed: boolean; claimed: boolean; date: string }>
+  updateQuestProgress: (questId: string, amount?: number) => void
+  claimQuestReward: (questId: string) => boolean
+  resetDailyQuests: () => void
 }
 
 const getToday = () => new Date().toISOString().split('T')[0]
@@ -126,6 +133,7 @@ export const useProgressStore = create<ProgressState>()(
       currentLessonHeartsLost: 0,
       heartRestoreCount: 0,
       exportCount: 0,
+      dailyQuestProgress: {},
       leaderboard: defaultLeaderboard,
       teacherStudents: defaultTeacherStudents,
       isTeacher: false,
@@ -523,6 +531,61 @@ export const useProgressStore = create<ProgressState>()(
 
       getStudentStats: (studentId) => {
         return get().teacherStudents.find(s => s.id === studentId)
+      },
+
+      // Daily Quests
+      getDailyQuests: () => {
+        return get().dailyQuestProgress
+      },
+
+      updateQuestProgress: (questId, amount = 1) => {
+        const today = getToday()
+        set((s) => {
+          const existing = s.dailyQuestProgress[questId]
+          // Reset if from different day
+          if (existing && existing.date !== today) {
+            return {
+              dailyQuestProgress: {
+                ...s.dailyQuestProgress,
+                [questId]: { current: amount, completed: false, claimed: false, date: today }
+              }
+            }
+          }
+          const newCurrent = (existing?.current || 0) + amount
+          return {
+            dailyQuestProgress: {
+              ...s.dailyQuestProgress,
+              [questId]: {
+                current: newCurrent,
+                completed: existing?.completed || false,
+                claimed: existing?.claimed || false,
+                date: today
+              }
+            }
+          }
+        })
+      },
+
+      claimQuestReward: (questId) => {
+        const state = get()
+        const quest = state.dailyQuestProgress[questId]
+        if (!quest || !quest.completed || quest.claimed) return false
+        
+        const questDef = dailyQuests.find((q) => q.id === questId)
+        if (!questDef) return false
+
+        set((s) => ({
+          dailyQuestProgress: {
+            ...s.dailyQuestProgress,
+            [questId]: { ...quest, claimed: true }
+          }
+        }))
+        get().addXP(questDef.rewardXP)
+        return true
+      },
+
+      resetDailyQuests: () => {
+        set({ dailyQuestProgress: {} })
       }
     }),
     {

@@ -5,9 +5,9 @@ export const atomizationSections: Section[] = [
   {
     id: 'section-atomization',
     courseId: 'ege-russian-2025',
-    title: 'Атомизация приставок',
-    subtitle: 'Задание 10: 70 вопросов по атомарным категориям',
-    order: 6,
+    title: 'Приставки, Ъ и Ь',
+    subtitle: 'Задание 10: правописание приставок, разделительных знаков',
+    order: 10,
     icon: 'Sparkles',
     color: '#ff6b6b',
     lessons: [
