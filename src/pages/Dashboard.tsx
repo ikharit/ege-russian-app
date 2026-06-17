@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar } from 'lucide-react'

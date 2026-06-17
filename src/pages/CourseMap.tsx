@@ -39,7 +39,9 @@ export function CourseMap() {
       setTimeout(() => {
         const el = sectionRefs.current[sectionId]
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const rect = el.getBoundingClientRect()
+          const scrollTop = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2)
+          window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' })
         }
       }, 100)
     }
