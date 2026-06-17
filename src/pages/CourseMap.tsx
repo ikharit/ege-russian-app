@@ -39,7 +39,7 @@ export function CourseMap() {
       setTimeout(() => {
         const el = sectionRefs.current[sectionId]
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
       }, 100)
     }

@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Volume2, VolumeX, RotateCcw, Settings, ArrowLeft,
   Star, Trophy, Zap, Heart, ChevronRight, BrainCircuit
 } from 'lucide-react'
-import { allAccentWords, accentWordsById } from '../data/accentWords'
+import { accentWordsById } from '../data/accentWords'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { useProgressStore } from '../stores/progressStore'
 
@@ -19,79 +19,99 @@ export function AccentTrainer() {
   const [showCompleted, setShowCompleted] = useState(false)
   const [explanation, setExplanation] = useState('')
 
-  const store = useAccentTrainerStore()
-  const { currentWordId, getNextWord, answerWord, startSession, resetProgress, updateSettings, settings, getOverallProgress, hardWordsMode } = store
+  // Zustand store — subscribe to shallow slices
+  const currentWordId = useAccentTrainerStore((s) => s.currentWordId)
+  const stats = useAccentTrainerStore((s) => s.stats)
+  const settings = useAccentTrainerStore((s) => s.settings)
+  const hardWordsMode = useAccentTrainerStore((s) => s.hardWordsMode)
+  const wordProgress = useAccentTrainerStore((s) => s.wordProgress)
 
-  const mainProgress = useProgressStore(s => s.userStats)
-  const addXP = useProgressStore(s => s.addXP)
-  const updateStreak = useProgressStore(s => s.updateStreak)
-  const recordQuestionAnswered = useProgressStore(s => s.recordQuestionAnswered)
+  // Use ref for actions to avoid stale closures without useCallback
+  const storeRef = useRef(useAccentTrainerStore.getState())
+  useEffect(() => {
+    const unsub = useAccentTrainerStore.subscribe((state) => {
+      storeRef.current = state
+    })
+    return unsub
+  }, [])
+
+  const addXP = useProgressStore((s) => s.addXP)
+  const updateStreak = useProgressStore((s) => s.updateStreak)
+  const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
 
   const currentWord = currentWordId ? accentWordsById[currentWordId] : null
-  const overall = getOverallProgress()
+  const overall = storeRef.current.getOverallProgress()
 
   // Initialize session on mount
   useEffect(() => {
-    if (!currentWordId) {
-      getNextWord()
+    const store = storeRef.current
+    if (!store.currentWordId) {
+      store.startSession(false)
+      store.getNextWord()
     }
   }, [])
 
-  const handleLetterClick = useCallback((index: number) => {
+  const handleLetterClick = (index: number) => {
     if (answerState !== 'idle' || !currentWord) return
 
-    setSelectedIndex(index)
     const isCorrect = index === currentWord.stressIndex
+
+    setSelectedIndex(index)
     setAnswerState(isCorrect ? 'correct' : 'wrong')
     setExplanation(currentWord.explanation)
 
-    answerWord(currentWord.id, isCorrect)
+    const store = storeRef.current
+    store.answerWord(currentWord.id, isCorrect)
     recordQuestionAnswered()
 
     if (isCorrect) {
       addXP(5)
       updateStreak()
     }
+  }
 
-    // Auto-advance after delay
-    setTimeout(() => {
-      const next = getNextWord()
-      if (next) {
-        setAnswerState('idle')
-        setSelectedIndex(null)
-        setExplanation('')
-      } else {
-        setShowCompleted(true)
-      }
-    }, 1500)
-  }, [answerState, currentWord, answerWord, getNextWord, addXP, updateStreak, recordQuestionAnswered])
+  const handleNext = () => {
+    const store = storeRef.current
+    const next = store.getNextWord()
+    if (next) {
+      setAnswerState('idle')
+      setSelectedIndex(null)
+      setExplanation('')
+    } else {
+      setShowCompleted(true)
+    }
+  }
 
   const handleRestart = () => {
+    const store = storeRef.current
     setShowCompleted(false)
     setAnswerState('idle')
     setSelectedIndex(null)
     setExplanation('')
-    startSession(false)
-    getNextWord()
+    store.startSession(false)
+    store.getNextWord()
   }
 
   const handleHardWords = () => {
+    const store = storeRef.current
     setShowCompleted(false)
     setAnswerState('idle')
     setSelectedIndex(null)
     setExplanation('')
-    startSession(true)
-    getNextWord()
+    store.startSession(true)
+    store.getNextWord()
   }
 
   const handleReset = () => {
     if (confirm('Сбросить весь прогресс тренажёра?')) {
-      resetProgress()
+      const store = storeRef.current
+      store.resetProgress()
       setAnswerState('idle')
       setSelectedIndex(null)
       setExplanation('')
       setShowCompleted(false)
-      getNextWord()
+      store.startSession(false)
+      store.getNextWord()
     }
   }
 
@@ -103,7 +123,6 @@ export function AccentTrainer() {
     : 'bg-duo-snow'
 
   if (showCompleted) {
-    const stats = store.stats
     return (
       <div className="min-h-screen bg-duo-snow flex flex-col items-center justify-center p-6">
         <motion.div
@@ -134,7 +153,7 @@ export function AccentTrainer() {
             <div className="bg-gray-50 rounded-xl p-3">
               <Heart size={20} className="text-red-400 mx-auto" />
               <p className="text-xl font-bold mt-1">{stats.totalWrong}</p>
-              <p className="text-xs text-gray-500">Ошибок</p>
+              <p className="text-xs text-gray-500">Ошибки</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-3">
               <Star size={20} className="text-duo-purple mx-auto" />
@@ -170,13 +189,13 @@ export function AccentTrainer() {
               <RotateCcw size={18} />
               Начать заново
             </button>
-            {store.getHardWords().length > 0 && (
+            {storeRef.current.getHardWords().length > 0 && (
               <button
                 onClick={handleHardWords}
                 className="btn-secondary w-full flex items-center justify-center gap-2"
               >
                 <BrainCircuit size={18} />
-                Сложные слова ({store.getHardWords().length})
+                Сложные слова ({storeRef.current.getHardWords().length})
               </button>
             )}
             <button
@@ -202,7 +221,9 @@ export function AccentTrainer() {
   }
 
   const letters = currentWord.normalized.split('')
-  const progress = store.getProgressForWord(currentWord.id)
+  const progress = wordProgress[currentWord.id] || {
+    wordId: currentWord.id, level: 0, errors: 0, lastShown: '', correctStreak: 0
+  }
   const levelStars = Math.min(progress.level, 5)
 
   return (
@@ -226,7 +247,7 @@ export function AccentTrainer() {
             {/* Streak */}
             <div className="flex items-center gap-1">
               <Zap size={14} className="text-orange-500 fill-current" />
-              <span className="text-sm font-bold text-orange-500">{store.stats.streak}</span>
+              <span className="text-sm font-bold text-orange-500">{stats.streak}</span>
             </div>
             {/* Settings */}
             <button
@@ -263,7 +284,7 @@ export function AccentTrainer() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Звук</span>
                 <button
-                  onClick={() => updateSettings({ sound: !settings.sound })}
+                  onClick={() => storeRef.current.updateSettings({ sound: !settings.sound })}
                   className="p-2 rounded-lg hover:bg-gray-100"
                 >
                   {settings.sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -272,7 +293,7 @@ export function AccentTrainer() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Изменение фона</span>
                 <button
-                  onClick={() => updateSettings({ changeBackground: !settings.changeBackground })}
+                  onClick={() => storeRef.current.updateSettings({ changeBackground: !settings.changeBackground })}
                   className={`w-12 h-6 rounded-full transition-colors ${settings.changeBackground ? 'bg-duo-green' : 'bg-gray-300'}`}
                 >
                   <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.changeBackground ? 'translate-x-6' : 'translate-x-0.5'}`} />
@@ -281,7 +302,7 @@ export function AccentTrainer() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Показывать пояснение</span>
                 <button
-                  onClick={() => updateSettings({ showExplanation: !settings.showExplanation })}
+                  onClick={() => storeRef.current.updateSettings({ showExplanation: !settings.showExplanation })}
                   className={`w-12 h-6 rounded-full transition-colors ${settings.showExplanation ? 'bg-duo-green' : 'bg-gray-300'}`}
                 >
                   <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.showExplanation ? 'translate-x-6' : 'translate-x-0.5'}`} />
@@ -341,7 +362,7 @@ export function AccentTrainer() {
 
               return (
                 <motion.button
-                  key={index}
+                  key={`${currentWord.id}-${index}`}
                   whileHover={answerState === 'idle' ? { scale: 1.08 } : {}}
                   whileTap={answerState === 'idle' ? { scale: 0.95 } : {}}
                   onClick={() => handleLetterClick(index)}
@@ -372,7 +393,7 @@ export function AccentTrainer() {
           )}
         </AnimatePresence>
 
-        {/* Next button (shown briefly after answer) */}
+        {/* Next button — только после ответа */}
         <AnimatePresence>
           {answerState !== 'idle' && (
             <motion.div
@@ -381,16 +402,7 @@ export function AccentTrainer() {
               className="w-full"
             >
               <button
-                onClick={() => {
-                  const next = getNextWord()
-                  if (next) {
-                    setAnswerState('idle')
-                    setSelectedIndex(null)
-                    setExplanation('')
-                  } else {
-                    setShowCompleted(true)
-                  }
-                }}
+                onClick={handleNext}
                 className="btn-primary w-full flex items-center justify-center gap-2"
               >
                 Дальше <ChevronRight size={18} />
@@ -400,13 +412,13 @@ export function AccentTrainer() {
         </AnimatePresence>
 
         {/* Hard words quick access */}
-        {!hardWordsMode && store.getHardWords().length > 0 && answerState === 'idle' && (
+        {!hardWordsMode && storeRef.current.getHardWords().length > 0 && answerState === 'idle' && (
           <button
             onClick={handleHardWords}
             className="mt-6 text-sm text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors"
           >
             <BrainCircuit size={14} />
-            Сложные слова: {store.getHardWords().length}
+            Сложные слова: {storeRef.current.getHardWords().length}
           </button>
         )}
       </div>
@@ -416,11 +428,11 @@ export function AccentTrainer() {
         <div className="max-w-md mx-auto px-4 flex justify-around text-center">
           <div>
             <p className="text-xs text-gray-400">Правильно</p>
-            <p className="text-sm font-bold text-duo-green">{store.stats.totalCorrect}</p>
+            <p className="text-sm font-bold text-duo-green">{stats.totalCorrect}</p>
           </div>
           <div>
             <p className="text-xs text-gray-400">Ошибки</p>
-            <p className="text-sm font-bold text-red-400">{store.stats.totalWrong}</p>
+            <p className="text-sm font-bold text-red-400">{stats.totalWrong}</p>
           </div>
           <div>
             <p className="text-xs text-gray-400">Изучено</p>
@@ -428,7 +440,7 @@ export function AccentTrainer() {
           </div>
           <div>
             <p className="text-xs text-gray-400">Серия</p>
-            <p className="text-sm font-bold text-orange-500">{store.stats.streak}</p>
+            <p className="text-sm font-bold text-orange-500">{stats.streak}</p>
           </div>
         </div>
       </div>

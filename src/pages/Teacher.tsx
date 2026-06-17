@@ -92,6 +92,13 @@ export function Teacher() {
             <Mail size={16} className="inline mr-2" />
             Назначить дополнительное задание
           </button>
+          <button
+            onClick={() => navigate(`/teacher/${student.name}`)}
+            className="btn-primary w-full mt-2 bg-duo-blue hover:bg-duo-blue/90"
+          >
+            <BookOpen size={16} className="inline mr-2" />
+            Смотреть ДЗ из Google Sheets
+          </button>
         </div>
       </div>
     )
@@ -218,11 +225,22 @@ export function Teacher() {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-400">{student.lastActive}</p>
-                  {student.weakTopics.length > 0 && (
-                    <span className="inline-block mt-1 px-2 py-0.5 bg-duo-red/20 text-duo-red text-xs rounded-full font-bold">
-                      {student.weakTopics.length} проблемы
-                    </span>
-                  )}
+                  <div className="flex gap-1 mt-1 justify-end">
+                    {student.weakTopics.length > 0 && (
+                      <span className="inline-block px-2 py-0.5 bg-duo-red/20 text-duo-red text-xs rounded-full font-bold">
+                        {student.weakTopics.length} проблемы
+                      </span>
+                    )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/teacher/${student.name}`)
+                      }}
+                      className="inline-block px-2 py-0.5 bg-duo-blue/20 text-duo-blue text-xs rounded-full font-bold hover:bg-duo-blue/30 transition-colors"
+                    >
+                      📋 ДЗ
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>

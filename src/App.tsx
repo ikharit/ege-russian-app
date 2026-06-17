@@ -9,9 +9,11 @@ import { Teacher } from './pages/Teacher'
 import { Profile } from './pages/Profile'
 import { AdaptivePractice } from './pages/AdaptivePractice'
 import { AccentTrainer } from './pages/AccentTrainer'
+import { MiniGames } from './pages/MiniGames'
+import { StudentHomework } from './pages/StudentHomework'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
-import { BookOpen, Map, BarChart3, Trophy, GraduationCap } from 'lucide-react'
+import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2 } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 
@@ -22,6 +24,7 @@ function BottomNav() {
   const tabs = [
     { path: '/', icon: BookOpen, label: 'Учиться' },
     { path: '/course', icon: Map, label: 'Курс' },
+    { path: '/games', icon: Gamepad2, label: 'Игры' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
     { path: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
     { path: '/teacher', icon: GraduationCap, label: 'Учитель' },
@@ -72,8 +75,10 @@ export default function App() {
           <Route path="/stats" element={<Statistics />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher/:studentName" element={<StudentHomework />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/practice" element={<AdaptivePractice />} />
+          <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
         </Routes>
       </main>

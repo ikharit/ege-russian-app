@@ -10,6 +10,7 @@ export interface Atom {
 export interface AtomizedWord {
   word: string
   rawForm: string
+  questionText: string
   atoms: string[]
   taskNumber: number
   difficulty: 'easy' | 'medium' | 'hard'
