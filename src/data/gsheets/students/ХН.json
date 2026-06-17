@@ -1,0 +1,5127 @@
+[
+  {
+    "date": "",
+    "homework": "",
+    "status": "нет",
+    "comment": "вс 09:50",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "2",
+      "col_138": "5"
+    }
+  },
+  {
+    "date": "",
+    "homework": "",
+    "status": "отчасти",
+    "comment": "дз +, мотивация + (ленивый)",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "3",
+      "col_138": "8"
+    }
+  },
+  {
+    "date": "",
+    "homework": "№16,17,19,20 сам!!!",
+    "status": "",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "4",
+      "col_138": "10"
+    }
+  },
+  {
+    "date": "26.04.2026",
+    "homework": "урок на №9",
+    "status": "да",
+    "comment": "3 из 14",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "5",
+      "col_138": "12"
+    }
+  },
+  {
+    "date": "03.05.2026",
+    "homework": "урок по №9",
+    "status": "да",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "6",
+      "col_138": "15"
+    }
+  },
+  {
+    "date": "03.05.2026",
+    "homework": "урок по №10",
+    "status": "нет",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "7",
+      "col_138": "17"
+    }
+  },
+  {
+    "date": "10.05.2026",
+    "homework": "по 13 на 9,10: https://rus-ege.sdamgia.ru/test?id=55504270",
+    "status": "да",
+    "comment": "21 из 26",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "8",
+      "col_138": "20"
+    }
+  },
+  {
+    "date": "17.05.2026",
+    "homework": "урок №11",
+    "status": "да",
+    "comment": "Летом: ХН+, МР + (либо раз в неделю, либо раз в две; ЗК раз в две)",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "8",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "2",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "9",
+      "col_138": "22"
+    }
+  },
+  {
+    "date": "17.05.2026",
+    "homework": "по 13 на 9,10: https://rus-ege.sdamgia.ru/test?id=55705678",
+    "status": "да",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "10",
+      "col_138": "24"
+    }
+  },
+  {
+    "date": "24.05.2026",
+    "homework": "урок №12",
+    "status": "да",
+    "comment": "10 из 13",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "11",
+      "col_138": "27"
+    }
+  },
+  {
+    "date": "09.06.2026",
+    "homework": "урок №13",
+    "status": "да",
+    "comment": "6 из 13",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "12",
+      "col_138": "29"
+    }
+  },
+  {
+    "date": "15.06.2026",
+    "homework": "урок №13 ещё раз",
+    "status": "да",
+    "comment": "11 из 15",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "13",
+      "col_138": "32"
+    }
+  },
+  {
+    "date": "15.06.2026",
+    "homework": "10 на 12: https://rus-ege.sdamgia.ru/test?id=57019530",
+    "status": "да",
+    "comment": "9 из 10",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "14",
+      "col_138": "34"
+    }
+  },
+  {
+    "date": "22.06.2026",
+    "homework": "10 на №13: https://rus-ege.sdamgia.ru/test?id=57050780",
+    "status": "",
+    "comment": "пр 14 со слайда №16",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "15",
+      "col_138": "36"
+    }
+  },
+  {
+    "date": "22.06.2026",
+    "homework": "10 на №14 https://rus-ege.sdamgia.ru/test?id=57051014",
+    "status": "",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "16",
+      "col_138": "37"
+    }
+  },
+  {
+    "date": "",
+    "homework": "",
+    "status": "",
+    "comment": "викторины: №12 с 29",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "1",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "0%",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "17",
+      "col_138": "39"
+    }
+  },
+  {
+    "date": "",
+    "homework": "Сделано",
+    "status": "10",
+    "comment": "да",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Не сделано",
+    "status": "2",
+    "comment": "нет",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Отчасти",
+    "status": "1",
+    "comment": "отчасти",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Всего ДЗ:",
+    "status": "77%",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Всего:",
+    "status": "13",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "Август",
+    "homework": "Баллы за выполненные дз :",
+    "status": "64",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Баллы за посещение",
+    "status": "0",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Баллы за сочинения",
+    "status": "#DIV/0!",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  },
+  {
+    "date": "",
+    "homework": "Баллы за номера:",
+    "status": "#REF!",
+    "comment": "",
+    "variants": [
+      {
+        "name": "demo-26",
+        "success_rate": "",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-1",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-2",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-3",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-4",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-5",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-6",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-7",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-8",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-9",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-10",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-11",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-12",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-13",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-14",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-15",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-16",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-17",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-18",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-19",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-20",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-21",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-22",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-23",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-24",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-25",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-26",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-27",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-28",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-29",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      },
+      {
+        "name": "variant-30",
+        "task_number": "",
+        "max_points": "",
+        "actual_points": ""
+      }
+    ],
+    "summary": {
+      "avg_0_20": "",
+      "avg_0_5": "",
+      "avg_6_10": "",
+      "avg_11_15": "",
+      "avg_16_20": "",
+      "avg_21_25": "",
+      "col_137": "",
+      "col_138": ""
+    }
+  }
+]

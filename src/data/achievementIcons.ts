@@ -1,6 +1,7 @@
 import { 
   BookOpen, Flame, Zap, Trophy, Star, Heart, Target, Clock, Sun, Moon, 
-  Calendar, Rocket, Dumbbell, Infinity, Download, Award, CheckCircle2
+  Calendar, Rocket, Dumbbell, Infinity, Download, Award, CheckCircle2,
+  Repeat, Timer, Atom, Crown
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -18,9 +19,9 @@ export const achievementIcons: Record<string, LucideIcon> = {
   'ach-xp-500': Zap,
   'ach-xp-1000': Zap,
   'ach-xp-5000': Zap,
-  'ach-level-5': Trophy,
-  'ach-level-10': Trophy,
-  'ach-level-20': Trophy,
+  'ach-level-5': Crown,
+  'ach-level-10': Crown,
+  'ach-level-20': Crown,
   'ach-perfect': Star,
   'ach-perfect-5': Star,
   'ach-perfect-10': Star,
@@ -39,6 +40,21 @@ export const achievementIcons: Record<string, LucideIcon> = {
   'ach-heart-restore': Heart,
   'ach-export': Download,
   'ach-infinite': Infinity,
+  // Новые
+  'ach-combo-5': Zap,
+  'ach-combo-10': Zap,
+  'ach-questions-50': Target,
+  'ach-questions-200': Target,
+  'ach-questions-500': Target,
+  'ach-time-1h': Clock,
+  'ach-time-5h': Clock,
+  'ach-time-10h': Clock,
+  'ach-retry-5': Repeat,
+  'ach-fast-learner': Rocket,
+  'ach-collection': Star,
+  'ach-collector': Star,
+  'ach-quest-master': Award,
+  'ach-ege-ready': Trophy,
 }
 
 export function getAchievementIcon(id: string): LucideIcon {

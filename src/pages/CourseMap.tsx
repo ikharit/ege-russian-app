@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react'
@@ -27,14 +27,42 @@ export function CourseMap() {
   const [focusedSection, setFocusedSection] = useState<string | null>(null)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Read section from URL on mount
+  // Read section from URL on mount + scroll to it
   useEffect(() => {
     const sectionId = searchParams.get('section')
     if (sectionId && course.sections.some(s => s.id === sectionId)) {
       setFocusedSection(sectionId)
+      // Scroll to section after render
+      setTimeout(() => {
+        const el = sectionRefs.current[sectionId]
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
     }
   }, [searchParams])
+
+  // Click outside to reset focus
+  useEffect(() => {
+    if (!focusedSection) return
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      // Check if click is inside any section
+      const clickedSection = course.sections.find(s => {
+        const el = sectionRefs.current[s.id]
+        return el && el.contains(target)
+      })
+      // If clicked on a different section or outside all sections, reset focus
+      if (!clickedSection || clickedSection.id !== focusedSection) {
+        setFocusedSection(null)
+      }
+    }
+    document.addEventListener('click', handleClick)
+    return () => document.removeEventListener('click', handleClick)
+  }, [focusedSection])
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }))
@@ -112,7 +140,7 @@ export function CourseMap() {
 
     return (
       <div key={lesson.id} className="flex items-center gap-4 relative">
-        <Popover position="right" content={popoverContent}>
+        <Popover position="bottom" content={popoverContent}>
           <motion.button
             whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
             whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
@@ -127,7 +155,7 @@ export function CourseMap() {
           </motion.button>
         </Popover>
 
-        <Popover position="right" content={popoverContent}>
+        <Popover position="bottom" content={popoverContent}>
           <div className="flex-1 cursor-pointer hover:opacity-80 transition-opacity">
             <p className={`font-bold ${status === 'locked' ? 'text-gray-400' : 'text-gray-800'}`}>
               {lesson.title}
@@ -175,6 +203,7 @@ export function CourseMap() {
           return (
             <motion.div
               key={section.id}
+              ref={el => { sectionRefs.current[section.id] = el }}
               className={`flex flex-col gap-4 transition-all duration-300 ${
                 isOtherFocused ? 'opacity-15 pointer-events-none' : ''
               } ${isFocused ? 'scale-[1.02]' : ''}`}

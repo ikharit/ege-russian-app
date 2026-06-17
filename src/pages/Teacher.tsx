@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle } from 'lucide-react'
+import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { useNavigate } from 'react-router-dom'
+import { allHomework, nonstandardStudents } from '../data/gsheets/homeworkData'
 
 export function Teacher() {
   const navigate = useNavigate()
@@ -231,8 +232,60 @@ export function Teacher() {
 
       {activeTab === 'assign' && (
         <div className="flex flex-col gap-4">
+          {/* Реальные данные из Google Sheets */}
           <div className="card">
-            <h3 className="font-bold text-gray-700 mb-3">📝 Назначить домашнее задание</h3>
+            <h3 className="font-bold text-gray-700 mb-3">📅 Актуальное домашнее задание (из Google Sheets)</h3>
+            <div className="flex flex-col gap-3">
+              {Object.entries(allHomework)
+                .filter(([_, hw]) => hw.current !== null)
+                .map(([name, hw]) => (
+                  <div key={name} className="p-3 bg-duo-snow rounded-xl">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <p className="font-bold text-sm text-gray-800">{name}</p>
+                        <p className="text-xs text-gray-500 mt-1">📅 {hw.current!.date}</p>
+                        <p className="text-sm text-gray-700 mt-1">{hw.current!.homework}</p>
+                        {hw.current!.comment && (
+                          <p className="text-xs text-gray-500 mt-1">💬 {hw.current!.comment}</p>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        {hw.current!.status === 'да' ? (
+                          <span className="px-2 py-1 bg-duo-green/20 text-duo-green text-xs rounded-full font-bold flex items-center gap-1">
+                            <CheckCircle size={12} /> Сдано
+                          </span>
+                        ) : hw.current!.status === 'нет' ? (
+                          <span className="px-2 py-1 bg-duo-red/20 text-duo-red text-xs rounded-full font-bold flex items-center gap-1">
+                            <XCircle size={12} /> Не сдано
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 bg-duo-yellow/20 text-duo-yellow text-xs rounded-full font-bold flex items-center gap-1">
+                            <Clock size={12} /> {hw.current!.status || '—'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {nonstandardStudents.length > 0 && (
+            <div className="card">
+              <h3 className="font-bold text-gray-700 mb-3">⚠️ Требует внимания</h3>
+              <div className="flex flex-col gap-2">
+                {nonstandardStudents.map(name => (
+                  <div key={name} className="p-2 bg-duo-yellow/10 rounded-lg flex items-center gap-2">
+                    <AlertTriangle size={16} className="text-duo-yellow" />
+                    <span className="text-sm text-gray-700"><strong>{name}</strong> — другой формат таблицы (нет колонки ДЗ)</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="card">
+            <h3 className="font-bold text-gray-700 mb-3">📝 Назначить новое задание</h3>
             <div className="flex flex-col gap-3">
               <div>
                 <label className="text-sm font-bold text-gray-700">Ученики</label>
@@ -257,29 +310,6 @@ export function Teacher() {
                 <Calendar size={16} />
                 Назначить
               </button>
-            </div>
-          </div>
-
-          <div className="card">
-            <h3 className="font-bold text-gray-700 mb-3">📅 Активные задания</h3>
-            <div className="flex flex-col gap-2">
-              <div className="p-3 bg-duo-snow rounded-xl">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-bold text-sm text-gray-800">Задание 9. Уровень 1</p>
-                    <p className="text-xs text-gray-500">Орфография: −н− / −нн−</p>
-                  </div>
-                  <span className="px-2 py-1 bg-duo-yellow/20 text-duo-yellow text-xs rounded-full font-bold">
-                    До 20.01
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center gap-1">
-                  <span className="text-xs text-gray-500">Выполнено: 3/5</span>
-                  <div className="flex-1 bg-gray-200 rounded-full h-1.5 ml-2">
-                    <div className="bg-duo-green h-1.5 rounded-full" style={{ width: '60%' }} />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

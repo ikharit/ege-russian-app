@@ -52,6 +52,28 @@ export const achievements: Achievement[] = [
   { id: 'ach-persistent', title: 'Упорство', description: 'Пройдите урок с 3 попыток', icon: 'Repeat', condition: 'persistent' },
   { id: 'ach-export', title: 'Бэкап', description: 'Экспортируйте прогресс', icon: 'Download', condition: 'export_progress' },
   { id: 'ach-infinite', title: 'Бессмертие', description: 'Включите бесконечные сердечки', icon: 'Infinity', condition: 'infinite_hearts' },
+  
+  // === НОВЫЕ: КОМБО ===
+  { id: 'ach-combo-5', title: 'Серия', description: '5 правильных ответов подряд', icon: 'Zap', condition: 'combo_5' },
+  { id: 'ach-combo-10', title: 'Комбо-мастер', description: '10 правильных ответов подряд', icon: 'Zap', condition: 'combo_10' },
+  
+  // === НОВЫЕ: ВОПРОСЫ ===
+  { id: 'ach-questions-50', title: 'Знаток', description: 'Ответьте правильно на 50 вопросов', icon: 'Target', condition: 'questions_50' },
+  { id: 'ach-questions-200', title: 'Эксперт', description: 'Ответьте правильно на 200 вопросов', icon: 'Target', condition: 'questions_200' },
+  { id: 'ach-questions-500', title: 'Гуру вопросов', description: 'Ответьте правильно на 500 вопросов', icon: 'Target', condition: 'questions_500' },
+  
+  // === НОВЫЕ: ВРЕМЯ ===
+  { id: 'ach-time-1h', title: 'Первый час', description: 'Проведите 1 час в уроках', icon: 'Clock', condition: 'time_1h' },
+  { id: 'ach-time-5h', title: 'Полдня', description: 'Проведите 5 часов в уроках', icon: 'Clock', condition: 'time_5h' },
+  { id: 'ach-time-10h', title: 'Марафон', description: 'Проведите 10 часов в уроках', icon: 'Clock', condition: 'time_10h' },
+  
+  // === НОВЫЕ: ДОПОЛНИТЕЛЬНЫЕ ===
+  { id: 'ach-retry-5', title: 'Не сдаваться', description: 'Пройдите урок с 5 попыток', icon: 'Repeat', condition: 'retry_5' },
+  { id: 'ach-fast-learner', title: 'Быстрый ученик', description: 'Пройдите 3 урока за день', icon: 'Rocket', condition: 'fast_learner' },
+  { id: 'ach-collection', title: 'Коллекционер', description: 'Соберите 10 достижений', icon: 'Star', condition: 'collection_10' },
+  { id: 'ach-collector', title: 'Магнит', description: 'Соберите 20 достижений', icon: 'Star', condition: 'collection_20' },
+  { id: 'ach-quest-master', title: 'Квестоман', description: 'Выполните 10 ежедневных квестов', icon: 'Target', condition: 'quest_master' },
+  { id: 'ach-ege-ready', title: 'Готов к ЕГЭ', description: 'Прогноз балла ≥ 80%', icon: 'Award', condition: 'ege_ready' },
 ]
 
 export function getAchievementProgress(id: string, stats: any, progress: any): { current: number, target: number } {
@@ -71,6 +93,15 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-streak-7': { current: stats.streak, target: 7 },
     'ach-streak-14': { current: stats.streak, target: 14 },
     'ach-streak-30': { current: stats.streak, target: 30 },
+    // Новые
+    'ach-questions-50': { current: stats.totalQuestionsAnswered || 0, target: 50 },
+    'ach-questions-200': { current: stats.totalQuestionsAnswered || 0, target: 200 },
+    'ach-questions-500': { current: stats.totalQuestionsAnswered || 0, target: 500 },
+    'ach-time-1h': { current: stats.totalLessonTimeMinutes || 0, target: 60 },
+    'ach-time-5h': { current: stats.totalLessonTimeMinutes || 0, target: 300 },
+    'ach-time-10h': { current: stats.totalLessonTimeMinutes || 0, target: 600 },
+    'ach-collection': { current: stats.achievements.length, target: 10 },
+    'ach-collector': { current: stats.achievements.length, target: 20 },
   }
   return map[id] || { current: 0, target: 1 }
 }

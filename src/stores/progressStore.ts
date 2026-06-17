@@ -418,6 +418,27 @@ export const useProgressStore = create<ProgressState>()(
         // Export progress
         if (state.exportCount >= 1) addIfNew('ach-export')
 
+        // NEW: Questions answered
+        const totalQuestions = state.userStats.totalQuestionsAnswered || 0
+        if (totalQuestions >= 50) addIfNew('ach-questions-50')
+        if (totalQuestions >= 200) addIfNew('ach-questions-200')
+        if (totalQuestions >= 500) addIfNew('ach-questions-500')
+
+        // NEW: Time spent
+        const totalMinutes = state.userStats.totalLessonTimeMinutes || 0
+        if (totalMinutes >= 60) addIfNew('ach-time-1h')
+        if (totalMinutes >= 300) addIfNew('ach-time-5h')
+        if (totalMinutes >= 600) addIfNew('ach-time-10h')
+
+        // NEW: Collection
+        if (state.achievements.length >= 10) addIfNew('ach-collection')
+        if (state.achievements.length >= 20) addIfNew('ach-collector')
+
+        // NEW: Retry (5+ attempts on any lesson)
+        if (Object.values(state.lessonProgress).some(l => (l.attempts || 0) >= 5)) {
+          addIfNew('ach-retry-5')
+        }
+
         return unlocked
       },
 

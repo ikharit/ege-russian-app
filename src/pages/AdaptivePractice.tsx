@@ -206,7 +206,7 @@ export function AdaptivePractice() {
 
             {/* Question */}
             <div className="bg-duo-snow p-4 rounded-2xl">
-              <p className="text-sm text-gray-500 mb-2">Вставьте пропущенные буквы:</p>
+              <p className="text-sm text-gray-500 mb-2">{current.questionText || 'Вопрос:'}</p>
               <p className="text-xl font-bold text-gray-800">{current.rawForm}</p>
             </div>
 
