@@ -73,7 +73,12 @@ export const achievements: Achievement[] = [
   { id: 'ach-collection', title: 'Коллекционер', description: 'Соберите 10 достижений', icon: 'Star', condition: 'collection_10' },
   { id: 'ach-collector', title: 'Магнит', description: 'Соберите 20 достижений', icon: 'Star', condition: 'collection_20' },
   { id: 'ach-quest-master', title: 'Квестоман', description: 'Выполните 10 ежедневных квестов', icon: 'Target', condition: 'quest_master' },
-  { id: 'ach-ege-ready', title: 'Готов к ЕГЭ', description: 'Прогноз балла ≥ 80%', icon: 'Award', condition: 'ege_ready' },
+  // === НОВЫЕ: РАБОТА НАД ОШИБКАМИ ===
+  { id: 'ach-mistake-1', title: 'Исправлено!', description: 'Исправьте первую ошибку', icon: 'CheckCircle', condition: 'fix_mistake_1' },
+  { id: 'ach-mistake-5', title: 'Пятёрка', description: 'Исправьте 5 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_5' },
+  { id: 'ach-mistake-10', title: 'Десятка', description: 'Исправьте 10 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_10' },
+  { id: 'ach-mistake-25', title: 'Четверть', description: 'Исправьте 25 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_25' },
+  { id: 'ach-mistake-all', title: 'Всё чисто', description: 'Исправьте все ошибки (раздел пуст)', icon: 'CheckCircle', condition: 'fix_mistake_all' },
 ]
 
 export function getAchievementProgress(id: string, stats: any, progress: any): { current: number, target: number } {
@@ -102,6 +107,11 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-time-10h': { current: stats.totalLessonTimeMinutes || 0, target: 600 },
     'ach-collection': { current: stats.achievements.length, target: 10 },
     'ach-collector': { current: stats.achievements.length, target: 20 },
+    'ach-mistake-1': { current: stats.mistakesFixed || 0, target: 1 },
+    'ach-mistake-5': { current: stats.mistakesFixed || 0, target: 5 },
+    'ach-mistake-10': { current: stats.mistakesFixed || 0, target: 10 },
+    'ach-mistake-25': { current: stats.mistakesFixed || 0, target: 25 },
+    'ach-mistake-all': { current: stats.mistakesFixed || 0, target: 1 },
   }
   return map[id] || { current: 0, target: 1 }
 }

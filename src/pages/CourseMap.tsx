@@ -35,15 +35,18 @@ export function CourseMap() {
     const sectionId = searchParams.get('section')
     if (sectionId && course.sections.some(s => s.id === sectionId)) {
       setFocusedSection(sectionId)
-      // Scroll to section after render
-      setTimeout(() => {
+      // Scroll to section after full layout settle
+      const scrollTimer = setTimeout(() => {
         const el = sectionRefs.current[sectionId]
         if (el) {
-          const rect = el.getBoundingClientRect()
-          const scrollTop = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2)
-          window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' })
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            })
+          })
         }
-      }, 100)
+      }, 500)
+      return () => clearTimeout(scrollTimer)
     }
   }, [searchParams])
 

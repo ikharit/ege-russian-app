@@ -7,7 +7,7 @@ interface QuestionCardProps {
   question: Question
   questionNumber: number
   totalQuestions: number
-  onAnswer: (isCorrect: boolean) => void
+  onAnswer: (isCorrect: boolean, userAnswer?: string[]) => void
   onNext: () => void
   heartsLeft: number
 }
@@ -33,7 +33,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
     setIsCorrect(correct)
     setIsChecked(true)
-    onAnswer(correct)
+    onAnswer(correct, selected)
   }
 
   const handleNext = () => {

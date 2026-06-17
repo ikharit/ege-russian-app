@@ -21,6 +21,7 @@ export function Lesson() {
   const hearts = useProgressStore((s) => s.userStats.hearts)
   const infiniteHearts = useProgressStore((s) => s.userStats.infiniteHearts)
   const recordAtomAttempt = useProgressStore((s) => s.recordAtomAttempt)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
 
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
@@ -66,7 +67,7 @@ export function Lesson() {
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
 
-  const handleAnswer = useCallback((isCorrect: boolean) => {
+  const handleAnswer = useCallback((isCorrect: boolean, userAnswer?: string[]) => {
     recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
@@ -74,6 +75,9 @@ export function Lesson() {
       updateQuestProgress('quest-questions-5')
     } else {
       setCombo(0)
+      if (currentQuestion && userAnswer) {
+        recordWrongAnswer(currentQuestion, userAnswer, lesson.id)
+      }
       if (!infiniteHearts) {
         const hasHeart = loseHeart()
         if (!hasHeart) {
@@ -87,7 +91,7 @@ export function Lesson() {
         recordAtomAttempt(atomId, isCorrect)
       }
     }
-  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts])
+  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id])
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx < questions.length - 1) {

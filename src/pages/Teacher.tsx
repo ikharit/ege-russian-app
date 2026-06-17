@@ -205,6 +205,44 @@ export function Teacher() {
 
       {activeTab === 'students' && (
         <div className="flex flex-col gap-3">
+          {/* Реальные ученики из Google Sheets */}
+          {Object.entries(allHomework)
+            .filter(([_, hw]) => hw.current !== null)
+            .map(([name, hw]) => (
+              <motion.div
+                key={name}
+                className="card cursor-pointer"
+                whileHover={{ scale: 1.01 }}
+                onClick={() => navigate(`/teacher/${name}`)}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-duo-green/20 flex items-center justify-center text-lg">
+                    👨‍🎓
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-800">{name}</p>
+                    <p className="text-xs text-gray-500">📅 {hw.current!.date}</p>
+                    <p className="text-xs text-gray-600 truncate">{hw.current!.homework}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex flex-col items-end gap-1">
+                      {hw.current!.status === 'да' ? (
+                        <span className="px-2 py-0.5 bg-duo-green/20 text-duo-green text-xs rounded-full font-bold">✅ Сдано</span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-duo-yellow/20 text-duo-yellow text-xs rounded-full font-bold">⏳ В работе</span>
+                      )}
+                      <ChevronRight size={16} className="text-gray-400" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+          <div className="border-t border-gray-200 my-2" />
+          <p className="text-xs text-gray-400 text-center">Демо-данные ниже</p>
+
           {students.map((student, idx) => (
             <motion.div
               key={student.id}

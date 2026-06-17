@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, BookOpen, ChevronRight } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
@@ -175,6 +175,23 @@ export function Profile() {
           </div>
         </div>
       </div>
+
+      {/* My Homework button */}
+      <button
+        onClick={() => navigate('/my-homework')}
+        className="card flex items-center justify-between text-left hover:bg-duo-blue/5 transition-colors border-duo-blue/20"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-duo-blue/20 flex items-center justify-center">
+            <BookOpen size={20} className="text-duo-blue" />
+          </div>
+          <div>
+            <p className="font-bold text-sm text-gray-800">Мои домашки</p>
+            <p className="text-xs text-gray-500">Посмотреть задания из Google Sheets</p>
+          </div>
+        </div>
+        <ChevronRight size={20} className="text-gray-400" />
+      </button>
 
       {/* Infinite Hearts Toggle - moved up for visibility */}
       <div className="card flex items-center justify-between">

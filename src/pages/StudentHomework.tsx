@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ChevronLeft, ChevronRight, Calendar, BookOpen, CheckCircle, XCircle, Clock, MessageSquare, User } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Calendar, BookOpen, CheckCircle, XCircle, Clock, MessageSquare, BarChart3, TrendingUp, AlertTriangle } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { allHomework } from '../data/gsheets/homeworkData'
 
@@ -28,6 +28,13 @@ export function StudentHomework() {
   const history = [...student.history].reverse() // от новых к старым
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentEntry = history[currentIndex] || null
+
+  // Статистика
+  const total = history.length
+  const done = history.filter(e => e.status === 'да').length
+  const notDone = history.filter(e => e.status === 'нет').length
+  const partial = history.filter(e => e.status === 'отчасти' || (!e.status && e.status !== 'да' && e.status !== 'нет')).length
+  const completionRate = total > 0 ? Math.round((done / total) * 100) : 0
 
   const goPrev = () => setCurrentIndex(i => Math.min(i + 1, history.length - 1))
   const goNext = () => setCurrentIndex(i => Math.max(i - 1, 0))
@@ -73,6 +80,42 @@ export function StudentHomework() {
             <h1 className="text-xl font-bold text-gray-800">{studentName}</h1>
             <p className="text-xs text-gray-500">{history.length} записей в журнале</p>
           </div>
+        </div>
+      </div>
+
+      {/* Statistics cards */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="card bg-duo-green/10 border-0 p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <CheckCircle size={16} className="text-duo-green" />
+            <span className="text-xs font-bold text-gray-600 uppercase">Сдано</span>
+          </div>
+          <p className="text-2xl font-bold text-duo-green">{done}</p>
+          <p className="text-xs text-gray-500">{total > 0 ? Math.round((done / total) * 100) : 0}% от всех</p>
+        </div>
+        <div className="card bg-duo-red/10 border-0 p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <XCircle size={16} className="text-duo-red" />
+            <span className="text-xs font-bold text-gray-600 uppercase">Не сдано</span>
+          </div>
+          <p className="text-2xl font-bold text-duo-red">{notDone}</p>
+          <p className="text-xs text-gray-500">{total > 0 ? Math.round((notDone / total) * 100) : 0}% от всех</p>
+        </div>
+        <div className="card bg-duo-yellow/10 border-0 p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <AlertTriangle size={16} className="text-duo-yellow" />
+            <span className="text-xs font-bold text-gray-600 uppercase">В работе</span>
+          </div>
+          <p className="text-2xl font-bold text-duo-yellow">{partial}</p>
+          <p className="text-xs text-gray-500">{total > 0 ? Math.round((partial / total) * 100) : 0}% от всех</p>
+        </div>
+        <div className="card bg-duo-blue/10 border-0 p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <TrendingUp size={16} className="text-duo-blue" />
+            <span className="text-xs font-bold text-gray-600 uppercase">Выполнение</span>
+          </div>
+          <p className="text-2xl font-bold text-duo-blue">{completionRate}%</p>
+          <p className="text-xs text-gray-500">{done} из {total} заданий</p>
         </div>
       </div>
 

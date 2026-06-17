@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { Check, Gift, Target, Zap, Clock, Star, Flame, BookOpen } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Gift, Target, Zap, Clock, Star, Flame, BookOpen, Sparkles } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { dailyQuests } from '../data/dailyQuests'
 import { useMemo } from 'react'
@@ -10,6 +10,14 @@ const typeIcons = {
   perfect: Star,
   time: Clock,
   streak: Flame,
+}
+
+const typeColors = {
+  questions: { bg: 'bg-emerald-100', icon: 'text-emerald-600', ring: 'ring-emerald-400' },
+  lessons: { bg: 'bg-blue-100', icon: 'text-blue-600', ring: 'ring-blue-400' },
+  perfect: { bg: 'bg-amber-100', icon: 'text-amber-600', ring: 'ring-amber-400' },
+  time: { bg: 'bg-sky-100', icon: 'text-sky-600', ring: 'ring-sky-400' },
+  streak: { bg: 'bg-orange-100', icon: 'text-orange-600', ring: 'ring-orange-400' },
 }
 
 export function DailyQuests() {
@@ -70,50 +78,118 @@ export function DailyQuests() {
       <div className="flex flex-col gap-3">
         {questsWithProgress.map((quest, idx) => {
           const Icon = typeIcons[quest.type]
+          const colors = typeColors[quest.type]
           return (
             <motion.div
               key={quest.id}
-              className={`flex items-center gap-3 p-2 rounded-lg ${
-                quest.claimed ? 'bg-green-50' : 'bg-gray-50'
+              className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
+                quest.claimed 
+                  ? 'bg-green-50/80 border border-green-200' 
+                  : quest.completed 
+                    ? 'bg-white border border-amber-200 shadow-sm' 
+                    : 'bg-gray-50 border border-transparent'
               }`}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: idx * 0.05 }}
             >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                quest.claimed ? 'bg-duo-green text-white' : 
-                quest.completed ? 'bg-duo-yellow text-white' : 
-                'bg-gray-200 text-gray-500'
-              }`}>
-                {quest.claimed ? <Check size={18} /> : <Icon size={18} />}
+              {/* Icon with state-based styling */}
+              <div className="relative">
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                  quest.claimed 
+                    ? 'bg-duo-green text-white scale-110' 
+                    : quest.completed 
+                      ? `${colors.bg} ${colors.icon} ring-2 ${colors.ring} ring-offset-2` 
+                      : 'bg-gray-200 text-gray-400'
+                }`}>
+                  <AnimatePresence mode="wait">
+                    {quest.claimed ? (
+                      <motion.div
+                        key="claimed"
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        exit={{ scale: 0 }}
+                      >
+                        <Sparkles size={20} />
+                      </motion.div>
+                    ) : quest.completed ? (
+                      <motion.div
+                        key="completed"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                      >
+                        <Check size={20} strokeWidth={3} />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="default"
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                      >
+                        <Icon size={20} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                
+                {/* Little check badge for completed */}
+                {quest.completed && !quest.claimed && (
+                  <motion.div
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-duo-green rounded-full flex items-center justify-center"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring' }}
+                  >
+                    <Check size={10} className="text-white" strokeWidth={3} />
+                  </motion.div>
+                )}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <p className={`font-bold text-sm ${quest.claimed ? 'text-gray-400 line-through' : 'text-gray-800'}`}>
+                  <p className={`font-bold text-sm ${
+                    quest.claimed ? 'text-gray-400 line-through' : 
+                    quest.completed ? 'text-gray-800' : 'text-gray-700'
+                  }`}>
                     {quest.title}
                   </p>
-                  <span className="text-xs font-bold text-duo-yellow flex items-center gap-0.5">
+                  <span className={`text-xs font-bold flex items-center gap-0.5 ${
+                    quest.claimed ? 'text-duo-green' : 'text-duo-yellow'
+                  }`}>
                     <Zap size={10} />
                     {quest.rewardXP}
                   </span>
                 </div>
                 <p className="text-xs text-gray-500">{quest.description}</p>
 
-                {/* Progress bar */}
+                {/* Progress bar with color based on type */}
                 {!quest.claimed && (
-                  <div className="mt-1">
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
+                  <div className="mt-1.5">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
                       <motion.div
-                        className={`h-1.5 rounded-full ${quest.completed ? 'bg-duo-yellow' : 'bg-duo-green'}`}
+                        className={`h-2 rounded-full ${
+                          quest.completed 
+                            ? 'bg-duo-yellow' 
+                            : quest.percent > 60 
+                              ? 'bg-emerald-400' 
+                              : quest.percent > 30 
+                                ? 'bg-amber-400' 
+                                : 'bg-gray-400'
+                        }`}
                         initial={{ width: 0 }}
                         animate={{ width: `${quest.percent}%` }}
                         transition={{ duration: 0.5 }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {quest.current} / {quest.target}
-                    </p>
+                    <div className="flex justify-between mt-0.5">
+                      <p className="text-xs text-gray-400">
+                        {quest.current} / {quest.target}
+                      </p>
+                      {quest.percent > 0 && quest.percent < 100 && (
+                        <p className="text-xs text-gray-400">{quest.percent}%</p>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -121,7 +197,7 @@ export function DailyQuests() {
               {/* Claim button */}
               {quest.completed && !quest.claimed && (
                 <motion.button
-                  className="bg-duo-green text-white px-3 py-1 rounded-lg text-xs font-bold shrink-0"
+                  className="bg-duo-green text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 shadow-sm"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleClaim(quest.id, quest.rewardXP)}

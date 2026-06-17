@@ -1,3 +1,17 @@
+export interface WrongAnswer {
+  questionId: string
+  text: string
+  options?: string[]
+  correctAnswer: string[]
+  userAnswer: string[]
+  explanation: string
+  taskNumber?: string
+  lessonId?: string
+  timestamp: string
+  reviewed: boolean
+  attempts: number
+}
+
 export interface Question {
   id: string
   type: 'single' | 'multiple' | 'text' | 'ege-multiple'
@@ -84,6 +98,7 @@ export interface UserStats {
   totalQuestionsAnswered?: number
   totalHeartsLost?: number
   activeStatus?: string
+  mistakesFixed?: number
 }
 
 export interface Achievement {

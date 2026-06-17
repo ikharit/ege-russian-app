@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserStats, LessonProgress, Achievement, UserAtomProgress } from '../types'
+import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer } from '../types'
 import { achievements as allAchievements, course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
@@ -30,6 +30,7 @@ interface ProgressState {
   userStats: UserStats
   lessonProgress: Record<string, LessonProgress>
   atomProgress: Record<string, UserAtomProgress>
+  wrongAnswers: WrongAnswer[]
   achievements: string[]
   lastUnlockedAchievement: string | null
   currentLessonId: string | null
@@ -57,6 +58,13 @@ interface ProgressState {
   recordAtomAttempt: (atomId: string, isCorrect: boolean) => void
   getAtomProgress: (atomId: string) => UserAtomProgress
   getWeakAtoms: (threshold?: number) => string[]
+  // Wrong answers
+  recordWrongAnswer: (question: { id: string; text: string; options?: string[]; correctAnswer: string[]; explanation: string; atoms?: string[] }, userAnswer: string[], lessonId?: string) => void
+  removeWrongAnswer: (questionId: string) => void
+  markWrongAnswerReviewed: (questionId: string) => void
+  incrementWrongAnswerAttempt: (questionId: string, userAnswer: string[]) => void
+  getWrongAnswers: () => WrongAnswer[]
+  getUnreviewedWrongAnswers: () => WrongAnswer[]
   // Achievement toast
   clearLastAchievement: () => void
   // Leaderboard
@@ -101,6 +109,7 @@ const getInitialStats = (): UserStats => ({
   totalLessonTimeMinutes: 0,
   totalQuestionsAnswered: 0,
   totalHeartsLost: 0,
+  mistakesFixed: 0,
 })
 
 const defaultLeaderboard: LeaderboardEntry[] = [
@@ -128,6 +137,7 @@ export const useProgressStore = create<ProgressState>()(
       userStats: getInitialStats(),
       lessonProgress: {},
       atomProgress: {},
+      wrongAnswers: [],
       achievements: [],
       lastUnlockedAchievement: null,
       currentLessonId: null,
@@ -439,6 +449,14 @@ export const useProgressStore = create<ProgressState>()(
           addIfNew('ach-retry-5')
         }
 
+        // NEW: Mistakes fixed
+        const mistakesFixed = state.userStats.mistakesFixed || 0
+        if (mistakesFixed >= 1) addIfNew('ach-mistake-1')
+        if (mistakesFixed >= 5) addIfNew('ach-mistake-5')
+        if (mistakesFixed >= 10) addIfNew('ach-mistake-10')
+        if (mistakesFixed >= 25) addIfNew('ach-mistake-25')
+        if (state.wrongAnswers.length === 0 && mistakesFixed > 0) addIfNew('ach-mistake-all')
+
         return unlocked
       },
 
@@ -526,6 +544,67 @@ export const useProgressStore = create<ProgressState>()(
           .sort((a, b) => a.accuracy - b.accuracy)
           .map(p => p.atomId)
       },
+
+      recordWrongAnswer: (question, userAnswer, lessonId) => {
+        set((s) => {
+          const existing = s.wrongAnswers.find(w => w.questionId === question.id)
+          if (existing) {
+            return {
+              wrongAnswers: s.wrongAnswers.map(w =>
+                w.questionId === question.id
+                  ? { ...w, userAnswer, timestamp: new Date().toISOString(), attempts: w.attempts + 1, reviewed: false }
+                  : w
+              )
+            }
+          }
+          const newWrong: WrongAnswer = {
+            questionId: question.id,
+            text: question.text,
+            options: question.options,
+            correctAnswer: question.correctAnswer,
+            userAnswer,
+            explanation: question.explanation,
+            taskNumber: question.atoms?.find(a => a.startsWith('task'))?.replace('task', '') ?? undefined,
+            lessonId,
+            timestamp: new Date().toISOString(),
+            reviewed: false,
+            attempts: 1,
+          }
+          return { wrongAnswers: [...s.wrongAnswers, newWrong] }
+        })
+      },
+
+      removeWrongAnswer: (questionId) => {
+        set((s) => ({
+          wrongAnswers: s.wrongAnswers.filter(w => w.questionId !== questionId),
+          userStats: {
+            ...s.userStats,
+            mistakesFixed: (s.userStats.mistakesFixed || 0) + 1
+          }
+        }))
+      },
+
+      markWrongAnswerReviewed: (questionId) => {
+        set((s) => ({
+          wrongAnswers: s.wrongAnswers.map(w =>
+            w.questionId === questionId ? { ...w, reviewed: true } : w
+          )
+        }))
+      },
+
+      incrementWrongAnswerAttempt: (questionId, userAnswer) => {
+        set((s) => ({
+          wrongAnswers: s.wrongAnswers.map(w =>
+            w.questionId === questionId
+              ? { ...w, userAnswer, attempts: w.attempts + 1, timestamp: new Date().toISOString() }
+              : w
+          )
+        }))
+      },
+
+      getWrongAnswers: () => get().wrongAnswers,
+
+      getUnreviewedWrongAnswers: () => get().wrongAnswers.filter(w => !w.reviewed),
 
       clearLastAchievement: () => {
         set({ lastUnlockedAchievement: null })

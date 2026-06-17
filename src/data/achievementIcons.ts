@@ -1,6 +1,6 @@
 import { 
   BookOpen, Flame, Zap, Trophy, Star, Heart, Target, Clock, Sun, Moon, 
-  Calendar, Rocket, Dumbbell, Infinity, Download, Award, CheckCircle2,
+  Calendar, Rocket, Dumbbell, Infinity, Download, Award, CheckCircle2, CheckCircle,
   Repeat, Timer, Atom, Crown
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -55,6 +55,12 @@ export const achievementIcons: Record<string, LucideIcon> = {
   'ach-collector': Star,
   'ach-quest-master': Award,
   'ach-ege-ready': Trophy,
+  // Mistakes
+  'ach-mistake-1': CheckCircle,
+  'ach-mistake-5': CheckCircle,
+  'ach-mistake-10': CheckCircle,
+  'ach-mistake-25': CheckCircle,
+  'ach-mistake-all': CheckCircle,
 }
 
 export function getAchievementIcon(id: string): LucideIcon {

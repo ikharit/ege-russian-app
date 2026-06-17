@@ -54,6 +54,7 @@ export function AdaptivePractice() {
   const navigate = useNavigate()
   const weakAtoms = useProgressStore((s) => s.getWeakAtoms(70))
   const recordAtomAttempt = useProgressStore((s) => s.recordAtomAttempt)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const addXP = useProgressStore((s) => s.addXP)
   
   const [questions, setQuestions] = useState<AtomizedWord[]>([])
@@ -94,12 +95,23 @@ export function AdaptivePractice() {
     setIsCorrect(correct)
     setIsChecked(true)
     if (correct) setCorrectCount(c => c + 1)
+    else {
+      // Record wrong answer for mistakes review
+      recordWrongAnswer({
+        id: `atom-${current.word}-${current.atoms.join('-')}`,
+        text: current.questionText || `Как правильно написать слово: ${current.rawForm}?`,
+        options,
+        correctAnswer: [current.word],
+        explanation: current.explanation,
+        atoms: current.atoms,
+      }, [selected])
+    }
     
     // Record atom progress
     for (const atomId of current.atoms) {
       recordAtomAttempt(atomId, correct)
     }
-  }, [selected, current, recordAtomAttempt])
+  }, [selected, current, recordAtomAttempt, recordWrongAnswer, options])
 
   const handleNext = useCallback(() => {
     setSelected(null)
