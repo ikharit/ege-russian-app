@@ -1,12 +1,15 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Heart } from 'lucide-react'
+import { ArrowLeft, Heart, BookOpen } from 'lucide-react'
 import { QuestionCard } from '../components/QuestionCard'
 import { LessonResult } from '../components/LessonResult'
 import { Hearts } from '../components/Hearts'
+import { ComboDisplay } from '../components/ComboDisplay'
+import { TheoryModal } from '../components/TheoryModal'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
+import { getTheoryForLesson } from '../lib/theoryMapper'
 
 export function Lesson() {
   const { lessonId } = useParams()
@@ -21,11 +24,22 @@ export function Lesson() {
 
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
+  const [combo, setCombo] = useState(0)
   const [gameOverReason, setGameOverReason] = useState<'hearts' | 'completed' | null>(null)
   const [direction, setDirection] = useState(0)
+  const [showTheory, setShowTheory] = useState(false)
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const lesson = section?.lessons.find(l => l.id === lessonId)
+  const lessonProgress = useProgressStore((s) => s.lessonProgress[lessonId ?? ''])
+  const theory = lesson ? getTheoryForLesson(lesson.id) : undefined
+
+  // Show theory on first visit if lesson is not completed
+  useEffect(() => {
+    if (theory && lessonProgress?.status !== 'completed') {
+      setShowTheory(true)
+    }
+  }, [theory, lessonProgress?.status])
 
   if (!lesson) {
     return (
@@ -56,11 +70,15 @@ export function Lesson() {
     recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
+      setCombo(prev => prev + 1)
       updateQuestProgress('quest-questions-5')
-    } else if (!infiniteHearts) {
-      const hasHeart = loseHeart()
-      if (!hasHeart) {
-        setGameOverReason('hearts')
+    } else {
+      setCombo(0)
+      if (!infiniteHearts) {
+        const hasHeart = loseHeart()
+        if (!hasHeart) {
+          setGameOverReason('hearts')
+        }
       }
     }
     // Track atom progress for diagnostic stats
@@ -82,7 +100,16 @@ export function Lesson() {
 
   const handleFinish = useCallback(() => {
     const score = Math.round((correctCount / questions.length) * 100)
-    const xpEarned = Math.round((correctCount / questions.length) * lesson.xpReward)
+    const baseXP = Math.round((correctCount / questions.length) * lesson.xpReward)
+    
+    // Combo multiplier
+    let multiplier = 1
+    if (combo >= 10) multiplier = 3
+    else if (combo >= 7) multiplier = 2.5
+    else if (combo >= 5) multiplier = 2
+    else if (combo >= 3) multiplier = 1.5
+    
+    const xpEarned = Math.round(baseXP * multiplier)
     completeLesson(lesson.id, score, xpEarned)
     
     // Update daily quests
@@ -92,12 +119,13 @@ export function Lesson() {
     }
     
     navigate('/')
-  }, [correctCount, questions.length, lesson.id, lesson.xpReward, completeLesson, navigate, updateQuestProgress])
+  }, [correctCount, questions.length, lesson.id, lesson.xpReward, combo, completeLesson, navigate, updateQuestProgress])
 
   const handleRetry = useCallback(() => {
     restoreHearts()
     setCurrentQuestionIdx(0)
     setCorrectCount(0)
+    setCombo(0)
     setGameOverReason(null)
     startLesson(lesson.id)
   }, [restoreHearts, startLesson, lesson.id])
@@ -115,6 +143,16 @@ export function Lesson() {
           <p className="text-xs text-gray-500">{section?.title}</p>
           <p className="font-bold text-sm">{lesson.title}</p>
         </div>
+        {theory && (
+          <button
+            onClick={() => setShowTheory(true)}
+            className="p-2 hover:bg-duo-blue/10 rounded-lg transition-colors"
+            title="Открыть теорию"
+          >
+            <BookOpen size={20} className="text-duo-blue" />
+          </button>
+        )}
+        <ComboDisplay combo={combo} multiplier={combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1} />
         <Hearts />
       </div>
 
@@ -166,7 +204,8 @@ export function Lesson() {
               <LessonResult
                 correctCount={correctCount}
                 totalQuestions={questions.length}
-                xpEarned={Math.round((correctCount / questions.length) * lesson.xpReward)}
+                xpEarned={Math.round((correctCount / questions.length) * lesson.xpReward * (combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1))}
+                comboMultiplier={combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1}
                 isPerfect={correctCount === questions.length}
                 onContinue={handleFinish}
                 onRetry={handleRetry}
@@ -175,6 +214,18 @@ export function Lesson() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Theory Modal */}
+      <AnimatePresence>
+        {showTheory && theory && (
+          <TheoryModal
+            theory={theory}
+            onClose={() => setShowTheory(false)}
+            onStart={() => setShowTheory(false)}
+            actionLabel="Понятно, начать!"
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

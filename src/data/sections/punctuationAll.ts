@@ -9,7 +9,7 @@ export const punctuationAllSections: Section[] = [
     courseId: 'ege-russian-2025',
     title: 'Пунктуация',
     subtitle: 'Задания 16–21',
-    order: 3,
+    order: 5,
     icon: 'Pencil',
     color: '#ce82ff',
     lessons: allLessons,

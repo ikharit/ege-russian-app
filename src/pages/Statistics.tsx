@@ -6,6 +6,7 @@ import { getAtomById } from '../data/atomization/atoms'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import { Dumbbell } from 'lucide-react'
+import { EGEScorePredictor } from '../components/EGEScorePredictor'
 
 export function Statistics() {
   const navigate = useNavigate()
@@ -102,6 +103,8 @@ export function Statistics() {
 
       {activeTab === 'progress' && (
         <div className="flex flex-col gap-4">
+          <EGEScorePredictor />
+
           <div className="card">
             <h3 className="font-bold text-gray-700 mb-3">Активность за неделю</h3>
             <div className="h-48">

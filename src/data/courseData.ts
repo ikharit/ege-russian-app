@@ -1,6 +1,8 @@
 import { Course } from '../types'
 import { textWorkSections } from './sections/textWork'
-import { orthographyGrammarSections } from './sections/orthographyGrammar'
+import { orthoepyLexicographySections } from './sections/orthoepyLexicography'
+import { grammarSections } from './sections/grammarMorphologySyntax'
+import { orthographyAllSections } from './sections/orthographyAll'
 import { punctuationAllSections } from './sections/punctuationAll'
 
 export const course: Course = {
@@ -9,7 +11,9 @@ export const course: Course = {
   description: 'Подготовка к экзамену по русскому языку в формате Duolingo',
   sections: [
     ...textWorkSections,
-    ...orthographyGrammarSections,
+    ...orthoepyLexicographySections,
+    ...grammarSections,
+    ...orthographyAllSections,
     ...punctuationAllSections,
   ]
 }

@@ -7,12 +7,13 @@ interface LessonResultProps {
   correctCount: number
   totalQuestions: number
   xpEarned: number
+  comboMultiplier: number
   isPerfect: boolean
   onContinue: () => void
   onRetry: () => void
 }
 
-export function LessonResult({ correctCount, totalQuestions, xpEarned, isPerfect, onContinue, onRetry }: LessonResultProps) {
+export function LessonResult({ correctCount, totalQuestions, xpEarned, comboMultiplier, isPerfect, onContinue, onRetry }: LessonResultProps) {
   const percentage = Math.round((correctCount / totalQuestions) * 100)
 
   useEffect(() => {
@@ -65,6 +66,9 @@ export function LessonResult({ correctCount, totalQuestions, xpEarned, isPerfect
           <Zap size={24} className="text-duo-yellow" />
           <span className="text-2xl font-bold text-gray-800">+{xpEarned}</span>
           <span className="text-xs text-gray-500 uppercase tracking-wide">XP</span>
+          {comboMultiplier > 1 && (
+            <span className="text-xs text-duo-green font-bold">x{comboMultiplier} комбо</span>
+          )}
         </div>
         <div className="flex-1 card flex flex-col items-center gap-1">
           <Star size={24} className="text-duo-yellow fill-duo-yellow" />
