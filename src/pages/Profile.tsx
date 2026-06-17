@@ -5,6 +5,7 @@ import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download } fr
 import { useProgressStore } from '../stores/progressStore'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
+import { getUnlockedStatuses, getStatusById } from '../data/statuses'
 import { Popover } from '../components/Popover'
 
 export function Profile() {
@@ -15,12 +16,17 @@ export function Profile() {
   const setUserName = useProgressStore((s) => s.setUserName)
   const toggleInfiniteHearts = useProgressStore((s) => s.toggleInfiniteHearts)
   const incrementExportCount = useProgressStore((s) => s.incrementExportCount)
+  const setActiveStatus = useProgressStore((s) => s.setActiveStatus)
   const name = useProgressStore((s) => s.userStats.name || 'ученик')
+  const activeStatusId = useProgressStore((s) => s.userStats.activeStatus)
 
   const [isEditing, setIsEditing] = useState(false)
+  const [showStatusPicker, setShowStatusPicker] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
 
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed').length
+  const unlockedStatuses = getUnlockedStatuses(achievements)
+  const activeStatus = getStatusById(activeStatusId || '') || unlockedStatuses[0]
   const totalQuestions = Object.values(lessonProgress).reduce((sum, lp) => sum + (lp.attempts || 0), 0)
   const bestScore = Object.values(lessonProgress).reduce((max, lp) => Math.max(max, lp.bestScore || 0), 0)
 
@@ -91,6 +97,51 @@ export function Profile() {
           </div>
         )}
         <p className="text-gray-500 text-sm">Уровень {stats.level}</p>
+        
+        {/* Active Status */}
+        <motion.button
+          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold text-white"
+          style={{ backgroundColor: activeStatus.color }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowStatusPicker(!showStatusPicker)}
+        >
+          <span>{activeStatus.emoji}</span>
+          <span>{activeStatus.name}</span>
+        </motion.button>
+        <p className="text-xs text-gray-400 mt-1">{activeStatus.description}</p>
+
+        {/* Status picker */}
+        {showStatusPicker && (
+          <motion.div
+            className="mt-3 flex flex-wrap gap-2 justify-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {unlockedStatuses.map(status => (
+              <button
+                key={status.id}
+                onClick={() => {
+                  setActiveStatus(status.id)
+                  setShowStatusPicker(false)
+                }}
+                className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold transition-all ${
+                  activeStatusId === status.id 
+                    ? 'ring-2 ring-offset-1' 
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+                style={{ 
+                  backgroundColor: status.color + '20', 
+                  color: status.color,
+                  '--tw-ring-color': status.color 
+                } as React.CSSProperties}
+              >
+                <span>{status.emoji}</span>
+                <span>{status.name}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       {/* Stats Grid */}

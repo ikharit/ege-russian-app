@@ -80,6 +80,8 @@ interface ProgressState {
   updateQuestProgress: (questId: string, amount?: number) => void
   claimQuestReward: (questId: string) => boolean
   resetDailyQuests: () => void
+  // Status
+  setActiveStatus: (statusId: string) => void
 }
 
 const getToday = () => new Date().toISOString().split('T')[0]
@@ -586,6 +588,12 @@ export const useProgressStore = create<ProgressState>()(
 
       resetDailyQuests: () => {
         set({ dailyQuestProgress: {} })
+      },
+
+      setActiveStatus: (statusId: string) => {
+        set((s) => ({
+          userStats: { ...s.userStats, activeStatus: statusId }
+        }))
       }
     }),
     {

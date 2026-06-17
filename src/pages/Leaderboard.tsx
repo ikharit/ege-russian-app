@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from '../components/Popover'
+import { getStatusById } from '../data/statuses'
 
 function getPeriodStart(period: 'week' | 'month' | 'all'): Date {
   const now = new Date()
@@ -70,7 +71,11 @@ export function Leaderboard() {
     return <Minus size={14} className="text-gray-400" />
   }
 
-  const getPlayerPopover = (entry: typeof fullLeaderboard[0]) => (
+  const getPlayerPopover = (entry: typeof fullLeaderboard[0]) => {
+    const status = entry.id === 'me' 
+      ? getStatusById(useProgressStore.getState().userStats.activeStatus || '')
+      : undefined
+    return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <span className="text-2xl">{entry.avatar}</span>
@@ -79,6 +84,15 @@ export function Leaderboard() {
           <p className="text-xs text-gray-400">Уровень {entry.level}</p>
         </div>
       </div>
+      {status && (
+        <div 
+          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold"
+          style={{ backgroundColor: status.color + '30', color: status.color }}
+        >
+          <span>{status.emoji}</span>
+          <span>{status.name}</span>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-2 mt-2">
         <div className="bg-gray-800 rounded-lg p-2 text-center">
           <div className="flex items-center justify-center gap-1 text-duo-yellow">
@@ -110,7 +124,7 @@ export function Leaderboard() {
         </div>
       </div>
     </div>
-  )
+  )}
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
@@ -219,9 +233,24 @@ export function Leaderboard() {
                   <div className="w-8 flex justify-center">{getRankIcon(entry.rank)}</div>
                   <div className="text-2xl">{entry.avatar}</div>
                   <div className="flex-1">
-                    <p className={`font-bold text-sm ${entry.id === 'me' ? 'text-duo-green' : 'text-gray-800'}`}>
-                      {entry.name}
-                    </p>
+                    <div className="flex items-center gap-1.5">
+                      <p className={`font-bold text-sm ${entry.id === 'me' ? 'text-duo-green' : 'text-gray-800'}`}>
+                        {entry.name}
+                      </p>
+                      {entry.id === 'me' && (
+                        (() => {
+                          const myStatus = getStatusById(useProgressStore.getState().userStats.activeStatus || '')
+                          return myStatus ? (
+                            <span 
+                              className="text-xs px-1.5 py-0.5 rounded-full font-bold"
+                              style={{ backgroundColor: myStatus.color + '20', color: myStatus.color }}
+                            >
+                              {myStatus.emoji}
+                            </span>
+                          ) : null
+                        })()
+                      )}
+                    </div>
                     <p className="text-xs text-gray-500">Уровень {entry.level} • {entry.lessonsCompleted} уроков</p>
                   </div>
                   <div className="text-right flex items-center gap-2">

@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronRight, Sparkles, Volume2, SpellCheck, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react'
+import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   BookOpen,
   Pencil,
   Trophy,
   Zap,
-  Sparkles,
-  Volume2,
-  SpellCheck,
-  GraduationCap,
+  Volume2: BookOpen,
+  SpellCheck: BookOpen,
+  GraduationCap: BookOpen,
 }
 
 function SectionIcon({ icon, size = 20 }: { icon: string; size?: number }) {
@@ -21,7 +20,7 @@ function SectionIcon({ icon, size = 20 }: { icon: string; size?: number }) {
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { Popover } from '../components/Popover'
-import type { Lesson, LessonGroup } from '../types'
+import type { Lesson } from '../types'
 
 export function CourseMap() {
   const navigate = useNavigate()
@@ -53,8 +52,8 @@ export function CourseMap() {
     return { completed, total, avgScore, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
-  const getGroupProgress = (group: LessonGroup) => {
-    const completed = group.lessons.filter(l => lessonProgress[l.id]?.status === 'completed').length
+  const getGroupProgress = (group: any) => {
+    const completed = group.lessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
     const total = group.lessons.length
     return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
@@ -221,7 +220,7 @@ export function CourseMap() {
                               className="overflow-hidden"
                             >
                               <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-                                {group.lessons.map((lesson, lIdx) =>
+                                {group.lessons.map((lesson: any, lIdx: number) =>
                                   renderLessonNode(lesson, lIdx, group.lessons.length, section.color)
                                 )}
                               </div>

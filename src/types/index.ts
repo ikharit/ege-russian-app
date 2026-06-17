@@ -83,6 +83,7 @@ export interface UserStats {
   totalLessonTimeMinutes?: number
   totalQuestionsAnswered?: number
   totalHeartsLost?: number
+  activeStatus?: string
 }
 
 export interface Achievement {

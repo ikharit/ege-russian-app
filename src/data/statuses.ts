@@ -1,0 +1,35 @@
+export interface Status {
+  id: string
+  name: string
+  emoji: string
+  description: string
+  condition: string // achievement ID or custom condition
+  color: string
+}
+
+export const statuses: Status[] = [
+  { id: 'status-recruit', name: 'Новичок', emoji: '🌱', description: 'Первые шаги в изучении русского', condition: 'default', color: '#6B8E23' },
+  { id: 'status-night-owl', name: 'Ночная сова', emoji: '🦉', description: 'Занимался после 22:00', condition: 'ach-night-owl', color: '#4A5568' },
+  { id: 'status-early-bird', name: 'Жаворонок', emoji: '🐦', description: 'Занимался рано утром', condition: 'ach-early-bird', color: '#F6AD55' },
+  { id: 'status-streak-7', name: 'Непрерывный', emoji: '🔥', description: '7 дней страйка', condition: 'ach-streak-7', color: '#DD6B20' },
+  { id: 'status-streak-30', name: 'Марафонец', emoji: '🏃', description: '30 дней страйка', condition: 'ach-streak-30', color: '#C53030' },
+  { id: 'status-perfect-10', name: 'Безупречный', emoji: '💎', description: '10 идеальных уроков', condition: 'ach-perfect-10', color: '#3182CE' },
+  { id: 'status-speedrun', name: 'Спринтер', emoji: '⚡', description: 'Прошёл урок за 2 минуты', condition: 'ach-speedrun', color: '#D69E2E' },
+  { id: 'status-level-20', name: 'Лингвист', emoji: '📜', description: 'Достиг 20 уровня', condition: 'ach-level-20', color: '#805AD5' },
+  { id: 'status-xp-5000', name: 'Ветеран', emoji: '🎖️', description: '5000 XP', condition: 'ach-xp-5000', color: '#975A16' },
+  { id: 'status-all-sections', name: 'Мастер ЕГЭ', emoji: '👑', description: 'Пройдены все разделы', condition: 'ach-all-sections', color: '#B7791F' },
+  { id: 'status-atom-master', name: 'Атомщик', emoji: '⚛️', description: 'Освоил 5 атомов', condition: 'ach-atom-master', color: '#38A169' },
+  { id: 'status-persistent', name: 'Упорный', emoji: '🐂', description: '10 попыток на один урок', condition: 'ach-persistent', color: '#2D3748' },
+  { id: 'status-weekend', name: 'Выходной', emoji: '🎉', description: 'Занимался в выходной', condition: 'ach-weekend', color: '#E53E3E' },
+  { id: 'status-infinite', name: 'Бессмертный', emoji: '♾️', description: 'Включил бесконечные сердца', condition: 'ach-infinite', color: '#0BC5EA' },
+]
+
+export function getStatusById(id: string): Status | undefined {
+  return statuses.find(s => s.id === id)
+}
+
+export function getUnlockedStatuses(achievements: string[]): Status[] {
+  // Always include default
+  const unlocked = statuses.filter(s => s.condition === 'default' || achievements.includes(s.condition))
+  return unlocked
+}
