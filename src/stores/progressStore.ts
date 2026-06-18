@@ -65,7 +65,12 @@ interface ProgressState {
   incrementWrongAnswerAttempt: (questionId: string, userAnswer: string[]) => void
   getWrongAnswers: () => WrongAnswer[]
   getUnreviewedWrongAnswers: () => WrongAnswer[]
-  // Achievement toast
+  // Task analytics
+  taskStats: Record<string, { total: number; correct: number; wrong: number; lastAttemptAt: string }>
+  getTaskStats: () => Record<string, { total: number; correct: number; wrong: number; lastAttemptAt: string }>
+  getProblematicTasks: (limit?: number) => { taskNumber: string; accuracy: number; total: number; wrong: number }[]
+  getProblematicQuestions: (limit?: number) => { questionId: string; text: string; taskNumber: string; wrongCount: number; attempts: number }[]
+  updateTaskStats: (taskNumber: string, isCorrect: boolean) => void
   clearLastAchievement: () => void
   // Leaderboard
   addLeaderboardEntry: (entry: LeaderboardEntry) => void
@@ -138,6 +143,7 @@ export const useProgressStore = create<ProgressState>()(
       lessonProgress: {},
       atomProgress: {},
       wrongAnswers: [],
+      taskStats: {},
       achievements: [],
       lastUnlockedAchievement: null,
       currentLessonId: null,
@@ -545,6 +551,43 @@ export const useProgressStore = create<ProgressState>()(
           .map(p => p.atomId)
       },
 
+      getTaskStats: () => get().taskStats,
+
+      getProblematicTasks: (limit = 5) => {
+        const stats = get().taskStats
+        return Object.entries(stats)
+          .map(([taskNumber, data]) => ({
+            taskNumber,
+            accuracy: data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
+            total: data.total,
+            wrong: data.wrong,
+          }))
+          .filter(t => t.total > 0)
+          .sort((a, b) => a.accuracy - b.accuracy)
+          .slice(0, limit)
+      },
+
+      getProblematicQuestions: (limit = 10) => {
+        const wrong = get().wrongAnswers
+        const map: Record<string, { questionId: string; text: string; taskNumber: string; wrongCount: number; attempts: number }> = {}
+        for (const w of wrong) {
+          if (!map[w.questionId]) {
+            map[w.questionId] = {
+              questionId: w.questionId,
+              text: w.text,
+              taskNumber: w.taskNumber ?? '—',
+              wrongCount: 0,
+              attempts: 0,
+            }
+          }
+          map[w.questionId].wrongCount++
+          map[w.questionId].attempts = w.attempts
+        }
+        return Object.values(map)
+          .sort((a, b) => b.wrongCount - a.wrongCount)
+          .slice(0, limit)
+      },
+
       recordWrongAnswer: (question, userAnswer, lessonId) => {
         set((s) => {
           const existing = s.wrongAnswers.find(w => w.questionId === question.id)
@@ -605,6 +648,23 @@ export const useProgressStore = create<ProgressState>()(
       getWrongAnswers: () => get().wrongAnswers,
 
       getUnreviewedWrongAnswers: () => get().wrongAnswers.filter(w => !w.reviewed),
+
+      updateTaskStats: (taskNumber, isCorrect) => {
+        set((s) => {
+          const current = s.taskStats[taskNumber] || { total: 0, correct: 0, wrong: 0, lastAttemptAt: '' }
+          return {
+            taskStats: {
+              ...s.taskStats,
+              [taskNumber]: {
+                total: current.total + 1,
+                correct: current.correct + (isCorrect ? 1 : 0),
+                wrong: current.wrong + (isCorrect ? 0 : 1),
+                lastAttemptAt: new Date().toISOString(),
+              }
+            }
+          }
+        })
+      },
 
       clearLastAchievement: () => {
         set({ lastUnlockedAchievement: null })

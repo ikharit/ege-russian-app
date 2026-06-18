@@ -22,6 +22,7 @@ export function Lesson() {
   const infiniteHearts = useProgressStore((s) => s.userStats.infiniteHearts)
   const recordAtomAttempt = useProgressStore((s) => s.recordAtomAttempt)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
@@ -91,7 +92,15 @@ export function Lesson() {
         recordAtomAttempt(atomId, isCorrect)
       }
     }
-  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id])
+    // Track task stats
+    if (currentQuestion.atoms) {
+      const taskAtom = currentQuestion.atoms.find(a => a.startsWith('task'))
+      if (taskAtom) {
+        const taskNumber = taskAtom.replace('task', '')
+        updateTaskStats(taskNumber, isCorrect)
+      }
+    }
+  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id, updateTaskStats])
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx < questions.length - 1) {

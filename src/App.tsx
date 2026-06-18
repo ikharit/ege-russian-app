@@ -14,9 +14,12 @@ import { MistakesReview } from './pages/MistakesReview'
 import { StudentHomework } from './pages/StudentHomework'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
-import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2 } from 'lucide-react'
+import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
+import { Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
+
+const TheoryPage = lazy(() => import('./pages/TheoryPage'))
 
 function BottomNav() {
   const navigate = useNavigate()
@@ -25,6 +28,7 @@ function BottomNav() {
   const tabs = [
     { path: '/', icon: BookOpen, label: 'Учиться' },
     { path: '/course', icon: Map, label: 'Курс' },
+    { path: '/theory', icon: BookOpenText, label: 'Теория' },
     { path: '/games', icon: Gamepad2, label: 'Игры' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
     { path: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
@@ -71,6 +75,7 @@ export default function App() {
       <main className="flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/theory" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryPage /></Suspense>} />
           <Route path="/course" element={<CourseMap />} />
           <Route path="/lesson/:lessonId" element={<Lesson />} />
           <Route path="/stats" element={<Statistics />} />

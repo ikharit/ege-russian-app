@@ -12,7 +12,7 @@ export function Teacher() {
   const isTeacher = useProgressStore((s) => s.isTeacher)
   const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'assign'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'assign' | 'analytics'>('overview')
 
   if (!isTeacher) {
     return (
@@ -122,6 +122,7 @@ export function Teacher() {
           { key: 'overview' as const, label: 'Обзор', icon: BarChart3 },
           { key: 'students' as const, label: 'Ученики', icon: Users },
           { key: 'assign' as const, label: 'Домашки', icon: BookOpen },
+          { key: 'analytics' as const, label: 'Аналитика', icon: TrendingDown },
         ].map(tab => (
           <button
             key={tab.key}
@@ -377,6 +378,156 @@ export function Teacher() {
           </div>
         </div>
       )}
+      {activeTab === 'analytics' && (
+        <AnalyticsTab />
+      )}
+    </div>
+  )
+}
+
+
+function AnalyticsTab() {
+  const taskStats = useProgressStore((s) => s.getTaskStats())
+  const problematicTasks = useProgressStore((s) => s.getProblematicTasks(5))
+  const problematicQuestions = useProgressStore((s) => s.getProblematicQuestions(10))
+  const wrongAnswers = useProgressStore((s) => s.getWrongAnswers())
+
+  const totalAttempts = Object.values(taskStats).reduce((sum, s) => sum + s.total, 0)
+  const totalCorrect = Object.values(taskStats).reduce((sum, s) => sum + s.correct, 0)
+  const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
+
+  const taskDistribution = Object.entries(taskStats)
+    .map(([taskNumber, data]) => ({
+      taskNumber,
+      accuracy: data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
+      total: data.total,
+      correct: data.correct,
+      wrong: data.wrong,
+    }))
+    .filter(t => t.total > 0)
+    .sort((a, b) => b.total - a.total)
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Overall stats */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="card bg-duo-blue/10">
+          <p className="text-3xl font-bold text-duo-blue">{totalAttempts}</p>
+          <p className="text-sm text-gray-600">Всего ответов</p>
+        </div>
+        <div className="card bg-duo-green/10">
+          <p className="text-3xl font-bold text-duo-green">{totalCorrect}</p>
+          <p className="text-sm text-gray-600">Правильных</p>
+        </div>
+        <div className="card bg-duo-yellow/10">
+          <p className="text-3xl font-bold text-duo-yellow">{overallAccuracy}%</p>
+          <p className="text-sm text-gray-600">Общая точность</p>
+        </div>
+      </div>
+
+      {/* Task accuracy chart */}
+      <div className="card">
+        <h3 className="font-bold text-gray-700 mb-3">📊 Точность по заданиям</h3>
+        {taskDistribution.length === 0 ? (
+          <p className="text-sm text-gray-500">Пока нет данных. Ученики ещё не проходили задания.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {taskDistribution.map((task) => (
+              <div key={task.taskNumber} className="flex items-center gap-3">
+                <span className="text-sm font-medium w-20">Задание {task.taskNumber}</span>
+                <div className="flex-1">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-gray-500">{task.correct}/{task.total}</span>
+                    <span className={`font-bold ${task.accuracy >= 70 ? 'text-duo-green' : task.accuracy >= 50 ? 'text-duo-yellow' : 'text-duo-red'}`}>
+                      {task.accuracy}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full ${task.accuracy >= 70 ? 'bg-duo-green' : task.accuracy >= 50 ? 'bg-duo-yellow' : 'bg-duo-red'}`}
+                      style={{ width: `${task.accuracy}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Problematic tasks */}
+      <div className="card">
+        <h3 className="font-bold text-gray-700 mb-3">⚠️ Самые проблемные задания</h3>
+        {problematicTasks.length === 0 ? (
+          <p className="text-sm text-gray-500">Пока нет данных о проблемных заданиях.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {problematicTasks.map((task) => (
+              <div key={task.taskNumber} className="flex items-center justify-between p-2 bg-duo-red/10 rounded-lg">
+                <div>
+                  <span className="font-bold text-gray-700">Задание {task.taskNumber}</span>
+                  <span className="text-xs text-gray-500 ml-2">{task.wrong} ошибок из {task.total}</span>
+                </div>
+                <span className="text-sm font-bold text-duo-red">{task.accuracy}%</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Problematic questions */}
+      <div className="card">
+        <h3 className="font-bold text-gray-700 mb-3">🔍 Самые проблемные вопросы/слова</h3>
+        {problematicQuestions.length === 0 ? (
+          <p className="text-sm text-gray-500">Пока нет данных о проблемных вопросах.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {problematicQuestions.map((q: { questionId: string; text: string; taskNumber: string; wrongCount: number; attempts: number }, idx: number) => (
+              <div key={q.questionId} className="p-2 bg-duo-snow rounded-lg">
+                <div className="flex items-start gap-2">
+                  <span className="text-xs font-bold text-gray-400 mt-0.5">#{idx + 1}</span>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-800">{q.text}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs px-2 py-0.5 bg-duo-blue/20 text-duo-blue rounded-full">Задание {q.taskNumber}</span>
+                      <span className="text-xs text-duo-red font-bold">{q.wrongCount} ошибок</span>
+                      <span className="text-xs text-gray-500">{q.attempts} попыток</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Wrong answers list */}
+      <div className="card">
+        <h3 className="font-bold text-gray-700 mb-3">📝 Все ошибки ({wrongAnswers.length})</h3>
+        {wrongAnswers.length === 0 ? (
+          <p className="text-sm text-gray-500">Ошибок пока нет. Отлично!</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {wrongAnswers.slice(0, 20).map((w) => (
+              <div key={w.questionId} className="p-2 bg-duo-red/5 rounded-lg border border-duo-red/10">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-800">{w.text}</p>
+                    <div className="flex items-center gap-2 mt-1 text-xs">
+                      <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded-full">Ваш ответ: {w.userAnswer.join(', ')}</span>
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full">Правильно: {w.correctAnswer.join(', ')}</span>
+                      {w.taskNumber && <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">Задание {w.taskNumber}</span>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {wrongAnswers.length > 20 && (
+              <p className="text-xs text-gray-500 text-center">...и ещё {wrongAnswers.length - 20} ошибок</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
