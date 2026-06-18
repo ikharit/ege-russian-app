@@ -7,7 +7,7 @@ export interface TheoryRule {
   taskNumber: string
   title: string
   content: string
-  examples: { correct: string; incorrect?: string; note?: string }[]
+  examples: { correct?: string; incorrect?: string; note?: string }[]
   exceptions?: string[]
   tags: string[]
 }
