@@ -45,6 +45,13 @@
 - **Git commit:** `3035726` (task10 статусы), `149da4e` (task10 исправления), `f55ec35` (task5 тренажёр)
 - **⚠️ Важно:** Task10Trainer persist key изменён на `task10-trainer-v2`. Task5Trainer — новый модуль, persist key `task5-trainer-v1`.
 
+### [2026-06-18 23:00] Агент: main
+- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация)
+- **Где:** `src/pages/Task16Trainer.tsx`, `src/data/task16Questions.ts`, `src/stores/task16Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
+- **Зачем:** Новый тренажёр задания ЕГЭ №16 — запятые в сложных предложениях, вводных словах, придаточных
+- **Git commit:** —
+- **⚠️ Важно:** 20 вопросов по темам: придаточные времени/причины/цели/уступки/изъяснительные, вводные слова, однородные члены. Паттерн повторён от Task5Trainer.
+
 ### [2026-06-19 00:30] Агент: main (теория + тесты)
 - **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
 - **Где:** `src/components/TheoryViewer.tsx`, `src/components/TheoryTest.tsx`, `src/data/theoryTests.ts`, `src/pages/TheoryPage.tsx`, `src/stores/progressStore.ts`, `src/App.tsx`
@@ -138,8 +145,21 @@
 4. Сделай backup (`git commit -m "backup: ..."`) перед масштабными правками
 5. Не перезаписывай — спроси или запиши в реестр
 
-Вижу, что запись уже добавлена в AGENTS.md. Теперь добавлю ту же запись в memory/agent-registry.md.
+---
+
+*Последнее обновление: 2026-06-18 23:05*
 
 ---
 
 *Последнее обновление: 2026-06-19 00:30*
+
+---
+
+*Последнее обновление: 2026-06-19 00:45*
+
+### [2026-06-19 00:45] Агент: main (Backend/Auth/Sync план)
+- **Что:** Планирование: Auth (email/Google), Firestore sync прогресса, автосинхронизация
+- **Где:** `src/lib/supabase.ts`, `src/stores/progressStore.ts`, `src/App.tsx`, `src/components/AuthModal.tsx` (новый)
+- **Зачем:** Пользователь просит добавить аутентификацию и синхронизацию прогресса в облако. Текущий `syncProgress` неполный — не синхронизирует `theoryTestsCompleted`, `atomProgress`, `wrongAnswers`, `taskStats`, `dailyQuestProgress`.
+- **Git commit:** — (планирование)
+- **⚠️ Важно:** `syncProgress` сейчас сохраняет только `userStats` + `lessonProgress` + `achievements`. Нужно расширить до полного состояния. Также нужен UI для входа/регистрации.
