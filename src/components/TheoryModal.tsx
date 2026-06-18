@@ -1,111 +1,13 @@
 import { motion } from 'framer-motion'
 import { BookOpen, X, ArrowRight } from 'lucide-react'
 import { TheoryLesson } from '../data/theoryData'
+import { TheoryViewer } from './TheoryViewer'
 
 interface TheoryModalProps {
   theory: TheoryLesson
   onClose: () => void
   onStart?: () => void
   actionLabel?: string
-}
-
-/**
- * Simple heuristic formatter for raw theory text.
- * Splits text into blocks and applies basic styling based on line patterns.
- */
-function formatTheoryText(text: string): JSX.Element[] {
-  const lines = text.split('\n')
-  const blocks: JSX.Element[] = []
-  let currentList: string[] = []
-  let key = 0
-
-  const flushList = () => {
-    if (currentList.length > 0) {
-      blocks.push(
-        <ul key={`list-${key++}`} className="list-disc list-inside space-y-1 my-3 text-gray-700">
-          {currentList.map((item, i) => (
-            <li key={i} className="text-sm leading-relaxed">{item}</li>
-          ))}
-        </ul>
-      )
-      currentList = []
-    }
-  }
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim()
-    if (!line) {
-      flushList()
-      continue
-    }
-
-    // Detect headers by patterns
-    const isHeader =
-      line.length < 80 &&
-      (
-        line.startsWith('О чём') ||
-        line.startsWith('Как задание') ||
-        line.startsWith('Как выглядит') ||
-        line.startsWith('Теория') ||
-        line.startsWith('Правило') ||
-        line.startsWith('Применение') ||
-        line.startsWith('Резюме') ||
-        line.startsWith('Закрепи') ||
-        line.startsWith('Нюансы') ||
-        line.startsWith('Разделы') ||
-        line.startsWith('In summa') ||
-        line.startsWith('Page') ||
-        line.startsWith('LESSON') ||
-        line.startsWith('0/') ||
-        line.startsWith('CORRECT') ||
-        line.startsWith('Sign in') ||
-        /^\d+\)\.?\s/.test(line) ||
-        /^[IVX]+\./.test(line) ||
-        /^№\d/.test(line)
-      )
-
-    const isListItem = line.startsWith('- ') || line.startsWith('• ')
-    const isTableRow = line.includes('\t')
-
-    if (isHeader) {
-      flushList()
-      blocks.push(
-        <h3 key={`h-${key++}`} className="font-bold text-gray-800 mt-4 mb-2 text-sm uppercase tracking-wide">
-          {line}
-        </h3>
-      )
-    } else if (isListItem) {
-      currentList.push(line.slice(2))
-    } else if (isTableRow) {
-      flushList()
-      const cells = line.split('\t').map(c => c.trim()).filter(Boolean)
-      blocks.push(
-        <div key={`tr-${key++}`} className="grid gap-2 my-2 text-sm text-gray-700">
-          {cells.map((cell, ci) => (
-            <div key={ci} className="bg-gray-50 rounded-lg px-3 py-2">{cell}</div>
-          ))}
-        </div>
-      )
-    } else {
-      // Regular paragraph
-      if (currentList.length > 0) {
-        // If previous line was list, check if this is a continuation
-        if (!line.match(/^\d+\./) && !line.match(/^[a-z]\)/i)) {
-          flushList()
-        }
-      }
-      if (!currentList.length) {
-        blocks.push(
-          <p key={`p-${key++}`} className="text-sm text-gray-700 leading-relaxed my-2">
-            {line}
-          </p>
-        )
-      }
-    }
-  }
-
-  flushList()
-  return blocks
 }
 
 export function TheoryModal({ theory, onClose, onStart, actionLabel }: TheoryModalProps) {
@@ -148,7 +50,7 @@ export function TheoryModal({ theory, onClose, onStart, actionLabel }: TheoryMod
 
         {/* Scrollable content */}
         <div className="overflow-y-auto px-5 py-4 flex-1">
-          {formatTheoryText(theory.theoryText)}
+          <TheoryViewer text={theory.theoryText} />
         </div>
 
         {/* Footer action */}

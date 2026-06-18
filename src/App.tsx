@@ -12,6 +12,7 @@ import { AccentTrainer } from './pages/AccentTrainer'
 import { MiniGames } from './pages/MiniGames'
 import { MistakesReview } from './pages/MistakesReview'
 import { StudentHomework } from './pages/StudentHomework'
+import { MyHomework } from './pages/MyHomework'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
@@ -83,6 +84,7 @@ export default function App() {
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/teacher/:studentName" element={<StudentHomework />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
           <Route path="/games" element={<MiniGames />} />
