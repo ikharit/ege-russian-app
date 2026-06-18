@@ -11,6 +11,7 @@ import { AdaptivePractice } from './pages/AdaptivePractice'
 import { AccentTrainer } from './pages/AccentTrainer'
 import { Task5Trainer } from './pages/Task5Trainer'
 import { Task10Trainer } from './pages/Task10Trainer'
+import { Task16Trainer } from './pages/Task16Trainer'
 import { MistakesReview } from './pages/MistakesReview'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
@@ -66,7 +67,7 @@ function BottomNav() {
 
 export default function App() {
   const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer'
+  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname === '/task16-trainer'
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
@@ -101,6 +102,7 @@ export default function App() {
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task5-trainer" element={<Task5Trainer />} />
+          <Route path="/task16-trainer" element={<Task16Trainer />} />
           <Route path="/task10-trainer" element={<Task10Trainer />} />
           <Route path="/share" element={<ShareResultPage />} />
         </Routes>

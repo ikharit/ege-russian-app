@@ -6,6 +6,7 @@ import { useProgressStore } from '../stores/progressStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { useTask5Store } from '../stores/task5Store'
 import { useTask10Store } from '../stores/task10Store'
+import { useTask16Store } from '../stores/task16Store'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
@@ -306,6 +307,30 @@ export function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Task 16 Trainer Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/task16-trainer')}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center text-white">
+              <span className="text-lg font-bold">№16</span>
+            </div>
+            <div>
+              <p className="text-xs text-purple-500 uppercase tracking-wide font-bold">Тренажёр</p>
+              <p className="font-bold text-gray-800">Пунктуация</p>
+              <p className="text-xs text-gray-500">Запятые в сложных предложениях</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <Task16MiniProgress />
+            <ChevronRight size={24} className="text-purple-400" />
+          </div>
+        </div>
+      </motion.div>
+
       {/* Task 5 Trainer Card */}
       <motion.div
         className="card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200"
@@ -404,6 +429,21 @@ function AccentTrainerMiniProgress() {
         <div className="bg-rose-400 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
       </div>
       <p className="text-[10px] text-gray-400 mt-0.5 text-right">{mastered}/{total}</p>
+    </div>
+  )
+}
+
+function Task16MiniProgress() {
+  const { getOverallProgress } = useTask16Store()
+  const { total, passed } = getOverallProgress()
+  const pct = total > 0 ? (passed / total) * 100 : 0
+
+  return (
+    <div className="w-16">
+      <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="text-[10px] text-gray-400 mt-0.5 text-right">{passed}/{total}</p>
     </div>
   )
 }
