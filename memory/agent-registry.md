@@ -159,3 +159,14 @@
 ---
 
 *Последнее обновление: 2026-06-19 01:00*
+
+---
+
+*Последнее обновление: 2026-06-19 00:55*
+
+### [2026-06-19 00:55] Агент: main (Backend/Auth/Sync реализовано)
+- **Что:** Auth (email/password + Google OAuth), полная синхронизация progressStore в Supabase, автосинхронизация с дебаунсом 5с, индикатор в хедере
+- **Где:** `src/components/AuthModal.tsx` (новый), `src/stores/progressStore.ts`, `src/App.tsx`, `src/lib/supabase.ts`, `src/components/Header.tsx`
+- **Зачем:** Пользователь просил добавить аутентификацию и синхронизацию прогресса в облако
+- **Git commit:** `96d1f2d`
+- **⚠️ Важно:** `syncProgress` теперь сохраняет ВСЕ поля состояния. Автосинхронизация через `useProgressStore.subscribe` + дебаунс 5с. AuthModal — email/password + Google OAuth. Если Supabase не настроен — graceful degradation.

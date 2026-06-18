@@ -231,3 +231,14 @@ ege-russian-app/
 - **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
 
 ---
+
+---
+
+*Последнее обновление: 2026-06-19 00:55*
+
+### [2026-06-19 00:55] Агент: main (Backend/Auth/Sync реализовано)
+- **Что:** Auth (email/password + Google OAuth), полная синхронизация progressStore в Supabase, автосинхронизация с дебаунсом 5с, индикатор в хедере
+- **Где:** `src/components/AuthModal.tsx` (новый), `src/stores/progressStore.ts`, `src/App.tsx`, `src/lib/supabase.ts`, `src/components/Header.tsx`
+- **Зачем:** Пользователь просил добавить аутентификацию и синхронизацию прогресса в облако
+- **Git commit:** `96d1f2d`
+- **⚠️ Важно:** `syncProgress` теперь сохраняет ВСЕ поля состояния (userStats, lessonProgress, atomProgress, wrongAnswers, taskStats, dailyQuestProgress, theoryTestsCompleted, leaderboardRanks, teacherStudents, isTeacher). `loadProgress` восстанавливает всё из Supabase. Автосинхронизация через `useProgressStore.subscribe` + дебаунс 5с. Индикатор в хедере: «Синхронизация...» / «Сохранено» / «Ошибка». AuthModal — email/password + Google OAuth. Если Supabase не настроен — graceful degradation.
