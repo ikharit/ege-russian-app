@@ -14,6 +14,7 @@ import { MistakesReview } from './pages/MistakesReview'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
 import { MyHomework } from './pages/MyHomework'
+import { ShareResultPage } from './pages/ShareResultPage'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
@@ -98,6 +99,7 @@ export default function App() {
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task10-trainer" element={<Task10Trainer />} />
+          <Route path="/share" element={<ShareResultPage />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

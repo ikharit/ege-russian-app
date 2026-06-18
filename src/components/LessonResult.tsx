@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Star, Zap, ArrowRight, RotateCcw, Share2, Check } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface LessonResultProps {
   correctCount: number
@@ -9,23 +10,29 @@ interface LessonResultProps {
   xpEarned: number
   comboMultiplier: number
   isPerfect: boolean
+  lessonTitle?: string
+  streak?: number
   onContinue: () => void
   onRetry: () => void
 }
 
-export function LessonResult({ correctCount, totalQuestions, xpEarned, comboMultiplier, isPerfect, onContinue, onRetry }: LessonResultProps) {
+export function LessonResult({ correctCount, totalQuestions, xpEarned, comboMultiplier, isPerfect, lessonTitle, streak, onContinue, onRetry }: LessonResultProps) {
   const percentage = Math.round((correctCount / totalQuestions) * 100)
   const [shared, setShared] = useState(false)
+  const navigate = useNavigate()
 
-  const handleShare = async () => {
-    const text = `🎓 ЕГЭ Русский — Результат урока\n${isPerfect ? '⭐ ИДЕАЛЬНО!' : ''}\n✅ ${correctCount}/${totalQuestions} правильно (${percentage}%)\n⚡ +${xpEarned} XP${comboMultiplier > 1 ? ` (x${comboMultiplier} комбо!)` : ''}\n\nГотовься вместе со мной!`
-    try {
-      await navigator.clipboard.writeText(text)
-      setShared(true)
-      setTimeout(() => setShared(false), 2000)
-    } catch (e) {
-      // Fallback
-    }
+  const handleShare = () => {
+    navigate('/share', {
+      state: {
+        correctCount,
+        totalQuestions,
+        xpEarned,
+        comboMultiplier,
+        isPerfect,
+        lessonTitle,
+        streak,
+      }
+    })
   }
 
   useEffect(() => {

@@ -22,6 +22,7 @@ export function Lesson() {
   const restoreHearts = useProgressStore((s) => s.restoreHearts)
   const hearts = useProgressStore((s) => s.userStats.hearts)
   const infiniteHearts = useProgressStore((s) => s.userStats.infiniteHearts)
+  const userStats = useProgressStore((s) => s.userStats)
   const recordAtomAttempt = useProgressStore((s) => s.recordAtomAttempt)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
@@ -234,6 +235,8 @@ export function Lesson() {
                 xpEarned={Math.round((correctCount / questions.length) * lesson.xpReward * (combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1))}
                 comboMultiplier={combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1}
                 isPerfect={correctCount === questions.length}
+                lessonTitle={lesson.title}
+                streak={userStats.streak}
                 onContinue={handleFinish}
                 onRetry={handleRetry}
               />
