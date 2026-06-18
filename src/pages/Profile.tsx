@@ -147,31 +147,54 @@ export function Profile() {
         )}
       </div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid — animated icons */}
+      <style>{`
+        @keyframes xp-bounce { 0%,100%{transform:scale(1)} 25%{transform:scale(1.15)} 50%{transform:scale(0.95)} 75%{transform:scale(1.1)} }
+        @keyframes flame-wobble { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
+        @keyframes heart-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+        @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
+        @keyframes trophy-shine { 0%{transform:translateX(-100%) rotate(45deg)} 100%{transform:translateX(200%) rotate(45deg)} }
+      `}</style>
       <div className="grid grid-cols-2 gap-3">
         <div className="card flex items-center gap-3">
-          <Zap size={20} className="text-duo-yellow" />
+          <div className="relative">
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0s' }} />
+            <div className="absolute -bottom-0.5 -left-1 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0.4s' }} />
+            <div className="absolute top-0 -left-1.5 w-1 h-1 bg-yellow-300 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0.8s' }} />
+            <Zap size={20} className="text-duo-yellow animate-[xp-bounce_2s_ease-in-out_infinite]" />
+          </div>
           <div>
             <p className="text-lg font-bold">{stats.xp}</p>
             <p className="text-xs text-gray-500">XP</p>
           </div>
         </div>
         <div className="card flex items-center gap-3">
-          <Flame size={20} className="text-orange-500" />
+          <div className="relative">
+            <div className="absolute -top-0.5 right-0 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.2s' }} />
+            <div className="absolute -bottom-1 left-0 w-1 h-1 bg-red-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.7s' }} />
+            <Flame size={20} className="text-orange-500 animate-[flame-wobble_1.5s_ease-in-out_infinite]" />
+          </div>
           <div>
             <p className="text-lg font-bold">{stats.streak}</p>
             <p className="text-xs text-gray-500">Дней подряд</p>
           </div>
         </div>
         <div className="card flex items-center gap-3">
-          <Heart size={20} className="text-red-500" />
+          <div className="relative">
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-300 rounded-full animate-[sparkle_1.3s_infinite]" style={{ animationDelay: '0.3s' }} />
+            <div className="absolute -bottom-0.5 -left-1 w-1.5 h-1.5 bg-pink-400 rounded-full animate-[sparkle_1.3s_infinite]" style={{ animationDelay: '0.6s' }} />
+            <Heart size={20} className="text-red-500 animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
+          </div>
           <div>
             <p className="text-lg font-bold">{stats.hearts}/{stats.maxHearts}</p>
             <p className="text-xs text-gray-500">Сердечки</p>
           </div>
         </div>
         <div className="card flex items-center gap-3">
-          <Trophy size={20} className="text-duo-purple" />
+          <div className="relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/40 w-4 h-full animate-[trophy-shine_2s_ease-in-out_infinite]" style={{ transform: 'translateX(-100%) rotate(45deg)' }} />
+            <Trophy size={20} className="text-duo-purple" />
+          </div>
           <div>
             <p className="text-lg font-bold">{stats.maxStreak}</p>
             <p className="text-xs text-gray-500">Рекорд</p>
@@ -376,10 +399,8 @@ export function Profile() {
               .sort((a, b) => {
                 const aUnlocked = achievements.includes(a.id)
                 const bUnlocked = achievements.includes(b.id)
-                // Разблокированные в конец
                 if (aUnlocked && !bUnlocked) return 1
                 if (!aUnlocked && bUnlocked) return -1
-                // Оба неразблокированные — сортируем по проценту прогресса (убывающий)
                 const aProgress = getAchievementProgress(a.id, stats, lessonProgress)
                 const bProgress = getAchievementProgress(b.id, stats, lessonProgress)
                 const aPct = aProgress.target > 1 ? (aProgress.current / aProgress.target) * 100 : 0
@@ -392,26 +413,35 @@ export function Profile() {
                 const progress = getAchievementProgress(ach.id, stats, lessonProgress)
                 const hasProgress = progress.target > 1
                 const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
+                // Цветовой статус по прогрессу
+                const colorTier = unlocked ? 'green' : percent > 50 ? 'yellow' : percent > 10 ? 'orange' : 'gray'
+                const tierColors = {
+                  green: { border: 'border-duo-green/30', bg: 'bg-green-50', accent: 'bg-duo-green', icon: 'bg-duo-green text-white', text: 'text-gray-700' },
+                  yellow: { border: 'border-duo-yellow/40', bg: 'bg-yellow-50', accent: 'bg-duo-yellow', icon: 'bg-yellow-100 text-yellow-600', text: 'text-gray-700' },
+                  orange: { border: 'border-orange-300/40', bg: 'bg-orange-50', accent: 'bg-orange-400', icon: 'bg-orange-100 text-orange-500', text: 'text-gray-700' },
+                  gray: { border: 'border-gray-200', bg: 'bg-white', accent: 'bg-gray-300', icon: 'bg-gray-100 text-gray-400', text: 'text-gray-400' },
+                }
+                const tc = tierColors[colorTier]
                 return (
-                  <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all border ${unlocked ? 'bg-green-50 border-duo-green/20 shadow-sm' : 'bg-white border-gray-200'}`}>
+                  <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all border-l-4 border ${tc.border} ${tc.bg}`}>
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-100 text-gray-400'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${tc.icon}`}>
                         <Icon size={16} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-bold text-sm truncate ${unlocked ? 'text-gray-800' : 'text-gray-700'}`}>{ach.title}</p>
-                        <p className={`text-xs truncate ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
+                        <p className={`font-bold text-sm truncate ${tc.text}`}>{ach.title}</p>
+                        <p className="text-xs text-gray-400 truncate">{ach.description}</p>
                       </div>
                       {unlocked ? (
                         <Star size={16} className="text-duo-yellow shrink-0" />
                       ) : (
-                        <span className="text-xs font-bold text-gray-300 shrink-0">{percent}%</span>
+                        <span className={`text-xs font-bold shrink-0 ${colorTier === 'gray' ? 'text-gray-300' : 'text-gray-500'}`}>{percent}%</span>
                       )}
                     </div>
                     {!unlocked && hasProgress && (
                       <div className="ml-11">
                         <div className="w-full bg-gray-100 rounded-full h-1.5">
-                          <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${percent}%` }} />
+                          <div className={`${tc.accent} h-1.5 rounded-full`} style={{ width: `${percent}%` }} />
                         </div>
                         <p className="text-xs text-gray-400 mt-0.5">{progress.current} / {progress.target}</p>
                       </div>
