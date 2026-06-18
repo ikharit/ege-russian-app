@@ -172,7 +172,7 @@ export const useTask10Store = create<Task10State>()(
               const allDeferred = shuffleArray(
                 allIds.filter(id => (state.questionProgress[id]?.status || 'new') === 'deferred')
               )
-              set({ sessionQueue: allDeferred, sessionIndex: 0, currentQuestionId: allDeferred[0], selectedRows: [], hasAnswered: false })
+              set({ sessionQueue: allDeferred, sessionIndex: 1, currentQuestionId: allDeferred[0], selectedRows: [], hasAnswered: false })
               return task10Questions.find(q => q.id === allDeferred[0]) || null
             }
             return null
@@ -181,7 +181,7 @@ export const useTask10Store = create<Task10State>()(
           return get().getNextQuestion()
         }
 
-        set({ sessionQueue: queue, sessionIndex: 0, currentQuestionId: queue[0], selectedRows: [], hasAnswered: false })
+        set({ sessionQueue: queue, sessionIndex: 1, currentQuestionId: queue[0], selectedRows: [], hasAnswered: false })
         return task10Questions.find(q => q.id === queue[0]) || null
       },
 
@@ -208,10 +208,18 @@ export const useTask10Store = create<Task10State>()(
             totalWrong: existing.totalWrong + (correct ? 0 : 1),
           }
 
-          // If answer was wrong, append this question to the end of the session queue
-          // so it doesn't appear immediately.
+          // If answer was wrong, remove the question from its current position
+          // and append it to the end so it doesn't appear immediately.
           const newQueue = [...prev.sessionQueue]
-          if (!correct && !newQueue.includes(questionId)) {
+          let newSessionIndex = prev.sessionIndex
+          if (!correct) {
+            const idx = newQueue.indexOf(questionId)
+            if (idx !== -1) {
+              newQueue.splice(idx, 1)
+              if (idx < prev.sessionIndex) {
+                newSessionIndex = prev.sessionIndex - 1
+              }
+            }
             newQueue.push(questionId)
           }
 
@@ -231,6 +239,7 @@ export const useTask10Store = create<Task10State>()(
             },
             hasAnswered: true,
             sessionQueue: newQueue,
+            sessionIndex: newSessionIndex,
           }
         })
 

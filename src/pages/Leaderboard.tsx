@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar } from 'lucide-react'
+import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar, BookOpen } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from '../components/Popover'
 import { getStatusById } from '../data/statuses'
+import { allHomework } from '../data/gsheets/homeworkData'
 
 function getPeriodStart(period: 'week' | 'month' | 'all'): Date {
   const now = new Date()
@@ -25,7 +26,7 @@ export function Leaderboard() {
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
-  const [mode, setMode] = useState<'xp' | 'streak'>('xp')
+  const [mode, setMode] = useState<'xp' | 'streak' | 'homework'>('xp')
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
   useEffect(() => {
@@ -59,7 +60,35 @@ export function Leaderboard() {
   const sortedByStreak = [...filtered].sort((a, b) => (b.streak || 0) - (a.streak || 0))
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
-  const fullLeaderboard = mode === 'xp' ? sortedByXP : sortedByStreak
+  // Homework champions — real students only
+  const homeworkRankings = useMemo(() => {
+    const entries = Object.entries(allHomework)
+      .filter(([_, hw]) => hw.history.length > 0)
+      .map(([name, hw]) => {
+        const total = hw.history.length
+        const done = hw.history.filter(h => h.status === 'да').length
+        const percent = total > 0 ? Math.round((done / total) * 100) : 0
+        return {
+          id: name,
+          name,
+          avatar: '👨‍🎓',
+          xp: percent,
+          level: 1,
+          streak: done,
+          lessonsCompleted: total,
+          updatedAt: hw.current?.date || '',
+          rank: 0,
+          homeworkPercent: percent,
+          homeworkDone: done,
+          homeworkTotal: total,
+        }
+      })
+      .sort((a, b) => b.homeworkPercent - a.homeworkPercent)
+      .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
+    return entries
+  }, [])
+
+  const fullLeaderboard = mode === 'xp' ? sortedByXP : mode === 'streak' ? sortedByStreak : homeworkRankings
 
   const getRankIcon = (rank: number) => {
     if (rank === 1) return <Crown size={20} className="text-yellow-500" />
@@ -143,6 +172,7 @@ export function Leaderboard() {
         {[
           { key: 'xp' as const, label: 'По XP', icon: Trophy },
           { key: 'streak' as const, label: 'По страйку', icon: Flame },
+          { key: 'homework' as const, label: 'По домашке', icon: BookOpen },
         ].map(m => (
           <button
             key={m.key}
@@ -159,26 +189,32 @@ export function Leaderboard() {
         ))}
       </div>
 
-      {/* Period selector */}
-      <div className="flex gap-2 mb-6">
-        {[
-          { key: 'week' as const, label: 'Неделя' },
-          { key: 'month' as const, label: 'Месяц' },
-          { key: 'all' as const, label: 'Всё время' },
-        ].map(p => (
-          <button
-            key={p.key}
-            onClick={() => setPeriod(p.key)}
-            className={`flex-1 py-2 px-3 rounded-xl text-sm font-bold transition-all ${
-              period === p.key
-                ? 'bg-duo-blue text-white'
-                : 'bg-white text-gray-500 border border-gray-200'
-            }`}
-          >
-            {p.label}
-          </button>
-        ))}
-      </div>
+      {/* Period selector — hidden for homework mode */}
+      {mode !== 'homework' && (
+        <div className="flex gap-2 mb-6">
+          {[
+            { key: 'week' as const, label: 'Неделя' },
+            { key: 'month' as const, label: 'Месяц' },
+            { key: 'all' as const, label: 'Всё время' },
+          ].map(p => (
+            <button
+              key={p.key}
+              onClick={() => setPeriod(p.key)}
+              className={`flex-1 py-2 px-3 rounded-xl text-sm font-bold transition-all ${
+                period === p.key
+                  ? 'bg-duo-blue text-white'
+                  : 'bg-white text-gray-500 border border-gray-200'
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {mode === 'homework' && (
+        <p className="text-xs text-gray-400 text-center mb-4">Реальные ученики из Google Sheets</p>
+      )}
 
       {fullLeaderboard.length === 0 ? (
         <div className="card text-center py-12">
@@ -192,11 +228,11 @@ export function Leaderboard() {
             <div className="flex items-end justify-center gap-3 mb-8">
               {(() => {
                 const top3 = fullLeaderboard.slice(0, 3)
-                const maxVal = Math.max(...top3.map(e => mode === 'xp' ? e.xp : (e.streak || 0)))
+                const maxVal = Math.max(...top3.map(e => mode === 'xp' ? e.xp : mode === 'streak' ? (e.streak || 0) : (e as any).homeworkPercent || 0))
                 const minHeight = 90
                 const maxHeight = 170
                 const getHeight = (entry: typeof top3[0]) => {
-                  const val = mode === 'xp' ? entry.xp : (entry.streak || 0)
+                  const val = mode === 'xp' ? entry.xp : mode === 'streak' ? (entry.streak || 0) : (entry as any).homeworkPercent || 0
                   return minHeight + (val / maxVal) * (maxHeight - minHeight)
                 }
                 return [1, 0, 2].map(podiumIdx => {
@@ -232,8 +268,10 @@ export function Leaderboard() {
                         <p className="text-xs font-bold text-gray-800 truncate">{entry.name}</p>
                         {mode === 'xp' ? (
                           <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
-                        ) : (
+                        ) : mode === 'streak' ? (
                           <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
+                        ) : (
+                          <p className="text-xs text-duo-blue font-bold">{(entry as any).homeworkPercent}%</p>
                         )}
                       </div>
                     </motion.div>
@@ -286,10 +324,15 @@ export function Leaderboard() {
                           <p className="font-bold text-sm text-gray-800">{entry.xp}</p>
                           <p className="text-xs text-gray-400">XP</p>
                         </>
-                      ) : (
+                      ) : mode === 'streak' ? (
                         <>
                           <p className="font-bold text-sm text-orange-500">🔥 {entry.streak || 0}</p>
                           <p className="text-xs text-gray-400">дней</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-bold text-sm text-duo-blue">{(entry as any).homeworkPercent}%</p>
+                          <p className="text-xs text-gray-400">{(entry as any).homeworkDone}/{(entry as any).homeworkTotal} сдано</p>
                         </>
                       )}
                     </div>
