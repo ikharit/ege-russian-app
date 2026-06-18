@@ -169,8 +169,8 @@ export function Dashboard() {
       <DailyQuests />
 
       {/* Notification & Retention Widgets */}
-      <NotificationWidget />
-      <DeadlineWidget />
+      <DashboardNotificationWidget />
+      <DashboardDeadlineWidget />
 
       {/* Weak topics — link to unified center */}
       {problematicTasks.length > 0 && (
@@ -518,7 +518,7 @@ function MistakesCard() {
   )
 }
 
-function NotificationWidget() {
+function DashboardNotificationWidget() {
   const navigate = useNavigate()
   const notifications = useNotificationStore((s) => s.notifications)
   const unreadCount = notifications.filter(n => !n.read).length
@@ -586,7 +586,7 @@ function NotificationWidget() {
   )
 }
 
-function DeadlineWidget() {
+function DashboardDeadlineWidget() {
   const navigate = useNavigate()
   const today = new Date().toISOString().split('T')[0]
 
