@@ -32,8 +32,8 @@ export function TheoryTestRunner({ test, onComplete, onClose }: TheoryTestProps)
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx + 1 >= test.questions.length) {
-      const score = Math.round((correctCount + (isCorrect ? 1 : 0)) / test.questions.length * 100)
-      const xpEarned = Math.round(score / 10) * 5 // 5 XP per 10% accuracy, rounded
+      const score = Math.round(correctCount / test.questions.length * 100)
+      const xpEarned = Math.round(score / 10) * 3 // max 30 XP at 100%
       setIsFinished(true)
       onComplete(score, xpEarned)
     } else {
@@ -54,7 +54,7 @@ export function TheoryTestRunner({ test, onComplete, onClose }: TheoryTestProps)
 
   if (isFinished) {
     const finalScore = Math.round((correctCount) / test.questions.length * 100)
-    const xpEarned = Math.round(finalScore / 10) * 5
+    const xpEarned = Math.round(finalScore / 10) * 3 // max 30 XP at 100%
     const allCorrect = finalScore === 100
 
     return (

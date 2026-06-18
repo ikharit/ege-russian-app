@@ -89,7 +89,7 @@ export default function TheoryPage() {
                   <p className="text-xs text-gray-500">
                     {testCompleted
                       ? `Пройдено · ${testScore}% · ${test.questions.length} вопросов`
-                      : `${test.questions.length} вопросов · до 25 XP`}
+                      : `${test.questions.length} вопросов · до 30 XP`}
                   </p>
                 </div>
               </div>
