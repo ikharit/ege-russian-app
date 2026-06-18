@@ -4,6 +4,7 @@ import { orthoepyLexicographySections } from './sections/orthoepyLexicography'
 import { grammarSections } from './sections/grammarMorphologySyntax'
 import { orthographyAllSections } from './sections/orthographyAll'
 import { punctuationAllSections } from './sections/punctuationAll'
+import { dooshinSections } from './sections/dooshin'
 
 export const course: Course = {
   id: 'ege-russian-2025',
@@ -15,6 +16,7 @@ export const course: Course = {
     ...grammarSections,
     ...orthographyAllSections,
     ...punctuationAllSections,
+    ...dooshinSections,
   ]
 }
 
