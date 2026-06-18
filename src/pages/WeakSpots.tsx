@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { getAtomById } from '../data/atomization/atoms'
+import { course } from '../data/courseData'
 import { MistakesPractice } from '../components/MistakesPractice'
 import type { WrongAnswer } from '../types'
 
@@ -41,9 +42,20 @@ export function WeakSpots() {
   const problematicTasks = getProblematicTasks(10)
 
   const handleTrainTask = (taskNumber: string) => {
-    if (['4', '9'].includes(taskNumber)) navigate('/accent-trainer')
+    if (taskNumber === '4') navigate('/accent-trainer')
     else if (taskNumber === '10') navigate('/task10')
-    else navigate('/')
+    else {
+      // Find first lesson with this task number in atoms
+      for (const section of course.sections) {
+        for (const lesson of section.lessons) {
+          if (lesson.questions.some(q => q.atoms?.some(a => a === `task${taskNumber}`))) {
+            navigate(`/lesson/${lesson.id}`)
+            return
+          }
+        }
+      }
+      navigate('/')
+    }
   }
 
   // --- Data: Atoms ---
