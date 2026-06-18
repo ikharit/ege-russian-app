@@ -14,6 +14,12 @@ export function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-50">
+      <style>{`
+        @keyframes xp-bounce { 0%,100%{transform:scale(1)} 20%{transform:scale(1.2)} 40%{transform:scale(0.9)} 60%{transform:scale(1.15)} 80%{transform:scale(1)} }
+        @keyframes flame-flicker { 0%,100%{transform:scale(1);opacity:1} 25%{transform:scale(1.12);opacity:0.8} 50%{transform:scale(0.95);opacity:1} 75%{transform:scale(1.08);opacity:0.9} }
+        @keyframes heart-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+        @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
+      `}</style>
       <div className="max-w-md mx-auto flex items-center justify-between">
         <div className="flex items-center gap-1">
           <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
@@ -35,11 +41,11 @@ export function Header() {
           >
             <motion.div
               className="flex items-center gap-1 text-orange-500 cursor-pointer"
-              whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
-              transition={{ duration: 0.3 }}
-              animate={stats.streak > 0 ? { scale: [1, 1.1, 1] } : {}}
+              whileHover={{ scale: 1.15 }}
+              transition={{ duration: 0.2 }}
+              animate={stats.streak > 0 ? { scale: [1, 1.08, 1] } : {}}
             >
-              <Flame size={20} fill={stats.streak > 0 ? 'currentColor' : 'none'} />
+              <Flame size={20} fill={stats.streak > 0 ? 'currentColor' : 'none'} className="animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
               <span className="font-bold text-sm">{stats.streak}</span>
             </motion.div>
           </Popover>
@@ -60,10 +66,10 @@ export function Header() {
           >
             <motion.div
               className="flex items-center gap-1 text-duo-red cursor-pointer"
-              whileHover={{ scale: 1.15, y: -2 }}
-              transition={{ type: 'spring', stiffness: 400 }}
+              whileHover={{ scale: 1.15 }}
+              transition={{ duration: 0.2 }}
             >
-              <Heart size={20} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} />
+              <Heart size={20} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} className="animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
               <span className="font-bold text-sm">{stats.hearts}</span>
             </motion.div>
           </Popover>
@@ -80,11 +86,13 @@ export function Header() {
             }
           >
             <motion.div
-              className="flex items-center gap-1 text-duo-yellow cursor-pointer"
-              whileHover={{ scale: 1.15, rotate: 360 }}
-              transition={{ duration: 0.5 }}
+              className="flex items-center gap-1 text-duo-yellow cursor-pointer relative"
+              whileHover={{ scale: 1.15 }}
+              transition={{ duration: 0.2 }}
             >
-              <Zap size={20} fill="currentColor" />
+              <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0s' }} />
+              <div className="absolute -bottom-0.5 -left-1 w-1 h-1 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.5s' }} />
+              <Zap size={20} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
               <span className="font-bold text-sm">{stats.xp}</span>
             </motion.div>
           </Popover>
@@ -93,7 +101,7 @@ export function Header() {
           <motion.button
             onClick={() => navigate('/profile')}
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
-            whileHover={{ scale: 1.15, y: -2 }}
+            whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
           >
             <User size={20} />
