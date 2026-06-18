@@ -40,6 +40,7 @@ interface ProgressState {
   exportCount: number
   dailyQuestProgress: Record<string, { current: number; completed: boolean; claimed: boolean; date: string }>
   leaderboard: LeaderboardEntry[]
+  leaderboardRanks: string[]
   teacherStudents: TeacherStudent[]
   isTeacher: boolean
   userId: string | null
@@ -75,6 +76,7 @@ interface ProgressState {
   // Leaderboard
   addLeaderboardEntry: (entry: LeaderboardEntry) => void
   getLeaderboard: () => LeaderboardEntry[]
+  checkLeaderboardRanks: () => void
   // Teacher
   setTeacherMode: (isTeacher: boolean) => void
   addStudent: (student: TeacherStudent) => void
@@ -153,6 +155,7 @@ export const useProgressStore = create<ProgressState>()(
       exportCount: 0,
       dailyQuestProgress: {},
       leaderboard: defaultLeaderboard,
+      leaderboardRanks: [],
       teacherStudents: defaultTeacherStudents,
       isTeacher: false,
       userId: null,
@@ -679,6 +682,44 @@ export const useProgressStore = create<ProgressState>()(
 
       getLeaderboard: () => {
         return get().leaderboard
+      },
+
+      checkLeaderboardRanks: () => {
+        const state = get()
+        const all = [...state.leaderboard, {
+          id: 'me',
+          name: 'Вы',
+          avatar: '🎓',
+          xp: state.userStats.xp,
+          level: state.userStats.level,
+          streak: state.userStats.streak,
+          lessonsCompleted: Object.values(state.lessonProgress).filter(l => l.status === 'completed').length,
+          updatedAt: state.userStats.lastActivityDate || new Date().toISOString()
+        }]
+        const sortedByXP = [...all].sort((a, b) => b.xp - a.xp)
+        const myIndex = sortedByXP.findIndex(e => e.id === 'me')
+        const myRank = myIndex >= 0 ? myIndex + 1 : -1
+
+        const newRanks = new Set(state.leaderboardRanks)
+        if (myRank === 1) newRanks.add('rank-1-all')
+        if (myRank === 2) newRanks.add('rank-2')
+        if (myRank === 3) newRanks.add('rank-3')
+
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        const weekActive = all.filter(e => new Date(e.updatedAt) >= weekAgo)
+        const monthActive = all.filter(e => new Date(e.updatedAt) >= monthAgo)
+
+        const weekSorted = [...weekActive].sort((a, b) => b.xp - a.xp)
+        const monthSorted = [...monthActive].sort((a, b) => b.xp - a.xp)
+
+        if (weekSorted.length > 0 && weekSorted[0]?.id === 'me') newRanks.add('rank-1-week')
+        if (monthSorted.length > 0 && monthSorted[0]?.id === 'me') newRanks.add('rank-1-month')
+
+        const ranksArr = Array.from(newRanks)
+        if (ranksArr.length !== state.leaderboardRanks.length || !ranksArr.every(r => state.leaderboardRanks.includes(r))) {
+          set({ leaderboardRanks: ranksArr })
+        }
       },
 
       setTeacherMode: (isTeacher) => {

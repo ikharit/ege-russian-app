@@ -22,14 +22,24 @@ export const statuses: Status[] = [
   { id: 'status-persistent', name: 'Упорный', emoji: '🐂', description: '10 попыток на один урок', condition: 'ach-persistent', color: '#2D3748' },
   { id: 'status-weekend', name: 'Выходной', emoji: '🎉', description: 'Занимался в выходной', condition: 'ach-weekend', color: '#E53E3E' },
   { id: 'status-infinite', name: 'Бессмертный', emoji: '♾️', description: 'Включил бесконечные сердца', condition: 'ach-infinite', color: '#0BC5EA' },
+  // Leaderboard ranks
+  { id: 'status-rank-1-week', name: 'Лидер недели', emoji: '🥇', description: 'Первое место в рейтинге за неделю', condition: 'rank-1-week', color: '#D69E2E' },
+  { id: 'status-rank-1-month', name: 'Лидер месяца', emoji: '🏆', description: 'Первое место в рейтинге за месяц', condition: 'rank-1-month', color: '#B7791F' },
+  { id: 'status-rank-1-all', name: 'Король рейтинга', emoji: '👑', description: 'Первое место за всё время', condition: 'rank-1-all', color: '#D4AF37' },
+  { id: 'status-rank-2', name: 'Серебряный призёр', emoji: '🥈', description: 'Второе место в рейтинге', condition: 'rank-2', color: '#A0AEC0' },
+  { id: 'status-rank-3', name: 'Бронзовый призёр', emoji: '🥉', description: 'Третье место в рейтинге', condition: 'rank-3', color: '#C05621' },
 ]
 
 export function getStatusById(id: string): Status | undefined {
   return statuses.find(s => s.id === id)
 }
 
-export function getUnlockedStatuses(achievements: string[]): Status[] {
+export function getUnlockedStatuses(achievements: string[], leaderboardRanks: string[] = []): Status[] {
   // Always include default
-  const unlocked = statuses.filter(s => s.condition === 'default' || achievements.includes(s.condition))
+  const unlocked = statuses.filter(s => 
+    s.condition === 'default' || 
+    achievements.includes(s.condition) ||
+    leaderboardRanks.includes(s.condition)
+  )
   return unlocked
 }

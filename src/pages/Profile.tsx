@@ -17,6 +17,7 @@ export function Profile() {
   const toggleInfiniteHearts = useProgressStore((s) => s.toggleInfiniteHearts)
   const incrementExportCount = useProgressStore((s) => s.incrementExportCount)
   const setActiveStatus = useProgressStore((s) => s.setActiveStatus)
+  const leaderboardRanks = useProgressStore((s) => s.leaderboardRanks)
   const name = useProgressStore((s) => s.userStats.name || 'ученик')
   const activeStatusId = useProgressStore((s) => s.userStats.activeStatus)
 
@@ -25,7 +26,7 @@ export function Profile() {
   const nameRef = useRef<HTMLInputElement>(null)
 
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed').length
-  const unlockedStatuses = getUnlockedStatuses(achievements)
+  const unlockedStatuses = getUnlockedStatuses(achievements, leaderboardRanks)
   const activeStatus = getStatusById(activeStatusId || '') || unlockedStatuses[0]
   const totalQuestions = Object.values(lessonProgress).reduce((sum, lp) => sum + (lp.attempts || 0), 0)
   const bestScore = Object.values(lessonProgress).reduce((max, lp) => Math.max(max, lp.bestScore || 0), 0)
@@ -274,7 +275,7 @@ export function Profile() {
                     const progress = getAchievementProgress(ach.id, stats, lessonProgress)
                     const pct = progress.target > 1 ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
                     return (
-                      <div key={ach.id} className="flex items-center gap-2 bg-gray-800/50 rounded-lg p-2">
+                      <div key={ach.id} className="flex items-center gap-2 bg-gray-800/50 rounded-lg p-2 opacity-50">
                         <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
                           <Icon size={16} className="text-gray-500" />
                         </div>
@@ -338,7 +339,13 @@ export function Profile() {
       <div className="card">
         <h3 className="font-bold text-gray-700 mb-3">Все достижения</h3>
         <div className="flex flex-col gap-2">
-          {allAchievements.map((ach) => {
+          {[...allAchievements]
+            .sort((a, b) => {
+              const aUnlocked = achievements.includes(a.id)
+              const bUnlocked = achievements.includes(b.id)
+              return Number(bUnlocked) - Number(aUnlocked)
+            })
+            .map((ach) => {
             const unlocked = achievements.includes(ach.id)
             const Icon = getAchievementIcon(ach.id)
             const progress = getAchievementProgress(ach.id, stats, lessonProgress)
@@ -346,14 +353,14 @@ export function Profile() {
             const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
             
             return (
-              <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg ${unlocked ? 'bg-green-50' : 'bg-gray-50'}`}>
+              <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all ${unlocked ? 'bg-green-50 border border-duo-green/20 shadow-sm' : 'bg-gray-50 opacity-50'}`}>
                 <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${unlocked ? 'bg-duo-green text-white' : 'bg-gray-200 text-gray-400'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-200 text-gray-400 grayscale'}`}>
                     <Icon size={16} />
                   </div>
                   <div className="flex-1">
                     <p className={`font-bold text-sm ${unlocked ? 'text-gray-800' : 'text-gray-400'}`}>{ach.title}</p>
-                    <p className="text-xs text-gray-500">{ach.description}</p>
+                    <p className={`text-xs ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
                   </div>
                   {unlocked && <Star size={16} className="text-duo-yellow shrink-0" />}
                 </div>

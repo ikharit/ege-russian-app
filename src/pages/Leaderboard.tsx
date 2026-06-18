@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
@@ -26,6 +26,11 @@ export function Leaderboard() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
   const [mode, setMode] = useState<'xp' | 'streak'>('xp')
+
+  const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
+  useEffect(() => {
+    checkRanks()
+  }, [checkRanks, period, mode])
 
   const completedCount = Object.values(lessonProgress).filter(l => l.status === 'completed').length
 
