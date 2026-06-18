@@ -74,6 +74,7 @@ ege-russian-app/
 | CourseMap | 🟢 | main | Звёзды прогресса под нодами |
 | AccentTrainer | 🟢 | main | Ударения (задание 4) |
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
+| **Task5Trainer** | **🔵** | **main** | **Типографика (задание 5), новый модуль** |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Ждёт скрапинга из грамота.ру |
@@ -84,12 +85,19 @@ ege-russian-app/
 
 ## 🗂️ Журнал изменений (новые сверху)
 
-### [2026-06-19 00:11] Агент: main
-- **Что:** Создан агентский реестр (AGENTS.md + memory/agent-registry.md)
-- **Где:** `AGENTS.md`, `memory/agent-registry.md`
-- **Зачем:** 5 агентов работают над проектом, нужна координация
-- **Git commit:** —
-- **⚠️ Важно:** Все агенты ДОЛЖНЫ читать этот файл перед работой. Записывайте изменения в оба файла.
+### [2026-06-18 22:45] Агент: main
+- **Что:** Header XP анимация: микро-rotate + микро-искры
+- **Где:** `src/components/Header.tsx`
+- **Зачем:** Замена flip-rotate 360° на лёгкий покач (-2°→+1°→-1°), уменьшение sparkles до 1px и 0.5px
+- **Git commit:** `da84a9d`
+- **⚠️ Важно:** Совмещено с коммитом Task5Trainer (см. ниже)
+
+### [2026-06-18 22:44] Агент: main
+- **Что:** Task5Trainer — тренажёр задания 5 (типографика)
+- **Где:** `src/pages/Task5Trainer.tsx`, `src/data/task5Questions.ts`, `src/stores/task5Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`, `src/data/theoryTests.ts`
+- **Зачем:** Новый тренажёр для задания ЕГЭ (типографика/пунктуация)
+- **Git commit:** `da84a9d`
+- **⚠️ Важно:** Новый модуль — добавлен роут `/task5-trainer`, стор, данные вопросов. Dashboard обновлён для подсчёта изученных уроков.
 
 ### [2026-06-18 23:55] Агент: main
 - **Что:** Streak freeze + звёзды на карте курса
