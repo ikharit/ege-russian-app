@@ -45,9 +45,13 @@ export function AccentTrainer() {
   // Initialize session on mount
   useEffect(() => {
     const store = useAccentTrainerStore.getState()
+    const overall = store.getOverallProgress()
+    if (overall.mastered === overall.total) {
+      setShowCompleted(true)
+      return
+    }
     if (!store.currentWordId) {
       store.startSession()
-      store.getNextWord()
     }
   }, [])
 
@@ -153,7 +157,7 @@ export function AccentTrainer() {
             </h2>
             <p className="text-gray-500 mt-1">
               {overall.mastered === overall.total
-                ? 'Поздравляем! Вы освоили все слова.'
+                ? 'Поздравляем! Ты готов к заданию №4 ЕГЭ. Все слова орфоэпического словника ФИПИ освоены.'
                 : 'Отличная работа! Продолжайте тренироваться.'}
             </p>
           </div>
