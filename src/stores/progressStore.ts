@@ -265,6 +265,7 @@ export const useProgressStore = create<ProgressState>()(
         const state = get()
         const existing = state.lessonProgress[lessonId]
         const newBestScore = existing?.bestScore ? Math.max(existing.bestScore, score) : score
+        const wasCompleted = existing?.status === 'completed'
 
         // Calculate lesson duration
         let extraMinutes = 0
@@ -282,9 +283,9 @@ export const useProgressStore = create<ProgressState>()(
               status: 'completed',
               score,
               bestScore: newBestScore,
-              attempts: (existing?.attempts || 0) + 1,
-              xpEarned: (existing?.xpEarned || 0) + xpEarned,
-              completedAt: new Date().toISOString()
+              attempts: wasCompleted ? (existing?.attempts || 0) : (existing?.attempts || 0) + 1,
+              xpEarned: wasCompleted ? (existing?.xpEarned || 0) : (existing?.xpEarned || 0) + xpEarned,
+              completedAt: wasCompleted ? (existing?.completedAt || new Date().toISOString()) : new Date().toISOString()
             }
           },
           userStats: {
@@ -295,8 +296,10 @@ export const useProgressStore = create<ProgressState>()(
           currentLessonHeartsLost: 0
         }))
 
-        get().addXP(xpEarned)
-        get().updateStreak()
+        if (!wasCompleted) {
+          get().addXP(xpEarned)
+          get().updateStreak()
+        }
         const newAchievements = get().checkAchievements(lessonId)
         if (newAchievements.length > 0) {
           set((s) => ({

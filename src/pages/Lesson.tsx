@@ -125,29 +125,31 @@ export function Lesson() {
     }
   }, [currentQuestionIdx, questions.length])
 
-  const handleFinish = useCallback(() => {
-    const score = Math.round((correctCount / questions.length) * 100)
-    const baseXP = Math.round((correctCount / questions.length) * lesson.xpReward)
-    
-    // Combo multiplier
-    let multiplier = 1
-    if (combo >= 10) multiplier = 3
-    else if (combo >= 7) multiplier = 2.5
-    else if (combo >= 5) multiplier = 2
-    else if (combo >= 3) multiplier = 1.5
-    
-    const xpEarned = Math.round(baseXP * multiplier)
-    playLessonCompleteSound()
-    completeLesson(lesson.id, score, xpEarned)
-    
-    // Update daily quests
-    updateQuestProgress('quest-lessons-1')
-    if (score === 100) {
-      updateQuestProgress('quest-perfect-1')
+  // Auto-complete lesson when finished — fixes bug where closing page loses progress
+  const [hasAutoCompleted, setHasAutoCompleted] = useState(false)
+  useEffect(() => {
+    if (gameOverReason === 'completed' && !hasAutoCompleted) {
+      setHasAutoCompleted(true)
+      const score = Math.round((correctCount / questions.length) * 100)
+      const baseXP = Math.round((correctCount / questions.length) * lesson.xpReward)
+      let multiplier = 1
+      if (combo >= 10) multiplier = 3
+      else if (combo >= 7) multiplier = 2.5
+      else if (combo >= 5) multiplier = 2
+      else if (combo >= 3) multiplier = 1.5
+      const xpEarned = Math.round(baseXP * multiplier)
+      playLessonCompleteSound()
+      completeLesson(lesson.id, score, xpEarned)
+      updateQuestProgress('quest-lessons-1')
+      if (score === 100) {
+        updateQuestProgress('quest-perfect-1')
+      }
     }
-    
+  }, [gameOverReason, hasAutoCompleted, correctCount, questions.length, lesson.id, lesson.xpReward, combo, completeLesson, updateQuestProgress])
+
+  const handleFinish = useCallback(() => {
     navigate('/')
-  }, [correctCount, questions.length, lesson.id, lesson.xpReward, combo, completeLesson, navigate, updateQuestProgress])
+  }, [navigate])
 
   const handleRetry = useCallback(() => {
     restoreHearts()
@@ -155,6 +157,7 @@ export function Lesson() {
     setCorrectCount(0)
     setCombo(0)
     setGameOverReason(null)
+    setHasAutoCompleted(false)
     startLesson(lesson.id)
   }, [restoreHearts, startLesson, lesson.id])
 
