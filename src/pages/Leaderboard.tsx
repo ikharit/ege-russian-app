@@ -185,36 +185,56 @@ export function Leaderboard() {
           {/* Top 3 podium */}
           {fullLeaderboard.length >= 3 && (
             <div className="flex items-end justify-center gap-3 mb-8">
-              {[1, 0, 2].map(podiumIdx => {
-                const entry = fullLeaderboard[podiumIdx]
-                if (!entry) return null
-                const heights = ['h-28', 'h-32', 'h-24']
-                return (
-                  <motion.div
-                    key={entry.id}
-                    className="flex flex-col items-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: podiumIdx * 0.1 }}
-                  >
-                    <div className="text-2xl mb-1">{entry.avatar}</div>
-                    <div className={`${heights[podiumIdx]} w-20 bg-duo-snow rounded-t-xl flex items-center justify-center relative border-2 border-b-0 ${
-                      entry.rank === 1 ? 'border-yellow-400 bg-yellow-50' : 
-                      entry.rank === 2 ? 'border-gray-300 bg-gray-50' : 'border-amber-600 bg-orange-50'
-                    }`}>
-                      <span className="text-2xl font-bold text-gray-700">{entry.rank}</span>
-                    </div>
-                    <div className="w-20 bg-white rounded-b-xl p-2 shadow-sm text-center">
-                      <p className="text-xs font-bold text-gray-800 truncate">{entry.name}</p>
-                      {mode === 'xp' ? (
-                        <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
-                      ) : (
-                        <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
-                      )}
-                    </div>
-                  </motion.div>
-                )
-              })}
+              {(() => {
+                const top3 = fullLeaderboard.slice(0, 3)
+                const maxVal = Math.max(...top3.map(e => mode === 'xp' ? e.xp : (e.streak || 0)))
+                const minHeight = 90
+                const maxHeight = 170
+                const getHeight = (entry: typeof top3[0]) => {
+                  const val = mode === 'xp' ? entry.xp : (entry.streak || 0)
+                  return minHeight + (val / maxVal) * (maxHeight - minHeight)
+                }
+                return [1, 0, 2].map(podiumIdx => {
+                  const entry = fullLeaderboard[podiumIdx]
+                  if (!entry) return null
+                  const height = getHeight(entry)
+                  return (
+                    <motion.div
+                      key={entry.id}
+                      className="flex flex-col items-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: podiumIdx * 0.1 }}
+                    >
+                      <div className="text-2xl mb-1 relative">
+                        {entry.avatar}
+                        {entry.rank === 1 && (
+                          <Crown size={20} className="text-yellow-500 absolute -top-3 left-1/2 -translate-x-1/2" />
+                        )}
+                      </div>
+                      <div
+                        style={{ height: `${height}px` }}
+                        className={`w-20 bg-duo-snow rounded-t-xl flex items-center justify-center relative border-2 border-b-0 ${
+                          entry.rank === 1 ? 'border-yellow-400 bg-yellow-50 shadow-lg shadow-yellow-200/50' :
+                          entry.rank === 2 ? 'border-gray-300 bg-gray-50' : 'border-amber-600 bg-orange-50'
+                        }`}
+                      >
+                        <span className="text-2xl font-bold text-gray-700">{entry.rank}</span>
+                      </div>
+                      <div className={`w-20 rounded-b-xl p-2 shadow-sm text-center ${
+                        entry.rank === 1 ? 'bg-yellow-100' : 'bg-white'
+                      }`}>
+                        <p className="text-xs font-bold text-gray-800 truncate">{entry.name}</p>
+                        {mode === 'xp' ? (
+                          <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
+                        ) : (
+                          <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
+                        )}
+                      </div>
+                    </motion.div>
+                  )
+                })
+              })()}
             </div>
           )}
 
