@@ -21,8 +21,8 @@ import { useEffect, Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 
-const TheoryPage = lazy(() => import('./pages/TheoryPage'))
-const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage'))
+import TheoryPage from './pages/TheoryPage'
+import TheoryEditorPage from './pages/TheoryEditorPage'
 
 function BottomNav() {
   const navigate = useNavigate()

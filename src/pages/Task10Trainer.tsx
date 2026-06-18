@@ -377,9 +377,7 @@ export function Task10Trainer() {
                             <span key={pIdx}>
                               {part}
                               {pIdx < word.split('___').length - 1 && (
-                                <span className="inline-block w-5 h-5 border-b-2 border-gray-400 text-center text-gray-400 mx-0.5">
-                                  &nbsp;
-                                </span>
+                                <span className="text-gray-400 mx-0.5">___</span>
                               )}
                             </span>
                           ))}

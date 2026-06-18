@@ -62,6 +62,27 @@ export function Dashboard() {
   const totalLessons = course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
   const allCompleted = completedCount === totalLessons && totalLessons > 0
 
+  const getProblematicTasks = useProgressStore((s) => s.getProblematicTasks)
+  const problematicTasks = getProblematicTasks(3)
+
+  const handleTrainTask = (taskNumber: string) => {
+    if (['4', '9'].includes(taskNumber)) {
+      navigate('/accent-trainer')
+    } else if (taskNumber === '10') {
+      navigate('/task10')
+    } else {
+      for (const section of course.sections) {
+        for (const lesson of section.lessons) {
+          if (lesson.questions.some(q => q.atoms?.some(a => a.includes(`task${taskNumber}`)))) {
+            navigate(`/lesson/${lesson.id}`)
+            return
+          }
+        }
+      }
+      navigate('/')
+    }
+  }
+
   return (
     <div className="max-w-md mx-auto px-4 py-6 flex flex-col gap-6">
       {/* Welcome with rank */}
@@ -161,6 +182,41 @@ export function Dashboard() {
 
       {/* Daily Quests */}
       <DailyQuests />
+
+      {/* Weak topics */}
+      {problematicTasks.length > 0 && (
+        <motion.div
+          className="card bg-duo-red/5 border border-duo-red/20"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <AlertCircle size={20} className="text-duo-red" />
+            <h3 className="font-bold text-gray-700">⚠️ Стоит подтянуть</h3>
+          </div>
+          <div className="flex flex-col gap-2">
+            {problematicTasks.map((task) => (
+              <div key={task.taskNumber} className="flex items-center justify-between p-2 bg-white rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-gray-700">Задание {task.taskNumber}</span>
+                  <span className="text-xs text-gray-400">{task.wrong} ошибок из {task.total}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-bold ${task.accuracy < 50 ? 'text-duo-red' : 'text-duo-yellow'}`}>
+                    {task.accuracy}%
+                  </span>
+                  <button
+                    onClick={() => handleTrainTask(task.taskNumber)}
+                    className="px-2 py-1 bg-duo-red text-white text-xs font-bold rounded-lg hover:bg-duo-red/80 transition-colors"
+                  >
+                    Потренировать
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Progress */}
       <div className="card">
