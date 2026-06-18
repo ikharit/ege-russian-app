@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
+import { useTask5Store } from '../stores/task5Store'
 import { useTask10Store } from '../stores/task10Store'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
@@ -305,6 +306,30 @@ export function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Task 5 Trainer Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/task5-trainer')}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white">
+              <span className="text-lg font-bold">№5</span>
+            </div>
+            <div>
+              <p className="text-xs text-emerald-500 uppercase tracking-wide font-bold">Тренажёр</p>
+              <p className="font-bold text-gray-800">Паронимы</p>
+              <p className="text-xs text-gray-500">Словарь ФИПИ</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <Task5MiniProgress />
+            <ChevronRight size={24} className="text-emerald-400" />
+          </div>
+        </div>
+      </motion.div>
+
       {/* Task 10 Trainer Card */}
       <motion.div
         className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
@@ -379,6 +404,21 @@ function AccentTrainerMiniProgress() {
         <div className="bg-rose-400 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
       </div>
       <p className="text-[10px] text-gray-400 mt-0.5 text-right">{mastered}/{total}</p>
+    </div>
+  )
+}
+
+function Task5MiniProgress() {
+  const { getOverallProgress } = useTask5Store()
+  const { total, passed } = getOverallProgress()
+  const pct = total > 0 ? (passed / total) * 100 : 0
+
+  return (
+    <div className="w-16">
+      <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="text-[10px] text-gray-400 mt-0.5 text-right">{passed}/{total}</p>
     </div>
   )
 }
