@@ -104,6 +104,12 @@ interface ProgressState {
 
 const getToday = () => new Date().toISOString().split('T')[0]
 
+const daysBetween = (a: string, b: string): number => {
+  const d1 = new Date(a)
+  const d2 = new Date(b)
+  return Math.floor((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24))
+}
+
 const getInitialStats = (): UserStats => ({
   xp: 0,
   level: 1,
@@ -514,19 +520,42 @@ export const useProgressStore = create<ProgressState>()(
         set((s) => {
           const last = s.userStats.lastActivityDate
           let newStreak = s.userStats.streak
+          let streakFrozen = s.userStats.streakFrozen || false
+          let streakFreezeUsed = s.userStats.streakFreezeUsed || 0
+          let streakFreezeLastReset = s.userStats.streakFreezeLastReset || ''
+
+          // Reset free freeze every 7 days
+          if (streakFreezeLastReset && daysBetween(streakFreezeLastReset, today) >= 7) {
+            streakFreezeUsed = 0
+            streakFreezeLastReset = today
+          }
+
           if (last === today) {
             // Already studied today
           } else if (last === getYesterday()) {
             newStreak += 1
+            streakFrozen = false
           } else {
-            newStreak = 1
+            // Streak broken — try freeze
+            if (streakFreezeUsed < 1) {
+              streakFrozen = true
+              streakFreezeUsed += 1
+              streakFreezeLastReset = streakFreezeLastReset || today
+              // Keep streak, don't reset
+            } else {
+              newStreak = 1
+              streakFrozen = false
+            }
           }
           return {
             userStats: {
               ...s.userStats,
               streak: newStreak,
               maxStreak: Math.max(s.userStats.maxStreak, newStreak),
-              lastActivityDate: today
+              lastActivityDate: today,
+              streakFrozen,
+              streakFreezeUsed,
+              streakFreezeLastReset
             }
           }
         })

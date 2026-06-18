@@ -159,6 +159,18 @@ export function CourseMap() {
             {status === 'available' && <span>{lIdx + 1}</span>}
           </motion.button>
         </Popover>
+        {/* Stars below completed nodes */}
+        {status === 'completed' && prog && (
+          <div className="flex gap-0.5 mt-1">
+            {[1, 2, 3].map((star) => (
+              <Star
+                key={star}
+                size={10}
+                className={prog.bestScore >= star * 33 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}
+              />
+            ))}
+          </div>
+        )}
 
         <Popover position="bottom" content={popoverContent}>
           <div className="flex-1 cursor-pointer hover:opacity-80 transition-opacity">

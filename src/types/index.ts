@@ -99,6 +99,9 @@ export interface UserStats {
   totalHeartsLost?: number
   activeStatus?: string
   mistakesFixed?: number
+  streakFrozen?: boolean
+  streakFreezeUsed?: number
+  streakFreezeLastReset?: string
 }
 
 export interface Achievement {
