@@ -29,7 +29,7 @@ export function DailyQuests() {
   const today = new Date().toISOString().split('T')[0]
 
   const questsWithProgress = useMemo(() => {
-    return dailyQuests.map(quest => {
+    const quests = dailyQuests.map(quest => {
       const prog = dailyQuestProgress[quest.id]
       const isToday = prog?.date === today
       const current = isToday ? (prog?.current || 0) : 0
@@ -37,6 +37,11 @@ export function DailyQuests() {
       const claimed = isToday && prog?.claimed
       const percent = Math.min(100, Math.round((current / quest.target) * 100))
       return { ...quest, current, completed, claimed, percent }
+    })
+    // Sort: claimed first, then completed, then active, then not started
+    return quests.sort((a, b) => {
+      const score = (q: typeof a) => q.claimed ? 3 : q.completed ? 2 : q.percent > 0 ? 1 : 0
+      return score(b) - score(a)
     })
   }, [dailyQuestProgress, today])
 
@@ -79,15 +84,18 @@ export function DailyQuests() {
         {questsWithProgress.map((quest, idx) => {
           const Icon = typeIcons[quest.type]
           const colors = typeColors[quest.type]
+          const isNotStarted = !quest.claimed && !quest.completed && quest.percent === 0
           return (
             <motion.div
               key={quest.id}
               className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
                 quest.claimed 
-                  ? 'bg-green-50/80 border border-green-200' 
+                  ? 'bg-green-50/60 border border-green-200' 
                   : quest.completed 
-                    ? 'bg-white border border-amber-200 shadow-sm' 
-                    : 'bg-gray-50 border border-transparent'
+                    ? 'bg-amber-50 border border-amber-200 shadow-sm' 
+                    : isNotStarted
+                      ? 'bg-gray-50 border border-gray-100 opacity-40'
+                      : 'bg-white border border-gray-200 shadow-sm'
               }`}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
@@ -100,7 +108,9 @@ export function DailyQuests() {
                     ? 'bg-duo-green text-white scale-110' 
                     : quest.completed 
                       ? `${colors.bg} ${colors.icon} ring-2 ${colors.ring} ring-offset-2` 
-                      : 'bg-gray-200 text-gray-400'
+                      : isNotStarted
+                        ? 'bg-gray-200 text-gray-400 grayscale'
+                        : `${colors.bg} ${colors.icon}`
                 }`}>
                   <AnimatePresence mode="wait">
                     {quest.claimed ? (
@@ -150,7 +160,8 @@ export function DailyQuests() {
                 <div className="flex items-center justify-between">
                   <p className={`font-bold text-sm ${
                     quest.claimed ? 'text-gray-400 line-through' : 
-                    quest.completed ? 'text-gray-800' : 'text-gray-700'
+                    quest.completed ? 'text-gray-800' : 
+                    isNotStarted ? 'text-gray-400' : 'text-gray-700'
                   }`}>
                     {quest.title}
                   </p>
@@ -161,10 +172,10 @@ export function DailyQuests() {
                     {quest.rewardXP}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500">{quest.description}</p>
+                <p className={`text-xs ${quest.claimed || isNotStarted ? 'text-gray-400' : 'text-gray-500'}`}>{quest.description}</p>
 
-                {/* Progress bar with color based on type */}
-                {!quest.claimed && (
+                {/* Progress bar — hidden for not started, colored for active/completed */}
+                {!quest.claimed && !isNotStarted && (
                   <div className="mt-1.5">
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <motion.div
@@ -191,6 +202,10 @@ export function DailyQuests() {
                       )}
                     </div>
                   </div>
+                )}
+                {/* For not started, show just a faint hint */}
+                {isNotStarted && (
+                  <p className="text-xs text-gray-300 mt-1">Ещё не начато</p>
                 )}
               </div>
 
