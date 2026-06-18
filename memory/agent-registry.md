@@ -1,0 +1,108 @@
+# Агентский реестр — быстрый доступ
+
+> **Дубликат `AGENTS.md` в корне проекта. Читайте ОБА файла.**
+
+## Правила
+1. Перед работой — прочитай последние 10 записей
+2. После работы — добавь запись в ОБА файла
+3. Не удаляй чужие записи
+4. Git commit обязателен
+
+## Статус модулей
+
+| Модуль | Статус | Последний агент | Примечание |
+|--------|--------|-----------------|------------|
+| Dashboard | 🟢 | main | Карточка «Стоит подтянуть» → /mistakes |
+| Lesson | 🟢 | main | Auto-complete, combo, звуки, confetti |
+| Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
+| Statistics | 🟢 | main | Упрощён: Прогресс + Темы |
+| Profile | 🟢 | main | Статусы за лидерство, достижения |
+| /mistakes (WeakSpots) | 🟢 | main | 3 вкладки: ошибки, задания, атомы |
+| CourseMap | 🟢 | main | Звёзды под нодами (1-3⭐) |
+| AccentTrainer | 🟢 | main | Ударения (задание 4) |
+| Task10Trainer | 🟢 | main | НЕ/НИ (задание 10) |
+| AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
+| MiniGames | 🟡 | — | TODO: связать с accent store |
+| **Theory (теория)** | 🔵 | **ЖДЁТ** | Скрапинг из грамота.ру и других источников |
+| Homework data | 🟢 | main | 9 учеников из Google Sheets |
+| ShareResultPage | 🟢 | main | /share — карточка результата |
+
+## Журнал изменений (новые сверху)
+
+### [2026-06-19 00:11] Агент: main
+- **Что:** Создан агентский реестр (AGENTS.md + memory/agent-registry.md)
+- **Где:** `AGENTS.md`, `memory/agent-registry.md` (этот файл)
+- **Зачем:** 5 агентов работают над проектом, нужна координация
+- **Git commit:** —
+- **⚠️ Важно:** Все агенты ДОЛЖНЫ читать этот файл перед работой. Дублируйте записи в оба файла.
+
+### [2026-06-18 23:55] Агент: main
+- **Что:** Streak freeze + звёзды на карте курса
+- **Где:** `src/stores/progressStore.ts`, `src/pages/CourseMap.tsx`, `src/types/index.ts`
+- **Зачем:** Бесплатная заморозка streak раз в 7 дней; визуализация 1-3 звёзд по урокам
+- **Git commit:** `f234b15`
+- **⚠️ Важно:** UserStats расширен полями `streakFrozen`, `streakFreezeUsed`, `streakFreezeLastReset`
+
+### [2026-06-18 23:20] Агент: main
+- **Что:** Исправлен роутинг заданий (4→accent, 9→корни, 10→task10)
+- **Где:** `src/pages/WeakSpots.tsx`, `src/stores/progressStore.ts`
+- **Зачем:** Задание 9 ошибочно вело в accent-trainer вместо урока про корни
+- **Git commit:** `a67d7dc`
+- **⚠️ Важно:** `getProblematicTasks` теперь фильтрует `wrong > 0 && accuracy < 95`
+
+### [2026-06-18 22:25] Агент: main
+- **Что:** Объединение слабых мест в единый центр /mistakes
+- **Где:** `src/pages/WeakSpots.tsx`, `src/pages/Statistics.tsx`, `src/pages/Dashboard.tsx`, `src/components/MistakesPractice.tsx`
+- **Зачем:** 4 дублирующих раздела → 1 с 3 вкладками (ошибки, задания, атомы)
+- **Git commit:** `369d95b`
+- **⚠️ Важно:** Statistics больше не показывает «Слабые» и «Атомы» — они в /mistakes. Старый `MistakesReview.tsx` заменён на `WeakSpots.tsx`.
+
+### [2026-06-18 22:00] Агент: main
+- **Что:** Share result page (/share)
+- **Где:** `src/pages/ShareResultPage.tsx`, `src/App.tsx`, `src/components/LessonResult.tsx`
+- **Зачем:** Красивая карточка результата для шаринга
+- **Git commit:** `c99d5d8`
+- **⚠️ Важно:** LessonResult передаёт state через navigate. При F5 страница пустая — это известно.
+
+### [2026-06-18 21:30] Агент: main
+- **Что:** Combo toasts, звуки, confetti, weak topics на Dashboard
+- **Где:** `src/components/ComboToast.tsx`, `src/lib/sounds.ts`, `src/pages/Lesson.tsx`, `src/components/AchievementToast.tsx`, `src/pages/Dashboard.tsx`
+- **Зачем:** UX улучшения — мотивация, фидбек, видимость проблем
+- **Git commit:** `ffcf4a4`
+- **⚠️ Важно:** Звуки через Web Audio API — могут быть заблокированы браузером до первого взаимодействия.
+
+### [2026-06-18 20:50] Агент: main
+- **Что:** Leaderboard rank statuses + achievements UI polish
+- **Где:** `src/data/statuses.ts`, `src/stores/progressStore.ts`, `src/pages/Profile.tsx`, `src/pages/Leaderboard.tsx`
+- **Зачем:** Статусы за 1-3 места в рейтинге, визуальная иерархия достижений
+- **Git commit:** `9958f47`
+- **⚠️ Важно:** `getUnlockedStatuses` теперь принимает `leaderboardRanks` как второй аргумент.
+
+### [2026-06-18 20:10] Агент: main
+- **Что:** Пропорциональные высоты пьедестала в рейтинге
+- **Где:** `src/pages/Leaderboard.tsx`
+- **Зачем:** Визуально 1-е место было ниже 2-го
+- **Git commit:** `9724b2f`
+- **⚠️ Важно:** Высоты теперь считаются по XP: `minHeight + (val/maxVal) * (maxHeight-minHeight)`
+
+## Ключевые файлы
+
+- **Главный стор:** `src/stores/progressStore.ts`
+- **Роутинг:** `src/App.tsx`
+- **Типы:** `src/types/index.ts`
+- **Данные курса:** `src/data/courseData.ts`
+- **Домашки:** `src/data/gsheets/homeworkData.ts`
+- **Теория (пусто):** `src/data/theory/` — ⭐ СЮДА складывать новое
+- **Атомы:** `src/data/atomization/atoms.ts`
+
+## Что делать, если не уверен
+
+1. Прочитай этот файл и `AGENTS.md`
+2. `git log --oneline -10`
+3. `git diff` — увидишь незакоммиченные изменения
+4. Сделай backup (`git commit -m "backup: ..."`) перед масштабными правками
+5. Не перезаписывай — спроси или запиши в реестр
+
+---
+
+*Последнее обновление: 2026-06-19 00:11*
