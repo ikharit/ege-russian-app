@@ -71,6 +71,7 @@ function BottomNav() {
 type SyncStatus = 'idle' | 'syncing' | 'saved' | 'error'
 
 export default function App() {
+  const navigate = useNavigate()
   const location = useLocation()
   const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname === '/task16-trainer'
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
