@@ -157,7 +157,7 @@ ege-russian-app/
 - **Типы:** `src/types/index.ts` — UserStats, LessonProgress, WrongAnswer
 - **Данные курса:** `src/data/courseData.ts` — секции и уроки
 - **Домашки:** `src/data/gsheets/homeworkData.ts` — 9 реальных учеников
-- **Теория (пусто):** `src/data/theory/` — ⭐ СЮДА складывать новую теорию
+- **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер с дедупликацией
 - **Атомы:** `src/data/atomization/atoms.ts` — микро-навыки
 
 ---
@@ -169,6 +169,13 @@ ege-russian-app/
 3. Сделай `git diff` — увидишь текущие незакоммиченные изменения
 4. **Не перезаписывай файлы сразу** — если не уверен, спроси или сделай backup
 
+### [2026-06-19 00:30] Агент: main (теория + тесты)
+- **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
+- **Где:** `src/components/TheoryViewer.tsx`, `src/components/TheoryTest.tsx`, `src/data/theoryTests.ts`, `src/pages/TheoryPage.tsx`, `src/stores/progressStore.ts`, `src/App.tsx`
+- **Зачем:** Удаление интерактивных артефактов из theoryData.ts; проверка понимания теории; мотивация через XP и статусы
+- **Git commit:** `904d957` (включено в `feat: theory database structure`)
+- **⚠️ Важно:** `TheoryViewer` использует `skipUntilEmptyLine` + `Set` дедупликацию для скрытия тестовых блоков. Тесты хранятся в `progressStore.theoryTestsCompleted`. Задания 8 и 27 (Сочинение) тоже покрыты тестами.
+
 ---
 
-*Последнее обновление: 2026-06-18 22:50*
+*Последнее обновление: 2026-06-19 00:30*
