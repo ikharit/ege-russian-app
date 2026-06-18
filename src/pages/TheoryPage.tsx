@@ -1,14 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3 } from 'lucide-react'
+import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3, CheckCircle, PlayCircle } from 'lucide-react'
 import { theoryLessons, TheoryLesson } from '../data/theoryData'
 import { TheoryViewer } from '../components/TheoryViewer'
+import { TheoryTestRunner } from '../components/TheoryTest'
+import { theoryTests } from '../data/theoryTests'
+import { useProgressStore } from '../stores/progressStore'
 
 export default function TheoryPage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<TheoryLesson | null>(null)
+  const [showTest, setShowTest] = useState(false)
+
+  const completeTheoryTest = useProgressStore((s) => s.completeTheoryTest)
+  const theoryTestsCompleted = useProgressStore((s) => s.theoryTestsCompleted)
 
   const categories = Array.from(new Set(theoryLessons.map(l => l.category)))
 
@@ -23,7 +30,28 @@ export default function TheoryPage() {
     return matchSearch && matchCategory
   })
 
+  if (selectedLesson && showTest) {
+    const test = theoryTests.find(t => t.taskNumber === selectedLesson.taskNumber)
+    if (!test) {
+      setShowTest(false)
+      return null
+    }
+    return (
+      <TheoryTestRunner
+        test={test}
+        onComplete={(score, xpEarned) => {
+          completeTheoryTest(selectedLesson.taskNumber, score, xpEarned)
+        }}
+        onClose={() => setShowTest(false)}
+      />
+    )
+  }
+
   if (selectedLesson) {
+    const test = theoryTests.find(t => t.taskNumber === selectedLesson.taskNumber)
+    const testCompleted = theoryTestsCompleted[selectedLesson.taskNumber]?.completed
+    const testScore = theoryTestsCompleted[selectedLesson.taskNumber]?.score
+
     return (
       <div className="min-h-screen bg-duo-snow">
         <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 sticky top-0 z-10 shadow-sm">
@@ -48,6 +76,35 @@ export default function TheoryPage() {
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <TheoryViewer text={selectedLesson.theoryText} />
           </div>
+
+          {/* Theory Test Section */}
+          {test && (
+            <div className="mt-6 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${testCompleted ? 'bg-duo-green/10' : 'bg-duo-blue/10'}`}>
+                  {testCompleted ? <CheckCircle size={20} className="text-duo-green" /> : <PlayCircle size={20} className="text-duo-blue" />}
+                </div>
+                <div className="flex-1">
+                  <p className="font-bold text-gray-800 text-sm">Проверь понимание</p>
+                  <p className="text-xs text-gray-500">
+                    {testCompleted
+                      ? `Пройдено · ${testScore}% · ${test.questions.length} вопросов`
+                      : `${test.questions.length} вопросов · до 25 XP`}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowTest(true)}
+                className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${
+                  testCompleted
+                    ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'btn-primary'
+                }`}
+              >
+                {testCompleted ? 'Пройти снова' : 'Начать тест'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     )

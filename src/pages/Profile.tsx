@@ -149,18 +149,17 @@ export function Profile() {
 
       {/* Stats Grid — animated icons */}
       <style>{`
-        @keyframes xp-bounce { 0%,100%{transform:scale(1)} 25%{transform:scale(1.15)} 50%{transform:scale(0.95)} 75%{transform:scale(1.1)} }
-        @keyframes flame-wobble { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
-        @keyframes heart-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-        @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
+        @keyframes xp-bounce { 0%,100%{transform:scale(1) rotate(0deg)} 20%{transform:scale(1.2) rotate(-5deg)} 40%{transform:scale(0.9) rotate(3deg)} 60%{transform:scale(1.15) rotate(-2deg)} 80%{transform:scale(1) rotate(1deg)} }
+        @keyframes flame-flicker { 0%,100%{transform:scale(1);opacity:1} 25%{transform:scale(1.12);opacity:0.8} 50%{transform:scale(0.95);opacity:1} 75%{transform:scale(1.08);opacity:0.9} }
+        @keyframes heart-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
         @keyframes trophy-shine { 0%{transform:translateX(-100%) rotate(45deg)} 100%{transform:translateX(200%) rotate(45deg)} }
+        @keyframes trophy-glow { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.25)} }
       `}</style>
       <div className="grid grid-cols-2 gap-3">
         <div className="card flex items-center gap-3">
           <div className="relative">
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0s' }} />
-            <div className="absolute -bottom-0.5 -left-1 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0.4s' }} />
-            <div className="absolute top-0 -left-1.5 w-1 h-1 bg-yellow-300 rounded-full animate-[sparkle_1.2s_infinite]" style={{ animationDelay: '0.8s' }} />
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-[xp-bounce_1.5s_infinite]" style={{ animationDelay: '0s', opacity: 0.8 }} />
+            <div className="absolute -bottom-0.5 -left-1 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[xp-bounce_1.5s_infinite]" style={{ animationDelay: '0.3s', opacity: 0.6 }} />
             <Zap size={20} className="text-duo-yellow animate-[xp-bounce_2s_ease-in-out_infinite]" />
           </div>
           <div>
@@ -170,9 +169,7 @@ export function Profile() {
         </div>
         <div className="card flex items-center gap-3">
           <div className="relative">
-            <div className="absolute -top-0.5 right-0 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.2s' }} />
-            <div className="absolute -bottom-1 left-0 w-1 h-1 bg-red-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.7s' }} />
-            <Flame size={20} className="text-orange-500 animate-[flame-wobble_1.5s_ease-in-out_infinite]" />
+            <Flame size={20} className="text-orange-500 animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
           </div>
           <div>
             <p className="text-lg font-bold">{stats.streak}</p>
@@ -181,9 +178,7 @@ export function Profile() {
         </div>
         <div className="card flex items-center gap-3">
           <div className="relative">
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-300 rounded-full animate-[sparkle_1.3s_infinite]" style={{ animationDelay: '0.3s' }} />
-            <div className="absolute -bottom-0.5 -left-1 w-1.5 h-1.5 bg-pink-400 rounded-full animate-[sparkle_1.3s_infinite]" style={{ animationDelay: '0.6s' }} />
-            <Heart size={20} className="text-red-500 animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
+            <Heart size={20} className="text-red-500 animate-[heart-float_1.5s_ease-in-out_infinite]" />
           </div>
           <div>
             <p className="text-lg font-bold">{stats.hearts}/{stats.maxHearts}</p>
@@ -192,8 +187,8 @@ export function Profile() {
         </div>
         <div className="card flex items-center gap-3">
           <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-white/40 w-4 h-full animate-[trophy-shine_2s_ease-in-out_infinite]" style={{ transform: 'translateX(-100%) rotate(45deg)' }} />
-            <Trophy size={20} className="text-duo-purple" />
+            <div className="absolute inset-0 bg-white/30 w-3 h-full animate-[trophy-shine_2.5s_ease-in-out_infinite]" style={{ transform: 'translateX(-100%) rotate(45deg)' }} />
+            <Trophy size={20} className="text-duo-purple animate-[trophy-glow_2s_ease-in-out_infinite]" />
           </div>
           <div>
             <p className="text-lg font-bold">{stats.maxStreak}</p>

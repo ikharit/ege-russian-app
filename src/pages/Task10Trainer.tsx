@@ -104,8 +104,6 @@ export function Task10Trainer() {
     setSelectedRows([])
     setIsCorrect(false)
     store.startSession()
-    const next = store.getNextQuestion()
-    if (next) setQuestionId(next.id)
   }
 
   const handleReset = () => {
@@ -117,8 +115,6 @@ export function Task10Trainer() {
       setIsCorrect(false)
       setShowCompleted(false)
       store.startSession()
-      const next = store.getNextQuestion()
-      if (next) setQuestionId(next.id)
     }
   }
 

@@ -44,6 +44,8 @@ interface ProgressState {
   teacherStudents: TeacherStudent[]
   isTeacher: boolean
   userId: string | null
+  // Theory tests completion tracking
+  theoryTestsCompleted: Record<string, { completed: boolean; score: number; xpEarned: number; completedAt?: string }>
 
   // Actions
   startLesson: (lessonId: string) => void
@@ -95,6 +97,7 @@ interface ProgressState {
   updateQuestProgress: (questId: string, amount?: number) => void
   claimQuestReward: (questId: string) => boolean
   resetDailyQuests: () => void
+  completeTheoryTest: (taskNumber: string, score: number, xpEarned: number) => void
   // Status
   setActiveStatus: (statusId: string) => void
 }
@@ -159,6 +162,7 @@ export const useProgressStore = create<ProgressState>()(
       teacherStudents: defaultTeacherStudents,
       isTeacher: false,
       userId: null,
+      theoryTestsCompleted: {},
 
       setUserId: (userId) => set({ userId }),
 
@@ -294,6 +298,39 @@ export const useProgressStore = create<ProgressState>()(
         get().addXP(xpEarned)
         get().updateStreak()
         const newAchievements = get().checkAchievements(lessonId)
+        if (newAchievements.length > 0) {
+          set((s) => ({
+            achievements: [...new Set([...s.achievements, ...newAchievements])],
+            lastUnlockedAchievement: newAchievements[0],
+            userStats: {
+              ...s.userStats,
+              achievements: [...new Set([...s.userStats.achievements, ...newAchievements])]
+            }
+          }))
+        }
+      },
+
+      completeTheoryTest: (taskNumber, score, xpEarned) => {
+        const state = get()
+        const existing = state.theoryTestsCompleted[taskNumber]
+        const newBestScore = existing?.score ? Math.max(existing.score, score) : score
+        const newXpEarned = existing?.xpEarned ? Math.max(existing.xpEarned, xpEarned) : xpEarned
+
+        set((s) => ({
+          theoryTestsCompleted: {
+            ...s.theoryTestsCompleted,
+            [taskNumber]: {
+              completed: true,
+              score: newBestScore,
+              xpEarned: newXpEarned,
+              completedAt: new Date().toISOString()
+            }
+          }
+        }))
+
+        get().addXP(xpEarned)
+        get().updateStreak()
+        const newAchievements = get().checkAchievements()
         if (newAchievements.length > 0) {
           set((s) => ({
             achievements: [...new Set([...s.achievements, ...newAchievements])],
