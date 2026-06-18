@@ -12,7 +12,7 @@
 
 | Модуль | Статус | Последний агент | Примечание |
 |--------|--------|-----------------|------------|
-| Dashboard | 🟢 | main | Карточка «Стоит подтянуть» → /mistakes |
+| Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget |
 | Lesson | 🟢 | main | Auto-complete, combo, звуки, confetti |
 | Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
 | Statistics | 🟢 | main | Упрощён: Прогресс + Темы |
@@ -28,8 +28,17 @@
 | **Theory (теория)** | 🟢 | **main** | Тесты, рендерер, XP, статусы в списке |
 | Homework data | 🟢 | main | 9 учеников из Google Sheets |
 | ShareResultPage | 🟢 | main | /share — карточка результата |
+| **NotificationStore** | **🔵** | **main** | **Push-уведомления, streak reminders, дедлайны** |
+| **AnalyticsPage** | **🔵** | **main** | **Аналитика класса: слабые задания, ученики, дедлайны** |
 
 ## Журнал изменений (новые сверху)
+
+### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
+- **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
+- **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
+- **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
+- **Git commit:** —
+- **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
 
 ### [2026-06-19 00:20] Агент: main
 - **Что:** База теории — task11, task12, task14
@@ -136,6 +145,8 @@
 - **Домашки:** `src/data/gsheets/homeworkData.ts`
 - **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер
 - **Атомы:** `src/data/atomization/atoms.ts`
+- **Уведомления:** `src/stores/notificationStore.ts`
+- **Аналитика:** `src/pages/AnalyticsPage.tsx`
 
 ## Что делать, если не уверен
 
@@ -147,19 +158,4 @@
 
 ---
 
-*Последнее обновление: 2026-06-18 23:05*
-
----
-
-*Последнее обновление: 2026-06-19 00:30*
-
----
-
-*Последнее обновление: 2026-06-19 00:45*
-
-### [2026-06-19 00:45] Агент: main (Backend/Auth/Sync план)
-- **Что:** Планирование: Auth (email/Google), Firestore sync прогресса, автосинхронизация
-- **Где:** `src/lib/supabase.ts`, `src/stores/progressStore.ts`, `src/App.tsx`, `src/components/AuthModal.tsx` (новый)
-- **Зачем:** Пользователь просит добавить аутентификацию и синхронизацию прогресса в облако. Текущий `syncProgress` неполный — не синхронизирует `theoryTestsCompleted`, `atomProgress`, `wrongAnswers`, `taskStats`, `dailyQuestProgress`.
-- **Git commit:** — (планирование)
-- **⚠️ Важно:** `syncProgress` сейчас сохраняет только `userStats` + `lessonProgress` + `achievements`. Нужно расширить до полного состояния. Также нужен UI для входа/регистрации.
+*Последнее обновление: 2026-06-19 01:00*

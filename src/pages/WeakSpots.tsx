@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, AlertTriangle, Target, BookOpen, Trash2, RotateCcw,
-  ChevronRight, Dumbbell
+  ChevronRight, Dumbbell, Lightbulb
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { getAtomById } from '../data/atomization/atoms'
 import { course } from '../data/courseData'
+import { getRulesByTaskNumber } from '../data/theory'
+import { TheoryQuickReference } from '../components/TheoryQuickReference'
 import { MistakesPractice } from '../components/MistakesPractice'
 import type { WrongAnswer } from '../types'
 
@@ -169,6 +171,21 @@ export function WeakSpots() {
                             ✓ {item.correctAnswer.join(', ')}
                           </span>
                         </div>
+                        {/* Show relevant theory for this task */}
+                        {(() => {
+                          const rules = getRulesByTaskNumber(item.taskNumber || '')
+                          if (rules.length === 0) return null
+                          return (
+                            <div className="mt-2 pl-2 border-l-2 border-duo-blue/30">
+                              <div className="flex items-center gap-2 mb-1">
+                                <Lightbulb size={14} className="text-duo-yellow" />
+                                <span className="text-xs font-bold text-gray-600">Правило:</span>
+                              </div>
+                              <TheoryQuickReference rules={rules.slice(0, 1)} showExamples={false} />
+                            </div>
+                          )
+                        })()}
+
                         <button
                           onClick={() => startPractice([item])}
                           className="text-sm text-duo-blue font-medium flex items-center gap-1 hover:underline self-start"

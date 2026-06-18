@@ -16,13 +16,17 @@ const mockSupabase: any = {
     insert: noop,
   }),
   auth: {
-    getSession: () => Promise.resolve({ data: { session: null } }),
+    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+    getUser: () => Promise.resolve({ data: { user: null }, error: null }),
     onAuthStateChange: () => ({
       data: { subscription: { unsubscribe: () => {} } }
     }),
-    signInWithPassword: () => Promise.resolve({ error: null }),
-    signUp: () => Promise.resolve({ data: { user: null }, error: null }),
+    signInWithPassword: () => Promise.resolve({ data: { user: null, session: null }, error: null }),
+    signInWithOAuth: () => Promise.resolve({ data: { url: null }, error: null }),
+    signUp: () => Promise.resolve({ data: { user: null, session: null }, error: null }),
     signOut: noop,
+    resetPasswordForEmail: noop,
+    updateUser: noop,
   }
 }
 
@@ -40,17 +44,17 @@ export type Profile = {
 export type UserProgress = {
   id: string
   user_id: string
+  user_stats: Record<string, any>
   lesson_progress: Record<string, any>
-  user_stats: {
-    xp: number
-    level: number
-    hearts: number
-    streak: number
-    longestStreak: number
-    totalQuestions: number
-    correctAnswers: number
-  }
+  atom_progress: Record<string, any>
+  wrong_answers: any[]
   achievements: string[]
+  task_stats: Record<string, any>
+  daily_quest_progress: Record<string, any>
+  theory_tests_completed: Record<string, any>
+  leaderboard_ranks: string[]
+  teacher_students: any[]
+  is_teacher: boolean
   updated_at: string
 }
 
@@ -62,4 +66,45 @@ export type LeaderboardEntry = {
   level: number
   streak: number
   updated_at: string
+}
+
+export async function getCurrentUser() {
+  if (!isSupabaseConfigured) return null
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data?.user) return null
+  return data.user
+}
+
+export async function getCurrentSession() {
+  if (!isSupabaseConfigured) return null
+  const { data, error } = await supabase.auth.getSession()
+  if (error || !data?.session) return null
+  return data.session
+}
+
+export async function signInWithEmail(email: string, password: string) {
+  if (!isSupabaseConfigured) return { error: new Error('Supabase not configured') }
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  return { data, error }
+}
+
+export async function signUpWithEmail(email: string, password: string) {
+  if (!isSupabaseConfigured) return { error: new Error('Supabase not configured') }
+  const { data, error } = await supabase.auth.signUp({ email, password })
+  return { data, error }
+}
+
+export async function signInWithGoogle() {
+  if (!isSupabaseConfigured) return { error: new Error('Supabase not configured') }
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  })
+  return { data, error }
+}
+
+export async function signOut() {
+  if (!isSupabaseConfigured) return { error: null }
+  const { error } = await supabase.auth.signOut()
+  return { error }
 }

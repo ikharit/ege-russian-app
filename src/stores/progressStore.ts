@@ -173,13 +173,22 @@ export const useProgressStore = create<ProgressState>()(
       setUserId: (userId) => set({ userId }),
 
       syncProgress: async () => {
-        const { userId, userStats, lessonProgress, achievements } = get()
+        const state = get()
+        const { userId } = state
         if (!userId || !isSupabaseConfigured) return
         await supabase.from('user_progress').upsert({
           user_id: userId,
-          user_stats: userStats,
-          lesson_progress: lessonProgress,
-          achievements,
+          user_stats: state.userStats,
+          lesson_progress: state.lessonProgress,
+          atom_progress: state.atomProgress,
+          wrong_answers: state.wrongAnswers,
+          achievements: state.achievements,
+          task_stats: state.taskStats,
+          daily_quest_progress: state.dailyQuestProgress,
+          theory_tests_completed: state.theoryTestsCompleted,
+          leaderboard_ranks: state.leaderboardRanks,
+          teacher_students: state.teacherStudents,
+          is_teacher: state.isTeacher,
           updated_at: new Date().toISOString()
         }, { onConflict: 'user_id' })
       },
@@ -187,12 +196,20 @@ export const useProgressStore = create<ProgressState>()(
       loadProgress: async () => {
         const { userId } = get()
         if (!userId || !isSupabaseConfigured) return
-        const { data } = await supabase.from('user_progress').select('*').eq('user_id', userId).single()
-        if (data) {
+        const { data, error } = await supabase.from('user_progress').select('*').eq('user_id', userId).single()
+        if (data && !error) {
           set({
             userStats: data.user_stats || getInitialStats(),
             lessonProgress: data.lesson_progress || {},
-            achievements: data.achievements || []
+            atomProgress: data.atom_progress || {},
+            wrongAnswers: data.wrong_answers || [],
+            achievements: data.achievements || [],
+            taskStats: data.task_stats || {},
+            dailyQuestProgress: data.daily_quest_progress || {},
+            theoryTestsCompleted: data.theory_tests_completed || {},
+            leaderboardRanks: data.leaderboard_ranks || [],
+            teacherStudents: data.teacher_students || defaultTeacherStudents,
+            isTeacher: data.is_teacher || false,
           })
         }
       },

@@ -212,3 +212,12 @@ ege-russian-app/
 ---
 
 *Последнее обновление: 2026-06-19 00:45*
+
+### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
+- **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
+- **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
+- **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
+- **Git commit:** —
+- **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
+
+---

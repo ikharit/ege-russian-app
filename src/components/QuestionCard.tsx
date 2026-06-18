@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, ArrowRight } from 'lucide-react'
+import { Check, X, ArrowRight, BookOpen, Lightbulb } from 'lucide-react'
 import { Question } from '../types'
+import { getRulesByTaskNumber } from '../data/theory'
+import { TheoryQuickReference } from './TheoryQuickReference'
+
+function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
+  if (!atoms) return null
+  const taskAtom = atoms.find(a => a.startsWith('task'))
+  return taskAtom ? taskAtom.replace('task', '') : null
+}
 
 interface QuestionCardProps {
   question: Question
@@ -179,6 +187,26 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
           <p className="text-sm text-gray-500 mt-1">
             Правильный ответ: {question.correctAnswer.join(', ')}
           </p>
+
+          {/* Show relevant theory rules on wrong answer */}
+          {!isCorrect && (() => {
+            const taskNum = getTaskNumberFromAtoms(question.atoms)
+            if (!taskNum) return null
+            const rules = getRulesByTaskNumber(taskNum)
+            if (rules.length === 0) return null
+            return (
+              <div className="mt-3 pt-3 border-t border-red-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen size={16} className="text-duo-blue" />
+                  <span className="text-sm font-bold text-gray-700">Правило по заданию {taskNum}:</span>
+                </div>
+                <TheoryQuickReference rules={rules.slice(0, 2)} showExamples={false} />
+                <p className="text-xs text-gray-400 mt-1 italic">
+                  Полная теория в разделе «Учиться» → Задание {taskNum}
+                </p>
+              </div>
+            )
+          })()}
         </motion.div>
       )}
 

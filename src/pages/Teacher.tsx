@@ -379,7 +379,23 @@ export function Teacher() {
         </div>
       )}
       {activeTab === 'analytics' && (
-        <AnalyticsTab />
+        <div className="flex flex-col gap-4">
+          <div className="card text-center py-8">
+            <BarChart3 size={48} className="text-duo-blue mx-auto mb-4" />
+            <h3 className="font-bold text-gray-800 mb-2">Расширенная аналитика</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              Подробная аналитика по классу: слабые задания, точность по ученикам, дедлайны домашки
+            </p>
+            <button
+              onClick={() => navigate('/analytics')}
+              className="btn-primary flex items-center justify-center gap-2 mx-auto"
+            >
+              <BarChart3 size={18} />
+              Открыть аналитику
+            </button>
+          </div>
+          <AnalyticsTab />
+        </div>
       )}
     </div>
   )

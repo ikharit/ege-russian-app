@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle, Bell, Clock } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useNotificationStore } from '../stores/notificationStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { useTask5Store } from '../stores/task5Store'
 import { useTask10Store } from '../stores/task10Store'
@@ -166,6 +167,10 @@ export function Dashboard() {
 
       {/* Daily Quests */}
       <DailyQuests />
+
+      {/* Notification & Retention Widgets */}
+      <NotificationWidget />
+      <DeadlineWidget />
 
       {/* Weak topics — link to unified center */}
       {problematicTasks.length > 0 && (
@@ -508,6 +513,135 @@ function MistakesCard() {
           </div>
         </div>
         <ChevronRight size={24} className="text-red-400" />
+      </div>
+    </motion.div>
+  )
+}
+
+function NotificationWidget() {
+  const navigate = useNavigate()
+  const notifications = useNotificationStore((s) => s.notifications)
+  const unreadCount = notifications.filter(n => !n.read).length
+  const markRead = useNotificationStore((s) => s.markRead)
+  const settings = useNotificationStore((s) => s.settings)
+  const requestPermission = useNotificationStore((s) => s.requestPermission)
+  const [expanded, setExpanded] = useState(false)
+
+  if (!settings.enabled) return null
+  if (unreadCount === 0) return null
+
+  return (
+    <motion.div
+      className="card bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-orange-400 flex items-center justify-center text-white relative">
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">
+                {unreadCount}
+              </span>
+            )}
+          </div>
+          <div>
+            <p className="font-bold text-gray-800">Уведомления</p>
+            <p className="text-xs text-gray-500">{unreadCount} новых</p>
+          </div>
+        </div>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-sm text-orange-500 font-bold"
+        >
+          {expanded ? 'Скрыть' : 'Показать'}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-3 flex flex-col gap-2">
+          {notifications.filter(n => !n.read).slice(0, 5).map((n) => (
+            <div key={n.id} className="p-2 bg-white rounded-lg flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-gray-700">{n.title}</p>
+                <p className="text-xs text-gray-500">{n.body}</p>
+              </div>
+              <button
+                onClick={() => markRead(n.id)}
+                className="text-xs text-orange-500 font-bold"
+              >
+                Прочитано
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => requestPermission()}
+            className="text-xs text-orange-500 font-bold mt-1"
+          >
+            🔕 Включить push-уведомления
+          </button>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+function DeadlineWidget() {
+  const navigate = useNavigate()
+  const today = new Date().toISOString().split('T')[0]
+
+  // Find upcoming deadlines from homework data
+  const deadlines = Object.entries(allHomework)
+    .filter(([_, hw]) => hw.current !== null)
+    .map(([name, hw]) => {
+      const hwDate = hw.current!.date
+      const daysLeft = Math.ceil((new Date(hwDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+      return {
+        name,
+        homework: hw.current!.homework,
+        date: hwDate,
+        daysLeft,
+        urgent: daysLeft <= 2 && daysLeft >= 0,
+      }
+    })
+    .filter(d => d.daysLeft >= 0)
+    .sort((a, b) => a.daysLeft - b.daysLeft)
+
+  const urgentCount = deadlines.filter(d => d.urgent).length
+
+  if (deadlines.length === 0) return null
+
+  return (
+    <motion.div
+      className={`card ${urgentCount > 0 ? 'bg-gradient-to-br from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200'}`}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.01 }}
+      onClick={() => navigate('/my-homework')}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${urgentCount > 0 ? 'bg-red-400' : 'bg-blue-500'}`}>
+            <Clock size={20} />
+          </div>
+          <div>
+            <p className="font-bold text-gray-800">Дедлайны домашки</p>
+            <p className="text-xs text-gray-500">
+              {urgentCount > 0 ? `${urgentCount} срочных` : `${deadlines.length} активных`}
+            </p>
+          </div>
+        </div>
+        <ChevronRight size={20} className={urgentCount > 0 ? 'text-red-400' : 'text-blue-400'} />
+      </div>
+      <div className="mt-2 flex flex-col gap-1">
+        {deadlines.slice(0, 3).map((d) => (
+          <div key={d.name} className="flex items-center justify-between text-xs">
+            <span className="text-gray-700">{d.name}</span>
+            <span className={d.daysLeft <= 1 ? 'text-red-500 font-bold' : 'text-gray-500'}>
+              {d.daysLeft === 0 ? 'Сегодня!' : `${d.daysLeft} дн.`}
+            </span>
+          </div>
+        ))}
       </div>
     </motion.div>
   )
