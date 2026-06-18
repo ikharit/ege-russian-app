@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3, CheckCircle, PlayCircle } from 'lucide-react'
+import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3, CheckCircle, PlayCircle, AlertCircle, Star, Circle } from 'lucide-react'
 import { theoryLessons, TheoryLesson } from '../data/theoryData'
 import { TheoryViewer } from '../components/TheoryViewer'
 import { TheoryTestRunner } from '../components/TheoryTest'
@@ -146,21 +146,87 @@ export default function TheoryPage() {
         </div>
       </div>
       <div className="px-4 py-4 max-w-2xl mx-auto space-y-3">
-        {filtered.map((lesson, index) => (
-          <button key={lesson.taskNumber + '-' + index} onClick={() => setSelectedLesson(lesson)}
-            className="w-full text-left bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-100 active:scale-[0.98]">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-duo-blue/10 flex items-center justify-center shrink-0">
-                <BookOpen size={18} className="text-duo-blue" />
+        {filtered.map((lesson, index) => {
+          const tc = theoryTestsCompleted[lesson.taskNumber]
+          const score = tc?.score ?? 0
+          const completed = tc?.completed ?? false
+          const isPerfect = completed && score === 100
+          const isPartial = completed && score >= 70 && score < 100
+          const isWeak = completed && score < 70
+
+          const cardBorder = isPerfect
+            ? 'border-duo-green ring-1 ring-duo-green/20'
+            : isPartial
+            ? 'border-amber-300 ring-1 ring-amber-200'
+            : isWeak
+            ? 'border-red-200 ring-1 ring-red-100'
+            : 'border-gray-100'
+
+          const iconBg = isPerfect
+            ? 'bg-duo-green/10'
+            : isPartial
+            ? 'bg-amber-50'
+            : isWeak
+            ? 'bg-red-50'
+            : 'bg-duo-blue/10'
+
+          const Icon = isPerfect
+            ? CheckCircle
+            : isPartial
+            ? Star
+            : isWeak
+            ? AlertCircle
+            : BookOpen
+
+          const iconColor = isPerfect
+            ? 'text-duo-green'
+            : isPartial
+            ? 'text-amber-500'
+            : isWeak
+            ? 'text-red-400'
+            : 'text-duo-blue'
+
+          return (
+            <button
+              key={lesson.taskNumber + '-' + index}
+              onClick={() => setSelectedLesson(lesson)}
+              className={`w-full text-left bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all border active:scale-[0.98] ${cardBorder}`}
+            >
+              <div className="flex items-start gap-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
+                  <Icon size={18} className={iconColor} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <p className="text-xs text-gray-500 font-medium">{lesson.category}</p>
+                    {completed && (
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                        isPerfect
+                          ? 'bg-duo-green text-white'
+                          : isPartial
+                          ? 'bg-amber-400 text-white'
+                          : 'bg-red-300 text-white'
+                      }`}>
+                        {score}%
+                      </span>
+                    )}
+                    {!completed && (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-400">
+                        Новое
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-bold text-gray-800 text-sm">
+                    Задание {lesson.taskNumber === 'Сочинение' ? '27 (Сочинение)' : lesson.taskNumber}. {lesson.title}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                    {lesson.theoryText.slice(0, 120)}...
+                  </p>
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500 font-medium mb-0.5">{lesson.category}</p>
-                <p className="font-bold text-gray-800 text-sm">Задание {lesson.taskNumber === 'Сочинение' ? '27 (Сочинение)' : lesson.taskNumber}. {lesson.title}</p>
-                <p className="text-xs text-gray-400 mt-1 line-clamp-2">{lesson.theoryText.slice(0, 120)}...</p>
-              </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          )
+        })}
         {filtered.length === 0 && (
           <div className="text-center py-12 text-gray-400">
             <BookOpen size={48} className="mx-auto mb-3 opacity-50" />

@@ -15,7 +15,7 @@ export function Header() {
   return (
     <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-50">
       <style>{`
-        @keyframes xp-bounce { 0%,100%{transform:scale(1)} 20%{transform:scale(1.2)} 40%{transform:scale(0.9)} 60%{transform:scale(1.15)} 80%{transform:scale(1)} }
+        @keyframes xp-bounce { 0%,100%{transform:scale(1) rotate(0deg)} 20%{transform:scale(1.2) rotate(-2deg)} 40%{transform:scale(0.9) rotate(1deg)} 60%{transform:scale(1.15) rotate(-1deg)} 80%{transform:scale(1) rotate(0deg)} }
         @keyframes flame-flicker { 0%,100%{transform:scale(1);opacity:1} 25%{transform:scale(1.12);opacity:0.8} 50%{transform:scale(0.95);opacity:1} 75%{transform:scale(1.08);opacity:0.9} }
         @keyframes heart-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
         @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
@@ -90,8 +90,8 @@ export function Header() {
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0s' }} />
-              <div className="absolute -bottom-0.5 -left-1 w-1 h-1 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.5s' }} />
+              <div className="absolute -top-1 -right-1 w-1 h-1 bg-yellow-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0s' }} />
+              <div className="absolute -bottom-0.5 -left-1 w-0.5 h-0.5 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.5s' }} />
               <Zap size={20} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
               <span className="font-bold text-sm">{stats.xp}</span>
             </motion.div>

@@ -602,7 +602,7 @@ export const useProgressStore = create<ProgressState>()(
             total: data.total,
             wrong: data.wrong,
           }))
-          .filter(t => t.total > 0)
+          .filter(t => t.total > 0 && t.wrong > 0 && t.accuracy < 95)
           .sort((a, b) => a.accuracy - b.accuracy)
           .slice(0, limit)
       },
