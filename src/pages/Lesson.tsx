@@ -7,9 +7,11 @@ import { LessonResult } from '../components/LessonResult'
 import { Hearts } from '../components/Hearts'
 import { ComboDisplay } from '../components/ComboDisplay'
 import { TheoryModal } from '../components/TheoryModal'
+import { useComboToasts } from '../components/ComboToast'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { getTheoryForLesson } from '../lib/theoryMapper'
+import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSound } from '../lib/sounds'
 
 export function Lesson() {
   const { lessonId } = useParams()
@@ -30,6 +32,7 @@ export function Lesson() {
   const [gameOverReason, setGameOverReason] = useState<'hearts' | 'completed' | null>(null)
   const [direction, setDirection] = useState(0)
   const [showTheory, setShowTheory] = useState(false)
+  const { showComboToast, ToastOverlay } = useComboToasts()
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const lesson = section?.lessons.find(l => l.id === lessonId)
@@ -65,6 +68,14 @@ export function Lesson() {
     startLesson(lesson.id)
   }, [lesson.id, startLesson])
 
+  // Combo toast + sound
+  useEffect(() => {
+    if (combo >= 3) {
+      showComboToast(combo)
+      playComboSound(combo)
+    }
+  }, [combo])
+
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
 
@@ -73,9 +84,11 @@ export function Lesson() {
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
       setCombo(prev => prev + 1)
+      playCorrectSound()
       updateQuestProgress('quest-questions-5')
     } else {
       setCombo(0)
+      playWrongSound()
       if (currentQuestion && userAnswer) {
         recordWrongAnswer(currentQuestion, userAnswer, lesson.id)
       }
@@ -123,6 +136,7 @@ export function Lesson() {
     else if (combo >= 3) multiplier = 1.5
     
     const xpEarned = Math.round(baseXP * multiplier)
+    playLessonCompleteSound()
     completeLesson(lesson.id, score, xpEarned)
     
     // Update daily quests

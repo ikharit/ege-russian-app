@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { Star, Zap, ArrowRight, RotateCcw } from 'lucide-react'
+import { Star, Zap, ArrowRight, RotateCcw, Share2, Check } from 'lucide-react'
 import confetti from 'canvas-confetti'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 interface LessonResultProps {
   correctCount: number
@@ -15,6 +15,18 @@ interface LessonResultProps {
 
 export function LessonResult({ correctCount, totalQuestions, xpEarned, comboMultiplier, isPerfect, onContinue, onRetry }: LessonResultProps) {
   const percentage = Math.round((correctCount / totalQuestions) * 100)
+  const [shared, setShared] = useState(false)
+
+  const handleShare = async () => {
+    const text = `🎓 ЕГЭ Русский — Результат урока\n${isPerfect ? '⭐ ИДЕАЛЬНО!' : ''}\n✅ ${correctCount}/${totalQuestions} правильно (${percentage}%)\n⚡ +${xpEarned} XP${comboMultiplier > 1 ? ` (x${comboMultiplier} комбо!)` : ''}\n\nГотовься вместе со мной!`
+    try {
+      await navigator.clipboard.writeText(text)
+      setShared(true)
+      setTimeout(() => setShared(false), 2000)
+    } catch (e) {
+      // Fallback
+    }
+  }
 
   useEffect(() => {
     if (percentage >= 60) {
@@ -78,6 +90,15 @@ export function LessonResult({ correctCount, totalQuestions, xpEarned, comboMult
       </div>
 
       <div className="flex gap-3 w-full">
+        <button
+          onClick={handleShare}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
+            shared ? 'bg-duo-green text-white' : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          {shared ? <Check size={18} /> : <Share2 size={18} />}
+          {shared ? 'Скопировано!' : 'Поделиться'}
+        </button>
         {percentage < 100 && (
           <button onClick={onRetry} className="btn-secondary flex-1 flex items-center justify-center gap-2">
             <RotateCcw size={18} />

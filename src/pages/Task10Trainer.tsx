@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Star, Trophy, Zap, ArrowLeft, RotateCcw, Settings,
+  Trophy, Zap, ArrowLeft, RotateCcw, Settings,
   ChevronRight, Check, X, Volume2, VolumeX
 } from 'lucide-react'
 import { task10QuestionsById } from '../data/task10Questions'
@@ -46,7 +46,7 @@ export function Task10Trainer() {
   useEffect(() => {
     const store = useTask10Store.getState()
     const overall = store.getOverallProgress()
-    if (overall.mastered === overall.total) {
+    if (overall.passed === overall.total) {
       setShowCompleted(true)
       return
     }
@@ -128,12 +128,10 @@ export function Task10Trainer() {
 
   const stageQuestions = getStageQuestions(currentStage)
   const stageQuestionIds = stageQuestions.map(q => q.id)
-  const stageMastered = stageQuestionIds.filter(
-    id => (questionProgress[id]?.stars || 0) >= 5
+  const stagePassed = stageQuestionIds.filter(
+    id => (questionProgress[id]?.status || 'new') === 'passed'
   ).length
   const stageTotal = stageQuestions.length
-
-  const currentQuestionStars = currentQuestion ? (questionProgress[currentQuestion.id]?.stars || 0) : 0
 
   const wordStage = currentQuestion
     ? Math.floor(Object.values(task10QuestionsById).findIndex(q => q.id === currentQuestion.id) / QUESTIONS_PER_STAGE)
@@ -153,10 +151,10 @@ export function Task10Trainer() {
           </div>
           <div>
             <h2 className="text-2xl font-bold text-gray-800">
-              {overall.mastered === overall.total ? 'Все задания изучены!' : 'Сессия завершена!'}
+              {overall.passed === overall.total ? 'Все задания пройдены!' : 'Сессия завершена!'}
             </h2>
             <p className="text-gray-500 mt-1">
-              {overall.mastered === overall.total
+              {overall.passed === overall.total
                 ? 'Поздравляем! Ты готов к заданию №10 ЕГЭ.'
                 : 'Отличная работа! Продолжайте тренироваться.'}
             </p>
@@ -174,7 +172,7 @@ export function Task10Trainer() {
               <p className="text-xs text-gray-500">Ошибки</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-3">
-              <Star size={20} className="text-duo-purple mx-auto" />
+              <Zap size={20} className="text-duo-purple mx-auto" />
               <p className="text-xl font-bold mt-1">{stats.bestStreak}</p>
               <p className="text-xs text-gray-500">Рекорд</p>
             </div>
@@ -183,12 +181,12 @@ export function Task10Trainer() {
           <div className="bg-gray-50 rounded-xl p-4">
             <div className="flex justify-between text-sm mb-2">
               <span className="font-bold text-gray-700">Прогресс</span>
-              <span className="text-duo-green font-bold">{overall.mastered}/{overall.total}</span>
+              <span className="text-duo-green font-bold">{overall.passed}/{overall.total}</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
                 className="bg-duo-green h-3 rounded-full transition-all"
-                style={{ width: `${(overall.mastered / overall.total) * 100}%` }}
+                style={{ width: `${(overall.passed / overall.total) * 100}%` }}
               />
             </div>
           </div>
@@ -229,19 +227,9 @@ export function Task10Trainer() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-bold text-duo-purple">Ур. {currentStage + 1}</span>
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={10}
-                    className={i < currentQuestionStars ? 'text-duo-yellow fill-current' : 'text-gray-200'}
-                  />
-                ))}
-              </div>
             </div>
             <div className="flex items-center gap-1">
-              <Star size={14} className="text-duo-yellow fill-current" />
-              <span className="text-sm font-bold text-gray-700">{overall.mastered}/{overall.total}</span>
+              <span className="text-sm font-bold text-gray-700">{overall.passed}/{overall.total}</span>
             </div>
             <div className="flex items-center gap-1">
               <Zap size={14} className="text-orange-500 fill-current" />
@@ -256,12 +244,12 @@ export function Task10Trainer() {
         <div className="max-w-2xl mx-auto px-4 pb-2">
           <div className="flex justify-between text-xs text-gray-400 mb-1">
             <span>Уровень {currentStage + 1}</span>
-            <span>{stageMastered}/{stageTotal}</span>
+            <span>{stagePassed}/{stageTotal}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
               className="bg-duo-green h-1.5 rounded-full transition-all"
-              style={{ width: `${stageTotal > 0 ? (stageMastered / stageTotal) * 100 : 0}%` }}
+              style={{ width: `${stageTotal > 0 ? (stagePassed / stageTotal) * 100 : 0}%` }}
             />
           </div>
         </div>
@@ -303,13 +291,11 @@ export function Task10Trainer() {
         {/* Stars + leaking badge */}
         <div className="flex flex-col items-center gap-2 mb-6">
           <div className="flex items-center gap-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                size={16}
-                className={i < currentQuestionStars ? 'text-duo-yellow fill-current' : 'text-gray-200'}
-              />
-            ))}
+            {currentQuestion && (
+              <span className={`text-xs px-2 py-1 rounded-full ${(questionProgress[currentQuestion.id]?.status || 'new') === 'passed' ? 'bg-green-100 text-green-600' : (questionProgress[currentQuestion.id]?.status || 'new') === 'deferred' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-500'}`}>
+                {(questionProgress[currentQuestion.id]?.status || 'new') === 'passed' ? 'Пройдено' : (questionProgress[currentQuestion.id]?.status || 'new') === 'deferred' ? 'Повторение' : 'Новое'}
+              </span>
+            )}
           </div>
           {isLeakingQuestion && (
             <span className="text-xs bg-duo-yellow/20 text-duo-yellow-dark px-2 py-1 rounded-full">
@@ -455,8 +441,8 @@ export function Task10Trainer() {
             <p className="font-bold text-red-400">{stats.totalWrong}</p>
           </div>
           <div className="text-center">
-            <p className="text-gray-400 text-xs">Изучено</p>
-            <p className="font-bold text-duo-yellow">{overall.mastered}</p>
+            <p className="text-gray-400 text-xs">Пройдено</p>
+            <p className="font-bold text-duo-yellow">{overall.passed}</p>
           </div>
           <div className="text-center">
             <p className="text-gray-400 text-xs">Серия</p>

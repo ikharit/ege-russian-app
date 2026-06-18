@@ -36,6 +36,7 @@ const HIDDEN_PATTERNS = [
   /^Неплохой тест на словарные.*$/,
   /^[ИЕОА]$/, /^[ИЕОА]\s+[ИЕОА]\s+[ИЕОА]\s+[ИЕОА]$/, // single letters as column headers
   /^\d+\.\s*Теория.*$/, /^\d+\.\s*Практика.*$/,
+  /^Формат задания в \d+.*$/,
 ]
 
 function isHiddenLine(line: string): boolean {
@@ -60,27 +61,89 @@ function parseTheory(text: string): Block[] {
   let currentList: string[] = []
   let currentRoots: string[] = []
   let currentComparison: { left?: string, right?: string } | null = null
+  let skipUntilEmptyLine = false
 
   const flushList = () => { if (currentList.length > 0) { blocks.push({ type: 'list', items: [...currentList] }); currentList = [] } }
   const flushRoots = () => { if (currentRoots.length > 0) { blocks.push({ type: 'roots', roots: [...currentRoots] }); currentRoots = [] } }
   const flushComparison = () => { if (currentComparison) { blocks.push({ type: 'comparison', ...currentComparison }); currentComparison = null } }
 
+  // Global deduplication sets for the current theory text
+  const seenGapWords = new Set<string>()
+  const seenRoots = new Set<string>()
+  const seenComparisons = new Set<string>()
+
+  // Lines that trigger skipping everything until an empty line (test blocks)
+  const SKIP_TRIGGERS = [
+    /^рассортируй слова по корзинам.*$/,
+    /^\d+\. Важный тест на проверку.*$/,
+    /^Важный тест на проверку.*$/,
+    /^Неплохой тест на словарные.*$/,
+    /^Впишите цифру.*$/,
+    /^Впиши нужные средства.*$/,
+    /^Впиши нужные лексические средства.*$/,
+    /^Разбей предложения по группам.*$/,
+    /^Практика на закрепление.*$/,
+    /^Задание на закрепление.*$/,
+    /^Поставьте запятые.*$/,
+    /^От чего зависит чередование.*$/,
+    /^Соотнеси примеры из некоторых произведений.*$/,
+    /^Распредели конструкции по правилам.*$/,
+    /^Обособляем ли в этом контексте.*$/,
+    /^Не сказал бы, что люблю вас.*$/,
+    /^Но, говорят, вы \(не\)людим.*$/,
+    /^Формат задания в \d+.*$/,
+  ]
+  const isSkipTrigger = (line: string) => SKIP_TRIGGERS.some(p => p.test(line.trim()))
+  const GAP_WORD = /^[а-яёА-ЯЁ().-]*\.\.[а-яёА-ЯЁ().-]*$/
+  const SINGLE_LETTER = /^[ИЕОА]$/
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim()
+
+    // Empty line resets skip mode and flushes accumulators
     if (!line) {
       flushList(); flushRoots(); flushComparison()
+      skipUntilEmptyLine = false
       continue
     }
 
-    if (isHiddenLine(line)) {
+    // Check for skip triggers (start skipping)
+    if (isSkipTrigger(line) || isHiddenLine(line)) {
       flushList(); flushRoots(); flushComparison()
+      skipUntilEmptyLine = true
       continue
     }
 
-    // Detect roots rows (accumulate multiple rows)
+    // If in skip mode, skip gap words and single letters until empty line
+    if (skipUntilEmptyLine) {
+      if (GAP_WORD.test(line)) {
+        seenGapWords.add(line) // mark as seen even when skipping, so duplicates after block are also hidden
+        continue
+      }
+      if (SINGLE_LETTER.test(line) || isHiddenLine(line)) {
+        continue
+      }
+      skipUntilEmptyLine = false
+    }
+
+    // Deduplicate gap words
+    if (line.includes('..') && !line.includes(' ')) {
+      if (seenGapWords.has(line)) {
+        continue
+      }
+      seenGapWords.add(line)
+    }
+
+    // Detect roots rows (accumulate multiple rows) — deduplicate globally
     if (isRootsRow(line)) {
-      flushList(); flushComparison()
-      currentRoots.push(...line.split(/\s+/))
+      flushList(); flushComparison(); flushRoots()
+      const words = line.split(/\s+/)
+      for (const w of words) {
+        if (!seenRoots.has(w)) {
+          currentRoots.push(w)
+          seenRoots.add(w)
+        }
+      }
       continue
     }
     // If we had roots but next line is not roots, flush
@@ -88,7 +151,7 @@ function parseTheory(text: string): Block[] {
       flushRoots()
     }
 
-    // Detect comparison pairs (МАК пишется... vs МОК пишем...)
+    // Detect comparison pairs (МАК пишется... vs МОК пишем...) — deduplicate
     if (isComparisonStart(line)) {
       flushList(); flushRoots()
       const match = line.match(/^([А-ЯЁ]+)\s+(пишется?.*?)(?:\s+\(([^)]+)\))?\s*$/i)
@@ -96,10 +159,14 @@ function parseTheory(text: string): Block[] {
         const root = match[1]
         const example = match[2]
         const parenthetical = match[3] || ''
+        const compKey = root + ' ' + example + (parenthetical ? ' (' + parenthetical + ')' : '')
+        if (seenComparisons.has(compKey)) {
+          continue
+        }
         if (!currentComparison) {
-          currentComparison = { left: root + ' ' + example + (parenthetical ? ' (' + parenthetical + ')' : '') }
+          currentComparison = { left: compKey }
         } else {
-          currentComparison.right = root + ' ' + example + (parenthetical ? ' (' + parenthetical + ')' : '')
+          currentComparison.right = compKey
           flushComparison()
         }
         continue

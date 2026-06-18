@@ -376,7 +376,15 @@ export function Profile() {
               .sort((a, b) => {
                 const aUnlocked = achievements.includes(a.id)
                 const bUnlocked = achievements.includes(b.id)
-                return Number(bUnlocked) - Number(aUnlocked)
+                // Разблокированные в конец
+                if (aUnlocked && !bUnlocked) return 1
+                if (!aUnlocked && bUnlocked) return -1
+                // Оба неразблокированные — сортируем по проценту прогресса (убывающий)
+                const aProgress = getAchievementProgress(a.id, stats, lessonProgress)
+                const bProgress = getAchievementProgress(b.id, stats, lessonProgress)
+                const aPct = aProgress.target > 1 ? (aProgress.current / aProgress.target) * 100 : 0
+                const bPct = bProgress.target > 1 ? (bProgress.current / bProgress.target) * 100 : 0
+                return bPct - aPct
               })
               .map((ach) => {
                 const unlocked = achievements.includes(ach.id)
@@ -385,20 +393,24 @@ export function Profile() {
                 const hasProgress = progress.target > 1
                 const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
                 return (
-                  <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all ${unlocked ? 'bg-green-50 border border-duo-green/20 shadow-sm' : 'bg-gray-50 opacity-50'}`}>
+                  <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all border ${unlocked ? 'bg-green-50 border-duo-green/20 shadow-sm' : 'bg-white border-gray-200'}`}>
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-200 text-gray-400 grayscale'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-100 text-gray-400'}`}>
                         <Icon size={16} />
                       </div>
-                      <div className="flex-1">
-                        <p className={`font-bold text-sm ${unlocked ? 'text-gray-800' : 'text-gray-400'}`}>{ach.title}</p>
-                        <p className={`text-xs ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-bold text-sm truncate ${unlocked ? 'text-gray-800' : 'text-gray-700'}`}>{ach.title}</p>
+                        <p className={`text-xs truncate ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
                       </div>
-                      {unlocked && <Star size={16} className="text-duo-yellow shrink-0" />}
+                      {unlocked ? (
+                        <Star size={16} className="text-duo-yellow shrink-0" />
+                      ) : (
+                        <span className="text-xs font-bold text-gray-300 shrink-0">{percent}%</span>
+                      )}
                     </div>
                     {!unlocked && hasProgress && (
                       <div className="ml-11">
-                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                        <div className="w-full bg-gray-100 rounded-full h-1.5">
                           <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${percent}%` }} />
                         </div>
                         <p className="text-xs text-gray-400 mt-0.5">{progress.current} / {progress.target}</p>

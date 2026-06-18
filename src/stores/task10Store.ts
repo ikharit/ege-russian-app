@@ -2,9 +2,11 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { task10Questions, Task10Question } from '../data/task10Questions'
 
+export type QuestionStatus = 'new' | 'deferred' | 'passed'
+
 export interface Task10Progress {
   questionId: string
-  stars: number
+  status: QuestionStatus
   totalCorrect: number
   totalWrong: number
 }
@@ -15,7 +17,7 @@ export interface Task10Stats {
   streak: number
   bestStreak: number
   sessionStarted: string
-  questionsMastered: number
+  questionsPassed: number
   currentStage: number
 }
 
@@ -40,14 +42,12 @@ interface Task10State {
   resetQuestion: (questionId: string) => void
   updateSettings: (settings: Partial<Task10Settings>) => void
   getProgressForQuestion: (questionId: string) => Task10Progress
-  getOverallProgress: () => { total: number; mastered: number; learning: number; newQuestions: number }
+  getOverallProgress: () => { total: number; passed: number; deferred: number; newQuestions: number }
   setSelectedRows: (rows: number[]) => void
   clearAnswer: () => void
 }
 
 const QUESTIONS_PER_STAGE = 4
-const MAX_STARS = 5
-const MIN_STARS = 0
 
 function getStageQuestions(stage: number): Task10Question[] {
   const start = stage * QUESTIONS_PER_STAGE
@@ -62,7 +62,7 @@ function getInitialStats(): Task10Stats {
     streak: 0,
     bestStreak: 0,
     sessionStarted: new Date().toISOString(),
-    questionsMastered: 0,
+    questionsPassed: 0,
     currentStage: 0,
   }
 }
@@ -77,10 +77,19 @@ function getDefaultSettings(): Task10Settings {
 function getDefaultProgress(questionId: string): Task10Progress {
   return {
     questionId,
-    stars: 0,
+    status: 'new',
     totalCorrect: 0,
     totalWrong: 0,
   }
+}
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
 }
 
 export const useTask10Store = create<Task10State>()(
@@ -95,67 +104,77 @@ export const useTask10Store = create<Task10State>()(
       selectedRows: [],
       hasAnswered: false,
 
+      // Build a fresh session queue.
+      // First all current-stage new questions (shuffled), then any deferred
+      // from previous stages (shuffled), then any deferred from current stage.
+      // Deferred questions go to the END of the queue.
       getNextQuestion: () => {
         const state = get()
         const { sessionQueue, sessionIndex } = state
 
+        // If we have items in the current session queue, return the next one
         if (sessionQueue.length > 0 && sessionIndex < sessionQueue.length) {
           const qId = sessionQueue[sessionIndex]
           set({ currentQuestionId: qId, sessionIndex: sessionIndex + 1, selectedRows: [], hasAnswered: false })
           return task10Questions.find(q => q.id === qId) || null
         }
 
+        // Queue exhausted — build a new session queue
         const currentStage = state.stats.currentStage
+        const allIds = task10Questions.map(q => q.id)
+
+        // Determine which questions are already passed globally
+        const passedIds = new Set(
+          allIds.filter(id => (state.questionProgress[id]?.status || 'new') === 'passed')
+        )
+
+        // Gather new questions for current stage
         const stageQuestions = getStageQuestions(currentStage)
-        const stageQuestionIds = stageQuestions.map(q => q.id)
+        const stageNewIds = shuffleArray(
+          stageQuestions
+            .map(q => q.id)
+            .filter(id => !passedIds.has(id) && (state.questionProgress[id]?.status || 'new') !== 'deferred')
+        )
 
-        const stageProgress = stageQuestionIds.map(id => {
-          const prog = state.questionProgress[id] || getDefaultProgress(id)
-          return { id, stars: prog.stars }
-        })
-
-        const notMasteredInStage = stageProgress.filter(q => q.stars < MAX_STARS).map(q => q.id)
-
-        const leakingQuestions: string[] = []
+        // Gather deferred questions from PREVIOUS stages (shuffle them)
+        const prevDeferredIds: string[] = []
         for (let s = 0; s < currentStage; s++) {
-          const prevStageQuestions = getStageQuestions(s)
-          for (const q of prevStageQuestions) {
-            const prog = state.questionProgress[q.id] || getDefaultProgress(q.id)
-            if (prog.stars < MAX_STARS) {
-              leakingQuestions.push(q.id)
+          const prevStage = getStageQuestions(s)
+          for (const q of prevStage) {
+            if ((state.questionProgress[q.id]?.status || 'new') === 'deferred') {
+              prevDeferredIds.push(q.id)
             }
           }
         }
+        const shuffledPrevDeferred = shuffleArray(prevDeferredIds)
 
-        // Shuffle
-        for (let i = notMasteredInStage.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1))
-          ;[notMasteredInStage[i], notMasteredInStage[j]] = [notMasteredInStage[j], notMasteredInStage[i]]
-        }
+        // Gather deferred questions from CURRENT stage (shuffle them)
+        const currDeferredIds = shuffleArray(
+          stageQuestions
+            .map(q => q.id)
+            .filter(id => (state.questionProgress[id]?.status || 'new') === 'deferred')
+        )
 
-        for (let i = leakingQuestions.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1))
-          ;[leakingQuestions[i], leakingQuestions[j]] = [leakingQuestions[j], leakingQuestions[i]]
-        }
+        // Build queue: current stage new → previous deferred → current deferred
+        const queue: string[] = [...stageNewIds, ...shuffledPrevDeferred, ...currDeferredIds]
 
-        const queue: string[] = []
-        let currentIdx = 0
-        let leakIdx = 0
-        const alternateEvery = 3
-
-        while (currentIdx < notMasteredInStage.length || leakIdx < leakingQuestions.length) {
-          for (let i = 0; i < alternateEvery && currentIdx < notMasteredInStage.length; i++) {
-            queue.push(notMasteredInStage[currentIdx++])
-          }
-          if (leakIdx < leakingQuestions.length) {
-            queue.push(leakingQuestions[leakIdx++])
-          }
-        }
-
+        // If nothing left in current stage, try advancing to next stage
         if (queue.length === 0) {
           const nextStage = currentStage + 1
           const nextStageQuestions = getStageQuestions(nextStage)
           if (nextStageQuestions.length === 0) {
+            // All questions across all stages are passed → done
+            const anyDeferred = allIds.some(
+              id => (state.questionProgress[id]?.status || 'new') === 'deferred'
+            )
+            if (anyDeferred) {
+              // One final pass with all remaining deferred questions
+              const allDeferred = shuffleArray(
+                allIds.filter(id => (state.questionProgress[id]?.status || 'new') === 'deferred')
+              )
+              set({ sessionQueue: allDeferred, sessionIndex: 0, currentQuestionId: allDeferred[0], selectedRows: [], hasAnswered: false })
+              return task10Questions.find(q => q.id === allDeferred[0]) || null
+            }
             return null
           }
           set(prev => ({ stats: { ...prev.stats, currentStage: nextStage } }))
@@ -176,18 +195,26 @@ export const useTask10Store = create<Task10State>()(
 
         set(prev => {
           const existing = prev.questionProgress[questionId] || getDefaultProgress(questionId)
-          let newStars = existing.stars
+          let newStatus: QuestionStatus = existing.status
           if (correct) {
-            newStars = Math.min(MAX_STARS, newStars + 1)
-          } else {
-            newStars = Math.max(MIN_STARS, newStars - 1)
+            newStatus = 'passed'
+          } else if (existing.status !== 'passed') {
+            newStatus = 'deferred'
           }
           const updated: Task10Progress = {
             ...existing,
-            stars: newStars,
+            status: newStatus,
             totalCorrect: existing.totalCorrect + (correct ? 1 : 0),
             totalWrong: existing.totalWrong + (correct ? 0 : 1),
           }
+
+          // If answer was wrong, append this question to the end of the session queue
+          // so it doesn't appear immediately.
+          const newQueue = [...prev.sessionQueue]
+          if (!correct && !newQueue.includes(questionId)) {
+            newQueue.push(questionId)
+          }
+
           return {
             questionProgress: { ...prev.questionProgress, [questionId]: updated },
             stats: {
@@ -198,11 +225,12 @@ export const useTask10Store = create<Task10State>()(
               bestStreak: correct
                 ? Math.max(prev.stats.bestStreak, prev.stats.streak + 1)
                 : prev.stats.bestStreak,
-              questionsMastered: Object.values({ ...prev.questionProgress, [questionId]: updated }).filter(
-                p => p.stars >= MAX_STARS
+              questionsPassed: Object.values({ ...prev.questionProgress, [questionId]: updated }).filter(
+                p => p.status === 'passed'
               ).length,
             },
             hasAnswered: true,
+            sessionQueue: newQueue,
           }
         })
 
@@ -242,12 +270,10 @@ export const useTask10Store = create<Task10State>()(
       getOverallProgress: () => {
         const state = get()
         const total = task10Questions.length
-        const mastered = Object.values(state.questionProgress).filter(p => p.stars >= MAX_STARS).length
-        const learning = Object.values(state.questionProgress).filter(
-          p => p.stars > 0 && p.stars < MAX_STARS
-        ).length
+        const passed = Object.values(state.questionProgress).filter(p => p.status === 'passed').length
+        const deferred = Object.values(state.questionProgress).filter(p => p.status === 'deferred').length
         const newQuestions = total - Object.keys(state.questionProgress).length
-        return { total, mastered, learning, newQuestions }
+        return { total, passed, deferred, newQuestions }
       },
 
       setSelectedRows: (rows) => {
@@ -259,7 +285,7 @@ export const useTask10Store = create<Task10State>()(
       },
     }),
     {
-      name: 'task10-trainer-v1',
+      name: 'task10-trainer-v2',
       partialize: (state) => ({
         questionProgress: state.questionProgress,
         stats: state.stats,

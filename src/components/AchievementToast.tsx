@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Award, Star, Flame, Trophy, Zap, Crown, BookOpen, Heart, Moon, Sun, Calendar, Timer, Repeat, Download, Infinity } from 'lucide-react'
+import confetti from 'canvas-confetti'
 import type { Achievement } from '../types'
 
 const iconMap: Record<string, React.ElementType> = {
@@ -15,6 +16,12 @@ interface ToastProps {
 export function AchievementToast({ achievement, onClose }: ToastProps) {
   useEffect(() => {
     if (achievement) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#58cc02', '#1cb0f6', '#ff9600', '#ff4b4b', '#ce82ff']
+      })
       const timer = setTimeout(onClose, 5000)
       return () => clearTimeout(timer)
     }
