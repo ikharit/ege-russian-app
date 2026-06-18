@@ -2,13 +2,37 @@
 // Источники: ФИПИ Навигатор 2025, грамота.ру, umschool.net, maximumtest.ru
 // Пополнение: агенты добавляют новые разделы — регистрируйте в AGENTS.md!
 
-export type { TheorySection, TheoryRule } from './task4'
-export { default as task4Theory } from './task4'
-export { default as task9Theory } from './task9'
-export { default as task10Theory } from './task10'
-export { default as task11Theory } from './task11'
-export { default as task12Theory } from './task12'
-export { default as task14Theory } from './task14'
+import type { TheorySection, TheoryRule } from './task4'
+export type { TheorySection, TheoryRule }
+
+import task4Theory from './task4'
+import task9Theory from './task9'
+import task10Theory from './task10'
+import task11Theory from './task11'
+import task12Theory from './task12'
+import task14Theory from './task14'
+
+export { task4Theory, task9Theory, task10Theory, task11Theory, task12Theory, task14Theory }
+
+const allSections: TheorySection[] = [
+  task4Theory,
+  task9Theory,
+  task10Theory,
+  task11Theory,
+  task12Theory,
+  task14Theory,
+]
+
+/** Get all rules for a given EGE task number (e.g. '4', '9', '10') */
+export function getRulesByTaskNumber(taskNumber: string): TheoryRule[] {
+  const section = allSections.find(s => s.taskNumber === taskNumber)
+  return section?.rules ?? []
+}
+
+/** Get all sections that have rules for a given task */
+export function getSectionByTaskNumber(taskNumber: string): TheorySection | undefined {
+  return allSections.find(s => s.taskNumber === taskNumber)
+}
 
 // ─────────────────────────────────────────
 // План пополнения (приоритеты):

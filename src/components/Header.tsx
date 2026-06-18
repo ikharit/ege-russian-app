@@ -1,10 +1,11 @@
+import { ReactNode } from 'react'
 import { Flame, Heart, Zap, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from './Popover'
 import { motion } from 'framer-motion'
 
-export function Header() {
+export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
 
@@ -26,6 +27,13 @@ export function Header() {
           <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
         </div>
         <div className="flex items-center gap-3">
+          {/* Sync indicator + auth */}
+          {syncIndicator && (
+            <div className="hidden sm:flex">
+              {syncIndicator}
+            </div>
+          )}
+
           {/* Streak */}
           <Popover
             content={
