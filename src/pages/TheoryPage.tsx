@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { BookOpen, Search, ArrowLeft, BookOpenText } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3 } from 'lucide-react'
 import { theoryLessons, TheoryLesson } from '../data/theoryData'
 import { TheoryViewer } from '../components/TheoryViewer'
 
 export default function TheoryPage() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<TheoryLesson | null>(null)
@@ -34,6 +36,13 @@ export default function TheoryPage() {
               Задание {selectedLesson.taskNumber === 'Сочинение' ? '27 (Сочинение)' : selectedLesson.taskNumber}. {selectedLesson.title}
             </p>
           </div>
+          <button
+            onClick={() => navigate(`/theory-editor/${selectedLesson.taskNumber}`)}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            title="Редактировать"
+          >
+            <Edit3 size={18} className="text-gray-500" />
+          </button>
         </div>
         <div className="px-4 py-6 max-w-2xl mx-auto">
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
@@ -52,10 +61,17 @@ export default function TheoryPage() {
             <div className="w-10 h-10 rounded-xl bg-duo-blue/10 flex items-center justify-center">
               <BookOpenText size={20} className="text-duo-blue" />
             </div>
-            <div>
+            <div className="flex-1">
               <h1 className="font-bold text-gray-800 text-lg">Теория</h1>
               <p className="text-sm text-gray-500">{theoryLessons.length} уроков по всем заданиям ЕГЭ</p>
             </div>
+            <button
+              onClick={() => navigate('/theory-editor')}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Редактор теории"
+            >
+              <Edit3 size={18} className="text-gray-500" />
+            </button>
           </div>
           <div className="relative">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />

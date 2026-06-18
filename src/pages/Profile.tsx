@@ -31,6 +31,8 @@ export function Profile() {
   const totalQuestions = Object.values(lessonProgress).reduce((sum, lp) => sum + (lp.attempts || 0), 0)
   const bestScore = Object.values(lessonProgress).reduce((max, lp) => Math.max(max, lp.bestScore || 0), 0)
 
+  const [showAllAchievements, setShowAllAchievements] = useState(false)
+
   const handleNameSave = () => {
     const newName = nameRef.current?.value.trim()
     if (newName) {
@@ -335,47 +337,78 @@ export function Profile() {
         </div>
       </Popover>
 
-      {/* Full achievement list */}
+      {/* Full achievement list — collapsible */}
       <div className="card">
-        <h3 className="font-bold text-gray-700 mb-3">Все достижения</h3>
-        <div className="flex flex-col gap-2">
-          {[...allAchievements]
-            .sort((a, b) => {
-              const aUnlocked = achievements.includes(a.id)
-              const bUnlocked = achievements.includes(b.id)
-              return Number(bUnlocked) - Number(aUnlocked)
-            })
-            .map((ach) => {
-            const unlocked = achievements.includes(ach.id)
-            const Icon = getAchievementIcon(ach.id)
-            const progress = getAchievementProgress(ach.id, stats, lessonProgress)
-            const hasProgress = progress.target > 1
-            const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
-            
-            return (
-              <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all ${unlocked ? 'bg-green-50 border border-duo-green/20 shadow-sm' : 'bg-gray-50 opacity-50'}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-200 text-gray-400 grayscale'}`}>
-                    <Icon size={16} />
-                  </div>
-                  <div className="flex-1">
-                    <p className={`font-bold text-sm ${unlocked ? 'text-gray-800' : 'text-gray-400'}`}>{ach.title}</p>
-                    <p className={`text-xs ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
-                  </div>
-                  {unlocked && <Star size={16} className="text-duo-yellow shrink-0" />}
-                </div>
-                {!unlocked && hasProgress && (
-                  <div className="ml-11">
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
-                      <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${percent}%` }} />
+        <button
+          onClick={() => setShowAllAchievements(!showAllAchievements)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div className="flex items-center gap-3">
+            <Trophy size={20} className="text-duo-purple" />
+            <div>
+              <p className="font-bold text-sm text-gray-800">Все достижения</p>
+              <p className="text-xs text-gray-500">
+                {achievements.length} из {allAchievements.length} разблокировано
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-24 bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-duo-green h-2 rounded-full"
+                style={{ width: `${(achievements.length / allAchievements.length) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs text-gray-400 transition-transform duration-200">
+              {showAllAchievements ? '▲' : '▼'}
+            </span>
+          </div>
+        </button>
+
+        {showAllAchievements && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-3 flex flex-col gap-2 max-h-80 overflow-y-auto pr-1"
+          >
+            {[...allAchievements]
+              .sort((a, b) => {
+                const aUnlocked = achievements.includes(a.id)
+                const bUnlocked = achievements.includes(b.id)
+                return Number(bUnlocked) - Number(aUnlocked)
+              })
+              .map((ach) => {
+                const unlocked = achievements.includes(ach.id)
+                const Icon = getAchievementIcon(ach.id)
+                const progress = getAchievementProgress(ach.id, stats, lessonProgress)
+                const hasProgress = progress.target > 1
+                const percent = hasProgress ? Math.min(100, Math.round((progress.current / progress.target) * 100)) : 0
+                return (
+                  <div key={ach.id} className={`flex flex-col gap-1 p-2 rounded-lg transition-all ${unlocked ? 'bg-green-50 border border-duo-green/20 shadow-sm' : 'bg-gray-50 opacity-50'}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${unlocked ? 'bg-duo-green text-white shadow-sm' : 'bg-gray-200 text-gray-400 grayscale'}`}>
+                        <Icon size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-bold text-sm ${unlocked ? 'text-gray-800' : 'text-gray-400'}`}>{ach.title}</p>
+                        <p className={`text-xs ${unlocked ? 'text-gray-500' : 'text-gray-400'}`}>{ach.description}</p>
+                      </div>
+                      {unlocked && <Star size={16} className="text-duo-yellow shrink-0" />}
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5">{progress.current} / {progress.target}</p>
+                    {!unlocked && hasProgress && (
+                      <div className="ml-11">
+                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-duo-green h-1.5 rounded-full" style={{ width: `${percent}%` }} />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-0.5">{progress.current} / {progress.target}</p>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+                )
+              })}
+          </motion.div>
+        )}
       </div>
 
       {/* Actions */}

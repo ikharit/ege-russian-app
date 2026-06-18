@@ -9,18 +9,20 @@ import { Teacher } from './pages/Teacher'
 import { Profile } from './pages/Profile'
 import { AdaptivePractice } from './pages/AdaptivePractice'
 import { AccentTrainer } from './pages/AccentTrainer'
-import { MiniGames } from './pages/MiniGames'
+import { Task10Trainer } from './pages/Task10Trainer'
 import { MistakesReview } from './pages/MistakesReview'
+import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
 import { MyHomework } from './pages/MyHomework'
 import { AchievementToast } from './components/AchievementToast'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
-import { Suspense, lazy } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 
 const TheoryPage = lazy(() => import('./pages/TheoryPage'))
+const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage'))
 
 function BottomNav() {
   const navigate = useNavigate()
@@ -61,10 +63,14 @@ function BottomNav() {
 
 export default function App() {
   const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer'
+  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer'
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
 
   return (
     <div className="min-h-screen bg-duo-snow flex flex-col">
@@ -77,6 +83,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/theory" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryPage /></Suspense>} />
+          <Route path="/theory-editor" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryEditorPage /></Suspense>} />
+          <Route path="/theory-editor/:taskNumber" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryEditorPage /></Suspense>} />
           <Route path="/course" element={<CourseMap />} />
           <Route path="/lesson/:lessonId" element={<Lesson />} />
           <Route path="/stats" element={<Statistics />} />
@@ -89,6 +97,7 @@ export default function App() {
           <Route path="/mistakes" element={<MistakesReview />} />
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
+          <Route path="/task10-trainer" element={<Task10Trainer />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

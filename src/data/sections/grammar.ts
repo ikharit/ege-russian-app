@@ -129,7 +129,8 @@ export const grammarSections: Section[] = [
           { id: 'q14-19', type: 'single', text: 'Как написать? кое..что', options: ['кое-что', 'коечто'], correctAnswer: ['кое-что'], explanation: '«Кое-что» — дефис.', difficulty: 'medium', xpReward: 12, atoms: ['defis_compound'] },
           { id: 'q14-20', type: 'single', text: 'Как написать? кое..где', options: ['кое-где', 'коегде'], correctAnswer: ['кое-где'], explanation: '«Кое-где» — дефис.', difficulty: 'medium', xpReward: 12, atoms: ['defis_compound'] },
         ]
-      }
+      },
+,
     ]
   }
 ]

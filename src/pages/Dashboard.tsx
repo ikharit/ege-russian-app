@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
+import { useTask10Store } from '../stores/task10Store'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
@@ -268,6 +269,30 @@ export function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Task 10 Trainer Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/task10-trainer')}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white">
+              <span className="text-lg font-bold">№10</span>
+            </div>
+            <div>
+              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">Тренажёр</p>
+              <p className="font-bold text-gray-800">ПРЕ/ПРИ, Ъ/Ь, Ы/И</p>
+              <p className="text-xs text-gray-500">Сложные слова</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <Task10MiniProgress />
+            <ChevronRight size={24} className="text-blue-400" />
+          </div>
+        </div>
+      </motion.div>
+
       {/* Mistakes Review Card */}
       <MistakesCard />
 
@@ -316,6 +341,21 @@ function AccentTrainerMiniProgress() {
     <div className="w-16">
       <div className="w-full bg-gray-200 rounded-full h-1.5">
         <div className="bg-rose-400 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="text-[10px] text-gray-400 mt-0.5 text-right">{mastered}/{total}</p>
+    </div>
+  )
+}
+
+function Task10MiniProgress() {
+  const { getOverallProgress } = useTask10Store()
+  const { total, mastered } = getOverallProgress()
+  const pct = total > 0 ? (mastered / total) * 100 : 0
+
+  return (
+    <div className="w-16">
+      <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
       </div>
       <p className="text-[10px] text-gray-400 mt-0.5 text-right">{mastered}/{total}</p>
     </div>
