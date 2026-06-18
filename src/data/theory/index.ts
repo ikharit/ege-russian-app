@@ -6,13 +6,19 @@ export type { TheorySection, TheoryRule } from './task4'
 export { default as task4Theory } from './task4'
 export { default as task9Theory } from './task9'
 export { default as task10Theory } from './task10'
+export { default as task11Theory } from './task11'
+export { default as task12Theory } from './task12'
+export { default as task14Theory } from './task14'
 
 // ─────────────────────────────────────────
 // План пополнения (приоритеты):
 // ─────────────────────────────────────────
-// [ ] task11.ts — Суффиксы (umschool.net, грамота.ру)
-// [ ] task12.ts — Окончания глаголов, причастий (gramota.ru/учебник)
-// [ ] task14.ts — Слитное/раздельное/дефисное (umschool.net)
+// [✓] task4.ts — Ударения (орфоэпия) — ФИПИ Навигатор 2025
+// [✓] task9.ts — Корни — umschool.net, грамота.ру
+// [✓] task10.ts — Приставки — umschool.net, ФИПИ Навигатор
+// [✓] task11.ts — Суффиксы — umschool.net, грамота.ру
+// [✓] task12.ts — Окончания глаголов, причастий — maximumtest.ru, umschool.net
+// [✓] task14.ts — Слитное/раздельное/дефисное — umschool.net, ФИПИ Навигатор
 // [ ] task5.ts — Паронимы (ФИПИ Навигатор)
 // [ ] task6.ts — Лексические нормы (gramota.ru/справочники)
 // [ ] task7.ts — Фразеологизмы (gramota.ru/справочник по фразеологии)
