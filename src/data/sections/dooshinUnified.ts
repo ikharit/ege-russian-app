@@ -1,6 +1,8 @@
 import { Section } from '../../types'
 import { dooshinSections } from './dooshin'
 
+const allDooshinLessons = dooshinSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-dooshin-all' })))
+
 export const dooshinSection: Section = {
   id: 'section-dooshin-all',
   courseId: 'ege-russian-2025',
@@ -9,7 +11,7 @@ export const dooshinSection: Section = {
   order: 100,
   icon: 'BookOpen',
   color: '#58cc02',
-  lessons: [],
+  lessons: allDooshinLessons,
   groups: dooshinSections.map(s => ({
     id: s.id,
     title: s.title,
