@@ -4,6 +4,7 @@ import { atomizationSections } from './atomization'
 import { grammarSections } from './grammar'
 import { nnnSections } from './n_nn'
 import { dooshin15Sections } from './dooshin15'
+import { dooshin20Sections } from './dooshin20'
 
 const allLessons = [
   ...orthographySections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
@@ -11,6 +12,7 @@ const allLessons = [
   ...grammarSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...nnnSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...dooshin15Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
+  ...dooshin20Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
 ]
 
 export const orthographyAllSections: Section[] = [

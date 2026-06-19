@@ -235,9 +235,17 @@ export function Teacher() {
           <Users size={28} className="text-duo-blue" />
           <h1 className="text-2xl font-bold text-gray-800">Панель учителя</h1>
         </div>
-        <button onClick={() => setTeacherMode(false)} className="text-sm text-gray-500">
-          Выйти
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/teacher/classroom')}
+            className="text-sm text-duo-blue font-medium hover:underline"
+          >
+            Мои классы
+          </button>
+          <button onClick={() => setTeacherMode(false)} className="text-sm text-gray-500">
+            Выйти
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}

@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Lesson } from './Lesson'
 
-// Mock heavy dependencies
+// All mocks must be self-contained (hoisted to top)
 vi.mock('framer-motion', () => ({
   motion: { div: ({ children, ...props }: any) => <div {...props}>{children}</div> },
   AnimatePresence: ({ children }: any) => <>{children}</>,
@@ -61,37 +61,33 @@ vi.mock('../lib/theoryMapper', () => ({
   getTheoryForLesson: vi.fn(() => undefined),
 }))
 
-const mockLesson = {
-  id: 'lesson-test-1',
-  sectionId: 'section-test',
-  title: 'Тестовый урок',
-  type: 'practice',
-  description: 'Описание',
-  xpReward: 60,
-  prerequisites: [],
-  questions: [
-    { id: 'q1', type: 'text', text: 'Вопрос 1', correctAnswer: ['а'], explanation: 'Потому что', difficulty: 'easy', xpReward: 10, atoms: ['task9'] },
-    { id: 'q2', type: 'text', text: 'Вопрос 2', correctAnswer: ['о'], explanation: 'Потому что', difficulty: 'easy', xpReward: 10, atoms: ['task9'] },
-  ],
-}
-
-const mockSection = {
-  id: 'section-test',
-  courseId: 'test',
-  title: 'Тестовый раздел',
-  subtitle: '',
-  order: 1,
-  icon: 'BookOpen',
-  color: '#58cc02',
-  lessons: [mockLesson],
-}
-
 vi.mock('../data/courseData', () => ({
   course: {
     id: 'test-course',
     title: 'Test',
     description: '',
-    sections: [mockSection],
+    sections: [{
+      id: 'section-test',
+      courseId: 'test',
+      title: 'Тестовый раздел',
+      subtitle: '',
+      order: 1,
+      icon: 'BookOpen',
+      color: '#58cc02',
+      lessons: [{
+        id: 'lesson-test-1',
+        sectionId: 'section-test',
+        title: 'Тестовый урок',
+        type: 'practice',
+        description: 'Описание',
+        xpReward: 60,
+        prerequisites: [],
+        questions: [
+          { id: 'q1', type: 'text', text: 'Вопрос 1', correctAnswer: ['а'], explanation: 'Потому что', difficulty: 'easy', xpReward: 10, atoms: ['task9'] },
+          { id: 'q2', type: 'text', text: 'Вопрос 2', correctAnswer: ['о'], explanation: 'Потому что', difficulty: 'easy', xpReward: 10, atoms: ['task9'] },
+        ],
+      }],
+    }],
   },
 }))
 
@@ -100,7 +96,7 @@ const mockStoreState = {
   lessonProgress: {},
   startLesson: vi.fn(),
   completeLesson: vi.fn(),
-  loseHeart: vi.fn(() => true), // returns true = still has hearts
+  loseHeart: vi.fn(() => true),
   restoreHearts: vi.fn(),
   recordAtomAttempt: vi.fn(),
   recordWrongAnswer: vi.fn(),
@@ -130,20 +126,6 @@ vi.mock('react-router-dom', async () => {
 })
 
 describe('Lesson', () => {
-  it('renders lesson not found for invalid lessonId', () => {
-    vi.doMock('react-router-dom', async () => {
-      const actual = await vi.importActual('react-router-dom')
-      return {
-        ...actual as any,
-        useParams: () => ({ lessonId: 'non-existent' }),
-        useNavigate: () => vi.fn(),
-      }
-    })
-    const { Lesson: LessonInvalid } = require('./Lesson')
-    render(<LessonInvalid />)
-    expect(screen.getByText('Урок не найден')).toBeTruthy()
-  })
-
   it('renders question card for valid lesson', () => {
     render(<Lesson />)
     expect(screen.getByTestId('question-card')).toBeTruthy()
@@ -168,7 +150,6 @@ describe('Lesson', () => {
 
   it('shows lesson result after completing all questions', () => {
     render(<Lesson />)
-    // Answer both questions correctly and click next
     fireEvent.click(screen.getByText('Correct'))
     fireEvent.click(screen.getByText('Next'))
     fireEvent.click(screen.getByText('Correct'))

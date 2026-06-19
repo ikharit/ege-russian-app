@@ -29,6 +29,9 @@ import { ChallengesPage } from './pages/ChallengesPage'
 import { ParentDashboard } from './pages/ParentDashboard'
 import { TrainersPage } from './pages/TrainersPage'
 import { AnalyticsPage } from './pages/AnalyticsPage'
+import { TeacherClassroom } from './pages/TeacherClassroom'
+import { JoinClass } from './pages/JoinClass'
+import { ClassDetail } from './pages/ClassDetail'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { achievements } from './data/achievements'
@@ -333,7 +336,10 @@ export default function App() {
           <Route path="/stats" element={<Statistics />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher/classroom" element={<TeacherClassroom />} />
           <Route path="/teacher/:studentName" element={<StudentHomework />} />
+          <Route path="/join-class" element={<JoinClass />} />
+          <Route path="/class/:classId" element={<ClassDetail />} />
           <Route path="/challenges" element={<ChallengesPage />} />
           <Route path="/parent" element={<ParentDashboard />} />
           <Route path="/profile" element={<Profile />} />
