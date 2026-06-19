@@ -37,3 +37,4 @@ src/
   types/          # TypeScript интерфейсы
   lib/            # Supabase клиент
 ```
+// trigger deploy
