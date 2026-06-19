@@ -11,13 +11,14 @@ src/
 ├── pages/           # 22 страницы (React-компоненты, по одной на экран)
 ├── components/      # 15+ компонентов (QuestionCard, Hearts, Popover, TheoryViewer...)
 ├── stores/          # 7 Zustand stores (по одному на модуль + progressStore)
+├── utils/           # ML engines: IRT, BKT, predictive score, error patterns, SRS
 ├── data/
 │   ├── sections/    # 17 разделов курса (задания 1–26 в виде уроков)
 │   ├── theory/      # Теория по заданиям (task4, 9, 10, 11, 12, 14...)
 │   ├── gsheets/     # Данные учеников из Google Sheets (9 человек)
 │   ├── atomization/ # Атомы (микро-навыки)
 │   └── task*N*Questions.ts  # Данные для тренажёров (5, 10, 16)
-├── lib/             # Утилиты (sounds.ts, theoryMapper.ts...)
+├── lib/             # Утилиты (sounds.ts, theoryMapper.ts, rag.ts...)
 └── types/           # TypeScript interfaces (index.ts)
 ```
 
@@ -32,6 +33,11 @@ src/
 | `src/types/index.ts` | Все TypeScript типы | 🟢 стабильно |
 | `src/data/courseData.ts` | Секции и уроки курса | 🟢 стабильно |
 | `src/data/gsheets/homeworkData.ts` | 9 реальных учеников из Google Sheets | 🟢 стабильно |
+| `src/utils/predictiveScore.ts` | ML: линейная регрессия для прогноза баллов | 🟢 новое |
+| `src/utils/irtEngine.ts` | ML: IRT (Item Response Theory) для адаптивных вопросов | 🟢 новое |
+| `src/utils/bktEngine.ts` | ML: Bayesian Knowledge Tracing для атомов | 🟢 новое |
+| `src/utils/errorPatternAnalyzer.ts` | ML: детекция паттернов ошибок | 🟢 новое |
+| `src/lib/rag.ts` | RAG: fuzzy search + TF-IDF semantic + feedback | 🟢 обновлено |
 
 ---
 
