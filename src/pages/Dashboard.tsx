@@ -25,9 +25,13 @@ import { useStudyPlanStore } from '../stores/studyPlanStore'
 export function Dashboard() {
   const navigate = useNavigate()
   const [showXPModal, setShowXPModal] = useState(false)
+  const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const stats = useProgressStore((s) => s.userStats)
+  const isTeacher = useProgressStore((s) => s.isTeacher)
   const activeProfile = useStudentStore((s) => s.getActiveProfile())
   const displayName = activeProfile?.name || stats.name || 'ученик'
+  const classes = useClassStore((s) => s.classes)
+  const totalClassStudents = Object.values(classes).reduce((sum, c) => sum + c.students.length, 0)
 
   const handleKeyNav = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -300,6 +304,33 @@ export function Dashboard() {
         )}
       </motion.div>
 
+      {/* My Classes Card (teacher only) */}
+      {isTeacher && (
+        <motion.div
+          className="card bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200 cursor-pointer"
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate('/teacher/classroom')}
+          onKeyDown={(e) => handleKeyNav(e, () => navigate('/teacher/classroom'))}
+          role="button"
+          tabIndex={0}
+          aria-label="Мои классы"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center text-white">
+                <School size={24} />
+              </div>
+              <div>
+                <p className="text-xs text-indigo-500 uppercase tracking-wide font-bold">Учитель</p>
+                <p className="font-bold text-gray-800">Мои классы</p>
+                <p className="text-xs text-gray-500">{Object.values(classes).length} классов • {totalClassStudents} учеников</p>
+              </div>
+            </div>
+            <ChevronRight size={24} className="text-indigo-400" />
+          </div>
+        </motion.div>
+      )}
+
       {/* My Class Card */}
       {studentClass ? (
         <motion.div
@@ -512,32 +543,86 @@ export function Dashboard() {
       {/* Mistakes Review Card */}
       <MistakesCard />
 
-      {/* Sections overview */}
+      {/* Sections overview — accordion */}
       <div className="flex flex-col gap-3">
         <h3 className="font-bold text-gray-700">Разделы курса</h3>
         {course.sections.map((section, idx) => {
           const sectionCompleted = section.lessons.filter(l => lessonProgress[l.id]?.status === 'completed').length
           const sectionTotal = section.lessons.length
+          const isExpanded = expandedSection === section.id
           return (
             <motion.div
               key={section.id}
-              className="card flex items-center gap-3"
-              whileHover={{ scale: 1.01 }}
-              onClick={() => navigate(`/course?section=${section.id}`)}
+              className="card overflow-hidden"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.03 }}
             >
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg"
-                style={{ backgroundColor: section.color }}
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => setExpandedSection(isExpanded ? null : section.id)}
               >
-                {idx + 1}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0"
+                  style={{ backgroundColor: section.color }}
+                >
+                  {idx + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-gray-800 truncate">{section.title}</p>
+                  <p className="text-xs text-gray-500 truncate">{section.subtitle}</p>
+                </div>
+                <div className="flex items-center gap-2 text-right shrink-0">
+                  <span className="text-sm font-bold text-gray-700">{sectionCompleted}/{sectionTotal}</span>
+                  <ChevronDown
+                    size={18}
+                    className={`text-gray-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                  />
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="font-bold text-gray-800">{section.title}</p>
-                <p className="text-xs text-gray-500">{section.subtitle}</p>
-              </div>
-              <div className="text-right">
-                <span className="text-sm font-bold text-gray-700">{sectionCompleted}/{sectionTotal}</span>
-              </div>
+
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-1"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {section.lessons.map((lesson) => {
+                      const prog = lessonProgress[lesson.id]
+                      const isCompleted = prog?.status === 'completed'
+                      const isAvailable = prog?.status === 'available' || prog?.status === 'started'
+                      return (
+                        <div
+                          key={lesson.id}
+                          className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors"
+                          onClick={() => navigate(`/lesson/${lesson.id}`)}
+                        >
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 ${
+                            isCompleted ? 'bg-duo-green text-white' : isAvailable ? 'bg-duo-blue/10 text-duo-blue' : 'bg-gray-100 text-gray-400'
+                          }`}>
+                            {isCompleted ? '✓' : lesson.id}
+                          </div>
+                          <span className={`text-sm flex-1 truncate ${isCompleted ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
+                            {lesson.title}
+                          </span>
+                          {prog?.bestScore !== undefined && (
+                            <span className="text-xs text-gray-400 shrink-0">{prog.bestScore}%</span>
+                          )}
+                        </div>
+                      )
+                    })}
+                    <button
+                      className="mt-2 text-sm text-duo-blue font-bold text-center py-2 rounded-xl hover:bg-duo-blue/5 transition-colors"
+                      onClick={() => navigate(`/course?section=${section.id}`)}
+                    >
+                      Открыть раздел →
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )
         })}

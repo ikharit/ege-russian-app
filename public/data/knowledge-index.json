@@ -11404,5 +11404,2075 @@
     "relatedAtoms": [
       "task9"
     ]
+  },
+  {
+    "id": "word-generic-равновесие",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "равновесие",
+    "content": "Корень -равновес- (проверяемый). Проверьте через однокоренное: равновесие.",
+    "explanation": "Корень -равновес- (проверяемый). Проверьте через однокоренное: равновесие.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-цикорий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "цикорий",
+    "content": "Корень -цикорий- (непроверяемый). Запомните написание: цикорий.",
+    "explanation": "Корень -цикорий- (непроверяемый). Запомните написание: цикорий.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-распознавать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "распознавать",
+    "content": "Корень -распозна- (проверяемый). Проверьте через однокоренное: познавать.",
+    "explanation": "Корень -распозна- (проверяемый). Проверьте через однокоренное: познавать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-поджёг",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "поджёг",
+    "content": "Корень -поджёг- (чередующийся). Чередование: жёг/жиг (проверьте через: жечь).",
+    "explanation": "Корень -поджёг- (чередующийся). Чередование: жёг/жиг (проверьте через: жечь).",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-подмочить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "подмочить",
+    "content": "Корень -подмоч- (проверяемый). Проверьте через однокоренное: мочить.",
+    "explanation": "Корень -подмоч- (проверяемый). Проверьте через однокоренное: мочить.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-коррекция",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "коррекция",
+    "content": "Корень -коррекц- (непроверяемый). Запомните написание: коррекция.",
+    "explanation": "Корень -коррекц- (непроверяемый). Запомните написание: коррекция.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-очаровать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "очаровать",
+    "content": "Корень -очарова- (проверяемый). Проверьте через однокоренное: чары.",
+    "explanation": "Корень -очарова- (проверяемый). Проверьте через однокоренное: чары.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-знакомить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "знакомить",
+    "content": "Корень -знаком- (проверяемый). Проверьте через однокоренное: знакомый.",
+    "explanation": "Корень -знаком- (проверяемый). Проверьте через однокоренное: знакомый.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-наслаждаться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "наслаждаться",
+    "content": "Корень -наслажд- (проверяемый). Проверьте через однокоренное: наслаждаться.",
+    "explanation": "Корень -наслажд- (проверяемый). Проверьте через однокоренное: наслаждаться.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-интеллектуал",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "интеллектуал",
+    "content": "Корень -интеллектуал- (непроверяемый). Запомните написание: интеллектуал.",
+    "explanation": "Корень -интеллектуал- (непроверяемый). Запомните написание: интеллектуал.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-барельефный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "барельефный",
+    "content": "Корень -барельеф- (непроверяемый). Запомните написание: барельефный.",
+    "explanation": "Корень -барельеф- (непроверяемый). Запомните написание: барельефный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-стучать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "стучать",
+    "content": "Корень -стуч- (проверяемый). Проверьте через однокоренное: стучать.",
+    "explanation": "Корень -стуч- (проверяемый). Проверьте через однокоренное: стучать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-кардинально",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "кардинально",
+    "content": "Корень -кардинал- (непроверяемый). Запомните написание: кардинально.",
+    "explanation": "Корень -кардинал- (непроверяемый). Запомните написание: кардинально.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-цементный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "цементный",
+    "content": "Корень -цемент- (непроверяемый). Запомните написание: цементный.",
+    "explanation": "Корень -цемент- (непроверяемый). Запомните написание: цементный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-канцелярия",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "канцелярия",
+    "content": "Корень -канцеляр- (непроверяемый). Запомните написание: канцелярия.",
+    "explanation": "Корень -канцеляр- (непроверяемый). Запомните написание: канцелярия.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-шерстка",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "шерстка",
+    "content": "Корень -шерст- (проверяемый). Проверьте через однокоренное: шерсть.",
+    "explanation": "Корень -шерст- (проверяемый). Проверьте через однокоренное: шерсть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-архитектор",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "архитектор",
+    "content": "Корень -архитект- (непроверяемый). Запомните написание: архитектор.",
+    "explanation": "Корень -архитект- (непроверяемый). Запомните написание: архитектор.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пробежать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пробежать",
+    "content": "Корень -беж- (чередующийся). Чередование: беж/бег (проверьте через: бегать). Приставка: про-.",
+    "explanation": "Корень -беж- (чередующийся). Чередование: беж/бег (проверьте через: бегать). Приставка: про-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-подлинный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "подлинный",
+    "content": "Корень -подлин- (проверяемый). Проверьте через однокоренное: подлинный.",
+    "explanation": "Корень -подлин- (проверяемый). Проверьте через однокоренное: подлинный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-расспроси",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "расспроси",
+    "content": "Корень -спрос- (проверяемый). Проверьте через однокоренное: спросить. Приставка: рас-.",
+    "explanation": "Корень -спрос- (проверяемый). Проверьте через однокоренное: спросить. Приставка: рас-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-вольнолюбивый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "вольнолюбивый",
+    "content": "Корень -вольнолюб- (проверяемый). Проверьте через однокоренное: вольнолюбивый.",
+    "explanation": "Корень -вольнолюб- (проверяемый). Проверьте через однокоренное: вольнолюбивый.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пшенная",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пшенная",
+    "content": "Корень -пшен- (проверяемый). Проверьте через однокоренное: пшено.",
+    "explanation": "Корень -пшен- (проверяемый). Проверьте через однокоренное: пшено.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-молодожёны",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "молодожёны",
+    "content": "Корень -молод- (проверяемый). Проверьте через однокоренное: молодой.",
+    "explanation": "Корень -молод- (проверяемый). Проверьте через однокоренное: молодой.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-дефицитный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "дефицитный",
+    "content": "Корень -дефицит- (непроверяемый). Запомните написание: дефицитный.",
+    "explanation": "Корень -дефицит- (непроверяемый). Запомните написание: дефицитный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-манифест",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "манифест",
+    "content": "Корень -манифест- (непроверяемый). Запомните написание: манифест.",
+    "explanation": "Корень -манифест- (непроверяемый). Запомните написание: манифест.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пилить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пилить",
+    "content": "Корень -пил- (проверяемый). Проверьте через однокоренное: пилить.",
+    "explanation": "Корень -пил- (проверяемый). Проверьте через однокоренное: пилить.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-абрикосовый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "абрикосовый",
+    "content": "Корень -абрикос- (проверяемый). Проверьте через однокоренное: абрикос.",
+    "explanation": "Корень -абрикос- (проверяемый). Проверьте через однокоренное: абрикос.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-прожевал",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "прожевал",
+    "content": "Корень -жев- (проверяемый). Проверьте через однокоренное: жевать. Приставка: про-.",
+    "explanation": "Корень -жев- (проверяемый). Проверьте через однокоренное: жевать. Приставка: про-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-постановление",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "постановление",
+    "content": "Корень -постанов- (проверяемый). Проверьте через однокоренное: постановить.",
+    "explanation": "Корень -постанов- (проверяемый). Проверьте через однокоренное: постановить.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-мировой",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "мировой",
+    "content": "Корень -миров- (проверяемый). Проверьте через однокоренное: мир.",
+    "explanation": "Корень -миров- (проверяемый). Проверьте через однокоренное: мир.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-багровый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "багровый",
+    "content": "Корень -багр- (проверяемый). Проверьте через однокоренное: багровый.",
+    "explanation": "Корень -багр- (проверяемый). Проверьте через однокоренное: багровый.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-разгораться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "разгораться",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-выместить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "выместить",
+    "content": "Корень -мест- (проверяемый). Проверьте через однокоренное: место. Приставка: вы-.",
+    "explanation": "Корень -мест- (проверяемый). Проверьте через однокоренное: место. Приставка: вы-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-портретист",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "портретист",
+    "content": "Корень -портрет- (непроверяемый). Запомните написание: портретист.",
+    "explanation": "Корень -портрет- (непроверяемый). Запомните написание: портретист.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-либерал",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "либерал",
+    "content": "Корень -либерал- (непроверяемый). Запомните написание: либерал.",
+    "explanation": "Корень -либерал- (непроверяемый). Запомните написание: либерал.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-индивид",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "индивид",
+    "content": "Корень -индивид- (непроверяемый). Запомните написание: индивид.",
+    "explanation": "Корень -индивид- (непроверяемый). Запомните написание: индивид.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-равностьоронний",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "равностьоронний",
+    "content": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "explanation": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-олицетворять",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "олицетворять",
+    "content": "Корень -олицетвор- (проверяемый). Проверьте через однокоренное: лицо.",
+    "explanation": "Корень -олицетвор- (проверяемый). Проверьте через однокоренное: лицо.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-телега",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "телега",
+    "content": "Корень -телег- (проверяемый). Проверьте через однокоренное: телега.",
+    "explanation": "Корень -телег- (проверяемый). Проверьте через однокоренное: телега.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-ростовщичество",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "ростовщичество",
+    "content": "Корень -ростовщ- (проверяемый). Проверьте через однокоренное: ростовщик.",
+    "explanation": "Корень -ростовщ- (проверяемый). Проверьте через однокоренное: ростовщик.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пошёл",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пошёл",
+    "content": "Корень -шёл- (чередующийся). Чередование: шёл/ид (проверьте через: идти). Приставка: по-.",
+    "explanation": "Корень -шёл- (чередующийся). Чередование: шёл/ид (проверьте через: идти). Приставка: по-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-добираться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "добираться",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: до-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: до-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-апеллировать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "апеллировать",
+    "content": "Корень -апеллир- (проверяемый). Проверьте через однокоренное: апеллировать.",
+    "explanation": "Корень -апеллир- (проверяемый). Проверьте через однокоренное: апеллировать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-равняться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "равняться",
+    "content": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "explanation": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-преподавать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "преподавать",
+    "content": "Корень -препод- (проверяемый). Проверьте через однокоренное: преподавать.",
+    "explanation": "Корень -препод- (проверяемый). Проверьте через однокоренное: преподавать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-анчоус",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "анчоус",
+    "content": "Корень -анчоус- (непроверяемый). Запомните написание: анчоус.",
+    "explanation": "Корень -анчоус- (непроверяемый). Запомните написание: анчоус.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-возражать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "возражать",
+    "content": "Корень -возраж- (проверяемый). Проверьте через однокоренное: возражать.",
+    "explanation": "Корень -возраж- (проверяемый). Проверьте через однокоренное: возражать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-бетон",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "бетон",
+    "content": "Корень -бетон- (непроверяемый). Запомните написание: бетон.",
+    "explanation": "Корень -бетон- (непроверяемый). Запомните написание: бетон.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-цифровизация",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "цифровизация",
+    "content": "Корень -цифровиз- (проверяемый). Проверьте через однокоренное: цифра.",
+    "explanation": "Корень -цифровиз- (проверяемый). Проверьте через однокоренное: цифра.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-громоздкий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "громоздкий",
+    "content": "Корень -громозд- (проверяемый). Проверьте через однокоренное: громоздкий.",
+    "explanation": "Корень -громозд- (проверяемый). Проверьте через однокоренное: громоздкий.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-бракосочетание",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "бракосочетание",
+    "content": "Корень -бракосочет- (проверяемый). Проверьте через однокоренное: бракосочетание.",
+    "explanation": "Корень -бракосочет- (проверяемый). Проверьте через однокоренное: бракосочетание.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пессимист",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пессимист",
+    "content": "Корень -пессимист- (непроверяемый). Запомните написание: пессимист.",
+    "explanation": "Корень -пессимист- (непроверяемый). Запомните написание: пессимист.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-благотворительный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "благотворительный",
+    "content": "Корень -благотвор- (проверяемый). Проверьте через однокоренное: благотворить.",
+    "explanation": "Корень -благотвор- (проверяемый). Проверьте через однокоренное: благотворить.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-сброшюрованный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "сброшюрованный",
+    "content": "Корень -брошюр- (непроверяемый). Запомните написание: сброшюрованный. Приставка: с-.",
+    "explanation": "Корень -брошюр- (непроверяемый). Запомните написание: сброшюрованный. Приставка: с-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-гладкошерстный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "гладкошерстный",
+    "content": "Корень -гладкошерст- (проверяемый). Проверьте через однокоренное: шерсть.",
+    "explanation": "Корень -гладкошерст- (проверяемый). Проверьте через однокоренное: шерсть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-щёголь",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "щёголь",
+    "content": "Корень -щёголь- (проверяемый). Проверьте через однокоренное: щёголь.",
+    "explanation": "Корень -щёголь- (проверяемый). Проверьте через однокоренное: щёголь.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-молоде",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "молоде",
+    "content": "Корень -молод- (проверяемый). Проверьте через однокоренное: молодой.",
+    "explanation": "Корень -молод- (проверяемый). Проверьте через однокоренное: молодой.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горелый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горелый",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-могучий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "могучий",
+    "content": "Корень -мог- (проверяемый). Проверьте через однокоренное: мочь.",
+    "explanation": "Корень -мог- (проверяемый). Проверьте через однокоренное: мочь.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-здоровье",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "здоровье",
+    "content": "Корень -здоров- (проверяемый). Проверьте через однокоренное: здоровый.",
+    "explanation": "Корень -здоров- (проверяемый). Проверьте через однокоренное: здоровый.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-сиреневый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "сиреневый",
+    "content": "Корень -сирен- (проверяемый). Проверьте через однокоренное: сирень.",
+    "explanation": "Корень -сирен- (проверяемый). Проверьте через однокоренное: сирень.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-испарение",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "испарение",
+    "content": "Корень -пар- (проверяемый). Проверьте через однокоренное: пар. Приставка: ис-.",
+    "explanation": "Корень -пар- (проверяемый). Проверьте через однокоренное: пар. Приставка: ис-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-преодолеть",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "преодолеть",
+    "content": "Корень -преодол- (проверяемый). Проверьте через однокоренное: преодолеть.",
+    "explanation": "Корень -преодол- (проверяемый). Проверьте через однокоренное: преодолеть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-мозговой",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "мозговой",
+    "content": "Корень -мозг- (проверяемый). Проверьте через однокоренное: мозг.",
+    "explanation": "Корень -мозг- (проверяемый). Проверьте через однокоренное: мозг.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-тройник",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "тройник",
+    "content": "Корень -трой- (проверяемый). Проверьте через однокоренное: три.",
+    "explanation": "Корень -трой- (проверяемый). Проверьте через однокоренное: три.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-расстелить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "расстелить",
+    "content": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: рас-.",
+    "explanation": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: рас-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-крыжовник",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "крыжовник",
+    "content": "Корень -крыжовн- (проверяемый). Проверьте через однокоренное: крыжовник.",
+    "explanation": "Корень -крыжовн- (проверяемый). Проверьте через однокоренное: крыжовник.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-чёлка",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "чёлка",
+    "content": "Корень -чёлк- (проверяемый). Проверьте через однокоренное: чёлка.",
+    "explanation": "Корень -чёлк- (проверяемый). Проверьте через однокоренное: чёлка.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-окатить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "окатить",
+    "content": "Корень -кат- (проверяемый). Проверьте через однокоренное: катить. Приставка: о-.",
+    "explanation": "Корень -кат- (проверяемый). Проверьте через однокоренное: катить. Приставка: о-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-перила",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "перила",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-собираться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "собираться",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-облегчить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "облегчить",
+    "content": "Корень -легч- (проверяемый). Проверьте через однокоренное: легкий. Приставка: об-.",
+    "explanation": "Корень -легч- (проверяемый). Проверьте через однокоренное: легкий. Приставка: об-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-подровняться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "подровняться",
+    "content": "Корень -ровн- (проверяемый). Проверьте через однокоренное: ровный. Приставка: под-.",
+    "explanation": "Корень -ровн- (проверяемый). Проверьте через однокоренное: ровный. Приставка: под-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-оранжерея",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "оранжерея",
+    "content": "Корень -оранжер- (непроверяемый). Запомните написание: оранжерея.",
+    "explanation": "Корень -оранжер- (непроверяемый). Запомните написание: оранжерея.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-хвастливый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "хвастливый",
+    "content": "Корень -хваст- (проверяемый). Проверьте через однокоренное: хвастать.",
+    "explanation": "Корень -хваст- (проверяемый). Проверьте через однокоренное: хвастать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-сращение",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "сращение",
+    "content": "Корень -сращ- (проверяемый). Проверьте через однокоренное: сращение.",
+    "explanation": "Корень -сращ- (проверяемый). Проверьте через однокоренное: сращение.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-избирательно",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "избирательно",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: из-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: из-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-лабиринт",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "лабиринт",
+    "content": "Корень -лабиринт- (непроверяемый). Запомните написание: лабиринт.",
+    "explanation": "Корень -лабиринт- (непроверяемый). Запомните написание: лабиринт.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-мансардный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "мансардный",
+    "content": "Корень -мансард- (непроверяемый). Запомните написание: мансардный.",
+    "explanation": "Корень -мансард- (непроверяемый). Запомните написание: мансардный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-коммерческий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "коммерческий",
+    "content": "Корень -коммерч- (непроверяемый). Запомните написание: коммерческий.",
+    "explanation": "Корень -коммерч- (непроверяемый). Запомните написание: коммерческий.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-гуманизм",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "гуманизм",
+    "content": "Корень -гуман- (непроверяемый). Запомните написание: гуманизм.",
+    "explanation": "Корень -гуман- (непроверяемый). Запомните написание: гуманизм.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-карнавальный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "карнавальный",
+    "content": "Корень -карнавал- (непроверяемый). Запомните написание: карнавальный.",
+    "explanation": "Корень -карнавал- (непроверяемый). Запомните написание: карнавальный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-комплимент",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "комплимент",
+    "content": "Корень -комплимент- (непроверяемый). Запомните написание: комплимент.",
+    "explanation": "Корень -комплимент- (непроверяемый). Запомните написание: комплимент.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-обсерватория",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "обсерватория",
+    "content": "Корень -обсерватор- (непроверяемый). Запомните написание: обсерватория.",
+    "explanation": "Корень -обсерватор- (непроверяемый). Запомните написание: обсерватория.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-хронологический",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "хронологический",
+    "content": "Корень -хронолог- (непроверяемый). Запомните написание: хронологический.",
+    "explanation": "Корень -хронолог- (непроверяемый). Запомните написание: хронологический.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-экология",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "экология",
+    "content": "Корень -эколог- (непроверяемый). Запомните написание: экология.",
+    "explanation": "Корень -эколог- (непроверяемый). Запомните написание: экология.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-массивный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "массивный",
+    "content": "Корень -массив- (непроверяемый). Запомните написание: массивный.",
+    "explanation": "Корень -массив- (непроверяемый). Запомните написание: массивный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-шахматный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "шахматный",
+    "content": "Корень -шахмат- (непроверяемый). Запомните написание: шахматный.",
+    "explanation": "Корень -шахмат- (непроверяемый). Запомните написание: шахматный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-трансляция",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "трансляция",
+    "content": "Корень -трансляц- (непроверяемый). Запомните написание: трансляция.",
+    "explanation": "Корень -трансляц- (непроверяемый). Запомните написание: трансляция.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-фортепиано",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "фортепиано",
+    "content": "Корень -фортепиан- (непроверяемый). Запомните написание: фортепиано.",
+    "explanation": "Корень -фортепиан- (непроверяемый). Запомните написание: фортепиано.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-абориген",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "абориген",
+    "content": "Корень -абориген- (непроверяемый). Запомните написание: абориген.",
+    "explanation": "Корень -абориген- (непроверяемый). Запомните написание: абориген.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-отдалённый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "отдалённый",
+    "content": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий. Приставка: от-.",
+    "explanation": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий. Приставка: от-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-астрономия",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "астрономия",
+    "content": "Корень -астроном- (непроверяемый). Запомните написание: астрономия.",
+    "explanation": "Корень -астроном- (непроверяемый). Запомните написание: астрономия.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-чинопочитание",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "чинопочитание",
+    "content": "Корень -чинопочит- (проверяемый). Проверьте через однокоренное: чинопочитание.",
+    "explanation": "Корень -чинопочит- (проверяемый). Проверьте через однокоренное: чинопочитание.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-колоритный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "колоритный",
+    "content": "Корень -колорит- (непроверяемый). Запомните написание: колоритный.",
+    "explanation": "Корень -колорит- (непроверяемый). Запомните написание: колоритный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пробираться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пробираться",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: про-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: про-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-избирательный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "избирательный",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: из-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: из-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-перспективный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "перспективный",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-разбираться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "разбираться",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: раз-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: раз-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-погорельцы",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "погорельцы",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: по-.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: по-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-оранжерейный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "оранжерейный",
+    "content": "Корень -оранжер- (непроверяемый). Запомните написание: оранжерейный.",
+    "explanation": "Корень -оранжер- (непроверяемый). Запомните написание: оранжерейный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-разгорающийся",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "разгорающийся",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-перевозить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "перевозить",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-постелить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "постелить",
+    "content": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: по-.",
+    "explanation": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: по-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-нашёл",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "нашёл",
+    "content": "Корень -шёл- (чередующийся). Чередование: шёл/ид (проверьте через: идти). Приставка: на-.",
+    "explanation": "Корень -шёл- (чередующийся). Чередование: шёл/ид (проверьте через: идти). Приставка: на-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-ростовщик",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "ростовщик",
+    "content": "Корень -ростовщ- (проверяемый). Проверьте через однокоренное: ростовщик.",
+    "explanation": "Корень -ростовщ- (проверяемый). Проверьте через однокоренное: ростовщик.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-либерализм",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "либерализм",
+    "content": "Корень -либерал- (непроверяемый). Запомните написание: либерализм.",
+    "explanation": "Корень -либерал- (непроверяемый). Запомните написание: либерализм.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-издалека",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "издалека",
+    "content": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий. Приставка: из-.",
+    "explanation": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий. Приставка: из-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-перекликаться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "перекликаться",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-спартакиада",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "спартакиада",
+    "content": "Корень -пар- (проверяемый). Проверьте через однокоренное: пар. Приставка: с-.",
+    "explanation": "Корень -пар- (проверяемый). Проверьте через однокоренное: пар. Приставка: с-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-подстелить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "подстелить",
+    "content": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: под-.",
+    "explanation": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: под-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-отбирает",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "отбирает",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: от-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: от-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-гористая",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "гористая",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-далёкий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "далёкий",
+    "content": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий.",
+    "explanation": "Корень -дал- (проверяемый). Проверьте через однокоренное: далёкий.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-наслаждение",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "наслаждение",
+    "content": "Корень -наслажд- (проверяемый). Проверьте через однокоренное: наслаждаться.",
+    "explanation": "Корень -наслажд- (проверяемый). Проверьте через однокоренное: наслаждаться.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-собирательный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "собирательный",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-кардинальный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "кардинальный",
+    "content": "Корень -кардинал- (непроверяемый). Запомните написание: кардинальный.",
+    "explanation": "Корень -кардинал- (непроверяемый). Запомните написание: кардинальный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-нагромоздить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "нагромоздить",
+    "content": "Корень -громозд- (проверяемый). Проверьте через однокоренное: громоздкий. Приставка: на-.",
+    "explanation": "Корень -громозд- (проверяемый). Проверьте через однокоренное: громоздкий. Приставка: на-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-брошюровать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "брошюровать",
+    "content": "Корень -брошюр- (непроверяемый). Запомните написание: брошюровать.",
+    "explanation": "Корень -брошюр- (непроверяемый). Запомните написание: брошюровать.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горизонт",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горизонт",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-разгорелся",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "разгорелся",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: раз-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-равнина",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "равнина",
+    "content": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "explanation": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-выбирать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "выбирать",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: вы-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: вы-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-пессимистический",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "пессимистический",
+    "content": "Корень -пессимист- (непроверяемый). Запомните написание: пессимистический.",
+    "explanation": "Корень -пессимист- (непроверяемый). Запомните написание: пессимистический.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-запереть",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "запереть",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо. Приставка: за-.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо. Приставка: за-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горделиво",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горделиво",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горделивый",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горделивый",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-опереться",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "опереться",
+    "content": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо. Приставка: о-.",
+    "explanation": "Корень -пер- (проверяемый). Проверьте через однокоренное: перо. Приставка: о-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-собирать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "собирать",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: со-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-равнинный",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "равнинный",
+    "content": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "explanation": "Корень -равн- (проверяемый). Проверьте через однокоренное: равный.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горячий",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горячий",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-возгорание",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "возгорание",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: воз-.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть. Приставка: воз-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-катастрофа",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "катастрофа",
+    "content": "Корень -кат- (проверяемый). Проверьте через однокоренное: катить.",
+    "explanation": "Корень -кат- (проверяемый). Проверьте через однокоренное: катить.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-забирать",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "забирать",
+    "content": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: за-.",
+    "explanation": "Корень -бира- (проверяемый). Проверьте через однокоренное: брать. Приставка: за-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-горемыка",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "горемыка",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-застелить",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "застелить",
+    "content": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: за-.",
+    "explanation": "Корень -стел- (проверяемый). Проверьте через однокоренное: стелить. Приставка: за-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-поровну",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "поровну",
+    "content": "Корень -ровн- (проверяемый). Проверьте через однокоренное: ровный. Приставка: по-.",
+    "explanation": "Корень -ровн- (проверяемый). Проверьте через однокоренное: ровный. Приставка: по-.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
+  },
+  {
+    "id": "word-generic-гормон",
+    "source": "explanations/wordExplanations.json",
+    "taskNumber": "9",
+    "word": "гормон",
+    "content": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "explanation": "Корень -гор- (проверяемый). Проверьте через однокоренное: гореть.",
+    "tags": [
+      "generic",
+      "task9"
+    ],
+    "relatedAtoms": [
+      "task9"
+    ]
   }
 ]

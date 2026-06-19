@@ -104,3 +104,6 @@ If you can't find a rule in the knowledge base:
 ---
 
 Last updated: 2026-06-20 by agent (RAG pipeline setup)
+- **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%).
+- **Teacher class card**: В Dashboard.tsx добавлена карточка "Мои классы" для учителя (`isTeacher`) — ведёт на `/teacher/classroom`.
+- **Class system UX**: Проверено — `TeacherClassroom.tsx` уже содержит полный UI создания класса, inviteCode, копирование, удаление, табы (ученики/ДЗ/лидерборд).

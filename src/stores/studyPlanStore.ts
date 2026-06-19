@@ -36,16 +36,27 @@ function daysBetween(a: Date, b: Date): number {
   return Math.ceil(ms / (1000 * 60 * 60 * 24))
 }
 
+// Target score thresholds: what % of each phase should be completed
+function getIntensity(targetScore: number) {
+  if (targetScore >= 90) return { lessonPct: 1.0, trainerPct: 1.0, mockCount: 5, reviewDaily: true }
+  if (targetScore >= 80) return { lessonPct: 0.95, trainerPct: 0.95, mockCount: 4, reviewDaily: true }
+  if (targetScore >= 70) return { lessonPct: 0.85, trainerPct: 0.80, mockCount: 3, reviewDaily: false }
+  return { lessonPct: 0.70, trainerPct: 0.60, mockCount: 2, reviewDaily: false }
+}
+
 interface StudyPlanState {
   examDate: string | null
+  targetScore: number
   plan: StudyPlan | null
 
   setExamDate: (date: string) => void
+  setTargetScore: (score: number) => void
   generatePlan: () => void
   completeTask: (taskId: string) => void
   getTasksForDay: (date: string) => StudyTask[]
   getTodayTasks: () => StudyTask[]
   getProgress: () => { total: number; completed: number; percent: number }
+  getAssessment: () => { status: 'ahead' | 'ontrack' | 'behind' | 'critical'; label: string; message: string; color: string }
   clearPlan: () => void
 }
 
@@ -53,6 +64,7 @@ export const useStudyPlanStore = create<StudyPlanState>()(
   persist(
     (set, get) => ({
       examDate: null,
+      targetScore: 70,
       plan: null,
 
       setExamDate: (date: string) => {
@@ -60,10 +72,17 @@ export const useStudyPlanStore = create<StudyPlanState>()(
         get().generatePlan()
       },
 
+      setTargetScore: (score: number) => {
+        set({ targetScore: score })
+        get().generatePlan()
+      },
+
       generatePlan: () => {
         const examDateStr = get().examDate
+        const targetScore = get().targetScore
         if (!examDateStr) return
 
+        const intensity = getIntensity(targetScore)
         const examDate = new Date(examDateStr)
         const today = new Date()
         today.setHours(0, 0, 0, 0)
@@ -87,15 +106,20 @@ export const useStudyPlanStore = create<StudyPlanState>()(
           })
         }
 
-        // Фазы
-        const phase1End = Math.floor(totalDays * 0.5)  // 50% на теорию
-        const phase2End = Math.floor(totalDays * 0.8)  // 30% на тренажёры
-        // остальное 20% на пробники + повтор
+        // Calculate how many lessons/trainers to include based on target score
+        const lessonCount = Math.ceil(allLessons.length * intensity.lessonPct)
+        const trainerCount = Math.ceil(allTrainers.length * intensity.trainerPct)
+        const includedLessons = allLessons.slice(0, lessonCount)
+        const includedTrainers = allTrainers.slice(0, trainerCount)
+
+        // Фазы (adjusted for target score)
+        const phase1End = Math.floor(totalDays * 0.5)
+        const phase2End = Math.floor(totalDays * 0.8)
 
         // Фаза 1: Теория (уроки)
         const lessonChunks: string[][] = []
-        for (let i = 0; i < allLessons.length; i += 2) {
-          lessonChunks.push(allLessons.slice(i, i + 2).map((l) => l.id))
+        for (let i = 0; i < includedLessons.length; i += 2) {
+          lessonChunks.push(includedLessons.slice(i, i + 2).map((l) => l.id))
         }
 
         let lessonIdx = 0
@@ -103,7 +127,6 @@ export const useStudyPlanStore = create<StudyPlanState>()(
           const date = addDays(today, d)
           const dayOfWeek = date.getDay()
 
-          // Воскресенье = отдых (если не последний день)
           if (dayOfWeek === 0 && d < totalDays - 1) {
             addTask(date, 'rest', 'День отдыха', 'Отдохни, перезагрузи мозг. Завтра с новыми силами!', undefined, 0)
             continue
@@ -117,8 +140,8 @@ export const useStudyPlanStore = create<StudyPlanState>()(
               chunk[0], 25)
             lessonIdx++
           } else {
-            // Если уроки закончились раньше — добавляем тренажёр
-            const t = allTrainers[d % allTrainers.length]
+            // If lessons done early, add trainers
+            const t = includedTrainers[d % includedTrainers.length]
             addTask(date, 'trainer', `Тренажёр: ${t.title}`, `Отработай задание №${t.task}`, t.path, 15)
           }
         }
@@ -134,16 +157,23 @@ export const useStudyPlanStore = create<StudyPlanState>()(
             continue
           }
 
-          // 2 тренажёра в день
-          const t1 = allTrainers[trainerIdx % allTrainers.length]
-          const t2 = allTrainers[(trainerIdx + 1) % allTrainers.length]
-          addTask(date, 'trainer', `Тренажёр: ${t1.title}`, `Отработай задание №${t1.task}`, t1.path, 15)
-          addTask(date, 'trainer', `Тренажёр: ${t2.title}`, `Отработай задание №${t2.task}`, t2.path, 15)
-          trainerIdx += 2
+          // For high target scores: 3 trainers per day
+          const trainersPerDay = targetScore >= 80 ? 3 : 2
+          for (let tp = 0; tp < trainersPerDay; tp++) {
+            const t = includedTrainers[trainerIdx % includedTrainers.length]
+            if (!t) break
+            addTask(date, 'trainer', `Тренажёр: ${t.title}`, `Отработай задание №${t.task}`, t.path, 15)
+            trainerIdx++
+          }
         }
 
-        // Фаза 3: Пробники + повтор ошибок
-        const mockDays = [Math.floor(totalDays * 0.85), Math.floor(totalDays * 0.92), totalDays - 2]
+        // Фаза 3: Моки + повтор
+        const mockSpacing = totalDays / (intensity.mockCount + 1)
+        const mockDays: number[] = []
+        for (let i = 1; i <= intensity.mockCount; i++) {
+          mockDays.push(Math.floor(phase2End + mockSpacing * i))
+        }
+
         for (let d = phase2End; d < totalDays; d++) {
           const date = addDays(today, d)
           const dayOfWeek = date.getDay()
@@ -155,12 +185,18 @@ export const useStudyPlanStore = create<StudyPlanState>()(
 
           if (mockDays.includes(d)) {
             addTask(date, 'mock', 'Пробный вариант', 'Реши полный вариант ЕГЭ на время — 3,5 часа', undefined, 210)
-          } else {
+          } else if (intensity.reviewDaily) {
             addTask(date, 'review', 'Повтор ошибок', 'Зайди в «Работу над ошибками» и прорешай слабые места', '/mistakes', 20)
+          } else if ((d - phase2End) % 2 === 0) {
+            addTask(date, 'review', 'Повтор ошибок', 'Зайди в «Работу над ошибками» и прорешай слабые места', '/mistakes', 20)
+          } else {
+            addTask(date, 'trainer', `Тренажёр: ${includedTrainers[trainerIdx % includedTrainers.length]?.title || 'Повтор'}`, 
+              'Повтори сложное задание', undefined, 15)
+            trainerIdx++
           }
         }
 
-        set({ plan: { examDate: examDateStr, tasks, generatedAt: new Date().toISOString() } })
+        set({ plan: { examDate: examDateStr, targetScore, tasks, generatedAt: new Date().toISOString() } })
       },
 
       completeTask: (taskId: string) => {
@@ -186,7 +222,27 @@ export const useStudyPlanStore = create<StudyPlanState>()(
         return { total, completed, percent: total > 0 ? Math.round((completed / total) * 100) : 0 }
       },
 
-      clearPlan: () => set({ examDate: null, plan: null }),
+      getAssessment: () => {
+        const plan = get().plan
+        const todayStr = formatDate(new Date())
+        if (!plan) return { status: 'ontrack' as const, label: 'Нет плана', message: 'Создай план подготовки', color: 'text-gray-400' }
+
+        const tasks = plan.tasks
+        const totalDays = daysBetween(new Date(), new Date(plan.examDate))
+        const elapsedTasks = tasks.filter((t) => t.date < todayStr)
+        const completedTasks = tasks.filter((t) => t.completed)
+        const expectedByNow = elapsedTasks.length
+        const actualCompleted = completedTasks.length
+
+        const ratio = expectedByNow > 0 ? actualCompleted / expectedByNow : 1
+
+        if (ratio >= 1.1) return { status: 'ahead' as const, label: 'Отлично! 🚀', message: 'Ты опережаешь план — так держать!', color: 'text-duo-green' }
+        if (ratio >= 0.85) return { status: 'ontrack' as const, label: 'В норме ✅', message: 'Ты вовремя выполняешь задачи', color: 'text-blue-500' }
+        if (ratio >= 0.6) return { status: 'behind' as const, label: 'Отстаёшь ⚠️', message: 'Стоит поднажать — пропущены задачи', color: 'text-duo-yellow' }
+        return { status: 'critical' as const, label: 'Срочно! 🚨', message: 'Критично отстаёшь — догоняй!', color: 'text-duo-red' }
+      },
+
+      clearPlan: () => set({ examDate: null, targetScore: 70, plan: null }),
     }),
     {
       name: 'ege-study-plan',

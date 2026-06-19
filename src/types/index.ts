@@ -129,6 +129,7 @@ export interface StudyTask {
 
 export interface StudyPlan {
   examDate: string
+  targetScore: number // desired exam score (0-100)
   tasks: StudyTask[]
   generatedAt: string
 }
