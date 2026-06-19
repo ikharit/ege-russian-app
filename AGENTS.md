@@ -1,404 +1,106 @@
-# 🏛️ Агентский реестр — ЕГЭ Русский
+# 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Если ты давно не работал с этим проектом:**  
-> 1. Смотри таблицу «Статусы модулей» ниже — узнаешь, что уже сделано.  
-> 2. Смотри «Ключевые файлы» — поймёшь, куда лезть.  
-> 3. Если будешь править код — обязательно прочитай 10 последних записей журнала и раздел «Правила».  
-> 
-> **Полная история (архив):** `memory/AGENTS-HISTORY.md`
+## RAG Pipeline (Anti-Hallucination Guard)
 
----
+All agents working on this project MUST use the RAG pipeline. NEVER generate rules, explanations, or questions from memory alone.
 
-## 📁 Структура проекта (актуальная)
+### 1. Sources of Truth
 
-> **Контекст:** Проект начат 17.06.2026, интенсивная доработка за 4 дня (17–20.06). Архитектура наращена в спринте — возможны техдолги.
+| File | Content | Status |
+|------|---------|--------|
+| `src/data/theory/*.ts` | Verified theory rules per task | ✅ Primary |
+| `src/data/explanations/*.json` | Word-specific explanations | ✅ Secondary |
+| `public/data/knowledge-index.json` | Unified RAG index (auto-built) | ✅ Generated |
+| `src/data/sections/dooshin*.ts` | Real exam questions | ✅ Reference |
+| Your own knowledge | — | ❌ NEVER USE |
 
-```
-ege-russian-app/
-├── src/
-│   ├── pages/           # Страницы (Dashboard, Lesson, Leaderboard, ...)
-│   ├── components/      # Компоненты (QuestionCard, Hearts, ...)
-│   ├── stores/          # Zustand stores (progressStore, accentTrainerStore, ...)
-│   ├── data/            # Данные курса, теории, вопросов
-│   │   ├── sections/    # Разделы курса (grammar, orthography, dooshin, ...)
-│   │   │   ├── dooshin/ # ⭐ Дощинский: task9.ts, task10.ts, task11.ts, task12.ts, index.ts
-│   │   │   ├── dooshinMeta.ts    # Лёгкий meta-файл (92 урока без questions, eager load)
-│   │   │   ├── dooshinUnified.ts # Полные данные (dynamic import из Lesson.tsx)
-│   │   │   └── dooshin.ts        # 2-строчный реэкспорт (legacy, не удалять)
-│   │   │   ├── dooshin15.ts      # ⭐ Задание 15 (Н/НН) — 61 вопрос, требует verify_n_nn.py
-│   │   │   └── dooshin20.ts      # ⭐ Задание 20 (запятые) — 150 вопросов, correctAnswer требует проверки
-│   │   ├── gsheets/     # Данные из Google Sheets (homeworkData.ts + students/)
-│   │   ├── atomization/ # Атомы (микро-навыки)
-│   │   └── theory/      # ⭐ ТЕОРИЯ — сюда складываем всё новое
-│   ├── lib/             # Утилиты (sounds.ts, theoryMapper.ts, supabase.ts)
-│   └── types/           # TypeScript interfaces
-├── memory/              # 🧠 Архив агентов (AGENTS-HISTORY.md)
-├── docs/                # Документация, методички, правила
-├── scripts/             # ⭐ Скрипты (gen-dooshin-meta.js, verify_n_nn.py, verify_tasks.py)
-├── AGENTS.md            # 📘 Этот файл (журнал + статусы + правила)
-├── TASK_REGISTRY.md     # 📗 Реестр заданий 9-12 (инструкция для агентов)
-└── task_registry.json   # 🤖 Машиночитаемый реестр 3,242 вопросов
+### 2. RAG Retriever
+
+```typescript
+import { ragRetriever, generateExplanation, buildRAGPrompt, verifyExplanation } from '../lib/rag'
+
+// Before generating anything, retrieve rules
+const results = ragRetriever.retrieve(query, taskNumber, 3)
+
+// Generate explanation based ONLY on retrieved rules
+const explanation = generateExplanation(word, correctAnswer, results)
+
+// Verify no contradictions
+const { valid, issues } = verifyExplanation(word, generatedExplanation, results)
+if (!valid) throw new Error(`Hallucination detected: ${issues.join(', ')}`)
 ```
 
----
+### 3. Workflow for Adding Questions
 
-## 📊 Статусы модулей
-
-| Модуль | Статус | Последний агент | Примечание |
-|--------|--------|-----------------|------------|
-| Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget + ProfileSwitcher |
-| Lesson / Уроки | 🟢 | main | Auto-complete, combo, звуки, confetti |
-| Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
-| Statistics | 🟢 | main | Упрощён: только Прогресс и Темы |
-| Profile | 🟢 | main | Статусы за лидерство, достижения |
-| /mistakes (WeakSpots) | 🟢 | main | 3 вкладки: ошибки, задания, атомы |
-| CourseMap | 🟢 | main | Звёзды прогресса под нодами |
-| AccentTrainer | 🟢 | main | Ударения (задание 4) |
-| Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
-| Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
-| Task5Trainer | 🟢 | main | Паронимы (задание 5), готов |
-| AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
-| MiniGames | 🟡 | — | TODO: связать с accent trainer store |
-| Theory (теория) | 🔵 | — | Тесты, рендерер, XP. Ждёт скрапинга оставшихся заданий |
-| Homework data | 🟢 | main | Google Sheets: 9 реальных учеников |
-| ShareResultPage | 🟢 | main | /share — карточка результата |
-| NotificationStore | 🟢 | main | Push-уведомления, streak reminders |
-| AnalyticsPage | 🟢 | main | Аналитика класса |
-| StudentStore | 🟢 | main | Multi-user профили, регистрация |
-| Dooshin (задания 9-12) | 🟢 | main | Разделён на 4 файла + lazy loading. Meta-файл (без questions) в main bundle, questions грузятся dynamic import при открытии урока. **Explanation engine** — 2,717 task-specific explanations (приставки/корни/суффиксы/окончания). **Task9: 202 word-specific explanations** для корней (проверяемые/непроверяемые/чередующиеся). **RAG-light приоритет** — развивать rule-based engine для всех заданий, чтобы избежать галлюцинаций в контенте. |
-| Tests | 🟢 | main | 58 тестов проходят (achievementChecker, userSlice, questionValidator, QuestionCard, TheoryViewer, Lesson, Task16Trainer, Statistics) |
-| Build / PWA | 🟢 | main | `npm run build` проходит. `backgroundSync` убран из PWA. `recharts` в отдельном chunk |
-
-### 🎨 Цветовая кодировка статусов
-
-| Статус | Значение |
-|--------|----------|
-| 🟢 **СТАБИЛЬНО** | Файл/модуль готов, не трогай без согласования |
-| 🟡 **В РАБОТЕ** | Кто-то сейчас правит, проверь реестр |
-| 🔴 **НЕ ТРОГАТЬ** | Критичный файл, любые изменения — через согласование |
-| 🔵 **В РАЗРАБОТКЕ** | Новый модуль, можно дополнять |
-
----
-
-## 🔗 Ключевые файлы (быстрый доступ)
-
-- **Главный стор:** `src/stores/progressStore.ts` — ВСЕ данные пользователя
-- **Роутинг:** `src/App.tsx` — все Route
-- **Типы:** `src/types/index.ts` — UserStats, LessonProgress, WrongAnswer
-- **Данные курса:** `src/data/courseData.ts` — секции и уроки
-- **Задания 9-12 (основной курс):** `src/data/sections/grammar.ts`, `src/data/sections/orthography.ts`
-- **Задания 9-12 (Дощинский):** `src/data/sections/dooshin/` — `task9.ts`, `task10.ts`, `task11.ts`, `task12.ts` (4 файла, ленивая загрузка через `manualChunks`), `src/data/sections/dooshinMeta.ts` — лёгкий meta-файл (92 урока без questions, для eager загрузки), `src/data/sections/dooshinUnified.ts` — полные данные с questions (грузится dynamic import из `Lesson.tsx`)
-- **Задание 15 (Дощинский, Н/НН):** `src/data/sections/dooshin15.ts` — 61 вопрос, требует скрипт `verify_n_nn.py`
-- **Задание 20 (Дощинский, запятые):** `src/data/sections/dooshin20.ts` — 150 вопросов, ⚠️ correctAnswer = `['?']` (placeholder, требует грамматической проверки каждого предложения)
-- **Домашки:** `src/data/gsheets/homeworkData.ts` — 9 реальных учеников
-- **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер с дедупликацией
-- **Атомы:** `src/data/atomization/atoms.ts` — микро-навыки
-- **Реестр заданий:** `TASK_REGISTRY.md` — инструкция для всех агентов по работе с заданиями 9-20
-- **JSON реестр:** `task_registry.json` — 3,505 вопросов, машиночитаемый формат для проверки
-- **Excel реестр 9-12:** `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (в корне workspace) — для ручной проверки
-- **Excel реестр 13-20:** `Реестр_заданий_13-20_ЕГЭ_Русский.xlsx` (в корне workspace) — для ручной проверки заданий 13-20
-- **Скрипт верификации 15:** `scripts/verify_n_nn.py` — проверка Н/НН в dooshin15.ts (обязателен перед/после правок)
-- **Уведомления:** `src/stores/notificationStore.ts`
-- **Аналитика:** `src/pages/AnalyticsPage.tsx`
-- **Ученики:** `src/stores/studentStore.ts` — multi-user профили, динамика
-- **Регистрация:** `src/components/StudentRegistrationModal.tsx`
-- **Переключение:** `src/components/ProfileSwitcher.tsx`
-- **Тесты:** `src/stores/slices/achievementChecker.test.ts`, `src/pages/Statistics.test.tsx`, `src/components/QuestionCard.test.tsx` — 54 теста, запуск `npm test`
-- **Скрипт генерации dooshinMeta:** `scripts/gen-dooshin-meta.js` — генерация `dooshinMeta.ts` из task9-12.ts
-- **Build-анализ:** `dist/stats.html` (генерируется при `npm run build` через `rollup-plugin-visualizer`)
-
----
-
-## 📋 Правила для всех агентов
-
-1. **Перед правкой** — прочитай последние 10 записей журнала ниже и проверь статус модуля в таблице выше.
-2. **После правки** — добавь запись в формате ниже (раздел «Журнал изменений»). **Только в этот файл.**
-3. **Не удаляй и не перезаписывай** чужие записи.
-4. **Если сомневаешься** — спроси, не перезаписывай.
-5. **Git commit обязателен** после каждой сессии работы.
-
-### Формат записи
-
-```markdown
-### [YYYY-MM-DD HH:MM] Агент: <роль/имя> (<краткий тег>)
-- **Что:** <краткое описание изменений>
-- **Где:** <пути файлов>
-- **Зачем:** <причина / контекст>
-- **Git commit:** <хеш, если есть>
-- **⚠️ Важно:** <предупреждения для других агентов>
+```
+1. Retrieve rules for task → ragRetriever.retrieve(taskNumber)
+2. Check existing questions → read dooshin/task{task}.ts
+3. Generate questions using ONLY retrieved rules as context
+4. Verify each question's correctAnswer matches rule
+5. Add to section file with proper atoms: ['task{N}', '...']
+6. Run npm run build:rag to rebuild index
+7. Run npm run validate:questions to validate
+8. Commit
 ```
 
----
+### 4. Workflow for Adding Explanations
 
-## 🗂️ Журнал изменений (последние 20 записей)
+```
+1. Retrieve word-specific rules → ragRetriever.retrieve(word, taskNumber)
+2. If word exists in explanations/*.json → use that
+3. If not → generate from retrieved rule ONLY
+4. Verify with verifyExplanation()
+5. Add to explanations/*.json (if word-specific) or theory/*.ts (if rule)
+6. Run npm run build:rag
+7. Commit
+```
 
-> **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
+### 5. Forbidden Patterns
 
-### [2026-06-20 00:15] Агент: main (Атомы: полный реестр заданий 1-27 + дополнительные)
-- **Что:** A. Добавлены 27 основных атомов `task1`..`task27` в `atoms.ts` — каждый с человекочитаемым названием, описанием и `taskNumbers`. B. Добавлены 11 дополнительных тематических атомов: `roots`, `text_connections`, `lexicology`, `speech_errors`, `paronyms`, `pleonasm`, `tropes`, `text_comprehension`, `information_types`, `lexical_analysis`, `essay`. C. Исправлен импорт `EssayProgress` в `essayData.ts` (не был импортирован, build ломался). D. Build проходит чисто.
-- **Где:** `src/data/atomization/atoms.ts` (+38 новых атомов), `src/data/essayData.ts` (импорт EssayProgress)
-- **Зачем:** WeakSpots, Teacher, адаптивный движок теперь показывают красивые названия атомов вместо сырых ID. Пользователь может видеть «Задание №5 — Паронимы» вместо `task5`.
-- **Git commit:** —
-- **⚠️ Важно:** Все новые атомы не имеют `parentAtom` (корневые). `getAtomById('task5')` → `{ name: 'Задание №5 — Паронимы', ... }`. `getAtomsForTask(5)` → `[task5, paronyms]`.
+❌ **Never do:**
+- Make up a grammar rule that doesn't exist in theory files
+- Create an explanation without checking the knowledge base first
+- Add a question where the correct answer contradicts the retrieved rule
+- Edit theory files without adding `relatedAtoms` to rules
+- Delete or overwrite existing `explanations/*.json` files without checking
 
-### [2026-06-20 00:10] Агент: main (Атомизация: полное покрытие всех вопросов atoms)
-- **Что:** Добавлены `atoms` ко всем вопросам, которые их не имели. A. `task1_3.ts` — 3 вопроса (q1-1, q2-1, q3-1) с `atoms: ['task1', 'text_connections']` и т.д. B. `task5.ts` — 32 вопроса (q5-1..q5-30, q5-ege-1/2) с `atoms: ['task5', 'paronyms']`. C. `task6_8.ts` — q6-1 с `atoms: ['task6', 'pleonasm']`. D. `task22_27.ts` — 6 вопросов (q22-1..q27-1) с `atoms` по номеру задания + теме. Всего: 42 вопроса получили `atoms`. Все остальные файлы уже были размечены.
-- **Где:** `src/data/sections/task1_3.ts`, `task5.ts`, `task6_8.ts`, `task22_27.ts`
-- **Зачем:** ЗАДАЧА-А1 из `AGENT_TASKS.md` — адаптивный движок `getSmartRecommendations` работает на полную мощность только когда у всех вопросов есть `atoms`. Теперь банк ошибок и WeakSpots могут детализировать до атома.
-- **Git commit:** —
-- **⚠️ Важно:** Build проходит чисто. Новые `atoms` (task1, task2, task3, task5, task6, task22..task27) не определены в `atoms.ts`, но это не мешает — адаптивный движок использует `atoms` из `progressStore`, а не требует регистрации в `atoms.ts`. Если нужно — добавить их в `atoms.ts` позже.
+### 6. Safe Patterns
 
-### [2026-06-20 00:00] Агент: main (Explanation Engine для Дощинского)
-- **Что:** Создан explanation engine с word-specific explanations для 2,717 вопросов Дощинского. A. `explanationEngine.ts` — TypeScript engine с prefix detection (50+ правил), word-to-explanation mapping. B. `wordExplanations.json` — 300+ иноязычных слов с этимологиями. C. `apply-explanations.cjs` — скрипт для batch-генерации explanations. D. Применены explanations: task9 (корни), task10 (приставки), task11 (суффиксы), task12 (окончания).
-- **Где:** `src/data/explanations/explanationEngine.ts`, `src/data/explanations/wordExplanations.json`, `scripts/apply-explanations.cjs`, `src/data/sections/dooshin/task9.ts`, `task10.ts`, `task11.ts`, `task12.ts`
-- **Зачем:** Пользователь хочет конкретные explanations для каждого вопроса (не generic "Проверьте правописание"). Engine извлекает слово из вопроса, определяет приставку/корень/суффикс и генерирует rule-based explanation.
-- **Git commit:** `0a2f44f`
-- **⚠️ Важно:** Explanation engine — это гибрид rule-based + dictionary. Для task10 (приставки) работает автоматически (50+ prefix rules). Для task9-12 использует wordExplanations.json для известных слов, fallback для остальных. Словарь можно пополнять — добавляй новые слова в `wordExplanations.json` и перезапускай `apply-explanations.cjs`. 58 тестов проходят, build чистый.
+✅ **Always do:**
+- Check `src/data/theory/` first for existing rules
+- Use `buildRAGPrompt()` to generate prompts with context
+- Add `relatedAtoms` to every new `TheoryRule`
+- Run `npm run build:rag` after any data change
+- Run `npm run validate:questions` after adding questions
+- Update `memory/YYYY-MM-DD.md` with what you did
 
-### [2026-06-20 00:05] Агент: main (Task9: 202 word-specific explanations для корней)
-- **Что:** A. Создан `task9-word-explanations.json` — 67 ручных explanations для корней (проверяемые/непроверяемые/чередующиеся). B. Добавлен `rootDictionary` в `generate-task9-explanations.cjs` — 100+ корней с проверочными словами. C. Сгенерировано 202 word-specific explanations для task9 (из 769 слов). D. Остальные 462 слова остаются на fallback (требуют ручного разбора). E. Запущен `apply-explanations.cjs` — обновлено 287 questions.
-- **Где:** `src/data/explanations/task9-word-explanations.json`, `scripts/generate-task9-explanations.cjs`, `src/data/explanations/wordExplanations.json`, `src/data/sections/dooshin/task9.ts`
-- **Зачем:** Пользователь хочет конкретные explanations для каждого вопроса task9 (корни). Ручной разбор 769 слов — долго, поэтому используем rule-based approach + ручное пополнение словаря.
-- **Git commit:** —
-- **⚠️ Важно:** RAG-light — приоритетная задача. Нужно развивать rule-based engine для всех заданий, чтобы избежать галлюцинаций в контенте. Для task9 осталось 462 слова без word-specific explanation. Приоритет: добавить ещё 100+ корней в `rootDictionary` и перегенерировать. Build проходит чисто, 58 тестов pass.
+### 7. Critical Files — Check Before Editing
 
-### [2026-06-19 23:20] Агент: main (Sprint: TS fix + DailyQuests grouping + Agent docs sync)
-- **Что:** A. Исправлены TS-ошибки в `ReleaseNotes.tsx` (`b` как `any` + тип `i: number`). B. `DailyQuests` переработан с группировкой по статусам: «Активные» (всегда видны), «Завершено» (сворачивается), «Не начато» (сворачивается). C. Обновлены `AGENT_TASKS.md` — БАГ-1 и ЗАДАЧА-4 отмечены как ✅ исправлено/реализовано. D. Build проходит чисто (`tsc` + `vite build`).
-- **Где:** `src/components/ReleaseNotes.tsx` (TS fix), `src/components/DailyQuests.tsx` (группировка), `AGENT_TASKS.md` (док-синхронизация)
-- **Зачем:** Пользователь попросил: 1) починить TS-ошибки, 2) убрать дублирование `activeProfile` (оказалось уже исправлено), 3) исправить БАГ-1 (оказалось уже исправлено), 4) сделать ЗАДАЧА-4 (уже реализовано), 5) PWA-иконки (уже есть), 6) группировку квестов.
-- **Git commit:** —
-- **⚠️ Важно:** `DailyQuests` теперь использует 3 секции: `activeQuests` + `completedQuests` (не claimed) — всегда видны в сетке 2×N; `claimedQuests` — сворачивается под заголовком «Завершено»; `notStartedQuests` — сворачивается под «Не начато». Кнопка «Забрать все XP» остаётся в шапке. Build проходит без ошибок.
+| File | Why Critical | Check With |
+|------|-------------|------------|
+| `src/data/theory/*.ts` | Other agents may have added rules | `git diff` |
+| `src/data/explanations/*.json` | Other agents may have added words | Read file |
+| `src/data/sections/dooshin*.ts` | Other agents may have added questions | `git log` |
+| `src/data/sections/*_all.ts` | Aggregated data, may be auto-generated | Check generator scripts |
 
-### [2026-06-19 23:08] Агент: main (Compact DailyQuests)
-- **Что:** Ежедневные квесты в Dashboard переработаны в компактную сетку 2×N. Убраны описания, уменьшены иконки (44×44 → 32×32), padding'и (p-3 → p-2), прогресс-бар (h-2 → h-1.5). Добавлен счётчик «X/5» в заголовок. Убраны неиспользуемые импорты `updateQuestProgress` и `addXP`.
-- **Где:** `src/components/DailyQuests.tsx` (переписан полностью)
-- **Зачем:** Блок квестов занимал ~400px высоты и оттеснял весь остальной контент дашборда вниз. Теперь блок в ~2.5 раза компактнее.
-- **Git commit:** —
-- **⚠️ Важно:** Вся логика сохранена — сортировка (claimed → completed → active → not started), анимации иконок, массовое «Забрать все XP», цветовая индикация прогресса. Если нужно ещё компактнее — можно свернуть в горизонтальную полосу из 5 круглых иконок (Duolingo-style).
+### 8. Rebuild RAG Index
 
-### [2026-06-19 23:00] Агент: main (Build fix + Dooshin split + Tests + Bundle opt)
-- **Что:** A. Починен production build (PWA `backgroundSync` убран, TS ошибки в Profile/ParentDashboard). B. Dooshin разделён на 4 файла + lazy loading через `dooshinMeta.ts` + dynamic import в `Lesson.tsx`. C. Тесты расширены до 54 (Statistics.test.tsx, dooshin-ачивки). D. Bundle оптимизирован: `recharts` в отдельный chunk (-155 KB gzip).
-- **Где:** `vite.config.ts` (PWA, manualChunks), `src/data/sections/dooshin/` (task9-12 + index), `src/data/sections/dooshinMeta.ts` (новый, 92 урока без questions), `src/data/sections/dooshinUnified.ts` (dynamic import target), `src/pages/Lesson.tsx` (lazy loader + spinner), `src/pages/Statistics.test.tsx` (новый), `src/stores/slices/achievementChecker.test.ts` (+2 dooshin теста), `src/stores/slices/achievementChecker.ts` (багфикс completedLessons id), `src/pages/Profile.tsx` (импорты), `src/pages/ParentDashboard.tsx` (TS fix), `package.json` (type: module, скрипты), `scripts/gen-dooshin-meta.js` (генератор мета-файла)
-- **Зачем:** Пользователь выбрал все 4 пункта: деплой был сломан, dooshin 3777 строк грузил bundle, ачивки dooshin не работали из-за бага `Object.values()` без id, main bundle был перегружен recharts
-- **Git commit:** `626610d`
-- **⚠️ Важно:** 
-  - `dooshin.ts` в `src/data/sections/` — 2-строчный реэкспорт, НЕ УДАЛЯТЬ до полного перехода. 
-  - `courseData.ts` импортирует `dooshinMetaSection` (лёгкий, без questions). 
-  - При открытии dooshin-урока `Lesson.tsx` делает `import('../data/sections/dooshinUnified')` и подгружает реальные questions. 
-  - `achievementChecker.ts` — `completedLessons` теперь строится через `Object.entries().map(([id, l]) => ({...l, id}))`, иначе dooshin-ачивки не работают. 
-  - `recharts` chunk грузится только при открытии `/stats`. 
-  - 54 теста проходят. Build проходит.
-- **Что:** 9 новых достижений за прохождение заданий Дощинского
-- **Где:** `src/data/achievements.ts`
-- **Зачем:** Мотивация проходить задания Дощинского — прогресс отслеживается по completed урокам с id `lesson-dooshin-*`
-- **Git commit:** `428db74`
-- **⚠️ Важно:** ID ачивок: `ach-dooshin-first` (1 урок), `ach-dooshin-5/10/20/all` (5/10/20/40 уроков), `ach-dooshin-9/10/11/12` (все уроки задания N). `ach-dooshin-10` — общая (10 уроков), `ach-dooshin-task-10` — задание 10 специфическое. Нет дублирования ID.
+After ANY change to theory, explanations, or sections:
 
-### [2026-06-19 10:45] Агент: main (Dooshin unification)
-- **Что:** Задания Дощинского объединены в один раздел "Отработки из Дощинского" с выпадающими группами
-- **Где:** `src/data/sections/dooshinUnified.ts` (новый), `src/data/courseData.ts`
-- **Зачем:** 4 отдельных раздела Дощинского в карте курса занимали много места и дублировали тематику. Теперь один раздел с `groups` (Задание 9, 10, 11, 12...) — каждая группа сворачивается/разворачивается.
-- **Git commit:** —
-- **⚠️ Важно:** `dooshin.ts` оставлен без изменений (обратная совместимость). Новый файл `dooshinUnified.ts` импортирует `dooshinSections` и превращает в `Section` с `groups`. `CourseMap.tsx` уже поддерживает `groups` (выпадающие списки).
+```bash
+npm run build:rag
+```
 
-### [2026-06-19 XX:XX] Агент: main (Рефакторинг агентских реестров)
-- **Что:** Убрано дублирование между AGENTS.md и memory/agent-registry.md. Создан архив `memory/AGENTS-HISTORY.md`. AGENTS.md — единый источник для новых записей. agent-registry.md — lightweight live dashboard.
-- **Где:** `AGENTS.md`, `memory/agent-registry.md`, `memory/AGENTS-HISTORY.md` (новый)
-- **Зачем:** Дублирование истории в два файла создавало рассинхронизацию. Теперь одна запись → один файл, архив отдельно, dashboard — компактный.
-- **Git commit:** `fix/agent-registry-refactor`
-- **⚠️ Важно:** Любой агент, привыкший писать в agent-registry.md, увидит предупреждение: «Не дублируй сюда историю. Всё остальное — в AGENTS.md». Формат записи не изменился.
+This rebuilds `public/data/knowledge-index.json` with all verified rules.
 
-### [2026-06-19 XX:XX] Агент: main (Валидация Dooshin 10-12)
-- **Что:** Проверены и исправлены задания 10-12 из Дощинского. 99 батчей проверено субагентами, 1,106 ошибок исправлено из 1,947 заданий (56.8% ошибок). Сгенерирован новый `dooshin.ts` с исправленными ответами.
-- **Где:** `src/data/sections/dooshin.ts` (перегенерирован), `batches_10_12/*` (валидированные батчи), `dooshin_all_tasks_fixed_10_12.json` (исправленный JSON)
-- **Зачем:** Задания из Дощинского содержали массовые ошибки (67% в задании 10, 61% в задании 11, 39% в задании 12). Все ответы проверены и исправлены.
-- **Git commit:** `fix/dooshin-10-12-validation`
-- **⚠️ Важно:** Сборка проходит (`npm run build` OK). Все 2,717 заданий в `dooshin.ts` обновлены с правильными ответами. Task 9 использует ранее исправленный JSON.
+### 9. When in Doubt
 
-### [2026-06-20 16:45] Агент: main (Задание 20 Дощинского — расстановка запятых)
-- **Что:** Создан `dooshin20.ts` — 150 вопросов задания 20 (расстановка запятых в сложных предложениях) из материалов Дощинского 2024-2026. Файл подключён в `orthographyAll.ts` (group-task20). Скрипт `verify_tasks.py` обновлён для поддержки задания 20 (проверка цифр в скобках, формат correctAnswer).
-- **Где:** `src/data/sections/dooshin20.ts` (новый), `src/data/sections/orthographyAll.ts` (обновлён), `scripts/verify_tasks.py` (обновлён)
-- **Зачем:** Пользователь просил добавить задания 13-20. Задание 18 отсутствует в материалах, 20 — добавлен. Сборка проходит (`node_modules/vite/bin/vite.js build` OK).
-- **Git commit:** —
-- **⚠️ Важно:** Все 150 вопросов имеют `correctAnswer: ['?']` — это placeholder. Каждое предложение требует грамматической проверки (придаточные, вводные, однородные члены). Перед использованием в продакшене необходимо заполнить правильные ответы. Дубликатов ID нет (проверено через Node.js). Задание 18 — не найдено в материалах Дощинского.
-
-### [2026-06-19 22:00] Агент: main (Универсальный скрипт верификации verify_tasks.py)
-- **Что:** Создан универсальный скрипт `verify_tasks.py` для проверки структурной корректности всех заданий 9-20. Проверено 3,355 вопросов — 0 ошибок.
-- **Где:** `scripts/verify_tasks.py` (новый), `scripts/verify_n_nn.py` (ранее создан)
-- **Зачем:** Пользователь требовал рабочие инструменты верификации, чтобы добавление заданий происходило без галлюцинаций. Скрипт проверяет: типы вопросов, correctAnswer, options, дубликаты ID, формат текстов (пропущенные буквы, НЕ/НИ, Н/НН, пунктуация).
-- **Git commit:** —
-- **⚠️ Важно:** Любой агент, работающий с заданиями 9-20, ДОЛЖЕН запускать `python scripts/verify_tasks.py <файл>` ПЕРЕД и ПОСЛЕ правок. Файл поддерживает как одинарные, так и двойные кавычки в TypeScript (dooshin использует `"`).
-
-### [2026-06-19 21:30] Агент: main (Задание 15 Дощинского + скрипт верификации Н/НН)
-- **Что:** Создан `dooshin15.ts` — 61 вопрос задания 15 (Н/НН в прилагательных и причастиях) из Дощинского. Создан скрипт `verify_n_nn.py` для автоматической проверки соответствия `correctAnswer` и фактического количества букв «н» в тексте. Исправлены 14 ошибок, где ответ не соответствовал реальному количеству «н».
-- **Где:** `src/data/sections/dooshin15.ts` (новый), `scripts/verify_n_nn.py` (новый), `src/data/sections/orthographyAll.ts` (обновлён — подключён dooshin15)
-- **Зачем:** Пользователь обнаружил ошибку в `ветреный` (ответ был 2 вместо 1). Систематическая проверка выявила 14 несоответствий из 61 вопроса. Скрипт автоматизирует проверку для всех будущих правок.
-- **Git commit:** —
-- **⚠️ Важно:** Задание 15 в формате «впишите количество букв Н в слове» — ответ должен считать **ВСЕ** буквы «н» в слове, не только в суффиксе. Например, `неожиданный` = 3 (не-о-жи-да-н-ный), `венчанный` = 3 (вен-чан-ный). Скрипт запускается: `python scripts/verify_n_nn.py src/data/sections/dooshin15.ts`. Результат: 0 несоответствий.
-
-### [2026-06-19 17:09] Агент: main (TASK_REGISTRY.md + JSON для всех агентов)
-- **Что:** Создана система реестра заданий для всех агентов: `TASK_REGISTRY.md` (инструкция) + `task_registry.json` (1.3 МБ, машиночитаемый JSON с 3,242 вопросами). Добавлены правила: перед правкой задания 9-12 — проверить через реестр.
-- **Где:** `TASK_REGISTRY.md` (в корне проекта), `task_registry.json` (в корне проекта), `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (в workspace)
-- **Зачем:** Чтобы ВСЕ агенты (не только оркестратор) могли проверять задания перед правкой. JSON читается программно, Excel — для ручной проверки.
-- **Git commit:** `feat/task-registry-system`
-- **⚠️ Важно:** В `AGENTS.md` → раздел «Ключевые файлы» добавлены ссылки. Любой агент, получивший задание 9-12, должен сначала прочитать `TASK_REGISTRY.md` и при необходимости использовать `task_registry.json` для проверки ответов.
-
-### [2026-06-19 16:59] Агент: main (Excel-реестр всех заданий 9-12)
-- **Что:** Создан Excel-файл со всеми заданиями 9-12 из всего проекта (основной курс + Дощинский). 3,242 вопроса: 489 из grammar.ts, 36 из orthography.ts, 2,717 из dooshin.ts. В реестре колонки для ручной проверки: пропущенная буква, правильный ответ, варианты, правило, проверочное слово, комментарий.
-- **Где:** `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (в корне workspace)
-- **Зачем:** Пользователь обнаружил ошибки в заданиях из основного курса (не только Дощинского). Создан единый реестр для совместной проверки и правки всей командой агентов.
-- **Git commit:** — (Excel не в репозитории, лежит в workspace)
-- **⚠️ Важно:** В `grammar.ts` `lesson-gram-12-2` есть вопрос `q12-16` «построен..» с вариантами `построен/построенн` — формат вопроса кривой. Нужно либо заменить на вставку пропущенной буквы, либо удалить. Все агенты должны проверять задания через этот Excel перед внесением изменений.
-
-### [2026-06-19 02:05] Агент: main (Release Notes / Changelog)
-- **Что:** Виджет "Что нового" на Dashboard + иконка в Header, история версий
-- **Где:** `src/components/ReleaseNotes.tsx` (новый), `src/data/releaseNotes.ts` (новый), `src/pages/Dashboard.tsx`, `src/components/Header.tsx`
-- **Зачем:** Пользователь просил систему уведомлений об обновлениях в стиле Steam, понятным языком для школьников
-- **Git commit:** `15751c6`
-- **⚠️ Важно:** `releaseNotes.ts` содержит массив версий с буллетами разных типов: `ege-important` (жёлтый), `feature` (зелёный), `fix` (синий), `fun` (фиолетовый). Непрочитанные версии автоматически разворачиваются. Кнопка в Header (Megaphone) показывает красную точку, если есть непрочитанные. Состояние хранится в `localStorage` (key `ege-release-notes-dismissed`). Язык адаптирован: "Теперь ты точно выполнишь №5 на ЕГЭ успешно!".
-
-### [2026-06-19 02:00] Агент: main (Task5 Paronyms — expanded to 82 questions)
-- **Что:** Расширен банк заданий 5 (паронимы) с 12 до 82 вопросов, покрывающих все основные пары ФИПИ-2026
-- **Где:** `src/data/task5Questions.ts` — полностью переписан, 82 вопроса
-- **Зачем:** Пользователь просил покрыть все паронимы из паронимического словника ФИПИ 2026, а не только 12 базовых
-- **Git commit:** `b945d7c`
-- **⚠️ Важно:** Каждый вопрос — 5 предложений: 1 с ошибкой (первое) + 4 верных distractor'а из пула. Все слова выделены жирным (**). Порядок вопросов перемешивается при загрузке. Покрывает ~80 паронимических пар (предоставить/представлять, эффективный/эффектный, артистический/артистичный, деловитый/деловой, будний/будничный, зверский/звериный, почтенный/почётный, расчётливый/расчётный, и т.д.)
-
-### [2026-06-19 01:40] Агент: main (Unified Error Bank)
-- **Что:** Все тренажёры теперь пишут ошибки в единый банк `progressStore.wrongAnswers`
-- **Где:** `src/pages/AccentTrainer.tsx`, `src/pages/Task5Trainer.tsx`, `src/pages/Task10Trainer.tsx`, `src/pages/Task16Trainer.tsx`
-- **Зачем:** Пользователь жаловался, что ошибки из тренажёров не видны в «Работе над ошибками». Каждый тренажёр хранил ошибки в своём изолированном store. Теперь при неправильном ответе вызывается `recordWrongAnswer()` + `updateTaskStats()` с `atoms: ['taskN']`.
-- **Git commit:** `569024e`
-- **⚠️ Важно:** `recordWrongAnswer` извлекает `taskNumber` из `atoms.find(a => a.startsWith('task')).replace('task', '')`. WeakSpots.tsx уже группирует по `taskNumber` и показывает теорию. Банк заданий теперь когерентный — все ошибки в одном месте.
-
-### [2026-06-19 01:35] Агент: main (Header cleanup)
-- **Что:** Упрощён Header — убран перегруз
-- **Где:** `src/components/Header.tsx`, `src/components/ProfileSwitcher.tsx`
-- **Зачем:** Пользователь показал скриншот перегруженного Header: зелёная кнопка «Добавить ученика» перекрывала «Войти», всё было в одну линию
-- **Git commit:** `0ccda6e`
-- **⚠️ Важно:** ProfileSwitcher теперь компактный — только emoji + стрелочка (без текста). «Добавить ученика» — маленький кружок с +. Иконки уменьшены до 18px, gap сокращён до 2.5. Teacher mode toggle убран из Header (есть в Profile).
-
-### [2026-06-19 01:30] Агент: main (Student Registration / Multi-user)
-- **Что:** StudentStore с multi-user профилями, StudentRegistrationModal, ProfileSwitcher, динамика в Teacher, авто-сохранение в App.tsx
-- **Где:** `src/stores/studentStore.ts` (новый), `src/components/StudentRegistrationModal.tsx` (новый), `src/components/ProfileSwitcher.tsx` (новый), `src/pages/Teacher.tsx`, `src/pages/Dashboard.tsx`, `src/components/Header.tsx`, `src/App.tsx`
-- **Зачем:** Форма регистрации для запоминания разных реальных учеников и их динамики. Каждый ученик — отдельный профиль с собственным прогрессом, историей по дням, графиками XP/точности. Переключение через dropdown в Header.
-- **Git commit:** —
-- **⚠️ Важно:** `studentStore` persist key `ege-student-storage`. `progressStore` остаётся сессионным — при переключении профиля прогресс загружается из снепшота. `App.tsx` автоматически сохраняет прогресс в активный профиль при каждом изменении. Динамика (history) — мини-графики в карточке ученика (Teacher → detail view).
-
-### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
-- **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
-- **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
-- **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
-- **Git commit:** `e727cf0`
-- **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
-
-### [2026-06-19 00:30] Агент: main (теория + тесты)
-- **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
-- **Где:** `src/components/TheoryViewer.tsx`, `src/components/TheoryTest.tsx`, `src/data/theoryTests.ts`, `src/pages/TheoryPage.tsx`, `src/stores/progressStore.ts`, `src/App.tsx`
-- **Зачем:** Удаление интерактивных артефактов из theoryData.ts; проверка понимания теории; мотивация через XP и статусы
-- **Git commit:** `904d957` (включено в `feat: theory database structure`)
-- **⚠️ Важно:** `TheoryViewer` использует `skipUntilEmptyLine` + `Set` дедупликацию для скрытия тестовых блоков. Тесты хранятся в `progressStore.theoryTestsCompleted`. Задания 8 и 27 (Сочинение) тоже покрыты тестами.
-- **Что:** Header XP анимация: микро-rotate + микро-искры
-- **Где:** `src/components/Header.tsx`
-- **Зачем:** Замена flip-rotate 360° на лёгкий покач (-2°→+1°→-1°), уменьшение sparkles до 1px и 0.5px
-- **Git commit:** `da84a9d`
-- **⚠️ Важно:** Совмещено с коммитом Task5Trainer (см. ниже)
-
-### [2026-06-19 00:20] Агент: main
-- **Что:** База теории — task11, task12, task14
-- **Где:** src/data/theory/task11.ts, task12.ts, task14.ts
-- **Зачем:** Скрапинг теории из umschool.net, maximumtest.ru, ФИПИ Навигатор
-- **Git commit:** 14aa518
-- **⚠️ Важно:** Пополнено 3 задания из 11. Остались: task5, 6, 7, 8, 13, 15, 16, 17-21, 22-26.
-
-### [2026-06-19 00:11] Агент: main
-- **Что:** Создан агентский реестр (AGENTS.md + memory/agent-registry.md)
-- **Где:** `AGENTS.md`, `memory/agent-registry.md` (этот файл)
-- **Зачем:** 5 агентов работают над проектом, нужна координация
-- **Git commit:** —
-- **⚠️ Важно:** Все агенты ДОЛЖНЫ читать этот файл перед работой. Дублируйте записи в оба файла.
-
-### [2026-06-18 23:55] Агент: main
-- **Что:** Streak freeze + звёзды на карте курса
-- **Где:** `src/stores/progressStore.ts`, `src/pages/CourseMap.tsx`, `src/types/index.ts`
-- **Зачем:** Бесплатная заморозка streak раз в 7 дней; визуализация 1-3 звёзд по урокам
-- **Git commit:** `f234b15`
-- **⚠️ Важно:** UserStats расширен полями `streakFrozen`, `streakFreezeUsed`, `streakFreezeLastReset`
-
-### [2026-06-18 23:45] Агент: main (task10 + task5)
-- **Что:** Task10Trainer: убраны звёзды, заменены на статусы (new/deferred/passed). Исправлены орфографические ошибки в вопросах (q1, q3, q6). Task5Trainer: новый тренажёр по паронимам (задание 5).
-- **Где:** `src/stores/task10Store.ts`, `src/pages/Task10Trainer.tsx`, `src/data/task10Questions.ts`, `src/pages/Dashboard.tsx`, `src/data/task5Questions.ts`, `src/stores/task5Store.ts`, `src/pages/Task5Trainer.tsx`, `src/App.tsx`
-- **Зачем:** Убрана система 5 звёзд — повторение только при ошибке, в конце сессии. Исправлены слова: разфасовать→расфасовать, возьметь→возьмёшь, обгрохать→обгрызть, прязык→признак, бесприкрас→преславный. Новый тренажёр №5 с 12 вопросами по паронимам ФИПИ.
-- **Git commit:** `3035726` (task10 статусы), `149da4e` (task10 исправления), `f55ec35` (task5 тренажёр)
-- **⚠️ Важно:** Task10Trainer persist key изменён на `task10-trainer-v2`. Task5Trainer — новый модуль, persist key `task5-trainer-v1`.
-
-### [2026-06-18 23:20] Агент: main
-- **Что:** Исправлен роутинг заданий (4→accent, 9→корни, 10→task10)
-- **Где:** `src/pages/WeakSpots.tsx`, `src/stores/progressStore.ts`
-- **Зачем:** Задание 9 ошибочно вело в accent-trainer вместо урока про корни
-- **Git commit:** `a67d7dc`
-- **⚠️ Важно:** `getProblematicTasks` теперь фильтрует `wrong > 0 && accuracy < 95`
-
-### [2026-06-18 23:00] Агент: main
-- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация)
-- **Где:** `src/pages/Task16Trainer.tsx`, `src/data/task16Questions.ts`, `src/stores/task16Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Новый тренажёр задания ЕГЭ №16 — запятые в сложных предложениях, вводных словах, придаточных
-- **Git commit:** —
-- **⚠️ Важно:** 20 вопросов по темам: придаточные времени/причины/цели/уступки/изъяснительные, вводные слова, однородные члены. Паттерн повторён от Task5Trainer.
-
-### [2026-06-18 22:44] Агент: main
-- **Что:** Task5Trainer — тренажёр задания 5 (типографика)
-- **Где:** `src/pages/Task5Trainer.tsx`, `src/data/task5Questions.ts`, `src/stores/task5Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`, `src/data/theoryTests.ts`
-- **Зачем:** Новый тренажёр для задания ЕГЭ (типографика/пунктуация)
-- **Git commit:** `da84a9d`
-- **⚠️ Важно:** Новый модуль — добавлен роут `/task5-trainer`, стор, данные вопросов. Dashboard обновлён для подсчёта изученных уроков.
-
-### [2026-06-18 22:25] Агент: main
-- **Что:** Объединение слабых мест в единый центр /mistakes
-- **Где:** `src/pages/WeakSpots.tsx`, `src/pages/Statistics.tsx`, `src/pages/Dashboard.tsx`, `src/components/MistakesPractice.tsx`
-- **Зачем:** 4 дублирующих раздела → 1 с 3 вкладками (ошибки, задания, атомы)
-- **Git commit:** `369d95b`
-- **⚠️ Важно:** Statistics больше не показывает «Слабые» и «Атомы» — они в /mistakes. Старый `MistakesReview.tsx` заменён на `WeakSpots.tsx`.
-
-### [2026-06-18 22:00] Агент: main
-- **Что:** Share result page (/share)
-- **Где:** `src/pages/ShareResultPage.tsx`, `src/App.tsx`, `src/components/LessonResult.tsx`
-- **Зачем:** Красивая карточка результата для шаринга
-- **Git commit:** `c99d5d8`
-- **⚠️ Важно:** LessonResult передаёт state через navigate. При F5 страница пустая — это известно.
-
-### [2026-06-18 21:30] Агент: main
-- **Что:** Combo toasts, звуки, confetti, weak topics на Dashboard
-- **Где:** `src/components/ComboToast.tsx`, `src/lib/sounds.ts`, `src/pages/Lesson.tsx`, `src/components/AchievementToast.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** UX улучшения — мотивация, фидбек, видимость проблем
-- **Git commit:** `ffcf4a4`
-- **⚠️ Важно:** Звуки через Web Audio API — могут быть заблокированы браузером до первого взаимодействия.
-
-### [2026-06-18 20:50] Агент: main
-- **Что:** Leaderboard rank statuses + achievements UI polish
-- **Где:** `src/data/statuses.ts`, `src/stores/progressStore.ts`, `src/pages/Profile.tsx`, `src/pages/Leaderboard.tsx`
-- **Зачем:** Статусы за 1-3 места в рейтинге, визуальная иерархия достижений
-- **Git commit:** `9958f47`
-- **⚠️ Важно:** `getUnlockedStatuses` теперь принимает `leaderboardRanks` как второй аргумент.
-
-### [2026-06-18 20:10] Агент: main
-- **Что:** Пропорциональные высоты пьедестала в рейтинге
-- **Где:** `src/pages/Leaderboard.tsx`
-- **Зачем:** Визуально 1-е место было ниже 2-го
-- **Git commit:** `9724b2f`
-- **⚠️ Важно:** Высоты теперь считаются по XP: `minHeight + (val/maxVal) * (maxHeight-minHeight)`
+If you can't find a rule in the knowledge base:
+1. Search `src/data/theory/` for similar rules
+2. Check `src/data/explanations/` for word-specific info
+3. If still not found → ASK the human, don't make it up
+4. Add verified info to the appropriate file and rebuild index
 
 ---
 
-## 🆘 Что делать, если не уверен
-
-1. Прочитай этот файл (последние 10 записей + статусы модулей).
-2. Сделай `git log --oneline -10` — увидишь, что менялось.
-3. Сделай `git diff` — увидишь текущие незакоммиченные изменения.
-4. **Сделай backup** (`git commit -m "backup: перед правками"`) перед масштабными правками.
-5. Если сомневаешься — спроси, не перезаписывай.
-
----
-
-*Архив всех записей: `memory/AGENTS-HISTORY.md`*  
-*Последнее обновление этого файла: 2026-06-19 23:15*
+Last updated: 2026-06-20 by agent (RAG pipeline setup)

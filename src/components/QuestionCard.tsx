@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, ArrowRight, BookOpen, Lightbulb } from 'lucide-react'
 import { Question } from '../types'
 import { getRelevantRules } from '../data/theory'
+import { ragRetriever, generateExplanation } from '../lib/rag'
 import { TheoryQuickReference } from './TheoryQuickReference'
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
@@ -188,19 +189,36 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
             Правильный ответ: {question.correctAnswer.join(', ')}
           </p>
 
-          {/* Show relevant theory rules on wrong answer */}
+          {/* Show RAG-powered theory explanation on wrong answer */}
           {!isCorrect && (() => {
             const taskNum = getTaskNumberFromAtoms(question.atoms)
             if (!taskNum) return null
+            
+            // Try RAG first, fallback to theory rules
+            const ragResults = ragRetriever.retrieve(question.text, taskNum, 3)
+            const ragExplanation = ragResults.length > 0 
+              ? generateExplanation(question.text, question.correctAnswer, ragResults)
+              : null
+            
             const rules = getRelevantRules(taskNum, question.atoms)
-            if (rules.length === 0) return null
+            
             return (
               <div className="mt-3 pt-3 border-t border-red-200">
                 <div className="flex items-center gap-2 mb-2">
                   <BookOpen size={16} className="text-duo-blue" />
                   <span className="text-sm font-bold text-gray-700">Правило по заданию {taskNum}:</span>
                 </div>
-                <TheoryQuickReference rules={rules.slice(0, 2)} showExamples={false} />
+                
+                {ragExplanation && (
+                  <p className="text-sm text-gray-700 mb-2 bg-blue-50 p-2 rounded-lg">
+                    {ragExplanation}
+                  </p>
+                )}
+                
+                {rules.length > 0 && (
+                  <TheoryQuickReference rules={rules.slice(0, 2)} showExamples={false} />
+                )}
+                
                 <p className="text-xs text-gray-400 mt-1 italic">
                   Полная теория в разделе «Учиться» → Задание {taskNum}
                 </p>

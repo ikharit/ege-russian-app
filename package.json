@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
+    "build:rag": "node scripts/build-rag-index.js",
+    "build": "npm run build:rag && tsc && vite build",
     "dev": "vite",
     "preview": "vite preview",
     "test": "vitest",
