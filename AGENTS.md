@@ -115,6 +115,13 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
+### [2026-06-19 10:45] Агент: main (Dooshin unification)
+- **Что:** Задания Дощинского объединены в один раздел "Отработки из Дощинского" с выпадающими группами
+- **Где:** `src/data/sections/dooshinUnified.ts` (новый), `src/data/courseData.ts`
+- **Зачем:** 4 отдельных раздела Дощинского в карте курса занимали много места и дублировали тематику. Теперь один раздел с `groups` (Задание 9, 10, 11, 12...) — каждая группа сворачивается/разворачивается.
+- **Git commit:** —
+- **⚠️ Важно:** `dooshin.ts` оставлен без изменений (обратная совместимость). Новый файл `dooshinUnified.ts` импортирует `dooshinSections` и превращает в `Section` с `groups`. `CourseMap.tsx` уже поддерживает `groups` (выпадающие списки).
+
 ### [2026-06-19 XX:XX] Агент: main (Рефакторинг агентских реестров)
 - **Что:** Убрано дублирование между AGENTS.md и memory/agent-registry.md. Создан архив `memory/AGENTS-HISTORY.md`. AGENTS.md — единый источник для новых записей. agent-registry.md — lightweight live dashboard.
 - **Где:** `AGENTS.md`, `memory/agent-registry.md`, `memory/AGENTS-HISTORY.md` (новый)
