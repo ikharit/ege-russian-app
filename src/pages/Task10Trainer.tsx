@@ -38,6 +38,8 @@ export function Task10Trainer() {
   const addXP = useProgressStore((s) => s.addXP)
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const currentQuestion = currentQuestionId ? task10QuestionsById[currentQuestionId] : null
   const overall = useTask10Store.getState().getOverallProgress()
@@ -80,6 +82,19 @@ export function Task10Trainer() {
     if (result.correct) {
       addXP(5)
       updateStreak()
+    } else {
+      recordWrongAnswer(
+        {
+          id: currentQuestion.id,
+          text: currentQuestion.rows.map(r => r.words.join(', ')).join(' / '),
+          options: currentQuestion.rows.map(r => r.words.join(', ')),
+          correctAnswer: currentQuestion.correctAnswers.map(id => 'ряд ' + id),
+          explanation: currentQuestion.explanation,
+          atoms: ['task10'],
+        },
+        selectedRows.map(id => 'ряд ' + id),
+      )
+      updateTaskStats('10', false)
     }
   }
 

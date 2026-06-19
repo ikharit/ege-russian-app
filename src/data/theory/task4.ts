@@ -10,6 +10,7 @@ export interface TheoryRule {
   examples: { correct?: string; incorrect?: string; note?: string }[]
   exceptions?: string[]
   tags: string[]
+  relatedAtoms?: string[]
 }
 
 export interface TheorySection {

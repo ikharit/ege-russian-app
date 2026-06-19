@@ -38,6 +38,8 @@ export function Task16Trainer() {
   const addXP = useProgressStore((s) => s.addXP)
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const currentQuestion = currentQuestionId ? task16QuestionsById[currentQuestionId] : null
   const overall = useTask16Store.getState().getOverallProgress()
@@ -78,6 +80,21 @@ export function Task16Trainer() {
     if (result.correct) {
       addXP(5)
       updateStreak()
+    } else {
+      const selected = currentQuestion.sentences.find(s => s.id === selectedSentence)
+      const correct = currentQuestion.sentences.find(s => s.id === currentQuestion.correctAnswer)
+      recordWrongAnswer(
+        {
+          id: currentQuestion.id,
+          text: currentQuestion.instruction,
+          options: currentQuestion.sentences.map(s => s.text),
+          correctAnswer: correct ? [correct.text] : [],
+          explanation: currentQuestion.explanation,
+          atoms: ['task16'],
+        },
+        selected ? [selected.text] : [],
+      )
+      updateTaskStats('16', false)
     }
   }
 

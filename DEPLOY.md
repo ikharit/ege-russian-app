@@ -31,6 +31,8 @@
 2. Выбери **"New repository"** из выпадающего меню
 3. Заполни поля:
    - **Repository name:** `ege-russian-app`
+     - **Это имя станет частью URL:** `https://github.com/ТВОЙ_НИК/ege-russian-app`
+     - **Можешь использовать любое имя** (например, `ege-rus`, `russian-ege-app`), но тогда во всех командах ниже замени `ege-russian-app` на своё имя
    - **Description:** (можно оставить пустым или написать "ЕГЭ Русский язык — подготовка")
    - **Visibility:** выбери **Public** (бесплатно) или **Private** (тоже бесплатно для Vercel)
 4. **НЕ ставь** галочки:
@@ -41,7 +43,15 @@
 
 ### Шаг 1.3: Скопируй URL репозитория
 
-После создания GitHub покажет страницу с инструкциями. Найди блок:
+После создания GitHub покажет страницу с инструкциями. URL твоего репозитория:
+
+```
+https://github.com/ТВОЙ_НИКНЕЙМ/ege-russian-app
+```
+
+**Как найти ТВОЙ_НИКНЕЙМ:** это твой логин на GitHub (виден в правом верхнем углу сайта, например `IvanPetrov` или `maria-2024`).
+
+Найди на странице блок:
 
 ```
 …or push an existing repository from the command line
@@ -49,7 +59,7 @@
 
 Там будет две команды. Скопируй первую строку — она выглядит так:
 
-```
+```bash
 git remote add origin https://github.com/ТВОЙ_НИКНЕЙМ/ege-russian-app.git
 ```
 
@@ -60,7 +70,7 @@ git remote add origin https://github.com/ТВОЙ_НИКНЕЙМ/ege-russian-app
    ```bash
    cd C:/Users/USER/Documents/kimi/workspace/ege-russian-app
    ```
-3. Выполни команду (вставь свою из шага 1.3):
+3. Вставь команду из шага 1.3 (замени `ТВОЙ_НИКНЕЙМ` на свой логин GitHub):
    ```bash
    git remote add origin https://github.com/ТВОЙ_НИКНЕЙМ/ege-russian-app.git
    ```

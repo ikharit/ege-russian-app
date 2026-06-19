@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, ArrowRight, BookOpen, Lightbulb } from 'lucide-react'
 import { Question } from '../types'
-import { getRulesByTaskNumber } from '../data/theory'
+import { getRelevantRules } from '../data/theory'
 import { TheoryQuickReference } from './TheoryQuickReference'
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
@@ -192,7 +192,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
           {!isCorrect && (() => {
             const taskNum = getTaskNumberFromAtoms(question.atoms)
             if (!taskNum) return null
-            const rules = getRulesByTaskNumber(taskNum)
+            const rules = getRelevantRules(taskNum, question.atoms)
             if (rules.length === 0) return null
             return (
               <div className="mt-3 pt-3 border-t border-red-200">

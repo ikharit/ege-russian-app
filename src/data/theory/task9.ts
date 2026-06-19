@@ -19,7 +19,8 @@ export const task9Theory: TheorySection = {
         { correct: 'вЫтрать → вытру', note: 'проверяем через изменение формы' },
         { correct: 'нАклеить → клей', note: 'проверяем через однокоренное' },
       ],
-      tags: ['корни', 'проверяемые', 'гласные']
+      tags: ['корни', 'проверяемые', 'гласные'],
+      relatedAtoms: ['roots', 'root_verifiable']
     },
     {
       id: 'task9-2',
@@ -31,7 +32,8 @@ export const task9Theory: TheorySection = {
         { correct: 'парашют', note: 'словарное слово' },
         { correct: 'грАфика', note: 'непроверяемая гласная' },
       ],
-      tags: ['корни', 'непроверяемые', 'словарные']
+      tags: ['корни', 'непроверяемые', 'словарные'],
+      relatedAtoms: ['roots', 'foreign_words']
     },
     {
       id: 'task9-3',
@@ -42,7 +44,8 @@ export const task9Theory: TheorySection = {
         { correct: 'примИрять (друзей)', note: 'примирять — от мир' },
         { correct: 'умИрать → умереть', note: 'чередование И/Е (омонимичный корень)' },
       ],
-      tags: ['корни', 'чередующиеся', 'И/Е', 'А/О']
+      tags: ['корни', 'чередующиеся', 'И/Е', 'А/О'],
+      relatedAtoms: ['roots', 'root_vowel_alternation', 'root_consonant_alternation']
     },
     {
       id: 'task9-4',
@@ -53,7 +56,8 @@ export const task9Theory: TheorySection = {
         { correct: 'скАкать/скочу', note: 'зависит от согласной в конце' },
         { correct: 'плАвать/плыть', note: 'зависит от ударения' },
       ],
-      tags: ['корни', 'чередующиеся', 'группы']
+      tags: ['корни', 'чередующиеся', 'группы'],
+      relatedAtoms: ['roots', 'root_vowel_alternation', 'root_consonant_alternation']
     },
     {
       id: 'task9-5',
@@ -65,7 +69,8 @@ export const task9Theory: TheorySection = {
         { correct: 'парадОкс', note: 'греч. paradoxos' },
         { correct: 'метАфора', note: 'греч. metaphora' },
       ],
-      tags: ['корни', 'иноязычные', 'греческие', 'латинские']
+      tags: ['корни', 'иноязычные', 'греческие', 'латинские'],
+      relatedAtoms: ['foreign_words']
     }
   ]
 }

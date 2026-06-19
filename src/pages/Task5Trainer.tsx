@@ -38,6 +38,8 @@ export function Task5Trainer() {
   const addXP = useProgressStore((s) => s.addXP)
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const currentQuestion = currentQuestionId ? task5QuestionsById[currentQuestionId] : null
   const overall = useTask5Store.getState().getOverallProgress()
@@ -78,6 +80,21 @@ export function Task5Trainer() {
     if (result.correct) {
       addXP(5)
       updateStreak()
+    } else {
+      const selected = currentQuestion.sentences[selectedSentence]
+      const correct = currentQuestion.sentences[currentQuestion.correctAnswer - 1]
+      recordWrongAnswer(
+        {
+          id: currentQuestion.id,
+          text: currentQuestion.sentences.map(s => s.text).join(' / '),
+          options: currentQuestion.sentences.map(s => s.text),
+          correctAnswer: [correct.text],
+          explanation: currentQuestion.explanation,
+          atoms: ['task5'],
+        },
+        [selected.text],
+      )
+      updateTaskStats('5', false)
     }
   }
 

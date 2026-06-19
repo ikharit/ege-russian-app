@@ -31,6 +31,25 @@ export function getRulesByTaskNumber(taskNumber: string): TR[] {
   return section?.rules ?? []
 }
 
+export function getRelevantRules(taskNumber: string, atoms?: string[]): TR[] {
+  const rules = getRulesByTaskNumber(taskNumber)
+  if (!atoms || atoms.length === 0 || rules.length === 0) {
+    return rules
+  }
+
+  // Filter rules that have relatedAtoms intersecting with question atoms
+  const relevant = rules.filter(
+    rule => rule.relatedAtoms && rule.relatedAtoms.some(ra => atoms.includes(ra))
+  )
+
+  if (relevant.length > 0) {
+    return relevant
+  }
+
+  // Fallback: return all rules if no specific match
+  return rules
+}
+
 export function getSectionByTaskNumber(taskNumber: string): TS | undefined {
   return allSections.find(s => s.taskNumber === taskNumber)
 }

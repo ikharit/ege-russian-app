@@ -37,6 +37,8 @@ export function AccentTrainer() {
   const addXP = useProgressStore((s) => s.addXP)
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const currentWord = currentWordId ? accentWordsById[currentWordId] : null
   const overall = useAccentTrainerStore.getState().getOverallProgress()
@@ -75,6 +77,18 @@ export function AccentTrainer() {
     if (isCorrect) {
       addXP(5)
       updateStreak()
+    } else {
+      recordWrongAnswer(
+        {
+          id: currentWord.id,
+          text: currentWord.word,
+          correctAnswer: [currentWord.normalized[currentWord.stressIndex]],
+          explanation: currentWord.explanation,
+          atoms: ['task4'],
+        },
+        [currentWord.normalized[index]],
+      )
+      updateTaskStats('4', false)
     }
   }
 
