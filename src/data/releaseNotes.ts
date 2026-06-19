@@ -9,6 +9,21 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.5.0',
+    date: '19 июня 2026',
+    title: '⚡ Дощинский теперь лёгкий — разделение на 4 блока + 50 тестов!',
+    emoji: '🚀',
+    highlighted: true,
+    bullets: [
+      { text: 'Дощинский разделён на 4 независимых файла: задания 9, 10, 11, 12', type: 'feature', impact: 'Загрузка быстрее — каждый блок подгружается отдельно' },
+      { text: 'Vite manualChunks: dooshin выделен в отдельный chunk (521 KB → ленивая загрузка)', type: 'feature', impact: 'Главный бандл уменьшился на ~500 KB' },
+      { text: '50 тестов проходят: achievementChecker, userSlice, TheoryViewer, Task16Trainer, QuestionCard', type: 'ege-important', impact: 'Регрессии ловятся до продакшена' },
+      { text: 'Исправлена ачивка "Идеальный урок" — теперь работает без completedAt (старые данные)', type: 'fix' },
+      { text: 'Исправлена ошибка dailyQuestProgress = null в achievementChecker', type: 'fix' },
+      { text: 'TypeScript: убраны ошибки "unknown" типов в циклах', type: 'fix' },
+    ],
+  },
+  {
     version: '1.4.0',
     date: '19 июня 2026',
     title: '🔥 Паронимы на 82% — задание №5 не пройдёт мимо!',

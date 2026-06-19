@@ -21,7 +21,7 @@
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
-| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts) |
+| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлено задание 15 (dooshin15.ts, 61 вопрос) |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Тесты, рендерер, XP. Ждёт скрапинга оставшихся заданий |
@@ -51,7 +51,8 @@
 - **Домашки:** `src/data/gsheets/homeworkData.ts`
 - **Теория:** `src/data/theory/`, `src/data/theoryTests.ts`, `src/components/TheoryViewer.tsx`
 - **Атомы:** `src/data/atomization/atoms.ts`
-- **Реестр заданий:** `TASK_REGISTRY.md` (инструкция), `task_registry.json` (3,242 вопроса), `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (ручная проверка)
+- **Реестр заданий:** `TASK_REGISTRY.md` (инструкция), `task_registry.json` (3,242 вопроса), `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (ручная проверка), `Реестр_заданий_13-20_ЕГЭ_Русский.xlsx` (ручная проверка 13-20)
+- **Скрипт верификации 15:** `scripts/verify_n_nn.py` — проверка Н/НН в dooshin15.ts
 - **Уведомления:** `src/stores/notificationStore.ts`
 - **Аналитика:** `src/pages/AnalyticsPage.tsx`
 - **Ученики:** `src/stores/studentStore.ts`

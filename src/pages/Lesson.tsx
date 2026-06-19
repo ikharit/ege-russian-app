@@ -36,9 +36,21 @@ export function Lesson() {
   const { showComboToast, ToastOverlay } = useComboToasts()
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
-  const lesson = section?.lessons.find(l => l.id === lessonId)
+  const courseLesson = section?.lessons.find(l => l.id === lessonId)
+  const [lesson, setLesson] = useState(courseLesson)
   const lessonProgress = useProgressStore((s) => s.lessonProgress[lessonId ?? ''])
   const theory = lesson ? getTheoryForLesson(lesson.id) : undefined
+
+  // Lazy-load dooshin questions if lesson has empty questions array
+  useEffect(() => {
+    setLesson(courseLesson)
+    if (courseLesson && courseLesson.questions.length === 0 && lessonId?.startsWith('lesson-dooshin')) {
+      import('../data/sections/dooshinUnified').then(({ dooshinSection }) => {
+        const fullLesson = dooshinSection.lessons.find(l => l.id === lessonId)
+        if (fullLesson) setLesson(fullLesson)
+      })
+    }
+  }, [courseLesson, lessonId])
 
   // Show theory on first visit if lesson is not completed
   useEffect(() => {
@@ -189,6 +201,12 @@ export function Lesson() {
 
       {/* Content */}
       <div className="flex-1 px-4 py-6">
+        {lesson.questions.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" />
+            <span className="ml-3 text-sm text-gray-500">Загрузка вопросов...</span>
+          </div>
+        ) : (
         <AnimatePresence mode="wait">
           {!isFinished ? (
             <motion.div
@@ -246,6 +264,7 @@ export function Lesson() {
             </motion.div>
           )}
         </AnimatePresence>
+      )}
       </div>
 
       {/* Theory Modal */}

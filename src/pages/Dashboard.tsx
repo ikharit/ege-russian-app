@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle, Gamepad2 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { course } from '../data/courseData'
@@ -239,11 +239,15 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Homework from Google Sheets */}
+      {/* Teacher / Homework Card — renamed for clarity */}
       <motion.div
         className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/teacher')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/teacher'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Кабинет учителя и домашнее задание"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -251,7 +255,7 @@ export function Dashboard() {
               <Calendar size={24} />
             </div>
             <div>
-              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">Google Sheets</p>
+              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">👨‍🏫 Кабинет учителя</p>
               <p className="font-bold text-gray-800">Домашнее задание</p>
               <p className="text-xs text-gray-500">
                 {studentsWithHomework.length} учеников • актуально на сегодня
@@ -641,6 +645,31 @@ export function Dashboard() {
             </div>
           </div>
           <ChevronRight size={24} className="text-slate-400" />
+        </div>
+      </motion.div>
+
+      {/* Games Card — compact, fun, distinct from trainers */}
+      <motion.div
+        className="card bg-gradient-to-br from-purple-100 to-fuchsia-50 border-purple-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/games')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/games'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Игры и развлечения"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center text-white">
+              <Gamepad2 size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-purple-500 uppercase tracking-wide font-bold">Развлечения</p>
+              <p className="font-bold text-gray-800">Игры</p>
+              <p className="text-xs text-gray-500">Переключись и отдохни 🎮</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-purple-400" />
         </div>
       </motion.div>
 
