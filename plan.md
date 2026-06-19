@@ -1,50 +1,50 @@
-# План: Полноценное приложение для подготовки к ЕГЭ по русскому языку
+# Plan: ФИПИ Exam Variant System
 
-## Этап 1: ML-Адаптивность (Smart Learning Engine) — PRIORITY
-**Цель:** Персонализированные рекомендации уроков на основе данных о прогрессе
-- Создать `adaptiveEngine.ts` — алгоритм оценки слабых тем, learning curve, forgetting curve
-- Улучшить `WhatToStudyToday` — smart recommendations вместо random
-- Добавить "Smart Path" карточку в Dashboard
-- Алгоритм: учитывать accuracy по заданиям, время ответа, частоту ошибок, дни с последней практики
-- Скилл: `report-writing` (для алгоритма) + `coder` (для имплементации)
+## Stage 1 — Data Layer
+1. Create `src/data/fipiVariants.ts`
+   - Define types: `FipiVariant`, `FipiTask`, `ExamResult`
+   - Create 5 variants with 15 tasks each (tasks 4-16, 26)
+   - Map each task to existing data sources
+   - Export helper functions to load questions for a task
 
-## Этап 2: Система классов (Classroom System) — PRIORITY
-**Цель:** Учитель создаёт класс, ученики присоединяются по коду
-- Создать `classStore.ts` — Zustand store для классов (localStorage + Firebase-ready)
-- Создать `TeacherClassroom.tsx` — управление классом, invite codes, прогресс учеников
-- Создать `JoinClass.tsx` — страница для ученика (ввод кода)
-- Обновить `ChallengesPage` — классовый лидерборд (не только локальные профили)
-- Скилл: `coder` + `plan` (для архитектуры)
+## Stage 2 — State Layer
+2. Update `src/stores/progressStore.ts`
+   - Add `examResults: ExamResult[]` to state
+   - Add `saveExamResult`, `getExamResults`, `getBestExamResult` actions
+   - Update `importProgress` to merge exam results
 
-## Этап 3: Firebase Backend — Sync & Auth
-**Цель:** Облачная синхронизация прогресса между устройствами
-- Создать `firebaseStore.ts` — CRUD с localStorage fallback
-- Auth: anonymous + Google (optional)
-- Cloud Firestore: users, classes, progress, homework
-- Offline support: sync when online
-- Скилл: `coder` (Firebase SDK integration)
+## Stage 3 — Pages (independent)
+3. Create `src/pages/ExamVariantsList.tsx`
+   - Card grid showing 5 variants
+   - Difficulty badge, time limit, completion status
+   - Best result display
+   - "Начать" button → `/exam/:variantId`
 
-## Этап 4: ФИПИ Варианты (Real Exam Variants)
-**Цель:** Структурированные варианты ЕГЭ с реальными вопросами
-- Создать `fipiVariants.ts` — 5-10 вариантов ЕГЭ (структура: 26 заданий)
-- Создать `ExamVariantPage.tsx` — прохождение варианта под таймер
-- Результаты: баллы, primary/secondary, сравнение с порогом
-- Скилл: `deep-research-swarm` (для поиска реальных вариантов) + `coder`
+4. Create `src/pages/ExamVariantPage.tsx`
+   - Timer (useEffect + setInterval, MM:SS format)
+   - Task navigation with progress bar
+   - Generic question renderer supporting all task types
+   - Skip button (0 points)
+   - "Завершить досрочно" button
+   - Auto-submit on timer expiry
+   - Navigate to results on completion
 
-## Этап 5: Задания 17-26 + Сочинение
-**Цель:** Полное покрытие всех заданий ЕГЭ
-- Задания 17-26: речевые ошибки, пунктуация, лексика, грамматика
-- Сочинение: 15 тем, критерии оценки, чеклист
-- Скилл: `deep-research-swarm` (для контента) + `coder`
+5. Create `src/pages/ExamResultsPage.tsx`
+   - Primary and test scores
+   - Pass threshold analysis (36/60/80)
+   - Per-task breakdown with correct/incorrect
+   - Weak topics with links to lessons
+   - "Пройти ещё раз" / "Следующий вариант" buttons
 
----
+## Stage 4 — Integration
+6. Update `src/App.tsx`
+   - Add routes: `/exam`, `/exam/:variantId`, `/exam/:variantId/results`
+   - Update `isLesson` check to include exam routes
 
-## Порядок выполнения
-1. Этап 1 + Этап 2 параллельно (независимые)
-2. Этап 3 (зависит от Этапа 2 — структура классов)
-3. Этап 4 + Этап 5 параллельно (независимые, контент-heavy)
+7. Update `src/pages/Dashboard.tsx`
+   - Add "Варианты ЕГЭ" card between Trainers and Games
+   - Show next uncompleted variant
+   - Progress (X of Y completed)
 
-## Агенты
-- `Адаптивность_Разработчик` — ML-Engine + UI
-- `Классы_Разработчик` — Classroom System
-- `Контент_Исследователь` — ФИПИ + задания 17-26 (позже)
+## Stage 5 — Build Verification
+8. Run `cmd //c "npm run build"` and fix any TS errors

@@ -269,21 +269,17 @@ icons: [
 
 ---
 
-### ЗАДАЧА-4: Добавить автоматическое восстановление сердечек
+### ✅ ЗАДАЧА-4: Добавить автоматическое восстановление сердечек
 
-**Где**: `src/stores/progressStore.ts`
+**Статус:** ✅ Реализовано (2026-06-19)
 
-**Сейчас**: Сердечки восстанавливаются только при нажатии "Повторить" (`restoreHearts()`). В Duolingo — 1 сердце каждые 4 часа.
+**Где**: `src/stores/slices/userSlice.ts` (метод `checkHeartRestore`), `src/pages/Dashboard.tsx` (вызов в `useEffect`)
 
-**Что нужно сделать**:
+**Решение**: Метод `checkHeartRestore()` проверяет `lastHeartRestore` (fallback на `lastActivityDate`), считает `Math.floor(minutesPassed / 240)` — 1 сердце каждые 4 часа, обновляет `hearts` до `min(maxHearts, hearts + restored)` и записывает новый `lastHeartRestore`. В `Dashboard.tsx` вызывается в `useEffect` при монтировании.
 
-1. Добавить в `UserStats` поле `lastHeartRestore: string` (ISO дата).
-2. При инициализации store (или при чтении) — проверить, сколько времени прошло с `lastHeartRestore`.
-3. Формула: `restoredHearts = Math.floor(minutesPassed / 240)` (4 часа = 240 мин).
-4. Обновить `hearts` = `min(maxHearts, hearts + restoredHearts)`.
-5. Обновить `lastHeartRestore` на текущее время.
+**Код**: `userSlice.ts` строки 39–60. `Dashboard.tsx` строки 52–54.
 
-**Минимальный вариант** (без сложной логики): добавить метод `checkHeartRestore()` и вызывать его при открытии приложения (в `Dashboard.tsx` через `useEffect`).
+**Как проверить**: Уменьшить сердечки → подождать 4+ часа → открыть Dashboard → сердечки восстановятся.
 
 ---
 
