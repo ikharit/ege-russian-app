@@ -115,6 +115,13 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
+### [2026-06-19 11:00] Агент: main (Dooshin achievements)
+- **Что:** 9 новых достижений за прохождение заданий Дощинского
+- **Где:** `src/data/achievements.ts`
+- **Зачем:** Мотивация проходить задания Дощинского — прогресс отслеживается по completed урокам с id `lesson-dooshin-*`
+- **Git commit:** `428db74`
+- **⚠️ Важно:** ID ачивок: `ach-dooshin-first` (1 урок), `ach-dooshin-5/10/20/all` (5/10/20/40 уроков), `ach-dooshin-9/10/11/12` (все уроки задания N). `ach-dooshin-10` — общая (10 уроков), `ach-dooshin-task-10` — задание 10 специфическое. Нет дублирования ID.
+
 ### [2026-06-19 10:45] Агент: main (Dooshin unification)
 - **Что:** Задания Дощинского объединены в один раздел "Отработки из Дощинского" с выпадающими группами
 - **Где:** `src/data/sections/dooshinUnified.ts` (новый), `src/data/courseData.ts`
