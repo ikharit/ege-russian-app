@@ -36,6 +36,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           <div className="flex items-center gap-1">
             <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
             <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
+            <span className="text-[10px] bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded font-bold ml-1">v{LATEST_VERSION}</span>
           </div>
           <ProfileSwitcher onAddStudent={() => setShowRegModal(true)} />
         </div>

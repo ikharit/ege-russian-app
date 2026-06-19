@@ -3,7 +3,7 @@ export interface ReleaseNote {
   date: string
   title: string
   emoji: string
-  bullets: { text: string; type: 'feature' | 'fix' | 'ege-important' | 'fun' }[]
+  bullets: { text: string; type: 'feature' | 'fix' | 'ege-important' | 'fun'; impact?: string }[]
   highlighted?: boolean
 }
 
@@ -15,10 +15,10 @@ export const RELEASE_NOTES: ReleaseNote[] = [
     emoji: '🎓',
     highlighted: true,
     bullets: [
-      { text: 'Банк паронимов вырос с 12 до 82 вопросов — покрывает весь словник ФИПИ 2026', type: 'ege-important' },
+      { text: 'Банк паронимов вырос с 12 до 82 вопросов — покрывает весь словник ФИПИ 2026', type: 'ege-important', impact: 'На ЕГЭ попадётся именно такое задание — и ты уже его решал!' },
       { text: 'Теперь ты точно выполнишь №5 на ЕГЭ успешно! 💪', type: 'ege-important' },
-      { text: 'Каждый вопрос с подробным объяснением: почему это слово, а не другое', type: 'feature' },
-      { text: 'Новые пары: артистический/артистичный, зверский/звериный, драматический/драматичный и 70+ других', type: 'feature' },
+      { text: 'Каждый вопрос с подробным объяснением: почему это слово, а не другое', type: 'feature', impact: 'Не просто зубрёжка, а понимание — запомнишь навсегда' },
+      { text: 'Новые пары: артистический/артистичный, зверский/звериный, драматический/драматичный и 70+ других', type: 'feature', impact: 'Больше практики = меньше ошибок на экзамене' },
       { text: 'Исправлено: ошибки в тренажёрах теперь автоматически попадают в "Работу над ошибками"', type: 'fix' },
       { text: 'Новый переключатель учеников в шапке — добавляй друзей и следи за их прогрессом', type: 'feature' },
     ],

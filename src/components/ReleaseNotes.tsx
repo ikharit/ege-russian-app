@@ -40,6 +40,7 @@ export function ReleaseNotesWidget() {
 
   const latest = RELEASE_NOTES[0]
   const isUnread = dismissed !== LATEST_VERSION
+  const recentCount = RELEASE_NOTES.length // Всего обновлений
 
   // Auto-expand if unread
   useEffect(() => {
@@ -60,6 +61,7 @@ export function ReleaseNotesWidget() {
       >
         <Megaphone size={16} />
         Что нового?
+        <span className="text-[10px] bg-duo-yellow text-gray-800 px-1.5 py-0.5 rounded font-bold">{recentCount}</span>
       </button>
     )
   }
@@ -117,10 +119,15 @@ export function ReleaseNotesWidget() {
                 {latest.bullets.slice(0, 4).map((b, i) => (
                   <div
                     key={i}
-                    className={`flex items-start gap-2 p-2 rounded-lg text-sm ${getBulletClass(b.type)}`}
+                    className={`flex flex-col gap-1 p-2 rounded-lg text-sm ${getBulletClass(b.type)}`}
                   >
-                    {getBulletIcon(b.type)}
-                    <span>{b.text}</span>
+                    <div className="flex items-start gap-2">
+                      {getBulletIcon(b.type)}
+                      <span>{b.text}</span>
+                    </div>
+                    {b.impact && (
+                      <span className="text-xs text-gray-500 italic ml-6">{b.impact}</span>
+                    )}
                   </div>
                 ))}
 
