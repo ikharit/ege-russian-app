@@ -168,6 +168,21 @@ export function DailyQuestionCard() {
         </div>
       )}
 
+      {question.type === 'text' && !question.options && (
+        <div className="flex flex-col gap-2">
+          <input
+            type="text"
+            value={selected[0] || ''}
+            onChange={(e) => {
+              if (!isAnswered) setSelected([e.target.value])
+            }}
+            placeholder="Введите ответ..."
+            className="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-medium focus:border-amber-400 focus:outline-none transition-colors"
+            disabled={isAnswered}
+          />
+        </div>
+      )}
+
       {!isAnswered && (
         <button
           onClick={handleCheck}
