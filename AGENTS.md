@@ -66,7 +66,7 @@ ege-russian-app/
 | AnalyticsPage | 🟢 | main | Аналитика класса |
 | StudentStore | 🟢 | main | Multi-user профили, регистрация |
 | Dooshin (задания 9-12) | 🟢 | main | Разделён на 4 файла + lazy loading. Meta-файл (без questions) в main bundle, questions грузятся dynamic import при открытии урока. **Explanation engine** — 2,717 task-specific explanations (приставки/корни/суффиксы/окончания) |
-| Tests | 🟢 | main | 54 теста проходят (achievementChecker, userSlice, questionValidator, QuestionCard, TheoryViewer, Task16Trainer, Statistics) |
+| Tests | 🟢 | main | 58 тестов проходят (achievementChecker, userSlice, questionValidator, QuestionCard, TheoryViewer, Lesson, Task16Trainer, Statistics) |
 | Build / PWA | 🟢 | main | `npm run build` проходит. `backgroundSync` убран из PWA. `recharts` в отдельном chunk |
 
 ### 🎨 Цветовая кодировка статусов
@@ -133,6 +133,13 @@ ege-russian-app/
 ## 🗂️ Журнал изменений (последние 20 записей)
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
+
+### [2026-06-20 00:00] Агент: main (Explanation Engine для Дощинского)
+- **Что:** Создан explanation engine с word-specific explanations для 2,717 вопросов Дощинского. A. `explanationEngine.ts` — TypeScript engine с prefix detection (50+ правил), word-to-explanation mapping. B. `wordExplanations.json` — 300+ иноязычных слов с этимологиями. C. `apply-explanations.cjs` — скрипт для batch-генерации explanations. D. Применены explanations: task9 (корни), task10 (приставки), task11 (суффиксы), task12 (окончания).
+- **Где:** `src/data/explanations/explanationEngine.ts`, `src/data/explanations/wordExplanations.json`, `scripts/apply-explanations.cjs`, `src/data/sections/dooshin/task9.ts`, `task10.ts`, `task11.ts`, `task12.ts`
+- **Зачем:** Пользователь хочет конкретные explanations для каждого вопроса (не generic "Проверьте правописание"). Engine извлекает слово из вопроса, определяет приставку/корень/суффикс и генерирует rule-based explanation.
+- **Git commit:** `0a2f44f`
+- **⚠️ Важно:** Explanation engine — это гибрид rule-based + dictionary. Для task10 (приставки) работает автоматически (50+ prefix rules). Для task9-12 использует wordExplanations.json для известных слов, fallback для остальных. Словарь можно пополнять — добавляй новые слова в `wordExplanations.json` и перезапускай `apply-explanations.cjs`. 58 тестов проходят, build чистый.
 
 ### [2026-06-19 23:20] Агент: main (Sprint: TS fix + DailyQuests grouping + Agent docs sync)
 - **Что:** A. Исправлены TS-ошибки в `ReleaseNotes.tsx` (`b` как `any` + тип `i: number`). B. `DailyQuests` переработан с группировкой по статусам: «Активные» (всегда видны), «Завершено» (сворачивается), «Не начато» (сворачивается). C. Обновлены `AGENT_TASKS.md` — БАГ-1 и ЗАДАЧА-4 отмечены как ✅ исправлено/реализовано. D. Build проходит чисто (`tsc` + `vite build`).
