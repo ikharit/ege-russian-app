@@ -89,6 +89,13 @@ ege-russian-app/
 
 ## 🗂️ Журнал изменений (новые сверху)
 
+### [2026-06-19 01:40] Агент: main (Unified Error Bank)
+- **Что:** Все тренажёры теперь пишут ошибки в единый банк `progressStore.wrongAnswers`
+- **Где:** `src/pages/AccentTrainer.tsx`, `src/pages/Task5Trainer.tsx`, `src/pages/Task10Trainer.tsx`, `src/pages/Task16Trainer.tsx`
+- **Зачем:** Пользователь жаловался, что ошибки из тренажёров не видны в «Работе над ошибками». Каждый тренажёр хранил ошибки в своём изолированном store. Теперь при неправильном ответе вызывается `recordWrongAnswer()` + `updateTaskStats()` с `atoms: ['taskN']`.
+- **Git commit:** `569024e`
+- **⚠️ Важно:** `recordWrongAnswer` извлекает `taskNumber` из `atoms.find(a => a.startsWith('task')).replace('task', '')`. WeakSpots.tsx уже группирует по `taskNumber` и показывает теорию. Банк заданий теперь когерентный — все ошибки в одном месте.
+
 ### [2026-06-19 01:35] Агент: main (Header cleanup)
 - **Что:** Упрощён Header — убран перегруз
 - **Где:** `src/components/Header.tsx`, `src/components/ProfileSwitcher.tsx`
@@ -260,4 +267,4 @@ ege-russian-app/
 
 ---
 
-*Последнее обновление: 2026-06-19 17:09*
+*Последнее обновление: 2026-06-19 01:40*

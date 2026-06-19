@@ -34,6 +34,20 @@
 
 ## Журнал изменений (новые сверху)
 
+### [2026-06-19 01:40] Агент: main (Unified Error Bank)
+- **Что:** Все тренажёры теперь пишут ошибки в единый банк `progressStore.wrongAnswers`
+- **Где:** `src/pages/AccentTrainer.tsx`, `src/pages/Task5Trainer.tsx`, `src/pages/Task10Trainer.tsx`, `src/pages/Task16Trainer.tsx`
+- **Зачем:** Пользователь жаловался, что ошибки из тренажёров не видны в «Работе над ошибками». Каждый тренажёр хранил ошибки в своём изолированном store. Теперь при неправильном ответе вызывается `recordWrongAnswer()` + `updateTaskStats()` с `atoms: ['taskN']`.
+- **Git commit:** `569024e`
+- **⚠️ Важно:** `recordWrongAnswer` извлекает `taskNumber` из `atoms.find(a => a.startsWith('task')).replace('task', '')`. WeakSpots.tsx уже группирует по `taskNumber` и показывает теорию. Банк заданий теперь когерентный — все ошибки в одном месте.
+
+### [2026-06-19 01:35] Агент: main (Header cleanup)
+- **Что:** Упрощён Header — убран перегруз
+- **Где:** `src/components/Header.tsx`, `src/components/ProfileSwitcher.tsx`
+- **Зачем:** Пользователь показал скриншот перегруженного Header: зелёная кнопка "Добавить ученика" перекрывала "Войти", всё было в одну линию
+- **Git commit:** `0ccda6e`
+- **⚠️ Важно:** ProfileSwitcher теперь компактный — только emoji + стрелочка (без текста). "Добавить ученика" — маленький кружок с +. Иконки уменьшены до 18px, gap сокращён до 2.5. Teacher mode toggle убран из Header (есть в Profile).
+
 ### [2026-06-19 01:30] Агент: main (Student Registration / Multi-user)
 - **Что:** StudentStore с multi-user профилями, StudentRegistrationModal, ProfileSwitcher, динамика в Teacher, авто-сохранение в App.tsx
 - **Где:** `src/stores/studentStore.ts` (новый), `src/components/StudentRegistrationModal.tsx` (новый), `src/components/ProfileSwitcher.tsx` (новый), `src/pages/Teacher.tsx`, `src/pages/Dashboard.tsx`, `src/components/Header.tsx`, `src/App.tsx`
@@ -195,4 +209,4 @@
 
 ---
 
-*Последнее обновление: 2026-06-19 17:09*
+*Последнее обновление: 2026-06-19 01:40*
