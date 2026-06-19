@@ -8,6 +8,9 @@ import {
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
+import { getGlobalIRT } from '../utils/irtEngine'
+import { getGlobalBKT } from '../utils/bktEngine'
+import { detectErrorType } from '../utils/errorPatternAnalyzer'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -91,17 +94,37 @@ export function BaseTrainer<T>({
   }
   const currentStage = Math.floor(currentIndex / 4) // 4 questions per stage
 
-  // Shuffle questions on mount (so each session is different)
-  const [shuffledQuestions] = useState(() => {
-    const arr = [...questions]
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  // IRT-based adaptive question ordering
+  const irt = useState(() => getGlobalIRT())[0]
+  const bkt = useState(() => getGlobalBKT())[0]
+
+  // Register all questions with IRT
+  useEffect(() => {
+    for (const q of questions) {
+      const qid = getQuestionId(q)
+      const diff = (q as any).irtDifficulty ?? 0 // default average difficulty
+      if (!irt.items[qid]) {
+        irt.calibrateDifficulty(qid, 0.5) // placeholder, will refine with data
+      }
     }
-    return arr
+  }, [questions, irt])
+
+  // Adaptive question ordering via IRT
+  const [questionOrder, setQuestionOrder] = useState<number[]>(() => {
+    const ids = questions.map((_, i) => String(i))
+    const ordered: number[] = []
+    const pool = new Set(ids)
+    while (pool.size > 0) {
+      const next = irt.selectNextQuestion(Array.from(pool), 0.7)
+      if (!next) break
+      const idx = Number(next)
+      ordered.push(idx)
+      pool.delete(next)
+    }
+    return ordered.length > 0 ? ordered : questions.map((_, i) => i)
   })
 
-  const effectiveQuestion = shuffledQuestions[currentIndex] ?? currentQuestion
+  const effectiveQuestion = questions[questionOrder[currentIndex]] ?? currentQuestion
 
   const handleSelect = useCallback((answer: string[]) => {
     if (answerState !== 'idle') return
@@ -117,6 +140,16 @@ export function BaseTrainer<T>({
     setIsCorrect(isRight)
     setAnswerState(isRight ? 'correct' : 'wrong')
     recordQuestionAnswered()
+
+    // Update IRT ability
+    const qid = getQuestionId(effectiveQuestion)
+    irt.updateAbility([{ questionId: qid, correct: isRight }])
+
+    // Update BKT for each atom
+    const atoms = getAtoms?.(effectiveQuestion) || []
+    for (const atom of atoms) {
+      bkt.observe(atom, isRight)
+    }
 
     if (isRight) {
       addXP(xpPerCorrect)
@@ -153,7 +186,7 @@ export function BaseTrainer<T>({
   }, [effectiveQuestion, selectedAnswer, taskNumber, xpPerCorrect])
 
   const handleNext = useCallback(() => {
-    if (currentIndex >= shuffledQuestions.length - 1) {
+    if (currentIndex >= questions.length - 1) {
       setShowCompleted(true)
     } else {
       setCurrentIndex((i) => i + 1)
@@ -161,7 +194,7 @@ export function BaseTrainer<T>({
       setSelectedAnswer([])
       setIsCorrect(false)
     }
-  }, [currentIndex, shuffledQuestions.length])
+  }, [currentIndex, questions.length])
 
   const handleRestart = useCallback(() => {
     setCurrentIndex(0)
@@ -200,7 +233,7 @@ export function BaseTrainer<T>({
           <div>
             <h2 className="text-2xl font-bold text-gray-800">{title} — завершено!</h2>
             <p className="text-gray-500 mt-1">
-              {stats.totalCorrect === shuffledQuestions.length
+              {stats.totalCorrect === questions.length
                 ? 'Идеально! Все задания решены правильно.'
                 : 'Отличная работа! Продолжай тренироваться.'}
             </p>
@@ -228,14 +261,14 @@ export function BaseTrainer<T>({
             <div className="flex justify-between text-sm mb-2">
               <span className="font-bold text-gray-700">Прогресс</span>
               <span className="text-duo-green font-bold">
-                {stats.totalCorrect}/{shuffledQuestions.length}
+                {stats.totalCorrect}/{questions.length}
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
                 className="bg-duo-green h-3 rounded-full transition-all"
                 style={{
-                  width: `${(stats.totalCorrect / shuffledQuestions.length) * 100}%`,
+                  width: `${(stats.totalCorrect / questions.length) * 100}%`,
                 }}
               />
             </div>
@@ -289,7 +322,7 @@ export function BaseTrainer<T>({
               Ур. {currentStage + 1}
             </span>
             <span className="text-sm font-bold text-gray-700">
-              {currentIndex + 1}/{shuffledQuestions.length}
+              {currentIndex + 1}/{questions.length}
             </span>
             <div className="flex items-center gap-1">
               <Zap size={14} className="text-orange-500 fill-current" />
@@ -311,14 +344,14 @@ export function BaseTrainer<T>({
           <div className="flex justify-between text-xs text-gray-400 mb-1">
             <span>Уровень {currentStage + 1}</span>
             <span>
-              {currentIndex + 1}/{shuffledQuestions.length}
+              {currentIndex + 1}/{questions.length}
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
               className="bg-duo-green h-1.5 rounded-full transition-all"
               style={{
-                width: `${((currentIndex + 1) / shuffledQuestions.length) * 100}%`,
+                width: `${((currentIndex + 1) / questions.length) * 100}%`,
               }}
             />
           </div>

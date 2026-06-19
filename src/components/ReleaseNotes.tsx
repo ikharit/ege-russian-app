@@ -140,6 +140,14 @@ export function ReleaseNotesWidget() {
                 )}
 
                 <button
+                  onClick={() => setShowHistory(true)}
+                  className="text-xs text-gray-500 hover:text-duo-blue font-medium hover:underline w-full text-left pt-1 flex items-center gap-1"
+                >
+                  <BookOpen size={12} />
+                  Вся история версий →
+                </button>
+
+                <button
                   onClick={handleDismiss}
                   className="w-full py-2 mt-2 bg-duo-green text-white text-sm font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
                 >

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { PersonalityQuiz } from './pages/PersonalityQuiz'
 import { Header } from './components/Header'
+import { TodayPage } from './pages/TodayPage'
 import { Dashboard } from './pages/Dashboard'
 import { CourseMap } from './pages/CourseMap'
 import { Lesson } from './pages/Lesson'
@@ -69,11 +70,11 @@ function BottomNav() {
   const location = useLocation()
 
   const tabs = [
-    { path: '/', icon: BookOpen, label: 'Учиться' },
+    { path: '/', icon: BookOpen, label: 'Сегодня' },
     { path: '/course', icon: Map, label: 'Курс' },
     { path: '/theory', icon: BookOpenText, label: 'Теория' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
-    { path: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
+    { path: '/dashboard', icon: Trophy, label: 'Обзор' },
   ]
 
   return (
@@ -390,7 +391,8 @@ export default function App() {
       />
       <main className="flex-1 overflow-auto">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<TodayPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/auth" element={<AuthModal isOpen={true} onClose={() => navigate('/')} />} />
           <Route path="/theory" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryPage /></Suspense>} />
           <Route path="/theory-editor" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryEditorPage /></Suspense>} />
