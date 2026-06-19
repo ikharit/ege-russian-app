@@ -38,3 +38,4 @@ src/
   lib/            # Supabase клиент
 ```
 // trigger deploy
+// trigger deploy 1781902522

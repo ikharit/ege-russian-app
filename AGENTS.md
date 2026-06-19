@@ -65,7 +65,7 @@ ege-russian-app/
 | NotificationStore | 🟢 | main | Push-уведомления, streak reminders |
 | AnalyticsPage | 🟢 | main | Аналитика класса |
 | StudentStore | 🟢 | main | Multi-user профили, регистрация |
-| Dooshin (задания 9-12) | 🟢 | main | Разделён на 4 файла + lazy loading. Meta-файл (без questions) в main bundle, questions грузятся dynamic import при открытии урока |
+| Dooshin (задания 9-12) | 🟢 | main | Разделён на 4 файла + lazy loading. Meta-файл (без questions) в main bundle, questions грузятся dynamic import при открытии урока. **Explanation engine** — 2,717 task-specific explanations (приставки/корни/суффиксы/окончания) |
 | Tests | 🟢 | main | 54 теста проходят (achievementChecker, userSlice, questionValidator, QuestionCard, TheoryViewer, Task16Trainer, Statistics) |
 | Build / PWA | 🟢 | main | `npm run build` проходит. `backgroundSync` убран из PWA. `recharts` в отдельном chunk |
 
