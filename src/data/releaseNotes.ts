@@ -79,7 +79,7 @@ export const RELEASE_NOTES: ReleaseNote[] = [
   },
   {
     version: '1.1.0',
-    date: '10 июня 2026',
+    date: '16 июня 2026',
     title: '150+ ударений + теория — задание №4 теперь на автомате!',
     emoji: '🔊',
     bullets: [
@@ -92,7 +92,7 @@ export const RELEASE_NOTES: ReleaseNote[] = [
   },
   {
     version: '1.0.0',
-    date: '8 июня 2026',
+    date: '16 июня 2026',
     title: 'Запуск ЕГЭ Русский — полный курс подготовки к экзамену!',
     emoji: '🎉',
     bullets: [
