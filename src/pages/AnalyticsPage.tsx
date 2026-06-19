@@ -5,6 +5,7 @@ import {
   ChevronDown, ChevronUp, AlertTriangle, CheckCircle
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useStudentStore } from '../stores/studentStore'
 import { useNavigate } from 'react-router-dom'
 import { allHomework } from '../data/gsheets/homeworkData'
 
@@ -31,47 +32,52 @@ export function AnalyticsPage() {
   const [expandedTask, setExpandedTask] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'tasks' | 'students' | 'homework'>('tasks')
 
-  // Aggregate class-level task analytics
+  // Aggregate class-level task analytics using real student data from studentStore
   const classTaskAnalytics: ClassTaskAnalytics[] = (() => {
     const taskMap: Record<string, { total: number; correct: number; students: Set<string>; weakStudents: Set<string> }> = {}
 
-    students.forEach(student => {
-      // Mock task stats per student — in real app, each student would have their own taskStats
-      // For demo, we distribute the global taskStats across students with variation
-      Object.entries(taskStats).forEach(([taskNum, stats]) => {
+    const profiles = useStudentStore.getState().profiles
+    const profileList = profiles.length > 0 ? profiles : students.map((s) => ({ name: s.name, progress: { taskStats } } as any))
+
+    profileList.forEach((profile: any) => {
+      const name = profile.name || 'Ученик'
+      const pTaskStats = profile.progress?.taskStats || {}
+      const allTasks = Object.keys(pTaskStats).length > 0 ? pTaskStats : taskStats
+
+      Object.entries(allTasks).forEach(([taskNum, stats]: [string, any]) => {
         if (!taskMap[taskNum]) {
           taskMap[taskNum] = { total: 0, correct: 0, students: new Set(), weakStudents: new Set() }
         }
-        const studentAccuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0
-        const variation = Math.random() * 20 - 10 // ±10% variation per student
-        const adjustedAccuracy = Math.max(0, Math.min(100, studentAccuracy + variation))
-        const adjustedTotal = Math.max(1, Math.round(stats.total / students.length))
-        const adjustedCorrect = Math.round(adjustedTotal * adjustedAccuracy / 100)
+        const total = stats.total || 0
+        const correct = stats.correct || 0
+        const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0
 
-        taskMap[taskNum].total += adjustedTotal
-        taskMap[taskNum].correct += adjustedCorrect
-        taskMap[taskNum].students.add(student.name)
-        if (adjustedAccuracy < 70) {
-          taskMap[taskNum].weakStudents.add(student.name)
+        taskMap[taskNum].total += total
+        taskMap[taskNum].correct += correct
+        taskMap[taskNum].students.add(name)
+        if (accuracy < 70) {
+          taskMap[taskNum].weakStudents.add(name)
         }
       })
     })
 
-    // Also add default tasks if no real data
-    const defaultTasks = ['4', '5', '9', '10', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27']
-    defaultTasks.forEach(taskNum => {
-      if (!taskMap[taskNum]) {
-        const weakCount = Math.floor(Math.random() * students.length * 0.6)
-        const totalAttempts = students.length * Math.floor(Math.random() * 10 + 5)
-        const correctCount = Math.round(totalAttempts * (0.4 + Math.random() * 0.4))
-        taskMap[taskNum] = {
-          total: totalAttempts,
-          correct: correctCount,
-          students: new Set(students.map(s => s.name)),
-          weakStudents: new Set(students.slice(0, weakCount).map(s => s.name))
+    // Add current active profile data if no profiles exist yet
+    if (profileList.length === 0) {
+      Object.entries(taskStats).forEach(([taskNum, stats]: [string, any]) => {
+        if (!taskMap[taskNum]) {
+          taskMap[taskNum] = { total: 0, correct: 0, students: new Set(), weakStudents: new Set() }
         }
-      }
-    })
+        const total = stats.total || 0
+        const correct = stats.correct || 0
+        const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0
+        taskMap[taskNum].total += total
+        taskMap[taskNum].correct += correct
+        taskMap[taskNum].students.add('Текущий')
+        if (accuracy < 70) {
+          taskMap[taskNum].weakStudents.add('Текущий')
+        }
+      })
+    }
 
     return Object.entries(taskMap)
       .map(([taskNumber, data]) => ({
@@ -85,23 +91,46 @@ export function AnalyticsPage() {
       .sort((a, b) => a.accuracy - b.accuracy) // Sort by accuracy ascending (weakest first)
   })()
 
-  // Student breakdown
-  const studentBreakdown: StudentTaskBreakdown[] = students.map(student => {
-    const weakTasks = classTaskAnalytics
-      .filter(t => t.weakStudentCount > 0)
-      .slice(0, 3)
-      .map(t => t.taskNumber)
-    const strongTasks = classTaskAnalytics
-      .filter(t => t.accuracy > 80)
-      .slice(0, 3)
-      .map(t => t.taskNumber)
-    return {
-      name: student.name,
-      accuracy: student.averageScore,
-      weakTasks: weakTasks.length > 0 ? weakTasks : ['—'],
-      strongTasks: strongTasks.length > 0 ? strongTasks : ['—'],
+  // Student breakdown using real data
+  const studentBreakdown: StudentTaskBreakdown[] = (() => {
+    const profiles = useStudentStore.getState().profiles
+    if (profiles.length > 0) {
+      return profiles.map((profile: any) => {
+        const pTaskStats = profile.progress?.taskStats || {}
+        const weak = Object.entries(pTaskStats)
+          .filter(([_, s]: [string, any]) => s.total > 0 && (s.correct / s.total) < 0.7)
+          .map(([t, _]: [string, any]) => t)
+        const strong = Object.entries(pTaskStats)
+          .filter(([_, s]: [string, any]) => s.total > 0 && (s.correct / s.total) > 0.8)
+          .map(([t, _]: [string, any]) => t)
+        const totalAttempts = Object.values(pTaskStats).reduce((sum: number, s: any) => sum + (s.total || 0), 0)
+        const totalCorrect = Object.values(pTaskStats).reduce((sum: number, s: any) => sum + (s.correct || 0), 0)
+        return {
+          name: profile.name,
+          accuracy: totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0,
+          weakTasks: weak.length > 0 ? weak : ['—'],
+          strongTasks: strong.length > 0 ? strong : ['—'],
+        }
+      })
     }
-  })
+    // Fallback: use current student data
+    return students.map((student) => {
+      const weak = classTaskAnalytics
+        .filter((t) => t.weakStudentCount > 0)
+        .slice(0, 3)
+        .map((t) => t.taskNumber)
+      const strong = classTaskAnalytics
+        .filter((t) => t.accuracy > 80)
+        .slice(0, 3)
+        .map((t) => t.taskNumber)
+      return {
+        name: student.name,
+        accuracy: student.averageScore,
+        weakTasks: weak.length > 0 ? weak : ['—'],
+        strongTasks: strong.length > 0 ? strong : ['—'],
+      }
+    })
+  })()
 
   // Homework analytics
   const homeworkAnalytics = (() => {

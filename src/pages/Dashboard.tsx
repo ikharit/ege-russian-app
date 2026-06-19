@@ -20,6 +20,7 @@ import { Task10MiniProgress } from '../components/dashboard/Task10MiniProgress'
 import { MistakesCard } from '../components/dashboard/MistakesCard'
 import { DashboardNotificationWidget } from '../components/dashboard/DashboardNotificationWidget'
 import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadlineWidget'
+import { WhatToStudyToday } from '../components/WhatToStudyToday'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -175,6 +176,9 @@ export function Dashboard() {
 
       {/* Daily Quests */}
       <DailyQuests />
+
+      {/* What to study today */}
+      <WhatToStudyToday />
 
       {/* Notification & Retention Widgets */}
       <DashboardNotificationWidget />

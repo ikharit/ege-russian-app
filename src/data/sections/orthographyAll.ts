@@ -3,12 +3,14 @@ import { orthographySections } from './orthography'
 import { atomizationSections } from './atomization'
 import { grammarSections } from './grammar'
 import { nnnSections } from './n_nn'
+import { dooshin15Sections } from './dooshin15'
 
 const allLessons = [
   ...orthographySections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...atomizationSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...grammarSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...nnnSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
+  ...dooshin15Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
 ]
 
 export const orthographyAllSections: Section[] = [
@@ -62,7 +64,7 @@ export const orthographyAllSections: Section[] = [
         id: 'group-task15',
         title: 'Задание 15',
         subtitle: 'Н / НН',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-')),
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-') || l.id.startsWith('lesson-dooshin-15') || l.id.startsWith('qd15-')),
       },
     ],
   }
