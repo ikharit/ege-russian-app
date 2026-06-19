@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
   ChevronRight, Check, X, Volume2, VolumeX, BookOpen,
-  ThumbsUp, ThumbsDown
+  ThumbsUp, ThumbsDown, AlertTriangle
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 import { getGlobalIRT } from '../utils/irtEngine'
 import { getGlobalBKT } from '../utils/bktEngine'
-import { detectErrorType } from '../utils/errorPatternAnalyzer'
+import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -85,6 +85,7 @@ export function BaseTrainer<T>({
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
   const [feedbackGiven, setFeedbackGiven] = useState<Record<string, 'up' | 'down'>>({})
+  const [sessionErrorPatterns, setSessionErrorPatterns] = useState<Map<string, number>>(new Map())
   const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
 
   const currentQuestion = questions[currentIndex]
@@ -178,6 +179,13 @@ export function BaseTrainer<T>({
       )
       updateTaskStats(taskNumber, false)
       setStats((s) => ({ ...s, totalWrong: s.totalWrong + 1, streak: 0 }))
+      // Track error pattern for this session
+      const errType = detectErrorType(taskNumber, getQuestionText(effectiveQuestion), getExplanation(effectiveQuestion))
+      setSessionErrorPatterns(prev => {
+        const next = new Map(prev)
+        next.set(errType, (next.get(errType) || 0) + 1)
+        return next
+      })
       // Haptic feedback for wrong answer (stronger pattern)
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate([30, 30, 30])
@@ -548,6 +556,26 @@ export function BaseTrainer<T>({
                           <ThumbsDown size={16} />
                         </button>
                       </div>
+                    </div>
+                  )
+                })()}
+                {/* Error Pattern Detection — show systematic mistakes */}
+                {!isCorrect && (() => {
+                  const recurring = Array.from(sessionErrorPatterns.entries())
+                    .filter(([_, count]) => count >= 2)
+                    .sort((a, b) => b[1] - a[1])
+                  if (recurring.length === 0) return null
+                  const [topPattern] = recurring
+                  const patternName = getSubskillName(topPattern[0])
+                  return (
+                    <div className="bg-orange-50 rounded-lg p-3 border border-orange-100 mt-2">
+                      <div className="flex items-center gap-2 mb-1">
+                        <AlertTriangle size={14} className="text-orange-600" />
+                        <span className="text-xs font-bold text-orange-700">Систематическая ошибка</span>
+                      </div>
+                      <p className="text-xs text-gray-700">
+                        Замечена повторяющаяся ошибка: <strong>{patternName}</strong> ({topPattern[1]} раз). Рекомендуем пройти урок по этой теме.
+                      </p>
                     </div>
                   )
                 })()}

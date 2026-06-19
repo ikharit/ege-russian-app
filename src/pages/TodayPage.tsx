@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy } from 'lucide-react'
+import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy, Medal } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
+import { useClassStore } from '../stores/classStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
@@ -12,6 +13,7 @@ import { DailyQuestionCard } from '../components/DailyQuestionCard'
 import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 import { getEssayStats } from '../data/essayData'
 import { achievements as allAchievements } from '../data/achievements'
+import { getAchievementIcon } from '../data/achievementIcons'
 
 function TodayQuests() {
   const questProgress = useProgressStore((s) => s.dailyQuestProgress)
@@ -78,6 +80,13 @@ export function TodayPage() {
   const displayName = activeProfile?.name || stats.name || 'ученик'
   const examDate = useStudyPlanStore((s) => s.examDate)
   const plan = useStudyPlanStore((s) => s.plan)
+  const getStudentClass = useClassStore((s) => s.getStudentClass)
+  const getLeaderboard = useClassStore((s) => s.getLeaderboard)
+  const studentClass = activeProfile ? getStudentClass(activeProfile.id) : null
+  const classLeaderboard = studentClass ? getLeaderboard(studentClass.id) : []
+  const myClassRank = activeProfile && studentClass
+    ? classLeaderboard.findIndex(e => e.profileId === activeProfile.id) + 1
+    : -1
 
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)
@@ -310,6 +319,68 @@ export function TodayPage() {
         </div>
       </div>
 
+      {/* Achievements & Leaderboard mini-cards */}
+      <div className="grid grid-cols-2 gap-2">
+        <motion.div
+          className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate('/dashboard')}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-lg bg-duo-purple/10 flex items-center justify-center">
+              <Star size={16} className="text-duo-purple" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-gray-700">Достижения</p>
+              <p className="text-[10px] text-gray-400">{achievements.length} / {allAchievements.length}</p>
+            </div>
+          </div>
+          <div className="w-full bg-gray-100 rounded-full h-1.5">
+            <div className="bg-duo-purple h-1.5 rounded-full" style={{ width: `${allAchievements.length > 0 ? (achievements.length / allAchievements.length) * 100 : 0}%` }} />
+          </div>
+          {achievements.length > 0 && (
+            <div className="flex items-center gap-1 mt-2">
+              {allAchievements.filter(a => achievements.includes(a.id)).slice(-3).map(a => {
+                const Icon = getAchievementIcon(a.id)
+                return (
+                  <div key={a.id} className="w-6 h-6 rounded-full bg-duo-purple/10 flex items-center justify-center">
+                    <Icon size={12} className="text-duo-purple" />
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </motion.div>
+
+        <motion.div
+          className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate(myClassRank > 0 ? '/class/' + studentClass?.id : '/leaderboard')}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+              <Medal size={16} className="text-yellow-600" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-gray-700">Рейтинг</p>
+              <p className="text-[10px] text-gray-400">
+                {myClassRank > 0 ? `Место #${myClassRank}` : 'Глобальный'}
+              </p>
+            </div>
+          </div>
+          {myClassRank > 0 && studentClass ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-gray-500 truncate">{studentClass.name}</span>
+              <span className="text-xs font-bold text-yellow-600">#{myClassRank}</span>
+            </div>
+          ) : (
+            <p className="text-xs text-gray-400">Нет данных</p>
+          )}
+        </motion.div>
+      </div>
+
       {/* Link to full overview */}
       <motion.div
         className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow"
@@ -330,14 +401,6 @@ export function TodayPage() {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
       </motion.div>
-
-      {/* Achievements mini */}
-      <div className="flex items-center justify-center gap-1 py-1">
-        <Star size={14} className="text-duo-purple" />
-        <span className="text-[10px] text-gray-400">
-          {achievements.length} / {allAchievements.length} достижений
-        </span>
-      </div>
     </div>
   )
 }
