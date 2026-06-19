@@ -93,6 +93,16 @@ function validateExplanation(word, explanation) {
     return errors;
   }
   
+  // Check for hallucination: non-alternating roots mentioning alternations
+  if ((explanation.includes('проверяемый') || explanation.includes('непроверяемый') || explanation.includes('словарное')) && explanation.includes('чередован')) {
+    errors.push(`HALLUCINATION: "${word}" is labeled as verifiable/dictionary but mentions 'чередование' — this is a linguistic hallucination`);
+  }
+  
+  // Check for o/ё hallucination (this is NOT a valid root alternation in EGE)
+  if (explanation.includes('о/ё') || explanation.includes('ё/о')) {
+    errors.push(`HALLUCINATION: "${word}" mentions o/ё alternation — this does NOT exist as a root alternation type in EGE task 9`);
+  }
+  
   // Check for consonant alternations incorrectly labeled as alternating
   // Only flag if it's explicitly labeled as "чередующийся корень"
   if (explanation.includes('чередующийся') && explanation.includes('Корень')) {
