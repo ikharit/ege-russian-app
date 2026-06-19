@@ -25,7 +25,9 @@ import { MistakesReview } from './pages/MistakesReview'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
 import { MyHomework } from './pages/MyHomework'
+import { ChallengesPage } from './pages/ChallengesPage'
 import { ParentDashboard } from './pages/ParentDashboard'
+import { TrainersPage } from './pages/TrainersPage'
 import { AnalyticsPage } from './pages/AnalyticsPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
@@ -305,11 +307,13 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/teacher/:studentName" element={<StudentHomework />} />
+          <Route path="/challenges" element={<ChallengesPage />} />
           <Route path="/parent" element={<ParentDashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
+          <Route path="/trainers" element={<TrainersPage />} />
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task6-trainer" element={<Task6Trainer />} />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle, Gamepad2 } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { course } from '../data/courseData'
@@ -14,9 +14,6 @@ import { getAchievementIcon } from '../data/achievementIcons'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { allHomework, studentsWithHomework } from '../data/gsheets/homeworkData'
 import { ReleaseNotesWidget } from '../components/ReleaseNotes'
-import { AccentTrainerMiniProgress } from '../components/dashboard/AccentTrainerMiniProgress'
-import { Task5MiniProgress } from '../components/dashboard/Task5MiniProgress'
-import { Task10MiniProgress } from '../components/dashboard/Task10MiniProgress'
 import { MistakesCard } from '../components/dashboard/MistakesCard'
 import { DashboardNotificationWidget } from '../components/dashboard/DashboardNotificationWidget'
 import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadlineWidget'
@@ -312,339 +309,28 @@ export function Dashboard() {
         </motion.div>
       )}
 
-      {/* Accent Trainer Card */}
+      {/* All Trainers — compact gateway */}
       <motion.div
-        className="card bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200"
+        className="card bg-gradient-to-br from-duo-green/10 to-duo-green/5 border-duo-green/20 cursor-pointer"
         whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/accent-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/accent-trainer'))}
+        onClick={() => navigate('/trainers')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/trainers'))}
         role="button"
         tabIndex={0}
-        aria-label="Тренажёр ударений, задание 4"
+        aria-label="Все тренажёры, 13 заданий"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-rose-400 flex items-center justify-center text-white">
-              <Volume2 size={24} />
+            <div className="w-12 h-12 rounded-xl bg-duo-green flex items-center justify-center text-white">
+              <span className="text-lg font-bold">13</span>
             </div>
             <div>
-              <p className="text-xs text-rose-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Ударения</p>
-              <p className="text-xs text-gray-500">Кликай на ударную букву</p>
+              <p className="text-xs text-duo-green uppercase tracking-wide font-bold">Тренажёры</p>
+              <p className="font-bold text-gray-800">Все задания</p>
+              <p className="text-xs text-gray-500">Ударения, паронимы, пунктуация и др.</p>
             </div>
           </div>
-          <div className="text-right">
-            <AccentTrainerMiniProgress />
-            <ChevronRight size={24} className="text-rose-400" />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Task 5 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task5-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task5-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр паронимов, задание 5"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№5</span>
-            </div>
-            <div>
-              <p className="text-xs text-emerald-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Паронимы</p>
-              <p className="text-xs text-gray-500">Словарь ФИПИ</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <Task5MiniProgress />
-            <ChevronRight size={24} className="text-emerald-400" />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Task 10 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task10-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task10-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр ПРЕ ПРИ, задание 10"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№10</span>
-            </div>
-            <div>
-              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">ПРЕ/ПРИ, Ъ/Ь, Ы/И</p>
-              <p className="text-xs text-gray-500">Сложные слова</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <Task10MiniProgress />
-            <ChevronRight size={24} className="text-blue-400" />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Task 16 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task16-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task16-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр пунктуации, задание 16"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№16</span>
-            </div>
-            <div>
-              <p className="text-xs text-orange-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Пунктуация</p>
-              <p className="text-xs text-gray-500">Сложные предложения</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <ChevronRight size={24} className="text-orange-400" />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Task 6 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-cyan-50 to-sky-50 border-cyan-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task6-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task6-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр суффиксов, задание 6"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№6</span>
-            </div>
-            <div>
-              <p className="text-xs text-cyan-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Суффиксы</p>
-              <p className="text-xs text-gray-500">Чередование в корнях</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-cyan-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 7 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-violet-50 to-purple-50 border-violet-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task7-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task7-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр окончаний глаголов, задание 7"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-violet-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№7</span>
-            </div>
-            <div>
-              <p className="text-xs text-violet-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Окончания глаголов</p>
-              <p className="text-xs text-gray-500">I и II спряжение</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-violet-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 8 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task8-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task8-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр слитного и раздельного написания, задание 8"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№8</span>
-            </div>
-            <div>
-              <p className="text-xs text-amber-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Слитное/раздельное</p>
-              <p className="text-xs text-gray-500">Написание с НЕ</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-amber-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 9 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-lime-50 to-green-50 border-lime-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task9-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task9-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр пропущенных букв, задание 9"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-lime-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№9</span>
-            </div>
-            <div>
-              <p className="text-xs text-lime-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Пропущенные буквы</p>
-              <p className="text-xs text-gray-500">Буквы в корнях</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-lime-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 11 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-pink-50 to-rose-50 border-pink-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task11-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task11-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр суффиксов прилагательных, задание 11"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-pink-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№11</span>
-            </div>
-            <div>
-              <p className="text-xs text-pink-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Суффиксы прилагательных</p>
-              <p className="text-xs text-gray-500">-нн- / -н-</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-pink-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 12 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task12-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task12-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр окончаний причастий, задание 12"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№12</span>
-            </div>
-            <div>
-              <p className="text-xs text-indigo-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Окончания причастий</p>
-              <p className="text-xs text-gray-500">Причастия и деепричастия</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-indigo-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 13 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task13-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task13-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр НЕ НИ с причастиями, задание 13"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-teal-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№13</span>
-            </div>
-            <div>
-              <p className="text-xs text-teal-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">НЕ/НИ с причастиями</p>
-              <p className="text-xs text-gray-500">Слитно или раздельно</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-teal-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 14 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-fuchsia-50 to-pink-50 border-fuchsia-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task14-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task14-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр слитного раздельного дефисного написания, задание 14"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-fuchsia-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№14</span>
-            </div>
-            <div>
-              <p className="text-xs text-fuchsia-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Слитное/раздельное/дефисное</p>
-              <p className="text-xs text-gray-500">Наречия и предлоги</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-fuchsia-400" />
-        </div>
-      </motion.div>
-
-      {/* Task 15 Trainer Card */}
-      <motion.div
-        className="card bg-gradient-to-br from-slate-50 to-gray-50 border-slate-200"
-        whileHover={{ scale: 1.01 }}
-        onClick={() => navigate('/task15-trainer')}
-        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task15-trainer'))}
-        role="button"
-        tabIndex={0}
-        aria-label="Тренажёр пунктуации, задание 15"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-slate-500 flex items-center justify-center text-white">
-              <span className="text-lg font-bold">№15</span>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wide font-bold">Тренажёр</p>
-              <p className="font-bold text-gray-800">Пунктуация</p>
-              <p className="text-xs text-gray-500">Знаки препинания</p>
-            </div>
-          </div>
-          <ChevronRight size={24} className="text-slate-400" />
+          <ChevronRight size={24} className="text-duo-green/50" />
         </div>
       </motion.div>
 
@@ -670,6 +356,31 @@ export function Dashboard() {
             </div>
           </div>
           <ChevronRight size={24} className="text-purple-400" />
+        </div>
+      </motion.div>
+
+      {/* Challenges Card — compete with classmates */}
+      <motion.div
+        className="card bg-gradient-to-br from-amber-100 to-orange-50 border-amber-200 cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/challenges')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/challenges'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Соревнования и челленджи"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-white">
+              <Trophy size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-amber-600 uppercase tracking-wide font-bold">Соревнования</p>
+              <p className="font-bold text-gray-800">Челленджи</p>
+              <p className="text-xs text-gray-500">XP Марафон, Огненный страйк ⚡</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-amber-400" />
         </div>
       </motion.div>
 

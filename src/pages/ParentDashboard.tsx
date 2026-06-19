@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Users, Trophy, Flame, BookOpen, Target, TrendingUp, Calendar, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Users, Trophy, Flame, BookOpen, Target, TrendingUp, Calendar, AlertTriangle, Zap } from 'lucide-react'
 import { useStudentStore } from '../stores/studentStore'
 import { useProgressStore } from '../stores/progressStore'
 import { allHomework } from '../data/gsheets/homeworkData'
@@ -180,9 +180,9 @@ export function ParentDashboard() {
                 <p className="font-bold text-gray-800">Домашнее задание</p>
               </div>
               <div className="p-3 bg-blue-50 rounded-xl">
-                <p className="font-bold text-sm">{currentHomework}</p>
+                <p className="font-bold text-sm">{currentHomework?.homework}</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Дедлайн: {homeworkEntries[0][1].deadline || 'Не указан'}
+                  Дедлайн: {currentHomework?.date || 'Не указан'}
                 </p>
               </div>
             </div>
