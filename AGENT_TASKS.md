@@ -317,21 +317,21 @@ icons: [
 
 ### Что нужно сделать
 
-#### ЗАДАЧА-А1: Добавить `atoms` ко всем оставшимся вопросам в `courseData.ts`
+#### ✅ ЗАДАЧА-А1: Добавить `atoms` ко всем оставшимся вопросам
 
-**Где**: `src/data/courseData.ts`
+**Статус:** ✅ Выполнено (2026-06-20)
 
-**Текущее состояние**: Первые 20 вопросов (q9-1..q9-20) уже имеют поле `atoms`. Остальные ~100+ вопросов — нет.
+**Где**: `src/data/sections/task1_3.ts`, `task5.ts`, `task6_8.ts`, `task22_27.ts`
 
-**Паттерн** (смотри на q9-1..q9-20 как пример):
-- Вопросы про корни с чередованием гласных → `atoms: ['root_vowel_alternation']` или конкретнее `['root_vowel_alternation', 'root_plav_plov']`
-- Вопросы про корни с чередованием согласных → `atoms: ['root_consonant_alternation']` или `['root_consonant_alternation', 'root_zhig_zheg']`
-- Вопросы про проверяемые корни → `atoms: ['root_verifiable']` или `['root_verifiable', 'root_zhiv_zhit']`
-- Вопросы про иноязычные слова → `atoms: ['foreign_words']`
-- Вопросы про приставки (если есть в курсе) → `['prefix_pre_pri', 'pre_pri_dictionary']` и т.д.
-- Если не уверен — `atoms: ['roots']` как fallback.
+**Решение**: 42 вопроса получили `atoms`:
+- `task1_3.ts`: q1-1 `['task1', 'text_connections']`, q2-1 `['task2', 'lexicology']`, q3-1 `['task3', 'speech_errors']`
+- `task5.ts`: 32 вопроса `['task5', 'paronyms']`
+- `task6_8.ts`: q6-1 `['task6', 'pleonasm']`
+- `task22_27.ts`: q22-1..q27-1 с `atoms` по номеру задания + теме
 
-**Как проверить**: `npm run build` должен проходить без ошибок.
+Остальные файлы (`grammar.ts`, `orthography.ts`, `task4.ts`, `punctuation.ts`, `n_nn.ts`, `dooshin/task9-12`, `dooshin15`, `dooshin20`) уже были полностью размечены ранее.
+
+**Как проверить**: `npm run build` проходит без ошибок.
 
 #### ЗАДАЧА-А2: Обновить Statistics — добавить вкладку "Атомы"
 

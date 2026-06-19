@@ -132,3 +132,27 @@ export interface StudyPlan {
   tasks: StudyTask[]
   generatedAt: string
 }
+
+export interface EssayTopic {
+  id: string
+  number: number
+  text: string
+  author: string
+  task: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  hints: string[]
+  keyPoints: string[]
+}
+
+export interface EssayProgress {
+  topicId: string
+  status: 'not_started' | 'draft' | 'completed'
+  draftText: string
+  savedAt: string
+  selfCheck?: {
+    k1: number
+    k2: number
+    k3: number
+    k4: number
+  }
+}

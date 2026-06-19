@@ -24,7 +24,7 @@ export const task6_8Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q6-1', type: 'single', text: 'Какая ошибка в предложении: «Бесплатный подарок»?', options: ['плеоназм', 'тавтология', 'лексическая сочетаемость', 'нет ошибки'], correctAnswer: ['плеоназм'], explanation: '«Бесплатный подарок» — плеоназм (подарок и так бесплатный).', difficulty: 'easy', xpReward: 10 },
+          { id: 'q6-1', type: 'single', text: 'Какая ошибка в предложении: «Бесплатный подарок»?', options: ['плеоназм', 'тавтология', 'лексическая сочетаемость', 'нет ошибки'], correctAnswer: ['плеоназм'], explanation: '«Бесплатный подарок» — плеоназм (подарок и так бесплатный).', difficulty: 'easy', xpReward: 10 , atoms: ['task6', 'pleonasm']},
         ]
       }
     ]

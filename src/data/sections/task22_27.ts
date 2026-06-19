@@ -27,7 +27,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 40,
         prerequisites: [],
         questions: [
-          { id: 'q22-1', type: 'single', text: 'Какое средство выразительности использовано: «Ветер пел свою печальную песню»?', options: ['олицетворение', 'метафора', 'сравнение', 'эпитет'], correctAnswer: ['олицетворение'], explanation: 'Ветер «пел» — приписание человеческого действия неодушевлённому предмету.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q22-1', type: 'single', text: 'Какое средство выразительности использовано: «Ветер пел свою печальную песню»?', options: ['олицетворение', 'метафора', 'сравнение', 'эпитет'], correctAnswer: ['олицетворение'], explanation: 'Ветер «пел» — приписание человеческого действия неодушевлённому предмету.', difficulty: 'easy', xpReward: 10 , atoms: ['task22', 'tropes']},
         ]
       }
     ]
@@ -50,7 +50,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q23-1', type: 'single', text: 'Что нужно сделать в задании 23?', options: ['найти в тексте ответ на вопрос', 'написать сочинение', 'найти ошибки', 'проанализировать стиль'], correctAnswer: ['найти в тексте ответ на вопрос'], explanation: 'Задание 23 проверяет понимание прочитанного текста.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q23-1', type: 'single', text: 'Что нужно сделать в задании 23?', options: ['найти в тексте ответ на вопрос', 'написать сочинение', 'найти ошибки', 'проанализировать стиль'], correctAnswer: ['найти в тексте ответ на вопрос'], explanation: 'Задание 23 проверяет понимание прочитанного текста.', difficulty: 'easy', xpReward: 10 , atoms: ['task23', 'text_comprehension']},
         ]
       }
     ]
@@ -73,7 +73,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q24-1', type: 'single', text: 'Какой тип информации: «Автор считает, что это важно»?', options: ['оценочная', 'фактографическая', 'основная', 'дополнительная'], correctAnswer: ['оценочная'], explanation: '«Считает, что это важно» — оценка, отношение автора.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q24-1', type: 'single', text: 'Какой тип информации: «Автор считает, что это важно»?', options: ['оценочная', 'фактографическая', 'основная', 'дополнительная'], correctAnswer: ['оценочная'], explanation: '«Считает, что это важно» — оценка, отношение автора.', difficulty: 'easy', xpReward: 10 , atoms: ['task24', 'information_types']},
         ]
       }
     ]
@@ -96,7 +96,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q25-1', type: 'single', text: 'Что означает «светоч» в контексте: «Он был светочем науки»?', options: ['выдающийся деятель', 'источник света', 'светящийся предмет', 'учитель'], correctAnswer: ['выдающийся деятель'], explanation: 'В переносном значении «светоч» — просветитель, выдающийся деятель.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q25-1', type: 'single', text: 'Что означает «светоч» в контексте: «Он был светочем науки»?', options: ['выдающийся деятель', 'источник света', 'светящийся предмет', 'учитель'], correctAnswer: ['выдающийся деятель'], explanation: 'В переносном значении «светоч» — просветитель, выдающийся деятель.', difficulty: 'easy', xpReward: 10 , atoms: ['task25', 'lexical_analysis']},
         ]
       }
     ]
@@ -119,7 +119,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q26-1', type: 'single', text: 'Какой тип связи: «Во-первых... Во-вторых...»?', options: ['перечислительная', 'причинно-следственная', 'противопоставительная', 'пояснительная'], correctAnswer: ['перечислительная'], explanation: '«Во-первых... Во-вторых» — перечислительная связь.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q26-1', type: 'single', text: 'Какой тип связи: «Во-первых... Во-вторых...»?', options: ['перечислительная', 'причинно-следственная', 'противопоставительная', 'пояснительная'], correctAnswer: ['перечислительная'], explanation: '«Во-первых... Во-вторых» — перечислительная связь.', difficulty: 'easy', xpReward: 10 , atoms: ['task26', 'text_connections']},
         ]
       }
     ]
@@ -142,7 +142,7 @@ export const task22_27Sections: Section[] = [
         xpReward: 50,
         prerequisites: [],
         questions: [
-          { id: 'q27-1', type: 'single', text: 'Какой объём сочинения требуется?', options: ['150-250 слов', 'не менее 200 слов', '100-150 слов', 'не менее 300 слов'], correctAnswer: ['не менее 200 слов'], explanation: 'Согласно критериям, сочинение должно быть не менее 200 слов.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q27-1', type: 'single', text: 'Какой объём сочинения требуется?', options: ['150-250 слов', 'не менее 200 слов', '100-150 слов', 'не менее 300 слов'], correctAnswer: ['не менее 200 слов'], explanation: 'Согласно критериям, сочинение должно быть не менее 200 слов.', difficulty: 'easy', xpReward: 10 , atoms: ['task27', 'essay']},
         ]
       }
     ]

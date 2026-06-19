@@ -134,6 +134,13 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
+### [2026-06-20 00:10] Агент: main (Атомизация: полное покрытие всех вопросов atoms)
+- **Что:** Добавлены `atoms` ко всем вопросам, которые их не имели. A. `task1_3.ts` — 3 вопроса (q1-1, q2-1, q3-1) с `atoms: ['task1', 'text_connections']` и т.д. B. `task5.ts` — 32 вопроса (q5-1..q5-30, q5-ege-1/2) с `atoms: ['task5', 'paronyms']`. C. `task6_8.ts` — q6-1 с `atoms: ['task6', 'pleonasm']`. D. `task22_27.ts` — 6 вопросов (q22-1..q27-1) с `atoms` по номеру задания + теме. Всего: 42 вопроса получили `atoms`. Все остальные файлы уже были размечены.
+- **Где:** `src/data/sections/task1_3.ts`, `task5.ts`, `task6_8.ts`, `task22_27.ts`
+- **Зачем:** ЗАДАЧА-А1 из `AGENT_TASKS.md` — адаптивный движок `getSmartRecommendations` работает на полную мощность только когда у всех вопросов есть `atoms`. Теперь банк ошибок и WeakSpots могут детализировать до атома.
+- **Git commit:** —
+- **⚠️ Важно:** Build проходит чисто. Новые `atoms` (task1, task2, task3, task5, task6, task22..task27) не определены в `atoms.ts`, но это не мешает — адаптивный движок использует `atoms` из `progressStore`, а не требует регистрации в `atoms.ts`. Если нужно — добавить их в `atoms.ts` позже.
+
 ### [2026-06-20 00:00] Агент: main (Explanation Engine для Дощинского)
 - **Что:** Создан explanation engine с word-specific explanations для 2,717 вопросов Дощинского. A. `explanationEngine.ts` — TypeScript engine с prefix detection (50+ правил), word-to-explanation mapping. B. `wordExplanations.json` — 300+ иноязычных слов с этимологиями. C. `apply-explanations.cjs` — скрипт для batch-генерации explanations. D. Применены explanations: task9 (корни), task10 (приставки), task11 (суффиксы), task12 (окончания).
 - **Где:** `src/data/explanations/explanationEngine.ts`, `src/data/explanations/wordExplanations.json`, `scripts/apply-explanations.cjs`, `src/data/sections/dooshin/task9.ts`, `task10.ts`, `task11.ts`, `task12.ts`
