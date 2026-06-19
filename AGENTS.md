@@ -131,6 +131,13 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
+### [2026-06-19 23:08] Агент: main (Compact DailyQuests)
+- **Что:** Ежедневные квесты в Dashboard переработаны в компактную сетку 2×N. Убраны описания, уменьшены иконки (44×44 → 32×32), padding'и (p-3 → p-2), прогресс-бар (h-2 → h-1.5). Добавлен счётчик «X/5» в заголовок. Убраны неиспользуемые импорты `updateQuestProgress` и `addXP`.
+- **Где:** `src/components/DailyQuests.tsx` (переписан полностью)
+- **Зачем:** Блок квестов занимал ~400px высоты и оттеснял весь остальной контент дашборда вниз. Теперь блок в ~2.5 раза компактнее.
+- **Git commit:** —
+- **⚠️ Важно:** Вся логика сохранена — сортировка (claimed → completed → active → not started), анимации иконок, массовое «Забрать все XP», цветовая индикация прогресса. Если нужно ещё компактнее — можно свернуть в горизонтальную полосу из 5 круглых иконок (Duolingo-style).
+
 ### [2026-06-19 23:00] Агент: main (Build fix + Dooshin split + Tests + Bundle opt)
 - **Что:** A. Починен production build (PWA `backgroundSync` убран, TS ошибки в Profile/ParentDashboard). B. Dooshin разделён на 4 файла + lazy loading через `dooshinMeta.ts` + dynamic import в `Lesson.tsx`. C. Тесты расширены до 54 (Statistics.test.tsx, dooshin-ачивки). D. Bundle оптимизирован: `recharts` в отдельный chunk (-155 KB gzip).
 - **Где:** `vite.config.ts` (PWA, manualChunks), `src/data/sections/dooshin/` (task9-12 + index), `src/data/sections/dooshinMeta.ts` (новый, 92 урока без questions), `src/data/sections/dooshinUnified.ts` (dynamic import target), `src/pages/Lesson.tsx` (lazy loader + spinner), `src/pages/Statistics.test.tsx` (новый), `src/stores/slices/achievementChecker.test.ts` (+2 dooshin теста), `src/stores/slices/achievementChecker.ts` (багфикс completedLessons id), `src/pages/Profile.tsx` (импорты), `src/pages/ParentDashboard.tsx` (TS fix), `package.json` (type: module, скрипты), `scripts/gen-dooshin-meta.js` (генератор мета-файла)

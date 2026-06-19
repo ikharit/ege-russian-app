@@ -1,7 +1,7 @@
 # Реестр заданий 9-20 ЕГЭ Русский — Инструкция для агентов
 
-> **Версия:** 1.3  
-> **Обновлен:** 2026-06-19  
+> **Версия:** 1.4  
+> **Обновлен:** 2026-06-20  
 > **Автор:** main (оркестратор)  
 > **Excel 9-12:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_9-12_ЕГЭ_Русский.xlsx`  
 > **Excel 13-20:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_13-20_ЕГЭ_Русский.xlsx`  
@@ -20,12 +20,13 @@
 - `src/data/sections/orthography.ts` — 36 вопросов (задания 9, 11)
 - `src/data/sections/dooshin.ts` — 2,717 вопросов (задания 9-12, Дощинский)
 
-### Задания 13-20 (511 вопросов)
+### Задания 13-20 (661 вопрос)
 - `src/data/sections/grammar.ts` — 459 вопросов (задания 13-14, включая Дощинский)
 - `src/data/sections/n_nn.ts` — 30 вопросов (задание 15)
 - `src/data/task16LessonData.ts` — 20 вопросов (задание 16)
 - `src/data/sections/punctuation.ts` — 2 вопроса (задания 17, 19)
-- **Задания 18 и 20** — в проекте отсутствуют, нужно добавить
+- `src/data/sections/dooshin20.ts` — 150 вопросов (задание 20, Дощинский) ⚠️ correctAnswer требует грамматической проверки
+- **Задание 18** — в проекте отсутствует (нет в материалах Дощинского)
 
 ## ⚠️ Золотое правило
 
@@ -107,6 +108,7 @@ python scripts/verify_n_nn.py src/data/sections/dooshin15.ts
 cd ege-russian-app
 python scripts/verify_tasks.py src/data/sections/grammar.ts
 python scripts/verify_tasks.py src/data/sections/dooshin/task9.ts
+python scripts/verify_tasks.py src/data/sections/dooshin20.ts
 python scripts/verify_tasks.py src/data/sections/*.ts
 ```
 
@@ -115,6 +117,7 @@ python scripts/verify_tasks.py src/data/sections/*.ts
 - Задания 13-14: correctAnswer — `['слитно']`/`['раздельно']`/`['дефис']` (text) или слово из options (single)
 - Задание 15: correctAnswer — число (для text-формата «впишите количество букв Н»)
 - Задания 16-17, 19: correctAnswer в options
+- Задание 20: текст содержит цифры в скобках `(1)`, `(2)` и т.д., correctAnswer — цифры через запятую (или `?` для placeholder)
 - Дублирующиеся ID и options
 
 **Когда запускать:**
@@ -122,7 +125,7 @@ python scripts/verify_tasks.py src/data/sections/*.ts
 2. ПОСЛЕ любого редактирования — убедись, что ничего не сломал
 3. ПЕРЕД коммитом изменений — финальная проверка
 
-**Статус:** Проверено 3,355 вопросов — 0 ошибок (2026-06-19).
+**Статус:** Проверено 3,505 вопросов — 0 ошибок (2026-06-20).
 
 ---
 
@@ -143,12 +146,16 @@ python scripts/verify_tasks.py src/data/sections/*.ts
 
 ```json
 {
-  "version": "1.0",
-  "total_questions": 3242,
+  "version": "1.1",
+  "total_questions": 3505,
   "sources": {
     "grammar.ts": 489,
     "orthography.ts": 36,
-    "dooshin.ts": 2717
+    "dooshin.ts": 2717,
+    "n_nn.ts": 30,
+    "task16LessonData.ts": 20,
+    "punctuation.ts": 2,
+    "dooshin20.ts": 150
   },
   "questions": [
     {
