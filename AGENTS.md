@@ -161,9 +161,79 @@ Every change that affects students MUST be reflected in release notes. This is n
 
 ---
 
-Last updated: 2026-06-20 by agent
+## 🧠 ML/Adaptive Pipeline (MUST READ for any agent modifying trainers or analytics)
+
+All agents MUST be aware of these systems when working on trainers, analytics, or recommendations.
+
+### 1. Predictive Score — Linear Regression (`src/utils/predictiveScore.ts`)
+
+- **Replaces** the old rule-based `getPredictiveScore()` with an **online trainable linear regression**.
+- **Features**: 26 task accuracies + streak + total answered + days to exam + weak atom count + SRS due count = 31 features.
+- **Training**: Online gradient descent on each exam result (`trainPredictiveModel()`).
+- **Weights**: Persisted in `localStorage` (`ege-predictive-weights`, `ege-predictive-bias`).
+- **Output**: `predictedPrimary`, `predictedSecondary`, `breakdown`, `neededForThreshold`, `neededForGood`, `neededForExcellent`, `timeToExam`, `recommendedDaily`.
+- **Do NOT** revert to rule-based logic. If modifying, keep the `extractFeatures()` + `predict()` + `loadWeights()` / `saveWeights()` pattern.
+
+### 2. Semantic RAG — TF-IDF + Fuse.js Hybrid (`src/lib/rag.ts`)
+
+- **Fuzzy search** (`fuse.js`) is still the primary method (`retrieve()`).
+- **NEW**: `retrieveSemantic()` — local TF-IDF cosine similarity on all 1061 knowledge entries.
+- **NEW**: `retrieveHybrid()` — `0.5 * TF-IDF + 0.5 * (1 - fuseScore)`.
+- **Stop words** are filtered (Russian stop words + grammar-specific terms like "правило", "исключение").
+- **When adding knowledge entries**: ensure `content` and `explanation` contain meaningful keywords for TF-IDF matching.
+- **Do NOT** use external APIs for embeddings. Everything is client-side.
+
+### 3. BKT — Bayesian Knowledge Tracing (`src/utils/bktEngine.ts`)
+
+- **Tracks P(knows atom)** for each atom (e.g., `prefix_pri_pre`, `alternating_root`).
+- **4 parameters** per atom: P(L0)=0.3, P(T)=0.3, P(G)=0.2, P(S)=0.1.
+- **Update**: `bkt.observe(atomId, correct)` after each question answer.
+- **Queries**: `getWeakAtoms(threshold=0.3)`, `getMasteredAtoms(threshold=0.9)`, `getRecommendedLesson()`.
+- **Persistence**: `localStorage` (`ege-bkt-state`).
+- **Do NOT** create a second BKT system. Use `getGlobalBKT()` singleton.
+
+### 4. IRT — Item Response Theory (`src/utils/irtEngine.ts`)
+
+- **Rasch 1PL model**: P(correct) = guess + (1 - guess) / (1 + exp(-1.7 * (theta - difficulty))).
+- **theta** (user ability): -3 to +3, updated via stochastic gradient ascent after each answer.
+- **calibrateDifficulty()**: Sets difficulty based on empirical correct rate.
+- **selectNextQuestion(pool, targetProbability=0.7)**: Picks question closest to target probability (zone of proximal development).
+- **Used in**: `BaseTrainer.tsx` — adaptive question ordering instead of random shuffle.
+- **Do NOT** replace random shuffle with pure randomness. Keep the IRT ordering.
+
+### 5. Error Pattern Analyzer (`src/utils/errorPatternAnalyzer.ts`)
+
+- **detectErrorType(taskNumber, text, explanation)** → returns a `DetectedErrorType` string (e.g., `alternating_root`, `prefix_pri_pre`).
+- **analyzeErrors(history)** → returns `ErrorAnalysis` with `patterns`, `weakSubskills`, `recommendations`.
+- **Used in**: `BaseTrainer.tsx` — shows orange "Систематическая ошибка" card when same pattern occurs ≥2 times in a session.
+- **getSubskillName(errorType)** → human-readable name for UI.
+- **When adding new tasks**: extend `detectErrorType()` with new heuristics for that task.
+
+### 6. Integration Points (CRITICAL)
+
+| System | Integrated In | Trigger |
+|--------|---------------|---------|
+| IRT | `BaseTrainer.tsx` | `handleCheck()` → `irt.updateAbility()` + `irt.selectNextQuestion()` |
+| BKT | `BaseTrainer.tsx` | `handleCheck()` → `bkt.observe(atom, correct)` for each atom |
+| Error Patterns | `BaseTrainer.tsx` | `handleCheck()` → `detectErrorType()` + `sessionErrorPatterns` state |
+| Semantic RAG | `BaseTrainer.tsx` (via `ragRetriever`) | Wrong answer → `retrieveHybrid()` or `retrieveSemantic()` |
+| Predictive Score | `PredictiveScoreWidget.tsx`, `Statistics.tsx`, `EGEScorePredictor` | `getPredictiveScore(state)` on render |
+| RAG Feedback | `BaseTrainer.tsx` | Thumbs up/down → `recordFeedback(entryId, helpful)` |
+
+### 7. CI Validation
+
+```bash
+npm run validate:rag   # Validates 1061 entries for contradictions, orphans, duplicates
+npm run build:rag        # Rebuilds knowledge-index.json after any data change
+```
+
+---
+
+Last updated: 2026-07-18 by agent
+- **ML Pipeline**: Linear Regression Predictive Score, TF-IDF Semantic RAG, BKT Engine, IRT Engine, Error Pattern Analyzer — все интегрированы в BaseTrainer.tsx. Подробности в разделе «ML/Adaptive Pipeline» выше.
+- **RAG index**: 1061 entries (89 theory rules + 972 word explanations). Rebuild with `npm run build:rag` after any data change. Validate with `npm run validate:rag`.
 - **Task9 coverage**: 713/769 words (93%) have word-specific explanations via `rootDictionary` + `wordExplanations.json`. 324 remaining words need manual root analysis (mostly foreign/indeclinable roots).
-- **RAG index**: 869 entries (89 theory rules + 780 word explanations). Rebuild with `npm run build:rag` after any data change.
+- **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%).
 - **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%).
 - **Sound effects**: `src/lib/sounds.ts` — Web Audio API synth sounds (correct/wrong/lessonComplete/combo/XPup/achievement). Mute toggle через `useSettingsStore`. Новые звуки: `playXPUpSound()`, `playAchievementSound()`.
 - **Dark mode**: Tailwind `darkMode: 'class'` + `document.documentElement.classList.toggle('dark')` в App.tsx. Переключатель в Profile: light/dark/system. Добавлены `dark:` классы в BottomNav и App root.

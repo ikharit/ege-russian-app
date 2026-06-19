@@ -106,84 +106,109 @@ export function CourseMap() {
     return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
-  const renderLessonNode = (lesson: Lesson, lIdx: number, totalLessons: number, sectionColor: string) => {
-    const status = getNodeStatus(lesson)
-    const isLast = lIdx === totalLessons - 1
-    const prog = lessonProgress[lesson.id]
+  const SnakeLessonGrid = ({ lessons, sectionColor }: { lessons: Lesson[]; sectionColor: string }) => {
+    const cols = 3
 
-    const popoverContent = (
-      <div className="space-y-2">
-        <p className="font-bold text-white">{lesson.title}</p>
-        <p className="text-gray-300 text-xs">{lesson.description}</p>
-        <div className="flex items-center gap-3 mt-2">
-          <div className="flex items-center gap-1 text-xs text-duo-yellow">
-            <Zap size={12} /><span>{lesson.xpReward} XP</span>
-          </div>
-          <div className="flex items-center gap-1 text-xs text-gray-400">
-            <TrendingUp size={12} /><span>{lesson.questions.length} вопр.</span>
-          </div>
-        </div>
-        {prog?.bestScore > 0 && (
-          <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
-            <Trophy size={12} /><span>Лучший: {prog.bestScore}%</span>
-          </div>
-        )}
-        {lesson.prerequisites.length > 0 && (
-          <p className="text-xs text-gray-400 mt-1">
-            Требует: {lesson.prerequisites.map(prId => {
-              const allLessons = course.sections.flatMap(s => s.lessons)
-              const pr = allLessons.find(l => l.id === prId)
-              return pr?.title || prId
-            }).join(', ')}
-          </p>
-        )}
-        {status === 'locked' && (
-          <p className="text-xs text-red-400 mt-1">🔒 Нужно пройти предыдущие уроки</p>
-        )}
-      </div>
-    )
+    const getPosition = (index: number) => {
+      const row = Math.floor(index / cols)
+      const colInRow = index % cols
+      const col = row % 2 === 0 ? colInRow : cols - 1 - colInRow
+      return { row, col }
+    }
 
     return (
-      <div key={lesson.id} className="flex items-center gap-4 relative">
-        <Popover position="bottom" content={popoverContent}>
-          <motion.button
-            whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
-            whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
-            onClick={() => { if (status !== 'locked') navigate(`/lesson/${lesson.id}`) }}
-            className={`lesson-node ${status}`}
-            style={status === 'available' ? { backgroundColor: sectionColor } : {}}
-          >
-            {status === 'locked' && <Lock size={20} />}
-            {status === 'completed' && <Check size={20} />}
-            {status === 'current' && <Star size={20} />}
-            {status === 'available' && <span>{lIdx + 1}</span>}
-          </motion.button>
-        </Popover>
-        {/* Stars below completed nodes */}
-        {status === 'completed' && prog && (
-          <div className="flex gap-0.5 mt-1">
-            {[1, 2, 3].map((star) => (
-              <Star
-                key={star}
-                size={10}
-                className={prog.bestScore >= star * 33 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}
-              />
-            ))}
-          </div>
-        )}
+      <div className="grid relative py-4" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: '24px', gridAutoRows: 'minmax(80px, auto)' }}>
+        {lessons.map((lesson, i) => {
+          const status = getNodeStatus(lesson)
+          const prog = lessonProgress[lesson.id]
+          const { row, col } = getPosition(i)
+          const isLast = i === lessons.length - 1
+          
+          const nextPos = !isLast ? getPosition(i + 1) : null
+          let hConnector = null
+          let vConnector = null
+          if (nextPos) {
+            if (nextPos.row === row) {
+              if (nextPos.col > col) {
+                hConnector = <div className="absolute left-1/2 top-1/2 h-0.5 bg-gray-200 -translate-y-1/2 z-0" style={{ width: 'calc(100% + 24px)' }} />
+              } else {
+                hConnector = <div className="absolute right-1/2 top-1/2 h-0.5 bg-gray-200 -translate-y-1/2 z-0" style={{ width: 'calc(100% + 24px)' }} />
+              }
+            } else if (nextPos.row > row) {
+              vConnector = <div className="absolute left-1/2 top-1/2 w-0.5 bg-gray-200 -translate-x-1/2 z-0" style={{ height: 'calc(100% + 24px)' }} />
+            }
+          }
 
-        <Popover position="bottom" content={popoverContent}>
-          <div className="flex-1 cursor-pointer hover:opacity-80 transition-opacity">
-            <p className={`font-bold ${status === 'locked' ? 'text-gray-400' : 'text-gray-800'}`}>
-              {lesson.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              {status === 'locked' ? 'Заблокировано' : status === 'completed' ? `✅ Пройдено · ${prog?.bestScore || 0}%` : `${lesson.questions.length} вопросов · ${lesson.xpReward} XP`}
-            </p>
-          </div>
-        </Popover>
+          const popoverContent = (
+            <div className="space-y-2">
+              <p className="font-bold text-white">{lesson.title}</p>
+              <p className="text-gray-300 text-xs">{lesson.description}</p>
+              <div className="flex items-center gap-3 mt-2">
+                <div className="flex items-center gap-1 text-xs text-duo-yellow">
+                  <Zap size={12} /><span>{lesson.xpReward} XP</span>
+                </div>
+                <div className="flex items-center gap-1 text-xs text-gray-400">
+                  <TrendingUp size={12} /><span>{lesson.questions.length} вопр.</span>
+                </div>
+              </div>
+              {prog?.bestScore > 0 && (
+                <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
+                  <Trophy size={12} /><span>Лучший: {prog.bestScore}%</span>
+                </div>
+              )}
+              {lesson.prerequisites.length > 0 && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Требует: {lesson.prerequisites.map(prId => {
+                    const allLessons = course.sections.flatMap(s => s.lessons)
+                    const pr = allLessons.find(l => l.id === prId)
+                    return pr?.title || prId
+                  }).join(', ')}
+                </p>
+              )}
+              {status === 'locked' && (
+                <p className="text-xs text-red-400 mt-1">🔒 Нужно пройти предыдущие уроки</p>
+              )}
+            </div>
+          )
 
-        {!isLast && <div className="absolute left-6 top-12 h-9 w-0.5 bg-gray-200" />}
+          return (
+            <div 
+              key={lesson.id} 
+              className="relative flex flex-col items-center justify-center"
+              style={{ gridColumn: col + 1, gridRow: row + 1 }}
+            >
+              {hConnector}
+              {vConnector}
+              
+              <Popover position="bottom" content={popoverContent}>
+                <motion.button
+                  whileHover={status !== 'locked' ? { scale: 1.1 } : {}}
+                  whileTap={status !== 'locked' ? { scale: 0.95 } : {}}
+                  onClick={() => { if (status !== 'locked') navigate(`/lesson/${lesson.id}`) }}
+                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold shadow-sm transition-colors relative z-10 ${status === 'locked' ? 'bg-gray-300' : status === 'completed' ? 'bg-duo-green' : status === 'current' ? 'bg-duo-yellow' : ''}`}
+                  style={status === 'available' ? { backgroundColor: sectionColor } : {}}
+                >
+                  {status === 'locked' && <Lock size={20} />}
+                  {status === 'completed' && <Check size={20} />}
+                  {status === 'current' && <Star size={20} />}
+                  {status === 'available' && <span>{i + 1}</span>}
+                </motion.button>
+              </Popover>
+              
+              {status === 'completed' && prog && (
+                <div className="flex gap-0.5 mt-1 z-10">
+                  {[1, 2, 3].map((star) => (
+                    <Star key={star} size={10} className={prog.bestScore >= star * 33 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'} />
+                  ))}
+                </div>
+              )}
+              
+              <p className={`text-[10px] text-center mt-1 z-10 truncate max-w-[80px] ${status === 'locked' ? 'text-gray-400' : 'text-gray-700'}`}>
+                {lesson.title}
+              </p>
+            </div>
+          )
+        })}
       </div>
     )
   }
@@ -323,10 +348,8 @@ export function CourseMap() {
                                   transition={{ duration: 0.2 }}
                                   className="overflow-hidden"
                                 >
-                                  <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-                                    {group.lessons.map((lesson: any, lIdx: number) =>
-                                      renderLessonNode(lesson, lIdx, group.lessons.length, section.color)
-                                    )}
+                                  <div className="px-4 pb-4 pt-2">
+                                    <SnakeLessonGrid lessons={group.lessons} sectionColor={section.color} />
                                   </div>
                                 </motion.div>
                               )}
@@ -336,10 +359,8 @@ export function CourseMap() {
                       })}
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-3">
-                      {section.lessons.map((lesson, lIdx) =>
-                        renderLessonNode(lesson, lIdx, section.lessons.length, section.color)
-                      )}
+                    <div className="py-2">
+                      <SnakeLessonGrid lessons={section.lessons} sectionColor={section.color} />
                     </div>
                   )}
                 </motion.div>

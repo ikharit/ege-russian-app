@@ -30,6 +30,11 @@
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | Паронимы (задание 5), готов |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
+| **ML Predictive Score** | 🟢 | main | Линейная регрессия с 31 фичей, online gradient descent |
+| **Semantic RAG** | 🟢 | main | TF-IDF + Fuse.js hybrid, 1061 entries, client-side |
+| **BKT Engine** | 🟢 | main | Bayesian Knowledge Tracing для атомов, 4 параметра |
+| **IRT Engine** | 🟢 | main | Rasch 1PL, adaptive question selection, P(correct)≈0.7 |
+| **Error Pattern Analyzer** | 🟢 | main | 18+ detected error types, session-level alerts in BaseTrainer |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Ждёт скрапинга из грамота.ру |
 | Homework data | 🟢 | main | Google Sheets: 9 реальных учеников |
@@ -41,6 +46,18 @@
 ---
 
 ## 🗂️ Полный журнал изменений (от новых к старым)
+
+### [2026-07-18] Агент: main (ML Deep Dive — 4 направления)
+- **Что:** Реализованы 4 ML-системы для адаптивного обучения:
+  1. **Linear Regression Predictive Score** — `src/utils/predictiveScore.ts`: 31 фича, online gradient descent, веса в localStorage.
+  2. **TF-IDF Semantic RAG** — `src/lib/rag.ts`: локальные TF-IDF векторы для 1061 записей, hybrid search (0.5*TF-IDF + 0.5*fuse).
+  3. **BKT Engine** — `src/utils/bktEngine.ts`: Bayesian Knowledge Tracing для атомов, 4 параметра, P(knows atom).
+  4. **IRT Engine** — `src/utils/irtEngine.ts`: Rasch 1PL, адаптивный выбор вопросов (target P=0.7), обновление theta.
+- **Интеграция**: `BaseTrainer.tsx` — IRT-упорядочивание вопросов, BKT-обновление по атомам, Error Pattern Detection (оранжевая карточка при 2+ ошибках одного типа), RAG feedback (👍/👎), cross-linking к урокам.
+- **RAG индекс**: вырос с 869 до 1061 записей (добавлены task4, task5, task10-16 word explanations).
+- **CI**: `scripts/verify-rag.js` — валидация на противоречия, orphans, дубликаты.
+- **Где:** `src/utils/predictiveScore.ts`, `src/lib/rag.ts`, `src/utils/bktEngine.ts`, `src/utils/irtEngine.ts`, `src/components/BaseTrainer.tsx`, `scripts/verify-rag.js`.
+- **⚠️ Важно:** Все агенты ДОЛЖНЫ читать `AGENTS.md` → раздел "ML/Adaptive Pipeline" перед работой с тренажёрами или аналитикой. Сборка проходит (`npm run build` OK).
 
 ### [2026-06-19 XX:XX] Агент: main (Валидация Dooshin 10-12)
 - **Что:** Проверены и исправлены задания 10-12 из Дощинского. 99 батчей проверено субагентами, 1,106 ошибок исправлено из 1,947 заданий (56.8% ошибок). Сгенерирован новый `dooshin.ts` с исправленными ответами.
