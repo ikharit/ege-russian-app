@@ -102,6 +102,8 @@ export interface UserStats {
   streakFrozen?: boolean
   streakFreezeUsed?: number
   streakFreezeLastReset?: string
+  currentCombo?: number
+  maxCombo?: number
 }
 
 export interface Achievement {

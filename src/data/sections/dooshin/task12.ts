@@ -1,4 +1,9 @@
 import { Section } from "../../../types"
+
+export const dooshinTask12: Section = {
+    id: "section-dooshin-12",
+    courseId: 'ege-russian-2025',
+    title: "Дощинский: Задание 12 (чередование)",
     subtitle: "Чередование согласных в корне",
     order: 120,
     icon: 'BookOpen',
@@ -819,5 +824,4 @@ import { Section } from "../../../types"
         ]
       }
     ]
-  }
-]
+  };

@@ -177,6 +177,9 @@ export function createAnalyticsActions(set: any, get: any) {
     },
 
     recordWrongAnswer: (question: any, userAnswer: string[], lessonId?: string) => {
+      // Reset combo on wrong answer
+      get().resetCombo?.()
+      
       set((s: any) => {
         const existing = s.wrongAnswers.find((w: WrongAnswer) => w.questionId === question.id)
         if (existing) {

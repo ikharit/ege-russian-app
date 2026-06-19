@@ -122,6 +122,10 @@ export function BaseTrainer<T>({
         streak: s.streak + 1,
         bestStreak: Math.max(s.bestStreak, s.streak + 1),
       }))
+      // Haptic feedback for correct answer (Android)
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(50)
+      }
     } else {
       recordWrongAnswer(
         {
@@ -136,6 +140,10 @@ export function BaseTrainer<T>({
       )
       updateTaskStats(taskNumber, false)
       setStats((s) => ({ ...s, totalWrong: s.totalWrong + 1, streak: 0 }))
+      // Haptic feedback for wrong answer (stronger pattern)
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate([30, 30, 30])
+      }
     }
   }, [effectiveQuestion, selectedAnswer, taskNumber, xpPerCorrect])
 
@@ -266,6 +274,7 @@ export function BaseTrainer<T>({
           <button
             onClick={() => navigate('/')}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Вернуться на главную"
           >
             <ArrowLeft size={20} className="text-gray-600" />
           </button>
@@ -286,6 +295,7 @@ export function BaseTrainer<T>({
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Открыть настройки"
             >
               <Settings size={18} className="text-gray-400" />
             </button>
@@ -433,6 +443,7 @@ export function BaseTrainer<T>({
               onClick={handleCheck}
               disabled={selectedAnswer.length === 0}
               className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Проверить ответ"
             >
               Проверить
             </button>
@@ -440,6 +451,7 @@ export function BaseTrainer<T>({
             <button
               onClick={handleNext}
               className="btn-primary w-full flex items-center justify-center gap-2"
+              aria-label="Следующий вопрос"
             >
               Дальше <ChevronRight size={18} />
             </button>

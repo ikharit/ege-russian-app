@@ -28,6 +28,14 @@ export function Dashboard() {
   const stats = useProgressStore((s) => s.userStats)
   const activeProfile = useStudentStore((s) => s.getActiveProfile())
   const displayName = activeProfile?.name || stats.name || 'ученик'
+
+  const handleKeyNav = (e: React.KeyboardEvent, action: () => void) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      action()
+    }
+  }
+
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const achievements = useProgressStore((s) => s.achievements)
   const checkHeartRestore = useProgressStore((s) => s.checkHeartRestore)
@@ -305,6 +313,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/accent-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/accent-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр ударений, задание 4"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -329,6 +341,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task5-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task5-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр паронимов, задание 5"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -353,6 +369,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task10-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task10-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр ПРЕ ПРИ, задание 10"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -377,6 +397,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task16-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task16-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр пунктуации, задание 16"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -400,6 +424,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-cyan-50 to-sky-50 border-cyan-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task6-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task6-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр суффиксов, задание 6"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -421,6 +449,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-violet-50 to-purple-50 border-violet-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task7-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task7-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр окончаний глаголов, задание 7"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -442,6 +474,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task8-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task8-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр слитного и раздельного написания, задание 8"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -463,6 +499,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-lime-50 to-green-50 border-lime-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task9-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task9-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр пропущенных букв, задание 9"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -484,6 +524,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-pink-50 to-rose-50 border-pink-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task11-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task11-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр суффиксов прилагательных, задание 11"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -505,6 +549,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task12-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task12-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр окончаний причастий, задание 12"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -526,6 +574,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task13-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task13-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр НЕ НИ с причастиями, задание 13"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -547,6 +599,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-fuchsia-50 to-pink-50 border-fuchsia-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task14-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task14-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр слитного раздельного дефисного написания, задание 14"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -568,6 +624,10 @@ export function Dashboard() {
         className="card bg-gradient-to-br from-slate-50 to-gray-50 border-slate-200"
         whileHover={{ scale: 1.01 }}
         onClick={() => navigate('/task15-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/task15-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Тренажёр пунктуации, задание 15"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

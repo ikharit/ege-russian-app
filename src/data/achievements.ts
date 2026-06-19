@@ -31,9 +31,11 @@ export const achievements: Achievement[] = [
   { id: 'ach-level-20', title: 'Гуру', description: 'Достигните 20 уровня', icon: 'Crown', condition: 'level_20' },
   
   // === РАЗДЕЛЫ ===
-  { id: 'ach-section-1', title: 'Орфография покорена', description: 'Пройдите все уроки орфографии', icon: 'Award', condition: 'complete_section_orthography' },
-  { id: 'ach-section-2', title: 'Пунктуация освоена', description: 'Пройдите все уроки пунктуации', icon: 'Award', condition: 'complete_section_punctuation' },
+  { id: 'ach-section-1', title: 'Работа с текстом покорена', description: 'Пройдите все уроки работы с текстом', icon: 'Award', condition: 'complete_section_textwork' },
+  { id: 'ach-section-2', title: 'Орфоэпия освоена', description: 'Пройдите все уроки орфоэпии и лексикологии', icon: 'Award', condition: 'complete_section_orthoepy' },
   { id: 'ach-section-3', title: 'Грамматика в кармане', description: 'Пройдите все уроки грамматики', icon: 'Award', condition: 'complete_section_grammar' },
+  { id: 'ach-section-4', title: 'Орфография покорена', description: 'Пройдите все уроки орфографии', icon: 'Award', condition: 'complete_section_orthography' },
+  { id: 'ach-section-5', title: 'Пунктуация освоена', description: 'Пройдите все уроки пунктуации', icon: 'Award', condition: 'complete_section_punctuation' },
   { id: 'ach-all-sections', title: 'Мастер ЕГЭ', description: 'Пройдите уроки во всех разделах', icon: 'Crown', condition: 'complete_all_sections' },
   
   // === АТОМИЗАЦИЯ ===

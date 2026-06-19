@@ -1,4 +1,4 @@
-import { Section } from '../../../types'
+import { Section } from "../../../types"
 
 import { dooshinTask9 } from './task9'
 import { dooshinTask10 } from './task10'

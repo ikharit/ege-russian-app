@@ -16,6 +16,8 @@ export const getInitialStats = (): UserStats => ({
   totalQuestionsAnswered: 0,
   totalHeartsLost: 0,
   mistakesFixed: 0,
+  currentCombo: 0,
+  maxCombo: 0,
 })
 
 const getToday = () => new Date().toISOString().split('T')[0]
@@ -70,10 +72,24 @@ export function createUserActions(set: any, get: any) {
     },
 
     recordQuestionAnswered: () => {
+      set((s: any) => {
+        const newCombo = (s.userStats.currentCombo || 0) + 1
+        return {
+          userStats: {
+            ...s.userStats,
+            totalQuestionsAnswered: (s.userStats.totalQuestionsAnswered || 0) + 1,
+            currentCombo: newCombo,
+            maxCombo: Math.max(s.userStats.maxCombo || 0, newCombo)
+          }
+        }
+      })
+    },
+
+    resetCombo: () => {
       set((s: any) => ({
         userStats: {
           ...s.userStats,
-          totalQuestionsAnswered: (s.userStats.totalQuestionsAnswered || 0) + 1
+          currentCombo: 0
         }
       }))
     },

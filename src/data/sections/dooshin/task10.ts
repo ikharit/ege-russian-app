@@ -1,4 +1,9 @@
 import { Section } from "../../../types"
+
+export const dooshinTask10: Section = {
+    id: "section-dooshin-10",
+    courseId: 'ege-russian-2025',
+    title: "Дощинский: Задание 10 (приставки)",
     subtitle: "Приставки, разделительный ъ/ь",
     order: 100,
     icon: 'BookOpen',
@@ -42,8 +47,8 @@ import { Section } from "../../../types"
           { id: "qd10-27", type: 'text', text: 'Впишите пропущенную букву: раз_ехаться', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-28", type: 'text', text: 'Впишите пропущенную букву: раз_брать', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-29", type: 'text', text: 'Впишите пропущенную букву: п_дкараулить', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-30", type: 'text', text: 'Впишите пропущенную букву: ро_черк', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-30", type: 'text', text: 'Впишите пропущенную букву: ро_черк', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-2",
@@ -83,8 +88,8 @@ import { Section } from "../../../types"
           { id: "qd10-57", type: 'text', text: 'Впишите пропущенную букву: под_езжая', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-58", type: 'text', text: 'Впишите пропущенную букву: с_едобный', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-59", type: 'text', text: 'Впишите пропущенную букву: бе_правный', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-60", type: 'text', text: 'Впишите пропущенную букву: д_бела', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-60", type: 'text', text: 'Впишите пропущенную букву: д_бела', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-3",
@@ -124,8 +129,8 @@ import { Section } from "../../../types"
           { id: "qd10-87", type: 'text', text: 'Впишите пропущенную букву: с_мпровизировал', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-88", type: 'text', text: 'Впишите пропущенную букву: пед_нститут', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-89", type: 'text', text: 'Впишите пропущенную букву: контр_гра', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-90", type: 'text', text: 'Впишите пропущенную букву: об_ективный', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-90", type: 'text', text: 'Впишите пропущенную букву: об_ективный', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-4",
@@ -165,8 +170,8 @@ import { Section } from "../../../types"
           { id: "qd10-117", type: 'text', text: 'Впишите пропущенную букву: под_брать', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-118", type: 'text', text: 'Впишите пропущенную букву: запр_кинуть', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-119", type: 'text', text: 'Впишите пропущенную букву: нед_стача', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-120", type: 'text', text: 'Впишите пропущенную букву: пр_встать', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-120", type: 'text', text: 'Впишите пропущенную букву: пр_встать', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-5",
@@ -206,8 +211,8 @@ import { Section } from "../../../types"
           { id: "qd10-147", type: 'text', text: 'Впишите пропущенную букву: и_мельчить', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-148", type: 'text', text: 'Впишите пропущенную букву: бе_пробудный', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-149", type: 'text', text: 'Впишите пропущенную букву: под_язычный', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-150", type: 'text', text: 'Впишите пропущенную букву: об_ятия', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-150", type: 'text', text: 'Впишите пропущенную букву: об_ятия', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-6",
@@ -247,8 +252,8 @@ import { Section } from "../../../types"
           { id: "qd10-177", type: 'text', text: 'Впишите пропущенную букву: пр_поднять', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-178", type: 'text', text: 'Впишите пропущенную букву: фотооб_ектив', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-179", type: 'text', text: 'Впишите пропущенную букву: р_яный', correctAnswer: ["а"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-180", type: 'text', text: 'Впишите пропущенную букву: в_езжать', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-180", type: 'text', text: 'Впишите пропущенную букву: в_езжать', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-7",
@@ -288,8 +293,8 @@ import { Section } from "../../../types"
           { id: "qd10-207", type: 'text', text: 'Впишите пропущенную букву: вз_скать', correctAnswer: ["ы"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-208", type: 'text', text: 'Впишите пропущенную букву: пр_обладать', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-209", type: 'text', text: 'Впишите пропущенную букву: пр_стол', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-210", type: 'text', text: 'Впишите пропущенную букву: меж_нститутский', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-210", type: 'text', text: 'Впишите пропущенную букву: меж_нститутский', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-8",
@@ -329,8 +334,8 @@ import { Section } from "../../../types"
           { id: "qd10-237", type: 'text', text: 'Впишите пропущенную букву: и_чезать', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-238", type: 'text', text: 'Впишите пропущенную букву: пр_пираться', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-239", type: 'text', text: 'Впишите пропущенную букву: пр_болел', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-240", type: 'text', text: 'Впишите пропущенную букву: пр_ходящий', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-240", type: 'text', text: 'Впишите пропущенную букву: пр_ходящий', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-9",
@@ -370,8 +375,8 @@ import { Section } from "../../../types"
           { id: "qd10-267", type: 'text', text: 'Впишите пропущенную букву: о_кормленный', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-268", type: 'text', text: 'Впишите пропущенную букву: по_толкнул', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-269", type: 'text', text: 'Впишите пропущенную букву: ра_задорился', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-270", type: 'text', text: 'Впишите пропущенную букву: бе_вкусица', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-270", type: 'text', text: 'Впишите пропущенную букву: бе_вкусица', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-10",
@@ -411,8 +416,8 @@ import { Section } from "../../../types"
           { id: "qd10-297", type: 'text', text: 'Впишите пропущенную букву: беспр_страстный', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-298", type: 'text', text: 'Впишите пропущенную букву: пр_баутка', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-299", type: 'text', text: 'Впишите пропущенную букву: пр_ломление', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-300", type: 'text', text: 'Впишите пропущенную букву: кар_ера', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-300", type: 'text', text: 'Впишите пропущенную букву: кар_ера', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-11",
@@ -452,8 +457,8 @@ import { Section } from "../../../types"
           { id: "qd10-327", type: 'text', text: 'Впишите пропущенную букву: с_ехавший', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-328", type: 'text', text: 'Впишите пропущенную букву: суб_ект', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-329", type: 'text', text: 'Впишите пропущенную букву: ад_ютантский', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-330", type: 'text', text: 'Впишите пропущенную букву: правопр_емник', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-330", type: 'text', text: 'Впишите пропущенную букву: правопр_емник', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-12",
@@ -493,8 +498,8 @@ import { Section } from "../../../types"
           { id: "qd10-357", type: 'text', text: 'Впишите пропущенную букву: во_питание', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-358", type: 'text', text: 'Впишите пропущенную букву: пр_следовать', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-359", type: 'text', text: 'Впишите пропущенную букву: пр_словутый', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-360", type: 'text', text: 'Впишите пропущенную букву: пр_носящий', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-360", type: 'text', text: 'Впишите пропущенную букву: пр_носящий', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-13",
@@ -534,8 +539,8 @@ import { Section } from "../../../types"
           { id: "qd10-387", type: 'text', text: 'Впишите пропущенную букву: р_здавать', correctAnswer: ["а"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-388", type: 'text', text: 'Впишите пропущенную букву: п_знавать', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-389", type: 'text', text: 'Впишите пропущенную букву: под_грать', correctAnswer: ["ы"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-390", type: 'text', text: 'Впишите пропущенную букву: ра_чистить', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-390", type: 'text', text: 'Впишите пропущенную букву: ра_чистить', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-14",
@@ -575,8 +580,8 @@ import { Section } from "../../../types"
           { id: "qd10-417", type: 'text', text: 'Впишите пропущенную букву: пр_зентабельный', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-418", type: 'text', text: 'Впишите пропущенную букву: пр_внести', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-419", type: 'text', text: 'Впишите пропущенную букву: пр_подношение', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-420", type: 'text', text: 'Впишите пропущенную букву: в_кормленный', correctAnswer: ["ы"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-420", type: 'text', text: 'Впишите пропущенную букву: в_кормленный', correctAnswer: ["ы"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-15",
@@ -616,8 +621,8 @@ import { Section } from "../../../types"
           { id: "qd10-447", type: 'text', text: 'Впишите пропущенную букву: непр_менное', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-448", type: 'text', text: 'Впишите пропущенную букву: ни_ринуться', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-449", type: 'text', text: 'Впишите пропущенную букву: бе_сребреник', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-450", type: 'text', text: 'Впишите пропущенную букву: во_кресенье', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-450", type: 'text', text: 'Впишите пропущенную букву: во_кресенье', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-16",
@@ -657,8 +662,8 @@ import { Section } from "../../../types"
           { id: "qd10-477", type: 'text', text: 'Впишите пропущенную букву: кон_юнктурщик', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-478", type: 'text', text: 'Впишите пропущенную букву: пр_американский', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-479", type: 'text', text: 'Впишите пропущенную букву: н_клеивший', correctAnswer: ["а"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-480", type: 'text', text: 'Впишите пропущенную букву: з_стеклить', correctAnswer: ["а"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-480", type: 'text', text: 'Впишите пропущенную букву: з_стеклить', correctAnswer: ["а"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-17",
@@ -698,8 +703,8 @@ import { Section } from "../../../types"
           { id: "qd10-507", type: 'text', text: 'Впишите пропущенную букву: выл_ется', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-508", type: 'text', text: 'Впишите пропущенную букву: от_двинул', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-509", type: 'text', text: 'Впишите пропущенную букву: п_дставка', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-510", type: 'text', text: 'Впишите пропущенную букву: пр_видец', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-510", type: 'text', text: 'Впишите пропущенную букву: пр_видец', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-18",
@@ -739,8 +744,8 @@ import { Section } from "../../../types"
           { id: "qd10-537", type: 'text', text: 'Впишите пропущенную букву: пр_минул', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-538", type: 'text', text: 'Впишите пропущенную букву: не_деланный', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-539", type: 'text', text: 'Впишите пропущенную букву: во_хождение', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-540", type: 'text', text: 'Впишите пропущенную букву: на_гранно', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-540", type: 'text', text: 'Впишите пропущенную букву: на_гранно', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-19",
@@ -780,8 +785,8 @@ import { Section } from "../../../types"
           { id: "qd10-567", type: 'text', text: 'Впишите пропущенную букву: п_красить', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-568", type: 'text', text: 'Впишите пропущенную букву: прот_государство', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-569", type: 'text', text: 'Впишите пропущенную букву: пр_атлантическая', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-570", type: 'text', text: 'Впишите пропущенную букву: пр_поднести', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-570", type: 'text', text: 'Впишите пропущенную букву: пр_поднести', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-20",
@@ -821,8 +826,8 @@ import { Section } from "../../../types"
           { id: "qd10-597", type: 'text', text: 'Впишите пропущенную букву: пр_имущество', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-598", type: 'text', text: 'Впишите пропущенную букву: пре_сказание', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-599", type: 'text', text: 'Впишите пропущенную букву: по_кидывать', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-600", type: 'text', text: 'Впишите пропущенную букву: на_смотрщик', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-600", type: 'text', text: 'Впишите пропущенную букву: на_смотрщик', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-21",
@@ -862,8 +867,8 @@ import { Section } from "../../../types"
           { id: "qd10-627", type: 'text', text: 'Впишите пропущенную букву: в_явь', correctAnswer: ["ы"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-628", type: 'text', text: 'Впишите пропущенную букву: раз_ёмный', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-629", type: 'text', text: 'Впишите пропущенную букву: пр_елись', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-630", type: 'text', text: 'Впишите пропущенную букву: пр_вратник', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-630", type: 'text', text: 'Впишите пропущенную букву: пр_вратник', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-22",
@@ -903,8 +908,8 @@ import { Section } from "../../../types"
           { id: "qd10-657", type: 'text', text: 'Впишите пропущенную букву: пр_зорливый', correctAnswer: ["о"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-658", type: 'text', text: 'Впишите пропущенную букву: р_зогнать', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-659", type: 'text', text: 'Впишите пропущенную букву: сверх_мпульсивный', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-660", type: 'text', text: 'Впишите пропущенную букву: бе_пощадный', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-660", type: 'text', text: 'Впишите пропущенную букву: бе_пощадный', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-23",
@@ -944,8 +949,8 @@ import { Section } from "../../../types"
           { id: "qd10-687", type: 'text', text: 'Впишите пропущенную букву: фин_нспектор', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-688", type: 'text', text: 'Впишите пропущенную букву: олад_и', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-689", type: 'text', text: 'Впишите пропущенную букву: низов_е', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-690", type: 'text', text: 'Впишите пропущенную букву: пр_вентивный', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-690", type: 'text', text: 'Впишите пропущенную букву: пр_вентивный', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-24",
@@ -985,8 +990,8 @@ import { Section } from "../../../types"
           { id: "qd10-717", type: 'text', text: 'Впишите пропущенную букву: прово_глашённый', correctAnswer: ["з"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-718", type: 'text', text: 'Впишите пропущенную букву: солов_иный', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-719", type: 'text', text: 'Впишите пропущенную букву: раз_ярённый', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-720", type: 'text', text: 'Впишите пропущенную букву: пр_одеть', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-720", type: 'text', text: 'Впишите пропущенную букву: пр_одеть', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-25",
@@ -1026,8 +1031,8 @@ import { Section } from "../../../types"
           { id: "qd10-747", type: 'text', text: 'Впишите пропущенную букву: бе_счётный', correctAnswer: ["е"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-748", type: 'text', text: 'Впишите пропущенную букву: пр_скучный', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-749", type: 'text', text: 'Впишите пропущенную букву: пр_ставать', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-750", type: 'text', text: 'Впишите пропущенную букву: раз_яриться', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-750", type: 'text', text: 'Впишите пропущенную букву: раз_яриться', correctAnswer: ["ъ"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-26",
@@ -1067,8 +1072,8 @@ import { Section } from "../../../types"
           { id: "qd10-777", type: 'text', text: 'Впишите пропущенную букву: пр_спокойно', correctAnswer: ["и"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-778", type: 'text', text: 'Впишите пропущенную букву: барсуч_его', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-779", type: 'text', text: 'Впишите пропущенную букву: разоб_ём', correctAnswer: ["ь"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-780", type: 'text', text: 'Впишите пропущенную букву: и_коверкать', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-780", type: 'text', text: 'Впишите пропущенную букву: и_коверкать', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       },
       {
         id: "lesson-dooshin-10-27",
@@ -1106,11 +1111,8 @@ import { Section } from "../../../types"
           { id: "qd10-805", type: 'text', text: 'Впишите пропущенную букву: и_чез', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-806", type: 'text', text: 'Впишите пропущенную букву: ра_правленный', correctAnswer: ["с"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
           { id: "qd10-807", type: 'text', text: 'Впишите пропущенную букву: по_прыгнул', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-          { id: "qd10-808", type: 'text', text: 'Впишите пропущенную букву: на_кусил', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] },
-        ]
+          { id: "qd10-808", type: 'text', text: 'Впишите пропущенную букву: на_кусил', correctAnswer: ["д"], explanation: 'Проверьте правописание.', difficulty: 'easy', xpReward: 10, atoms: ['task10', "roots"] }
+  ]
       }
     ]
-  },
-  {
-    id: "section-dooshin-11",
-    courseId: 'ege-russian-2025',
+  };

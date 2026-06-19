@@ -21,7 +21,7 @@ export const dooshin15Sections: Section[] = [
         questions: [
           { id: 'qd15-1', type: 'text', text: 'Впишите количество букв Н: багряный (1)', correctAnswer: ['1'], explanation: 'багряный — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
           { id: 'qd15-2', type: 'text', text: 'Впишите количество букв Н: верчёный парень (1)', correctAnswer: ['1'], explanation: 'верчёный — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
-          { id: 'qd15-3', type: 'text', text: 'Впишите количество букв Н: ветреный (2)', correctAnswer: ['2'], explanation: 'ветреный — 2 буквы Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
+          { id: 'qd15-3', type: 'text', text: 'Впишите количество букв Н: ветреный (1)', correctAnswer: ['1'], explanation: 'ветреный — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
           { id: 'qd15-4', type: 'text', text: 'Впишите количество букв Н: вороной (1)', correctAnswer: ['1'], explanation: 'вороной — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
           { id: 'qd15-5', type: 'text', text: 'Впишите количество букв Н: гостиная (1)', correctAnswer: ['1'], explanation: 'гостиная — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
           { id: 'qd15-6', type: 'text', text: 'Впишите количество букв Н: жёваный (1)', correctAnswer: ['1'], explanation: 'жёваный — 1 буква Н', difficulty: 'easy', xpReward: 10, atoms: ['n_nn'] },
