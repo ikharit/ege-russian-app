@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, BookOpen, ChevronRight } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
 import { getUnlockedStatuses, getStatusById } from '../data/statuses'
 import { Popover } from '../components/Popover'
+import { useNotificationStore } from '../stores/notificationStore'
 
 export function Profile() {
   const navigate = useNavigate()
@@ -24,7 +25,14 @@ export function Profile() {
 
   const [isEditing, setIsEditing] = useState(false)
   const [showStatusPicker, setShowStatusPicker] = useState(false)
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
+
+  // Notification settings
+  const notifSettings = useNotificationStore((s) => s.settings)
+  const updateNotifSettings = useNotificationStore((s) => s.updateSettings)
+  const requestPermission = useNotificationStore((s) => s.requestPermission)
+  const permission = useNotificationStore((s) => s.permission)
 
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed').length
   const unlockedStatuses = getUnlockedStatuses(achievements, leaderboardRanks)
@@ -481,6 +489,13 @@ export function Profile() {
             <p className="text-xs text-gray-500">Сохранить JSON-файл</p>
           </div>
         </button>
+        <button onClick={() => setShowNotificationSettings(true)} className="card flex items-center gap-3 text-left hover:bg-gray-50 transition-colors">
+          <Bell size={20} className="text-duo-green" />
+          <div>
+            <p className="font-bold text-sm">Уведомления</p>
+            <p className="text-xs text-gray-500">Настройка push и дедлайнов</p>
+          </div>
+        </button>
         <button onClick={handleImportClick} className="card flex items-center gap-3 text-left hover:bg-gray-50 transition-colors">
           <Upload size={20} className="text-duo-green" />
           <div>
@@ -503,6 +518,92 @@ export function Profile() {
           </div>
         </button>
       </div>
+
+      {/* Notification Settings Modal */}
+      {showNotificationSettings && (
+        <motion.div
+          className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => setShowNotificationSettings(false)}
+        >
+          <motion.div
+            className="bg-white rounded-t-2xl sm:rounded-2xl p-6 w-full max-w-md max-h-[80vh] overflow-y-auto"
+            initial={{ y: 300 }}
+            animate={{ y: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold">Уведомления</h3>
+              <button onClick={() => setShowNotificationSettings(false)} className="text-gray-400">✕</button>
+            </div>
+            
+            <div className="flex flex-col gap-4">
+              {/* Permission status */}
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <p className="text-sm font-bold">Статус: {permission === 'granted' ? '✅ Разрешены' : permission === 'denied' ? '❌ Запрещены' : '⏳ Не запрошены'}</p>
+                {permission !== 'granted' && (
+                  <button onClick={requestPermission} className="mt-2 w-full py-2 bg-duo-green text-white rounded-lg font-bold text-sm">
+                    Разрешить уведомления
+                  </button>
+                )}
+              </div>
+
+              {/* Streak reminder */}
+              <label className="flex items-center justify-between">
+                <span className="text-sm">Напоминание о streak</span>
+                <input
+                  type="checkbox"
+                  checked={notifSettings.streakReminder}
+                  onChange={(e) => updateNotifSettings({ streakReminder: e.target.checked })}
+                  className="w-5 h-5 accent-duo-green"
+                />
+              </label>
+
+              {/* Streak time */}
+              {notifSettings.streakReminder && (
+                <div className="ml-4">
+                  <label className="text-xs text-gray-500">Время напоминания</label>
+                  <input
+                    type="time"
+                    value={notifSettings.streakReminderTime}
+                    onChange={(e) => updateNotifSettings({ streakReminderTime: e.target.value })}
+                    className="w-full p-2 border rounded-lg text-sm mt-1"
+                  />
+                </div>
+              )}
+
+              {/* Homework deadline */}
+              <label className="flex items-center justify-between">
+                <span className="text-sm">Дедлайн домашки</span>
+                <input
+                  type="checkbox"
+                  checked={notifSettings.homeworkDeadline}
+                  onChange={(e) => updateNotifSettings({ homeworkDeadline: e.target.checked })}
+                  className="w-5 h-5 accent-duo-green"
+                />
+              </label>
+
+              {/* Homework days */}
+              {notifSettings.homeworkDeadline && (
+                <div className="ml-4">
+                  <label className="text-xs text-gray-500">За сколько дней напоминать</label>
+                  <select
+                    value={notifSettings.homeworkReminderDays}
+                    onChange={(e) => updateNotifSettings({ homeworkReminderDays: Number(e.target.value) })}
+                    className="w-full p-2 border rounded-lg text-sm mt-1"
+                  >
+                    <option value={1}>1 день</option>
+                    <option value={2}>2 дня</option>
+                    <option value={3}>3 дня</option>
+                    <option value={7}>Неделю</option>
+                  </select>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   )
 }

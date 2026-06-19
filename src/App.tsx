@@ -116,6 +116,23 @@ export default function App() {
     init()
   }, [setUserId, loadProgress, setUserName])
 
+  // Notifications setup
+  const permission = useNotificationStore((s) => s.permission)
+  const checkAndNotify = useNotificationStore((s) => s.checkAndNotify)
+  const requestPermission = useNotificationStore((s) => s.requestPermission)
+
+  useEffect(() => {
+    if (permission === 'granted') {
+      checkAndNotify()
+    } else if (permission === 'default') {
+      // Ask once after 10 seconds
+      const timer = setTimeout(() => {
+        requestPermission()
+      }, 10000)
+      return () => clearTimeout(timer)
+    }
+  }, [permission, checkAndNotify, requestPermission])
+
   // Listen to auth state changes
   useEffect(() => {
     if (!isSupabaseConfigured) return
