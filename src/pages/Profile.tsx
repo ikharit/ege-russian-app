@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, BookOpen, ChevronRight } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, BookOpen, ChevronRight } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
@@ -16,6 +16,7 @@ export function Profile() {
   const setUserName = useProgressStore((s) => s.setUserName)
   const toggleInfiniteHearts = useProgressStore((s) => s.toggleInfiniteHearts)
   const incrementExportCount = useProgressStore((s) => s.incrementExportCount)
+  const importProgress = useProgressStore((s) => s.importProgress)
   const setActiveStatus = useProgressStore((s) => s.setActiveStatus)
   const leaderboardRanks = useProgressStore((s) => s.leaderboardRanks)
   const name = useProgressStore((s) => s.userStats.name || 'ученик')
@@ -63,6 +64,29 @@ export function Profile() {
     a.download = `ege-progress-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const content = event.target?.result as string
+      const result = importProgress(content)
+      alert(result.message)
+      if (result.success) {
+        window.location.reload()
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
   }
 
   return (
@@ -457,6 +481,20 @@ export function Profile() {
             <p className="text-xs text-gray-500">Сохранить JSON-файл</p>
           </div>
         </button>
+        <button onClick={handleImportClick} className="card flex items-center gap-3 text-left hover:bg-gray-50 transition-colors">
+          <Upload size={20} className="text-duo-green" />
+          <div>
+            <p className="font-bold text-sm">Импорт прогресса</p>
+            <p className="text-xs text-gray-500">Загрузить JSON-файл</p>
+          </div>
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          onChange={handleImport}
+          className="hidden"
+        />
         <button onClick={handleReset} className="card flex items-center gap-3 text-left hover:bg-red-50 transition-colors border-red-200">
           <Trash2 size={20} className="text-red-500" />
           <div>

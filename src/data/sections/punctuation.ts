@@ -71,7 +71,7 @@ export const punctuationSections: Section[] = [
         xpReward: 60,
         prerequisites: [],
         questions: [
-          { id: 'q17-1', type: 'single', text: 'Сколько запятых нужно поставить?\n\nВетер усилился и пошёл дождь.', options: ['0', '1', '2'], correctAnswer: ['1'], explanation: 'Союз «и» между частями ССП выделяется запятой: «Ветер усилился, и пошёл дождь».', difficulty: 'easy', xpReward: 10, atoms: ['punctuation'] }
+          { id: 'q17-1', type: 'single', text: 'Сколько запятых нужно поставить?\n\nВетер усилился и пошёл дождь.', options: ['0', '1', '2'], correctAnswer: ['1'], explanation: 'Союз «и» между частями ССП выделяется запятой: «Ветер усилился, и пошёл дождь».', difficulty: 'easy', xpReward: 10, atoms: ['task17', 'punctuation'] }
         ]
       },
       {
@@ -83,7 +83,7 @@ export const punctuationSections: Section[] = [
         xpReward: 70,
         prerequisites: ['lesson-punct-17-1'],
         questions: [
-          { id: 'q19-1', type: 'single', text: 'Сколько знаков нужно поставить?\n\nОн сказал: "Я приду".', options: ['0', '1', '2'], correctAnswer: ['0'], explanation: 'Точка ставится после закрывающей кавычки. Запятая перед прямой речью (после двоеточия) не нужна.', difficulty: 'medium', xpReward: 12, atoms: ['punctuation'] }
+          { id: 'q19-1', type: 'single', text: 'Сколько знаков нужно поставить?\n\nОн сказал: "Я приду".', options: ['0', '1', '2'], correctAnswer: ['0'], explanation: 'Точка ставится после закрывающей кавычки. Запятая перед прямой речью (после двоеточия) не нужна.', difficulty: 'medium', xpReward: 12, atoms: ['task19', 'punctuation'] }
         ]
       }
     ]

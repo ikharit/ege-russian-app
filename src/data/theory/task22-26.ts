@@ -18,7 +18,8 @@ export const task2226Theory: TheorySection = {
         { correct: 'новая новость (тавтология)', incorrect: 'новая новость', note: 'повтор корня' },
         { correct: 'делать влияние (нарушение сочетаемости)', incorrect: 'делать влияние', note: 'неверный глагол' },
       ],
-      tags: ['стилистика', 'тавтология', 'сочетаемость', 'текст']
+      tags: ['стилистика', 'тавтология', 'сочетаемость', 'текст'],
+      relatedAtoms: ['task22', 'stylistic_errors']
     },
     {
       id: 'task23-1',
@@ -29,7 +30,8 @@ export const task2226Theory: TheorySection = {
         { correct: 'объявление (Ъ)', incorrect: 'объявление', note: 'пропущена Ъ' },
         { correct: 'взбесился', incorrect: 'взбесился', note: 'ненормативное написание' },
       ],
-      tags: ['орфография', 'текст', 'ошибка']
+      tags: ['орфография', 'текст', 'ошибка'],
+      relatedAtoms: ['task23', 'spelling_errors']
     },
     {
       id: 'task24-1',
@@ -40,7 +42,8 @@ export const task2226Theory: TheorySection = {
         { correct: 'Жизнь — это движение.', note: 'тире между подлежащим и сказуемым' },
         { incorrect: 'Он сказал что придёт.', correct: 'Он сказал, что придёт.', note: 'пропущена запятая перед изъяснительным' },
       ],
-      tags: ['пунктуация', 'текст', 'запятая', 'тире']
+      tags: ['пунктуация', 'текст', 'запятая', 'тире'],
+      relatedAtoms: ['task24', 'punctuation_errors']
     },
     {
       id: 'task25-1',
@@ -51,7 +54,8 @@ export const task2226Theory: TheorySection = {
         { correct: 'приехать в Москву', incorrect: 'приехать в Москве', note: 'управление' },
         { correct: 'книга лежала', incorrect: 'книга лежали', note: 'согласование' },
       ],
-      tags: ['грамматика', 'текст', 'управление', 'согласование']
+      tags: ['грамматика', 'текст', 'управление', 'согласование'],
+      relatedAtoms: ['task25', 'grammatical_errors']
     },
     {
       id: 'task26-1',
@@ -61,7 +65,8 @@ export const task2226Theory: TheorySection = {
       examples: [
         { correct: 'Он любил читать и писать.', incorrect: 'Он любил читать и писал.', note: 'неоднородные сказуемые' },
       ],
-      tags: ['синтаксис', 'текст', 'однородность', 'предложение']
+      tags: ['синтаксис', 'текст', 'однородность', 'предложение'],
+      relatedAtoms: ['task26', 'syntactic_errors']
     },
   ]
 }

@@ -12,6 +12,15 @@ import { AccentTrainer } from './pages/AccentTrainer'
 import { Task5Trainer } from './pages/Task5Trainer'
 import { Task10Trainer } from './pages/Task10Trainer'
 import { Task16Trainer } from './pages/Task16Trainer'
+import { Task6Trainer } from './pages/Task6Trainer'
+import { Task7Trainer } from './pages/Task7Trainer'
+import { Task8Trainer } from './pages/Task8Trainer'
+import { Task9Trainer } from './pages/Task9Trainer'
+import { Task11Trainer } from './pages/Task11Trainer'
+import { Task12Trainer } from './pages/Task12Trainer'
+import { Task13Trainer } from './pages/Task13Trainer'
+import { Task14Trainer } from './pages/Task14Trainer'
+import { Task15Trainer } from './pages/Task15Trainer'
 import { MistakesReview } from './pages/MistakesReview'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
@@ -272,8 +281,17 @@ export default function App() {
           <Route path="/mistakes" element={<MistakesReview />} />
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
+          <Route path="/task6-trainer" element={<Task6Trainer />} />
+          <Route path="/task7-trainer" element={<Task7Trainer />} />
+          <Route path="/task8-trainer" element={<Task8Trainer />} />
+          <Route path="/task9-trainer" element={<Task9Trainer />} />
           <Route path="/task5-trainer" element={<Task5Trainer />} />
           <Route path="/task10-trainer" element={<Task10Trainer />} />
+          <Route path="/task11-trainer" element={<Task11Trainer />} />
+          <Route path="/task12-trainer" element={<Task12Trainer />} />
+          <Route path="/task13-trainer" element={<Task13Trainer />} />
+          <Route path="/task14-trainer" element={<Task14Trainer />} />
+          <Route path="/task15-trainer" element={<Task15Trainer />} />
           <Route path="/task16-trainer" element={<Task16Trainer />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
         </Routes>

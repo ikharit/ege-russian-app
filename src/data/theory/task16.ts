@@ -18,7 +18,8 @@ export const task16Theory: TheorySection = {
         { correct: 'День был ясный, и мы пошли гулять.', note: 'ССП с союзом и' },
         { correct: 'Я хотел спать, но нужно было учить уроки.', note: 'ССП с союзом но' },
       ],
-      tags: ['ССП', 'сложносочинённое', 'запятая', 'союзы']
+      tags: ['ССП', 'сложносочинённое', 'запятая', 'союзы'],
+      relatedAtoms: ['task16', 'complex_sentence_coordination']
     },
     {
       id: 'task16-2',
@@ -30,7 +31,8 @@ export const task16Theory: TheorySection = {
         { correct: 'Я пошёл гулять, потому что было тепло.', note: 'придаточное причины' },
         { correct: 'Он, хотя и устал, продолжал работать.', note: 'врезанное придаточное уступки' },
       ],
-      tags: ['СПП', 'сложноподчинённое', 'придаточные', 'запятая']
+      tags: ['СПП', 'сложноподчинённое', 'придаточные', 'запятая'],
+      relatedAtoms: ['task16', 'complex_sentence_subordination']
     },
     {
       id: 'task16-3',
@@ -41,7 +43,8 @@ export const task16Theory: TheorySection = {
         { correct: 'Я знаю, что ты прав.', note: 'изъяснительное придаточное' },
         { correct: 'Он сказал, чтобы я пришёл вовремя.', note: 'изъяснительное с чтобы' },
       ],
-      tags: ['СПП', 'изъяснительное', 'что', 'чтобы', 'запятая']
+      tags: ['СПП', 'изъяснительное', 'что', 'чтобы', 'запятая'],
+      relatedAtoms: ['task16', 'complex_sentence_explanatory']
     },
     {
       id: 'task16-4',
@@ -52,7 +55,8 @@ export const task16Theory: TheorySection = {
         { correct: 'Вечереело, холодало, ветер усиливался.', note: 'бессоюзное с перечислением' },
         { correct: 'Я не пошёл — устал.', note: 'бессоюзное с причиной' },
       ],
-      tags: ['бессоюзное', 'сложное предложение', 'запятая']
+      tags: ['бессоюзное', 'сложное предложение', 'запятая'],
+      relatedAtoms: ['task16', 'complex_sentence_asyndetic']
     },
   ]
 }

@@ -19,7 +19,8 @@ export const task15Theory: TheorySection = {
         { correct: 'приготовленный (приставка, 1н)', incorrect: 'приготовленный', note: 'одна н' },
         { correct: 'купленный (без приставки, 2н)', incorrect: 'купленный', note: 'две н' },
       ],
-      tags: ['н/нн', 'причастия', 'приставки']
+      tags: ['н/нн', 'причастия', 'приставки'],
+      relatedAtoms: ['task15', 'participles_n_nn']
     },
     {
       id: 'task15-2',
@@ -31,7 +32,8 @@ export const task15Theory: TheorySection = {
         { correct: 'деревянный (от дерево, 2н)', incorrect: 'деревянный', note: 'две н' },
         { correct: 'железный (от железо, 2н)', incorrect: 'железный', note: 'две н' },
       ],
-      tags: ['н/нн', 'прилагательные', 'существительные']
+      tags: ['н/нн', 'прилагательные', 'существительные'],
+      relatedAtoms: ['task15', 'adjectives_n_nn']
     },
     {
       id: 'task15-3',
@@ -42,7 +44,8 @@ export const task15Theory: TheorySection = {
         { correct: 'неожиданно (от неожиданный, 2н)', incorrect: 'неожиданно', note: 'две н' },
         { correct: 'внезапно (от внезапный, 1н)', incorrect: 'внезапно', note: 'одна н' },
       ],
-      tags: ['н/нн', 'наречия', 'суффикс']
+      tags: ['н/нн', 'наречия', 'суффикс'],
+      relatedAtoms: ['task15', 'adverbs_n_nn']
     },
     {
       id: 'task15-4',
@@ -53,7 +56,8 @@ export const task15Theory: TheorySection = {
         { correct: 'занят (краткое от занятый, 1н)', incorrect: 'занят', note: 'одна н' },
         { correct: 'приготовлен (краткое от приготовленный, 1н)', incorrect: 'приготовлен', note: 'одна н' },
       ],
-      tags: ['н/нн', 'краткие причастия', 'форма']
+      tags: ['н/нн', 'краткие причастия', 'форма'],
+      relatedAtoms: ['task15', 'short_participles_n_nn']
     },
   ]
 }

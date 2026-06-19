@@ -64,7 +64,7 @@ export const RELEASE_NOTES: ReleaseNote[] = [
   },
   {
     version: '1.0.0',
-    date: '10 июня 2026',
+    date: '16 июня 2026',
     title: '🚀 Запуск ЕГЭ Русский!',
     emoji: '🎉',
     bullets: [

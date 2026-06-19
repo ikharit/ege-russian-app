@@ -1,446 +1,67 @@
 // ⚠️ AGENT NOTICE: All wrong answers go to progressStore.wrongAnswers (unified bank)
 // Do NOT add local error storage. Use: recordWrongAnswer() + updateTaskStats('4', false)
-// See AGENTS.md / memory/agent-registry.md for context
-// UPDATED V3
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+// UPDATED V4 — refactored to BaseTrainer
 import { motion } from 'framer-motion'
-import {
-  Volume2, VolumeX, RotateCcw, Settings, ArrowLeft,
-  Star, Trophy, Zap, Heart, ChevronRight
-} from 'lucide-react'
-import { accentWordsById, allAccentWords } from '../data/accentWords'
-import { useAccentTrainerStore } from '../stores/accentTrainerStore'
-import { useProgressStore } from '../stores/progressStore'
-
-type AnswerState = 'idle' | 'correct' | 'wrong'
-
-const WORDS_PER_STAGE = 30
-
-function getStageWords(stage: number): typeof allAccentWords {
-  const start = stage * WORDS_PER_STAGE
-  const end = start + WORDS_PER_STAGE
-  return allAccentWords.slice(start, end)
-}
+import { allAccentWords, accentWordsById } from '../data/accentWords'
+import { BaseTrainer } from '../components/BaseTrainer'
 
 export function AccentTrainer() {
-  const navigate = useNavigate()
-  const [answerState, setAnswerState] = useState<AnswerState>('idle')
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-  const [showSettings, setShowSettings] = useState(false)
-  const [showCompleted, setShowCompleted] = useState(false)
-  const [explanation, setExplanation] = useState('')
-  const [wordId, setWordId] = useState<string | null>(null)
-
-  const currentWordId = useAccentTrainerStore((s) => s.currentWordId)
-  const stats = useAccentTrainerStore((s) => s.stats)
-  const settings = useAccentTrainerStore((s) => s.settings)
-  const wordProgress = useAccentTrainerStore((s) => s.wordProgress)
-
-  const addXP = useProgressStore((s) => s.addXP)
-  const updateStreak = useProgressStore((s) => s.updateStreak)
-  const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
-  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
-  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
-
-  const currentWord = currentWordId ? accentWordsById[currentWordId] : null
-  const overall = useAccentTrainerStore.getState().getOverallProgress()
-  const currentStage = stats.currentStage ?? 0
-
-  // Initialize session on mount
-  useEffect(() => {
-    const store = useAccentTrainerStore.getState()
-    const overall = store.getOverallProgress()
-    if (overall.mastered === overall.total) {
-      setShowCompleted(true)
-      return
-    }
-    if (!store.currentWordId) {
-      store.startSession()
-    }
-  }, [])
-
-  // Sync local wordId with store currentWordId
-  useEffect(() => {
-    setWordId(currentWordId)
-  }, [currentWordId])
-
-  const handleLetterClick = (index: number) => {
-    if (answerState !== 'idle' || !currentWord) return
-
-    const isCorrect = index === currentWord.stressIndex
-    setSelectedIndex(index)
-    setAnswerState(isCorrect ? 'correct' : 'wrong')
-    setExplanation(currentWord.explanation)
-
-    const store = useAccentTrainerStore.getState()
-    store.answerWord(currentWord.id, isCorrect)
-    recordQuestionAnswered()
-
-    if (isCorrect) {
-      addXP(5)
-      updateStreak()
-    } else {
-      recordWrongAnswer(
-        {
-          id: currentWord.id,
-          text: currentWord.word,
-          correctAnswer: [currentWord.normalized[currentWord.stressIndex]],
-          explanation: currentWord.explanation,
-          atoms: ['task4'],
-        },
-        [currentWord.normalized[index]],
-      )
-      updateTaskStats('4', false)
-    }
-  }
-
-  const handleNext = () => {
-    const store = useAccentTrainerStore.getState()
-    const next = store.getNextWord()
-    if (next) {
-      setAnswerState('idle')
-      setSelectedIndex(null)
-      setExplanation('')
-      setWordId(next)
-    } else {
-      setShowCompleted(true)
-    }
-  }
-
-  const handleRestart = () => {
-    const store = useAccentTrainerStore.getState()
-    setShowCompleted(false)
-    setAnswerState('idle')
-    setSelectedIndex(null)
-    setExplanation('')
-    store.startSession()
-    const next = store.getNextWord()
-    setWordId(next)
-  }
-
-  const handleReset = () => {
-    if (confirm('Сбросить весь прогресс тренажёра?')) {
-      const store = useAccentTrainerStore.getState()
-      store.resetProgress()
-      setAnswerState('idle')
-      setSelectedIndex(null)
-      setExplanation('')
-      setShowCompleted(false)
-      store.startSession()
-      const next = store.getNextWord()
-      setWordId(next)
-    }
-  }
-
-  // Background color based on state
-  const bgColor = settings.changeBackground
-    ? answerState === 'correct' ? 'bg-green-50'
-      : answerState === 'wrong' ? 'bg-red-50'
-      : 'bg-duo-snow'
-    : 'bg-duo-snow'
-
-  // Stage progress
-  const stageWords = getStageWords(currentStage)
-  const stageWordIds = stageWords.map(w => w.id)
-  const stageMastered = stageWordIds.filter(
-    id => (wordProgress[id]?.stars || 0) >= 5
-  ).length
-  const stageTotal = stageWords.length
-
-  // Word stage info for leaking badge
-  const wordStage = currentWord
-    ? Math.floor(allAccentWords.findIndex(w => w.id === currentWord.id) / WORDS_PER_STAGE)
-    : -1
-  const isLeakingWord = currentWord && wordStage !== currentStage && wordStage >= 0
-
-  // Current word stars for header
-  const currentWordStars = currentWord ? (wordProgress[currentWord.id]?.stars || 0) : 0
-
-  if (showCompleted) {
-    return (
-      <div className="min-h-screen bg-duo-snow flex flex-col items-center justify-center p-6">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="card max-w-md w-full text-center space-y-6"
-        >
-          <div className="w-20 h-20 bg-duo-green rounded-full flex items-center justify-center mx-auto">
-            <Trophy size={40} className="text-white" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">
-              {overall.mastered === overall.total ? 'Все слова изучены!' : 'Сессия завершена!'}
-            </h2>
-            <p className="text-gray-500 mt-1">
-              {overall.mastered === overall.total
-                ? 'Поздравляем! Ты готов к заданию №4 ЕГЭ. Все слова орфоэпического словника ФИПИ освоены.'
-                : 'Отличная работа! Продолжайте тренироваться.'}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-gray-50 rounded-xl p-3">
-              <Zap size={20} className="text-duo-yellow mx-auto" />
-              <p className="text-xl font-bold mt-1">{stats.totalCorrect}</p>
-              <p className="text-xs text-gray-500">Правильно</p>
-            </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <Heart size={20} className="text-red-400 mx-auto" />
-              <p className="text-xl font-bold mt-1">{stats.totalWrong}</p>
-              <p className="text-xs text-gray-500">Ошибки</p>
-            </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <Star size={20} className="text-duo-purple mx-auto" />
-              <p className="text-xl font-bold mt-1">{stats.bestStreak}</p>
-              <p className="text-xs text-gray-500">Рекорд</p>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 rounded-xl p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-bold text-gray-700">Прогресс</span>
-              <span className="text-duo-green font-bold">{overall.mastered}/{overall.total}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div
-                className="bg-duo-green h-3 rounded-full transition-all"
-                style={{ width: `${(overall.mastered / overall.total) * 100}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>Изучено: {overall.mastered}</span>
-              <span>В процессе: {overall.learning}</span>
-              <span>Новые: {overall.newWords}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={handleRestart}
-              className="btn-primary w-full flex items-center justify-center gap-2"
-            >
-              <RotateCcw size={18} />
-              Начать заново
-            </button>
-            <button
-              onClick={() => navigate('/')}
-              className="text-gray-400 hover:text-gray-600 text-sm"
-            >
-              Вернуться на главную
-            </button>
-          </div>
-        </motion.div>
-      </div>
-    )
-  }
-
-  if (!currentWord) {
-    return (
-      <div className="min-h-screen bg-duo-snow flex flex-col items-center justify-center p-6">
-        <div className="card max-w-md w-full text-center space-y-4">
-          <p className="text-gray-500">Загрузка...</p>
-        </div>
-      </div>
-    )
-  }
-
-  const letters = currentWord.normalized.split('')
-  const progress = wordProgress[currentWord.id] || {
-    wordId: currentWord.id, stars: 0, totalCorrect: 0, totalWrong: 0
-  }
-  const levelStars = progress.stars
-
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${bgColor} flex flex-col`}>
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-gray-100">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <button
-            onClick={() => navigate('/')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <ArrowLeft size={20} className="text-gray-600" />
-          </button>
-
-          <div className="flex items-center gap-4">
-            {/* Stage + stars */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-bold text-duo-purple">Ур. {currentStage + 1}</span>
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={10}
-                    className={i < currentWordStars ? 'text-duo-yellow fill-current' : 'text-gray-200'}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              <Star size={14} className="text-duo-yellow fill-current" />
-              <span className="text-sm font-bold text-gray-700">{overall.mastered}/{overall.total}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Zap size={14} className="text-orange-500 fill-current" />
-              <span className="text-sm font-bold text-orange-500">{stats.streak}</span>
-            </div>
-            <button
-              onClick={() => setShowSettings(!showSettings)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Settings size={18} className="text-gray-400" />
-            </button>
-          </div>
-        </div>
-
-        <div className="max-w-md mx-auto px-4 pb-2">
-          <div className="flex justify-between text-xs text-gray-400 mb-1">
-            <span>Уровень {currentStage + 1}</span>
-            <span>{stageMastered}/{stageTotal}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-1.5">
-            <div
-              className="bg-duo-green h-1.5 rounded-full transition-all"
-              style={{ width: `${stageTotal > 0 ? (stageMastered / stageTotal) * 100 : 0}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {showSettings && (
-        <div className="bg-white border-b border-gray-100">
-          <div className="max-w-md mx-auto px-4 py-4 space-y-3">
-            <h3 className="font-bold text-gray-700 text-sm uppercase">Настройки</h3>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Звук</span>
-              <button
-                onClick={() => useAccentTrainerStore.getState().updateSettings({ sound: !settings.sound })}
-                className="p-2 rounded-lg hover:bg-gray-100"
-              >
-                {settings.sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-              </button>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Изменение фона</span>
-              <button
-                onClick={() => useAccentTrainerStore.getState().updateSettings({ changeBackground: !settings.changeBackground })}
-                className={`w-12 h-6 rounded-full transition-colors ${settings.changeBackground ? 'bg-duo-green' : 'bg-gray-300'}`}
-              >
-                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.changeBackground ? 'translate-x-6' : 'translate-x-0.5'}`} />
-              </button>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Показывать пояснение</span>
-              <button
-                onClick={() => useAccentTrainerStore.getState().updateSettings({ showExplanation: !settings.showExplanation })}
-                className={`w-12 h-6 rounded-full transition-colors ${settings.showExplanation ? 'bg-duo-green' : 'bg-gray-300'}`}
-              >
-                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${settings.showExplanation ? 'translate-x-6' : 'translate-x-0.5'}`} />
-              </button>
-            </div>
-            <button
-              onClick={handleReset}
-              className="text-red-400 text-sm hover:text-red-600 transition-colors"
-            >
-              Сбросить прогресс
-            </button>
-          </div>
-        </div>
+    <BaseTrainer
+      title="Ударения"
+      taskNumber="4"
+      questions={allAccentWords}
+      getQuestionId={(q) => q.id}
+      getQuestionText={(q) => q.word}
+      getOptions={(q) => q.normalized.split('')}
+      getCorrectAnswer={(q) => [q.normalized[q.stressIndex]]}
+      getExplanation={(q) => q.explanation}
+      getAtoms={() => ['task4']}
+      xpPerCorrect={5}
+      renderPrompt={() => (
+        <p className="text-gray-700 text-sm leading-relaxed text-center">
+          Выберите <strong>ударную букву</strong> в слове
+        </p>
       )}
+      renderQuestion={({ question, selectedAnswer, answerState, onSelect, disabled }) => {
+        const letters = question.normalized.split('')
+        const selectedIndex = selectedAnswer.length > 0 ? question.normalized.indexOf(selectedAnswer[0]) : -1
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-md mx-auto w-full">
-        {isLeakingWord && (
-          <div className="mb-4 px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-xs font-bold uppercase tracking-wide">
-            Повторение из уровня {wordStage + 1}
+        return (
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-wrap justify-center gap-2">
+              {letters.map((letter, index) => {
+                const isSelected = selectedIndex === index
+                const isCorrect = answerState === 'correct' && index === question.stressIndex
+                const isWrong = answerState === 'wrong' && isSelected && index !== question.stressIndex
+                const showCorrect = answerState === 'wrong' && index === question.stressIndex
+
+                let btnClass = 'bg-white text-gray-800 border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                if (isCorrect || showCorrect) {
+                  btnClass = 'bg-duo-green text-white border-2 border-duo-green'
+                } else if (isWrong) {
+                  btnClass = 'bg-red-400 text-white border-2 border-red-400'
+                } else if (isSelected) {
+                  btnClass = 'bg-duo-blue text-white border-2 border-duo-blue'
+                }
+
+                return (
+                  <motion.button
+                    key={`${question.id}-${index}`}
+                    whileHover={disabled ? {} : { scale: 1.08 }}
+                    whileTap={disabled ? {} : { scale: 0.95 }}
+                    onClick={() => onSelect([letter])}
+                    disabled={disabled}
+                    className={`w-12 h-14 sm:w-14 sm:h-16 rounded-xl font-bold text-xl sm:text-2xl flex items-center justify-center transition-all shadow-sm ${btnClass}`}
+                  >
+                    {letter.toUpperCase()}
+                  </motion.button>
+                )
+              })}
+            </div>
           </div>
-        )}
-
-        <div className="mb-4 flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              size={14}
-              className={i < levelStars ? 'text-duo-yellow fill-current' : 'text-gray-200'}
-            />
-          ))}
-        </div>
-
-        <div className="mb-8">
-          <p className="text-center text-gray-400 text-sm mb-4 uppercase tracking-wide">
-            Выберите ударную букву
-          </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {letters.map((letter, index) => {
-              const isSelected = selectedIndex === index
-              const isCorrect = answerState === 'correct' && index === currentWord.stressIndex
-              const isWrong = answerState === 'wrong' && isSelected && index !== currentWord.stressIndex
-              const showCorrect = answerState === 'wrong' && index === currentWord.stressIndex
-
-              let btnClass = 'bg-white text-gray-800 border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
-              if (isCorrect || showCorrect) {
-                btnClass = 'bg-duo-green text-white border-2 border-duo-green'
-              } else if (isWrong) {
-                btnClass = 'bg-red-400 text-white border-2 border-red-400'
-              } else if (isSelected) {
-                btnClass = 'bg-duo-blue text-white border-2 border-duo-blue'
-              }
-
-              return (
-                <motion.button
-                  key={`${currentWord.id}-${index}`}
-                  whileHover={answerState === 'idle' ? { scale: 1.08 } : {}}
-                  whileTap={answerState === 'idle' ? { scale: 0.95 } : {}}
-                  onClick={() => handleLetterClick(index)}
-                  disabled={answerState !== 'idle'}
-                  className={`w-12 h-14 sm:w-14 sm:h-16 rounded-xl font-bold text-xl sm:text-2xl flex items-center justify-center transition-all shadow-sm ${btnClass}`}
-                >
-                  {letter.toUpperCase()}
-                </motion.button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Explanation — простой условный рендеринг без AnimatePresence */}
-        {answerState !== 'idle' && settings.showExplanation && (
-          <div className={`w-full rounded-xl p-4 mb-4 animate-fade-in ${answerState === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-            <p className="font-bold text-sm">
-              {answerState === 'correct' ? '✓ Правильно!' : '✗ Неправильно'}
-            </p>
-            <p className="text-sm mt-1">{explanation}</p>
-          </div>
-        )}
-
-        {answerState !== 'idle' && (
-          <button
-            onClick={handleNext}
-            className="btn-primary w-full flex items-center justify-center gap-2"
-          >
-            Дальше <ChevronRight size={18} />
-          </button>
-        )}
-      </div>
-
-      <div className="bg-white border-t border-gray-100 py-3">
-        <div className="max-w-md mx-auto px-4 flex justify-around text-center">
-          <div>
-            <p className="text-xs text-gray-400">Правильно</p>
-            <p className="text-sm font-bold text-duo-green">{stats.totalCorrect}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-400">Ошибки</p>
-            <p className="text-sm font-bold text-red-400">{stats.totalWrong}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-400">Изучено</p>
-            <p className="text-sm font-bold text-duo-yellow">{overall.mastered}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-400">Серия</p>
-            <p className="text-sm font-bold text-orange-500">{stats.streak}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+        )
+      }}
+    />
   )
 }

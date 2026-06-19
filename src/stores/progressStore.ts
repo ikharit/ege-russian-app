@@ -74,6 +74,7 @@ interface ProgressState {
   resetDailyQuests: () => void
   completeTheoryTest: (taskNumber: string, score: number, xpEarned: number) => void
   setActiveStatus: (statusId: string) => void
+  importProgress: (data: string) => { success: boolean; message: string }
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -130,6 +131,49 @@ export const useProgressStore = create<ProgressState>()(
               achievements: [...new Set([...s.userStats.achievements, ...newAchievements])]
             }
           }))
+        }
+      },
+
+      importProgress: (data: string) => {
+        try {
+          const parsed = JSON.parse(data)
+          
+          // Валидация
+          if (!parsed.userStats || !parsed.lessonProgress) {
+            return { success: false, message: 'Неверный формат файла' }
+          }
+          
+          // Мерж с текущим прогрессом
+          set((s: any) => {
+            const mergedLessonProgress = { ...s.lessonProgress }
+            Object.entries(parsed.lessonProgress).forEach(([key, val]: [string, any]) => {
+              if (!mergedLessonProgress[key] || val.status === 'completed') {
+                mergedLessonProgress[key] = val
+              }
+            })
+            
+            const mergedAchievements = [...new Set([...s.achievements, ...(parsed.achievements || [])])]
+            
+            return {
+              userStats: {
+                ...s.userStats,
+                ...parsed.userStats,
+                xp: Math.max(s.userStats.xp, parsed.userStats.xp || 0),
+                streak: Math.max(s.userStats.streak, parsed.userStats.streak || 0),
+                bestStreak: Math.max(s.userStats.bestStreak, parsed.userStats.bestStreak || 0),
+              },
+              lessonProgress: mergedLessonProgress,
+              achievements: mergedAchievements,
+              atomProgress: { ...s.atomProgress, ...(parsed.atomProgress || {}) },
+              wrongAnswers: [...s.wrongAnswers, ...(parsed.wrongAnswers || [])],
+              taskStats: { ...s.taskStats, ...(parsed.taskStats || {}) },
+              theoryTestsCompleted: { ...s.theoryTestsCompleted, ...(parsed.theoryTestsCompleted || {}) },
+            }
+          })
+          
+          return { success: true, message: 'Прогресс успешно импортирован' }
+        } catch (e) {
+          return { success: false, message: 'Ошибка чтения JSON' }
         }
       },
 
