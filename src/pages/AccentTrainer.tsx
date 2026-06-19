@@ -4,6 +4,7 @@
 import { motion } from 'framer-motion'
 import { allAccentWords, accentWordsById } from '../data/accentWords'
 import { BaseTrainer } from '../components/BaseTrainer'
+import { VoiceInputButton } from '../components/VoiceInputButton'
 
 export function AccentTrainer() {
   return (
@@ -59,6 +60,11 @@ export function AccentTrainer() {
                 )
               })}
             </div>
+            <VoiceInputButton
+              onSelect={onSelect}
+              correctAnswer={[question.normalized[question.stressIndex]]}
+              disabled={disabled}
+            />
           </div>
         )
       }}

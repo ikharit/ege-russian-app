@@ -49,10 +49,8 @@ function BottomNav() {
     { path: '/', icon: BookOpen, label: 'Учиться' },
     { path: '/course', icon: Map, label: 'Курс' },
     { path: '/theory', icon: BookOpenText, label: 'Теория' },
-    { path: '/games', icon: Gamepad2, label: 'Игры' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
     { path: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
-    { path: '/teacher', icon: GraduationCap, label: 'Учитель' },
   ]
 
   return (
