@@ -89,6 +89,13 @@ ege-russian-app/
 
 ## 🗂️ Журнал изменений (новые сверху)
 
+### [2026-06-19 10:20] Агент: main (Оптимизация workspace)
+- **Что:** Создан `INDEX.md`, обновлены статусы модулей, синхронизированы реестры
+- **Где:** `INDEX.md` (новый), `AGENTS.md`, `memory/agent-registry.md`
+- **Зачем:** Сторонним агентам сложно ориентироваться: 57+ модулей, дублирующиеся реестры, устаревшие статусы. Создана карта файлов, статусы переведены 🟢 для готовых модулей.
+- **Git commit:** —
+- **⚠️ Важно:** `INDEX.md` — точка входа для новых агентов. Task16Trainer 🟢 (убран из UI, задание 16 в `punctuation.ts`). Task5Trainer 🟢. NotificationStore, AnalyticsPage, StudentStore — все 🟢. Line endings (CRLF/LF) — известная проблема, ~10 файлов в `git status`, но `git diff` пустой. Не трогать — mass-reformat.
+
 ### [2026-06-19 01:40] Агент: main (Unified Error Bank)
 - **Что:** Все тренажёры теперь пишут ошибки в единый банк `progressStore.wrongAnswers`
 - **Где:** `src/pages/AccentTrainer.tsx`, `src/pages/Task5Trainer.tsx`, `src/pages/Task10Trainer.tsx`, `src/pages/Task16Trainer.tsx`
@@ -267,4 +274,4 @@ ege-russian-app/
 
 ---
 
-*Последнее обновление: 2026-06-19 01:40*
+*Последнее обновление: 2026-06-19 10:20*
