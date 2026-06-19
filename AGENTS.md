@@ -101,6 +101,64 @@ If you can't find a rule in the knowledge base:
 3. If still not found → ASK the human, don't make it up
 4. Add verified info to the appropriate file and rebuild index
 
+### 10. Release Notes & Versioning
+
+Every change that affects students MUST be reflected in release notes. This is not optional.
+
+#### When to add a release note entry
+
+| Change type | Example | Add to release notes? |
+|---|---|---|
+| New feature visible to students | New trainer, new task type, gamification | **YES — new version** |
+| Content improvement affecting learning | 100+ new explanations, RAG integration, theory coverage | **YES — new version** |
+| Bug fix affecting student experience | Broken streak, wrong answers, missing data | **YES — bullet in existing version** |
+| Bug fix not affecting students | TS error, build fix, internal refactor | **NO** |
+| Internal tooling | New validator, new script, CI/CD | **NO** |
+| Documentation only | AGENTS.md update, comments | **NO** |
+
+#### Version bump rules
+
+- **Patch (1.x.Y)** — bug fixes, small tweaks, no new student-facing features
+- **Minor (1.X.0)** — new features, content expansions, visible improvements to students
+- **Major (X.0.0)** — breaking changes, complete rewrites, new platform
+
+**BUMP VERSION when:**
+- 3+ student-facing features accumulate since last release
+- OR a single major feature ships (e.g., new trainer for entire EGE task)
+- OR content quality crosses a threshold (e.g., task coverage > 90%)
+
+#### How to add release notes
+
+1. Edit `src/data/releaseNotes.ts`
+2. Add new `ReleaseNote` object at the TOP of `RELEASE_NOTES` array
+3. Use `highlighted: true` for major releases
+4. Bullet types: `ege-important` (exam content), `feature` (functionality), `fix` (bugfix), `fun` (gamification)
+5. Always include `impact` field — explains WHY it matters to the student
+6. Update `LATEST_VERSION` export (auto-updates since it's `RELEASE_NOTES[0].version`)
+7. Commit with message: `feat(release): v{X.Y.Z} — {title}`
+
+#### Example
+
+```typescript
+{
+  version: '1.7.0',
+  date: '20 июня 2026',
+  title: 'Разбор ошибок с теорией — теперь понимаешь, ПОЧЕМУ неправильно!',
+  emoji: '📚',
+  highlighted: true,
+  bullets: [
+    { text: 'При ошибке показывается правило из теории', type: 'ege-important', impact: 'Не просто «неправильно», а «вот правило»' },
+  ],
+}
+```
+
+#### Anti-pattern: NEVER do this
+
+❌ Ship 5 new features and forget to update release notes  
+❌ Put internal changes (refactor, CI) in student-facing release notes  
+❌ Use vague titles like "bug fixes and improvements"  
+❌ Skip the `impact` field — students need to know WHY it matters
+
 ---
 
 Last updated: 2026-06-20 by agent
