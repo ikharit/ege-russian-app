@@ -1,12 +1,13 @@
 # Реестр заданий 9-20 ЕГЭ Русский — Инструкция для агентов
 
-> **Версия:** 1.2  
+> **Версия:** 1.3  
 > **Обновлен:** 2026-06-19  
 > **Автор:** main (оркестратор)  
 > **Excel 9-12:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_9-12_ЕГЭ_Русский.xlsx`  
 > **Excel 13-20:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_13-20_ЕГЭ_Русский.xlsx`  
 > **JSON 9-12:** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\task_registry.json`
-> **Скрипт верификации 15:** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_n_nn.py`
+> **Скрипт верификации 15 (Н/НН):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_n_nn.py`
+> **Скрипт верификации 9-20 (все задания):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_tasks.py`
 
 ---
 
@@ -97,9 +98,31 @@ python scripts/verify_n_nn.py src/data/sections/dooshin15.ts
 **Золотое правило для задания 15:**
 > Формулировка «впишите количество букв Н в слове» требует считать **ВСЕ** буквы «н» в слове, не только в суффиксе. Если в слове 3 «н» (например, `неожиданный` = не-ожидан-ный), ответ должен быть **3**, а не 2.
 
-### Скрипт проверки заданий 9-12 (орфография)
-**Файл:** `ege-russian-app/scripts/verify_orfography.py` (если создан)
-**Назначение:** Проверяет соответствие correctAnswer и текста вопроса для заданий с пропущенными буквами.
+### Универсальный скрипт проверки заданий 9-20 (все задания)
+**Файл:** `ege-russian-app/scripts/verify_tasks.py`
+**Назначение:** Проверяет структурную корректность всех заданий 9-20: типы вопросов, correctAnswer, options, дубликаты ID, формат текстов.
+
+**Как использовать:**
+```bash
+cd ege-russian-app
+python scripts/verify_tasks.py src/data/sections/grammar.ts
+python scripts/verify_tasks.py src/data/sections/dooshin/task9.ts
+python scripts/verify_tasks.py src/data/sections/*.ts
+```
+
+**Проверяет:**
+- Задания 9-12: `text` содержит `..`/`_` (пропущенные буквы), `single`/`ege-multiple` — correctAnswer в options
+- Задания 13-14: correctAnswer — `['слитно']`/`['раздельно']`/`['дефис']` (text) или слово из options (single)
+- Задание 15: correctAnswer — число (для text-формата «впишите количество букв Н»)
+- Задания 16-17, 19: correctAnswer в options
+- Дублирующиеся ID и options
+
+**Когда запускать:**
+1. ПЕРЕД началом работы с любым заданием 9-20 — проверь текущее состояние
+2. ПОСЛЕ любого редактирования — убедись, что ничего не сломал
+3. ПЕРЕД коммитом изменений — финальная проверка
+
+**Статус:** Проверено 3,355 вопросов — 0 ошибок (2026-06-19).
 
 ---
 

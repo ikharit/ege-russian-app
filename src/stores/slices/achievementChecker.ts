@@ -4,7 +4,9 @@ export function createAchievementChecker(get: any) {
   return (lessonId?: string) => {
     const state = get()
     const unlocked: string[] = []
-    const completedLessons = Object.values(state.lessonProgress).filter((l: any) => l.status === 'completed')
+    const completedLessons = Object.entries(state.lessonProgress)
+      .filter(([id, l]: any) => l.status === 'completed')
+      .map(([id, l]: any) => ({ ...l, id }))
     const completedCount = completedLessons.length
     const xp = state.userStats.xp
     const streak = state.userStats.streak

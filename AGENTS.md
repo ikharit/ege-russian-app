@@ -21,6 +21,10 @@ ege-russian-app/
 │   ├── stores/          # Zustand stores (progressStore, accentTrainerStore, ...)
 │   ├── data/            # Данные курса, теории, вопросов
 │   │   ├── sections/    # Разделы курса (grammar, orthography, dooshin, ...)
+│   │   │   ├── dooshin/ # ⭐ Дощинский: task9.ts, task10.ts, task11.ts, task12.ts, index.ts
+│   │   │   ├── dooshinMeta.ts    # Лёгкий meta-файл (92 урока без questions, eager load)
+│   │   │   ├── dooshinUnified.ts # Полные данные (dynamic import из Lesson.tsx)
+│   │   │   └── dooshin.ts        # 2-строчный реэкспорт (legacy, не удалять)
 │   │   ├── gsheets/     # Данные из Google Sheets (homeworkData.ts + students/)
 │   │   ├── atomization/ # Атомы (микро-навыки)
 │   │   └── theory/      # ⭐ ТЕОРИЯ — сюда складываем всё новое
@@ -28,6 +32,7 @@ ege-russian-app/
 │   └── types/           # TypeScript interfaces
 ├── memory/              # 🧠 Архив агентов (AGENTS-HISTORY.md)
 ├── docs/                # Документация, методички, правила
+├── scripts/             # ⭐ Скрипты (gen-dooshin-meta.js, verify_n_nn.py, verify_tasks.py)
 ├── AGENTS.md            # 📘 Этот файл (журнал + статусы + правила)
 ├── TASK_REGISTRY.md     # 📗 Реестр заданий 9-12 (инструкция для агентов)
 └── task_registry.json   # 🤖 Машиночитаемый реестр 3,242 вопросов
@@ -58,6 +63,9 @@ ege-russian-app/
 | NotificationStore | 🟢 | main | Push-уведомления, streak reminders |
 | AnalyticsPage | 🟢 | main | Аналитика класса |
 | StudentStore | 🟢 | main | Multi-user профили, регистрация |
+| Dooshin (задания 9-12) | 🟢 | main | Разделён на 4 файла + lazy loading. Meta-файл (без questions) в main bundle, questions грузятся dynamic import при открытии урока |
+| Tests | 🟢 | main | 54 теста проходят (achievementChecker, userSlice, questionValidator, QuestionCard, TheoryViewer, Task16Trainer, Statistics) |
+| Build / PWA | 🟢 | main | `npm run build` проходит. `backgroundSync` убран из PWA. `recharts` в отдельном chunk |
 
 ### 🎨 Цветовая кодировка статусов
 
@@ -77,7 +85,7 @@ ege-russian-app/
 - **Типы:** `src/types/index.ts` — UserStats, LessonProgress, WrongAnswer
 - **Данные курса:** `src/data/courseData.ts` — секции и уроки
 - **Задания 9-12 (основной курс):** `src/data/sections/grammar.ts`, `src/data/sections/orthography.ts`
-- **Задания 9-12 (Дощинский):** `src/data/sections/dooshin.ts`
+- **Задания 9-12 (Дощинский):** `src/data/sections/dooshin/` — `task9.ts`, `task10.ts`, `task11.ts`, `task12.ts` (4 файла, ленивая загрузка через `manualChunks`), `src/data/sections/dooshinMeta.ts` — лёгкий meta-файл (92 урока без questions, для eager загрузки), `src/data/sections/dooshinUnified.ts` — полные данные с questions (грузится dynamic import из `Lesson.tsx`)
 - **Задание 15 (Дощинский, Н/НН):** `src/data/sections/dooshin15.ts` — 61 вопрос, требует скрипт `verify_n_nn.py`
 - **Домашки:** `src/data/gsheets/homeworkData.ts` — 9 реальных учеников
 - **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер с дедупликацией
@@ -92,6 +100,9 @@ ege-russian-app/
 - **Ученики:** `src/stores/studentStore.ts` — multi-user профили, динамика
 - **Регистрация:** `src/components/StudentRegistrationModal.tsx`
 - **Переключение:** `src/components/ProfileSwitcher.tsx`
+- **Тесты:** `src/stores/slices/achievementChecker.test.ts`, `src/pages/Statistics.test.tsx`, `src/components/QuestionCard.test.tsx` — 54 теста, запуск `npm test`
+- **Скрипт генерации dooshinMeta:** `scripts/gen-dooshin-meta.js` — генерация `dooshinMeta.ts` из task9-12.ts
+- **Build-анализ:** `dist/stats.html` (генерируется при `npm run build` через `rollup-plugin-visualizer`)
 
 ---
 
@@ -120,7 +131,18 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
-### [2026-06-19 11:00] Агент: main (Dooshin achievements)
+### [2026-06-19 23:00] Агент: main (Build fix + Dooshin split + Tests + Bundle opt)
+- **Что:** A. Починен production build (PWA `backgroundSync` убран, TS ошибки в Profile/ParentDashboard). B. Dooshin разделён на 4 файла + lazy loading через `dooshinMeta.ts` + dynamic import в `Lesson.tsx`. C. Тесты расширены до 54 (Statistics.test.tsx, dooshin-ачивки). D. Bundle оптимизирован: `recharts` в отдельный chunk (-155 KB gzip).
+- **Где:** `vite.config.ts` (PWA, manualChunks), `src/data/sections/dooshin/` (task9-12 + index), `src/data/sections/dooshinMeta.ts` (новый, 92 урока без questions), `src/data/sections/dooshinUnified.ts` (dynamic import target), `src/pages/Lesson.tsx` (lazy loader + spinner), `src/pages/Statistics.test.tsx` (новый), `src/stores/slices/achievementChecker.test.ts` (+2 dooshin теста), `src/stores/slices/achievementChecker.ts` (багфикс completedLessons id), `src/pages/Profile.tsx` (импорты), `src/pages/ParentDashboard.tsx` (TS fix), `package.json` (type: module, скрипты), `scripts/gen-dooshin-meta.js` (генератор мета-файла)
+- **Зачем:** Пользователь выбрал все 4 пункта: деплой был сломан, dooshin 3777 строк грузил bundle, ачивки dooshin не работали из-за бага `Object.values()` без id, main bundle был перегружен recharts
+- **Git commit:** — (пока не закоммичено)
+- **⚠️ Важно:** 
+  - `dooshin.ts` в `src/data/sections/` — 2-строчный реэкспорт, НЕ УДАЛЯТЬ до полного перехода. 
+  - `courseData.ts` импортирует `dooshinMetaSection` (лёгкий, без questions). 
+  - При открытии dooshin-урока `Lesson.tsx` делает `import('../data/sections/dooshinUnified')` и подгружает реальные questions. 
+  - `achievementChecker.ts` — `completedLessons` теперь строится через `Object.entries().map(([id, l]) => ({...l, id}))`, иначе dooshin-ачивки не работают. 
+  - `recharts` chunk грузится только при открытии `/stats`. 
+  - 54 теста проходят. Build проходит.
 - **Что:** 9 новых достижений за прохождение заданий Дощинского
 - **Где:** `src/data/achievements.ts`
 - **Зачем:** Мотивация проходить задания Дощинского — прогресс отслеживается по completed урокам с id `lesson-dooshin-*`
@@ -147,6 +169,13 @@ ege-russian-app/
 - **Зачем:** Задания из Дощинского содержали массовые ошибки (67% в задании 10, 61% в задании 11, 39% в задании 12). Все ответы проверены и исправлены.
 - **Git commit:** `fix/dooshin-10-12-validation`
 - **⚠️ Важно:** Сборка проходит (`npm run build` OK). Все 2,717 заданий в `dooshin.ts` обновлены с правильными ответами. Task 9 использует ранее исправленный JSON.
+
+### [2026-06-19 22:00] Агент: main (Универсальный скрипт верификации verify_tasks.py)
+- **Что:** Создан универсальный скрипт `verify_tasks.py` для проверки структурной корректности всех заданий 9-20. Проверено 3,355 вопросов — 0 ошибок.
+- **Где:** `scripts/verify_tasks.py` (новый), `scripts/verify_n_nn.py` (ранее создан)
+- **Зачем:** Пользователь требовал рабочие инструменты верификации, чтобы добавление заданий происходило без галлюцинаций. Скрипт проверяет: типы вопросов, correctAnswer, options, дубликаты ID, формат текстов (пропущенные буквы, НЕ/НИ, Н/НН, пунктуация).
+- **Git commit:** —
+- **⚠️ Важно:** Любой агент, работающий с заданиями 9-20, ДОЛЖЕН запускать `python scripts/verify_tasks.py <файл>` ПЕРЕД и ПОСЛЕ правок. Файл поддерживает как одинарные, так и двойные кавычки в TypeScript (dooshin использует `"`).
 
 ### [2026-06-19 21:30] Агент: main (Задание 15 Дощинского + скрипт верификации Н/НН)
 - **Что:** Создан `dooshin15.ts` — 61 вопрос задания 15 (Н/НН в прилагательных и причастиях) из Дощинского. Создан скрипт `verify_n_nn.py` для автоматической проверки соответствия `correctAnswer` и фактического количества букв «н» в тексте. Исправлены 14 ошибок, где ответ не соответствовал реальному количеству «н».
@@ -320,4 +349,4 @@ ege-russian-app/
 ---
 
 *Архив всех записей: `memory/AGENTS-HISTORY.md`*  
-*Последнее обновление этого файла: 2026-06-19 21:30*
+*Последнее обновление этого файла: 2026-06-19 23:15*

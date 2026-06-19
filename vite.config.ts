@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   base: './',
@@ -60,9 +61,11 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
+      plugins: [visualizer({ open: false, filename: 'dist/stats.html' })],
       output: {
         manualChunks: {
           dooshin: ['./src/data/sections/dooshin'],
+          recharts: ['recharts'],
         },
       },
     },

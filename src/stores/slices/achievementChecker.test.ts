@@ -139,6 +139,28 @@ describe('achievementChecker', () => {
     expect(checker()).toContain('ach-mistake-1')
   })
 
+  it('unlocks dooshin-first achievement', () => {
+    const state = mockState({
+      lessonProgress: { 'lesson-dooshin-9-1': { status: 'completed' } }
+    })
+    const checker = makeChecker(state)
+    expect(checker()).toContain('ach-dooshin-first')
+  })
+
+  it('unlocks dooshin-5 achievement', () => {
+    const state = mockState({
+      lessonProgress: {
+        'lesson-dooshin-9-1': { status: 'completed' },
+        'lesson-dooshin-9-2': { status: 'completed' },
+        'lesson-dooshin-10-1': { status: 'completed' },
+        'lesson-dooshin-11-1': { status: 'completed' },
+        'lesson-dooshin-12-1': { status: 'completed' },
+      }
+    })
+    const checker = makeChecker(state)
+    expect(checker()).toContain('ach-dooshin-5')
+  })
+
   it('does not duplicate already unlocked achievements', () => {
     const state = mockState({
       achievements: ['ach-first-lesson'],
