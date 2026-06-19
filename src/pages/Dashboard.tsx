@@ -17,6 +17,7 @@ import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 import { getAchievementIcon } from '../data/achievementIcons'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { allHomework, studentsWithHomework } from '../data/gsheets/homeworkData'
+import { ReleaseNotesWidget } from '../components/ReleaseNotes'
 
 export function Dashboard() {
   const navigate = useNavigate()
