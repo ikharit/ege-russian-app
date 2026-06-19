@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -409,6 +409,31 @@ export function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Exam Variants Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/exam')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/exam'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Варианты ЕГЭ"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white">
+              <ClipboardList size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-blue-500 uppercase tracking-wide font-bold">Экзамен</p>
+              <p className="font-bold text-gray-800">Варианты ЕГЭ</p>
+              <p className="text-xs text-gray-500">5 вариантов с таймером</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-blue-400" />
+        </div>
+      </motion.div>
+
       {/* Games Card — compact, fun, distinct from trainers */}
       <motion.div
         className="card bg-gradient-to-br from-purple-100 to-fuchsia-50 border-purple-200"
@@ -431,6 +456,31 @@ export function Dashboard() {
             </div>
           </div>
           <ChevronRight size={24} className="text-purple-400" />
+        </div>
+      </motion.div>
+
+      {/* Adaptive Trainer Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200 cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/adaptive-trainer')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/adaptive-trainer'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Мой тренажёр — персональная тренировка"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-teal-500 flex items-center justify-center text-white">
+              <Target size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-teal-500 uppercase tracking-wide font-bold">Персонально</p>
+              <p className="font-bold text-gray-800">Мой тренажёр</p>
+              <p className="text-xs text-gray-500">Тренируй слабые места</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-teal-400" />
         </div>
       </motion.div>
 

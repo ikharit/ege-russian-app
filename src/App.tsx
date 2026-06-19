@@ -34,6 +34,9 @@ import { JoinClass } from './pages/JoinClass'
 import { ClassDetail } from './pages/ClassDetail'
 import { StudyPlanPage } from './pages/StudyPlanPage'
 import { AdaptiveTrainerPage } from './pages/AdaptiveTrainerPage'
+import { ExamVariantsList } from './pages/ExamVariantsList'
+import { ExamVariantPage } from './pages/ExamVariantPage'
+import { ExamResultsPage } from './pages/ExamResultsPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -91,7 +94,7 @@ type SyncStatus = 'idle' | 'syncing' | 'saved' | 'error'
 export default function App() {
   const navigate = useNavigate()
   const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer'
+  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname.startsWith('/exam/')
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
@@ -384,9 +387,13 @@ export default function App() {
           <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
+          <Route path="/adaptive-trainer" element={<AdaptiveTrainerPage />} />
           <Route path="/trainers" element={<TrainersPage />} />
           <Route path="/study-plan" element={<StudyPlanPage />} />
           <Route path="/games" element={<MiniGames />} />
+          <Route path="/exam" element={<ExamVariantsList />} />
+          <Route path="/exam/:variantId" element={<ExamVariantPage />} />
+          <Route path="/exam/:variantId/results" element={<ExamResultsPage />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task6-trainer" element={<Task6Trainer />} />
           <Route path="/task7-trainer" element={<Task7Trainer />} />

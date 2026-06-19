@@ -134,6 +134,13 @@ ege-russian-app/
 
 > **Все записи старше 20 — в архиве:** `memory/AGENTS-HISTORY.md`
 
+### [2026-06-20 00:15] Агент: main (Атомы: полный реестр заданий 1-27 + дополнительные)
+- **Что:** A. Добавлены 27 основных атомов `task1`..`task27` в `atoms.ts` — каждый с человекочитаемым названием, описанием и `taskNumbers`. B. Добавлены 11 дополнительных тематических атомов: `roots`, `text_connections`, `lexicology`, `speech_errors`, `paronyms`, `pleonasm`, `tropes`, `text_comprehension`, `information_types`, `lexical_analysis`, `essay`. C. Исправлен импорт `EssayProgress` в `essayData.ts` (не был импортирован, build ломался). D. Build проходит чисто.
+- **Где:** `src/data/atomization/atoms.ts` (+38 новых атомов), `src/data/essayData.ts` (импорт EssayProgress)
+- **Зачем:** WeakSpots, Teacher, адаптивный движок теперь показывают красивые названия атомов вместо сырых ID. Пользователь может видеть «Задание №5 — Паронимы» вместо `task5`.
+- **Git commit:** —
+- **⚠️ Важно:** Все новые атомы не имеют `parentAtom` (корневые). `getAtomById('task5')` → `{ name: 'Задание №5 — Паронимы', ... }`. `getAtomsForTask(5)` → `[task5, paronyms]`.
+
 ### [2026-06-20 00:10] Агент: main (Атомизация: полное покрытие всех вопросов atoms)
 - **Что:** Добавлены `atoms` ко всем вопросам, которые их не имели. A. `task1_3.ts` — 3 вопроса (q1-1, q2-1, q3-1) с `atoms: ['task1', 'text_connections']` и т.д. B. `task5.ts` — 32 вопроса (q5-1..q5-30, q5-ege-1/2) с `atoms: ['task5', 'paronyms']`. C. `task6_8.ts` — q6-1 с `atoms: ['task6', 'pleonasm']`. D. `task22_27.ts` — 6 вопросов (q22-1..q27-1) с `atoms` по номеру задания + теме. Всего: 42 вопроса получили `atoms`. Все остальные файлы уже были размечены.
 - **Где:** `src/data/sections/task1_3.ts`, `task5.ts`, `task6_8.ts`, `task22_27.ts`
