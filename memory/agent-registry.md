@@ -12,7 +12,7 @@
 
 | Модуль | Статус | Последний агент | Примечание |
 |--------|--------|-----------------|------------|
-| Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget |
+| Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget + ProfileSwitcher |
 | Lesson | 🟢 | main | Auto-complete, combo, звуки, confetti |
 | Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
 | Statistics | 🟢 | main | Упрощён: Прогресс + Темы |
@@ -30,14 +30,22 @@
 | ShareResultPage | 🟢 | main | /share — карточка результата |
 | **NotificationStore** | **🔵** | **main** | **Push-уведомления, streak reminders, дедлайны** |
 | **AnalyticsPage** | **🔵** | **main** | **Аналитика класса: слабые задания, ученики, дедлайны** |
+| **StudentStore** | **🔵** | **main** | **Multi-user профили, динамика, регистрация учеников** |
 
 ## Журнал изменений (новые сверху)
+
+### [2026-06-19 01:30] Агент: main (Student Registration / Multi-user)
+- **Что:** StudentStore с multi-user профилями, StudentRegistrationModal, ProfileSwitcher, динамика в Teacher, авто-сохранение в App.tsx
+- **Где:** `src/stores/studentStore.ts` (новый), `src/components/StudentRegistrationModal.tsx` (новый), `src/components/ProfileSwitcher.tsx` (новый), `src/pages/Teacher.tsx`, `src/pages/Dashboard.tsx`, `src/components/Header.tsx`, `src/App.tsx`
+- **Зачем:** Форма регистрации для запоминания разных реальных учеников и их динамики. Каждый ученик — отдельный профиль с собственным прогрессом, историей по дням, графиками XP/точности. Переключение через dropdown в Header.
+- **Git commit:** —
+- **⚠️ Важно:** `studentStore` persist key `ege-student-storage`. `progressStore` остаётся сессионным — при переключении профиля прогресс загружается из снепшота. `App.tsx` автоматически сохраняет прогресс в активный профиль при каждом изменении. Динамика (history) — мини-графики в карточке ученика (Teacher → detail view).
 
 ### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
 - **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
 - **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
 - **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
-- **Git commit:** —
+- **Git commit:** `e727cf0`
 - **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
 
 ### [2026-06-19 00:20] Агент: main
@@ -55,18 +63,11 @@
 - **⚠️ Важно:** Task10Trainer persist key изменён на `task10-trainer-v2`. Task5Trainer — новый модуль, persist key `task5-trainer-v1`.
 
 ### [2026-06-18 23:00] Агент: main
-- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация) **⚠️ ДУБЛЬ: уже создан в `21c5074`**
+- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация)
 - **Где:** `src/pages/Task16Trainer.tsx`, `src/data/task16Questions.ts`, `src/stores/task16Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Повторное создание (не знал о существующем). Другой агент создал полную версию (433 строки, 20 вопросов) ранее. Моя версия идентична.
-- **Git commit:** `21c5074` (оригинал), `714f86c` (мой дубль — только App.tsx)
-- **⚠️ Важно:** **Проверяйте git log перед созданием новых модулей.** Task16Trainer уже существовал в коммите `21c5074`.
-
-### [2026-06-18 23:30] Агент: main
-- **Что:** Task16 интегрировано в карту курса — убран тренажёр, добавлены 3 урока с реальными примерами Дощинского-2026
-- **Где:** `src/data/sections/punctuation.ts`, `src/data/task16Questions.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Пользователь указал, что задание 16 должно быть в карте курса как урок, а не как отдельный тренажёр. Примеры взяты из `extracted_tasks/task16.txt` (Дощинский-2026).
-- **Git commit:** `048a8c3`
-- **⚠️ Важно:** Тренажёр Task16Trainer оставлен в файловой системе (обратная совместимость), но убран из Dashboard и App. Теперь 3 урока: «Однородные члены и сложное предложение», «Придаточные и вводные», «Вводные слова и конструкции».
+- **Зачем:** Новый тренажёр задания ЕГЭ №16 — запятые в сложных предложениях, вводных словах, придаточных
+- **Git commit:** —
+- **⚠️ Важно:** 20 вопросов по темам: придаточные времени/причины/цели/уступки/изъяснительные, вводные слова, однородные члены. Паттерн повторён от Task5Trainer.
 
 ### [2026-06-19 00:30] Агент: main (теория + тесты)
 - **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
@@ -154,6 +155,9 @@
 - **Атомы:** `src/data/atomization/atoms.ts`
 - **Уведомления:** `src/stores/notificationStore.ts`
 - **Аналитика:** `src/pages/AnalyticsPage.tsx`
+- **Ученики:** `src/stores/studentStore.ts` — multi-user профили, динамика
+- **Регистрация:** `src/components/StudentRegistrationModal.tsx`
+- **Переключение:** `src/components/ProfileSwitcher.tsx`
 
 ## Что делать, если не уверен
 
@@ -165,26 +169,4 @@
 
 ---
 
-*Последнее обновление: 2026-06-19 01:00*
-
----
-
-*Последнее обновление: 2026-06-19 00:55*
-
-### [2026-06-19 00:55] Агент: main (Backend/Auth/Sync реализовано)
-- **Что:** Auth (email/password + Google OAuth), полная синхронизация progressStore в Supabase, автосинхронизация с дебаунсом 5с, индикатор в хедере
-- **Где:** `src/components/AuthModal.tsx` (новый), `src/stores/progressStore.ts`, `src/App.tsx`, `src/lib/supabase.ts`, `src/components/Header.tsx`
-- **Зачем:** Пользователь просил добавить аутентификацию и синхронизацию прогресса в облако
-- **Git commit:** `96d1f2d`
-- **⚠️ Важно:** `syncProgress` теперь сохраняет ВСЕ поля состояния. Автосинхронизация через `useProgressStore.subscribe` + дебаунс 5с. AuthModal — email/password + Google OAuth. Если Supabase не настроен — graceful degradation.
-
----
-
-*Последнее обновление: 2026-06-19 01:20*
-
-### [2026-06-19 01:20] Агент: main (Деплой — туннель + инструкции)
-- **Что:** Создан временный SSH-туннель через serveo.net для демонстрации приложения. Production build (`dist/`) поднят через Node.js HTTP-сервер + туннель. Подготовлен архив `dist.tar.gz` для загрузки на хостинг.
-- **Где:** `dist/` (production build), `server.js` (временный сервер), `dist.tar.gz` (архив для деплоя)
-- **Зачем:** Пользователь просит задеплоить приложение в реальном интернете. Временный туннель для демонстрации + инструкции для постоянного деплоя.
-- **Git commit:** — (туннель временный, не коммитится)
-- **⚠️ Важно:** Временный URL: `https://5c8db3aa4932bc5c-109-252-165-124.serveousercontent.com` — работает пока запущен SSH-туннель. Для постоянного деплоя нужен Vercel/Netlify/GitHub Pages. Архив `dist.tar.gz` (557K) готов для загрузки.
+*Последнее обновление: 2026-06-19 01:30*

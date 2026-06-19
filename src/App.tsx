@@ -25,6 +25,7 @@ import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 import { useNotificationStore } from './stores/notificationStore'
+import { useStudentStore } from './stores/studentStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 
 import TheoryPage from './pages/TheoryPage'
@@ -170,6 +171,36 @@ export default function App() {
   useEffect(() => {
     const checkNotifications = useNotificationStore.getState().checkAndNotify
     checkNotifications()
+  }, [])
+
+  // Auto-save progress to student store
+  useEffect(() => {
+    const unsubscribe = useProgressStore.subscribe((state) => {
+      const activeProfileId = useStudentStore.getState().activeProfileId
+      if (!activeProfileId) return
+      const progressSnapshot = {
+        userStats: state.userStats,
+        lessonProgress: state.lessonProgress,
+        atomProgress: state.atomProgress,
+        wrongAnswers: state.wrongAnswers,
+        taskStats: state.taskStats,
+        achievements: state.achievements,
+        lastUnlockedAchievement: state.lastUnlockedAchievement,
+        currentLessonId: state.currentLessonId,
+        currentLessonStartTime: state.currentLessonStartTime,
+        currentLessonHeartsLost: state.currentLessonHeartsLost,
+        heartRestoreCount: state.heartRestoreCount,
+        exportCount: state.exportCount,
+        dailyQuestProgress: state.dailyQuestProgress,
+        leaderboardRanks: state.leaderboardRanks,
+        theoryTestsCompleted: state.theoryTestsCompleted,
+        isTeacher: state.isTeacher,
+        userId: state.userId,
+      }
+      useStudentStore.getState().updateActiveProfile(progressSnapshot)
+      useStudentStore.getState().addHistoryPoint(progressSnapshot)
+    })
+    return () => unsubscribe()
   }, [])
 
   useEffect(() => {

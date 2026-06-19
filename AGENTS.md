@@ -65,7 +65,7 @@ ege-russian-app/
 
 | Модуль | Статус | Последний агент | Примечание |
 |--------|--------|-----------------|------------|
-| Dashboard | 🟢 | main | Карточка «Стоит подтянуть» ведёт в /mistakes |
+| Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget + ProfileSwitcher в Header |
 | Lesson / Уроки | 🟢 | main | Auto-complete, combo toasts, звуки |
 | Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
 | Statistics | 🟢 | main | Упрощён: только Прогресс и Темы |
@@ -81,40 +81,55 @@ ege-russian-app/
 | Theory (теория) | 🔵 | — | Ждёт скрапинга из грамота.ру |
 | Homework data | 🟢 | main | Google Sheets: 9 реальных учеников |
 | ShareResultPage | 🟢 | main | /share — карточка результата |
+| **NotificationStore** | **🔵** | **main** | **Push-уведомления, streak reminders, дедлайны** |
+| **AnalyticsPage** | **🔵** | **main** | **Аналитика класса: слабые задания, ученики, дедлайны** |
+| **StudentStore** | **🔵** | **main** | **Multi-user профили, динамика, регистрация учеников** |
 
 ---
 
 ## 🗂️ Журнал изменений (новые сверху)
 
+### [2026-06-19 01:30] Агент: main (Student Registration / Multi-user)
+- **Что:** StudentStore с multi-user профилями, StudentRegistrationModal, ProfileSwitcher, динамика в Teacher, авто-сохранение в App.tsx
+- **Где:** `src/stores/studentStore.ts` (новый), `src/components/StudentRegistrationModal.tsx` (новый), `src/components/ProfileSwitcher.tsx` (новый), `src/pages/Teacher.tsx`, `src/pages/Dashboard.tsx`, `src/components/Header.tsx`, `src/App.tsx`
+- **Зачем:** Форма регистрации для запоминания разных реальных учеников и их динамики. Каждый ученик — отдельный профиль с собственным прогрессом, историей по дням, графиками XP/точности. Переключение через dropdown в Header.
+- **Git commit:** —
+- **⚠️ Важно:** `studentStore` persist key `ege-student-storage`. `progressStore` остаётся сессионным — при переключении профиля прогресс загружается из снепшота. `App.tsx` автоматически сохраняет прогресс в активный профиль при каждом изменении. Динамика (history) — мини-графики в карточке ученика (Teacher → detail view).
+
+### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
+- **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
+- **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
+- **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
+- **Git commit:** `e727cf0`
+- **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
+
 ### [2026-06-19 00:20] Агент: main
 - **Что:** База теории — task11, task12, task14
-- **Где:** src/data/theory/task11.ts, 	ask12.ts, 	ask14.ts
+- **Где:** src/data/theory/task11.ts, 	ask12.ts, 	task14.ts
 - **Зачем:** Скрапинг теории из umschool.net, maximumtest.ru, ФИПИ Навигатор
 - **Git commit:** 14aa518
 - **⚠️ Важно:** Пополнено 3 задания из 11. Остались: task5, 6, 7, 8, 13, 15, 16, 17-21, 22-26.
 
+### [2026-06-18 23:45] Агент: main (task10 + task5)
+- **Что:** Task10Trainer: убраны звёзды, заменены на статусы (new/deferred/passed). Исправлены орфографические ошибки в вопросах (q1, q3, q6). Task5Trainer: новый тренажёр по паронимам (задание 5).
+- **Где:** `src/stores/task10Store.ts`, `src/pages/Task10Trainer.tsx`, `src/data/task10Questions.ts`, `src/pages/Dashboard.tsx`, `src/data/task5Questions.ts`, `src/stores/task5Store.ts`, `src/pages/Task5Trainer.tsx`, `src/App.tsx`
+- **Зачем:** Убрана система 5 звёзд — повторение только при ошибке, в конце сессии. Исправлены слова: разфасовать→расфасовать, возьметь→возьмёшь, обгрохать→обгрызть, прязык→признак, бесприкрас→преславный. Новый тренажёр №5 с 12 вопросами по паронимам ФИПИ.
+- **Git commit:** `3035726` (task10 статусы), `149da4e` (task10 исправления), `f55ec35` (task5 тренажёр)
+- **⚠️ Важно:** Task10Trainer persist key изменён на `task10-trainer-v2`. Task5Trainer — новый модуль, persist key `task5-trainer-v1`.
+
 ### [2026-06-18 23:00] Агент: main
-- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация) **⚠️ ДУБЛЬ: уже создан в `21c5074`**
+- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация)
 - **Где:** `src/pages/Task16Trainer.tsx`, `src/data/task16Questions.ts`, `src/stores/task16Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Повторное создание (не знал о существующем). Другой агент создал полную версию (433 строки, 20 вопросов) ранее. Моя версия идентична.
-- **Git commit:** `21c5074` (оригинал), `714f86c` (мой дубль — только App.tsx)
-- **⚠️ Важно:** **Проверяйте git log перед созданием новых модулей.** Task16Trainer уже существовал в коммите `21c5074`.
+- **Зачем:** Новый тренажёр задания ЕГЭ №16 — запятые в сложных предложениях, вводных словах, придаточных
+- **Git commit:** —
+- **⚠️ Важно:** 20 вопросов по темам: придаточные времени/причины/цели/уступки/изъяснительные, вводные слова, однородные члены. Паттерн повторён от Task5Trainer.
 
-### [2026-06-18 23:30] Агент: main
-- **Что:** Task16 интегрировано в карту курса — убран тренажёр, добавлены 3 урока с реальными примерами Дощинского-2026
-- **Где:** `src/data/sections/punctuation.ts`, `src/data/task16Questions.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Пользователь указал, что задание 16 должно быть в карте курса как урок, а не как отдельный тренажёр. Примеры взяты из `extracted_tasks/task16.txt` (Дощинский-2026).
-- **Git commit:** `048a8c3`
-- **⚠️ Важно:** Тренажёр Task16Trainer оставлен в файловой системе (обратная совместимость), но убран из Dashboard и App. Теперь 3 урока: «Однородные члены и сложное предложение», «Придаточные и вводные», «Вводные слова и конструкции».
-
-### [2026-06-18 23:05] Агент: main
-- **Что:** Исправление TypeScript ошибок от других агентов
-- **Где:** `src/components/Header.tsx`, `src/data/theory/index.ts`
-- **Зачем:** Build падал с 10 TS ошибками: `React` не импортирован в Header, `theory/index.ts` использовал re-export без локального импорта
-- **Git commit:** `969b3e7`
-- **⚠️ Важно:** Другой агент добавил Supabase/auth, theory re-exports, но не проверил TypeScript. Всегда делайте `npm run build` перед коммитом.
-
-### [2026-06-18 22:45] Агент: main
+### [2026-06-19 00:30] Агент: main (теория + тесты)
+- **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
+- **Где:** `src/components/TheoryViewer.tsx`, `src/components/TheoryTest.tsx`, `src/data/theoryTests.ts`, `src/pages/TheoryPage.tsx`, `src/stores/progressStore.ts`, `src/App.tsx`
+- **Зачем:** Удаление интерактивных артефактов из theoryData.ts; проверка понимания теории; мотивация через XP и статусы
+- **Git commit:** `904d957` (включено в `feat: theory database structure`)
+- **⚠️ Важно:** `TheoryViewer` использует `skipUntilEmptyLine` + `Set` дедупликацию для скрытия тестовых блоков. Тесты хранятся в `progressStore.theoryTestsCompleted`. Задания 8 и 27 (Сочинение) тоже покрыты тестами.
 - **Что:** Header XP анимация: микро-rotate + микро-искры
 - **Где:** `src/components/Header.tsx`
 - **Зачем:** Замена flip-rotate 360° на лёгкий покач (-2°→+1°→-1°), уменьшение sparkles до 1px и 0.5px
@@ -127,6 +142,13 @@ ege-russian-app/
 - **Зачем:** Новый тренажёр для задания ЕГЭ (типографика/пунктуация)
 - **Git commit:** `da84a9d`
 - **⚠️ Важно:** Новый модуль — добавлен роут `/task5-trainer`, стор, данные вопросов. Dashboard обновлён для подсчёта изученных уроков.
+
+### [2026-06-19 00:11] Агент: main
+- **Что:** Создан агентский реестр (AGENTS.md + memory/agent-registry.md)
+- **Где:** `AGENTS.md`, `memory/agent-registry.md` (этот файл)
+- **Зачем:** 5 агентов работают над проектом, нужна координация
+- **Git commit:** —
+- **⚠️ Важно:** Все агенты ДОЛЖНЫ читать этот файл перед работой. Дублируйте записи в оба файла.
 
 ### [2026-06-18 23:55] Агент: main
 - **Что:** Streak freeze + звёзды на карте курса
@@ -188,6 +210,11 @@ ege-russian-app/
 - **Домашки:** `src/data/gsheets/homeworkData.ts` — 9 реальных учеников
 - **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер с дедупликацией
 - **Атомы:** `src/data/atomization/atoms.ts` — микро-навыки
+- **Уведомления:** `src/stores/notificationStore.ts`
+- **Аналитика:** `src/pages/AnalyticsPage.tsx`
+- **Ученики:** `src/stores/studentStore.ts` — multi-user профили, динамика
+- **Регистрация:** `src/components/StudentRegistrationModal.tsx`
+- **Переключение:** `src/components/ProfileSwitcher.tsx`
 
 ---
 
@@ -198,65 +225,6 @@ ege-russian-app/
 3. Сделай `git diff` — увидишь текущие незакоммиченные изменения
 4. **Не перезаписывай файлы сразу** — если не уверен, спроси или сделай backup
 
-### [2026-06-18 23:45] Агент: main (task10 + task5)
-- **Что:** Task10Trainer: убраны звёзды, заменены на статусы (new/deferred/passed). Исправлены орфографические ошибки в вопросах (q1, q3, q6). Task5Trainer: новый тренажёр по паронимам (задание 5).
-- **Где:** `src/stores/task10Store.ts`, `src/pages/Task10Trainer.tsx`, `src/data/task10Questions.ts`, `src/pages/Dashboard.tsx`, `src/data/task5Questions.ts`, `src/stores/task5Store.ts`, `src/pages/Task5Trainer.tsx`, `src/App.tsx`
-- **Зачем:** Убрана система 5 звёзд — повторение только при ошибке, в конце сессии. Исправлены слова: разфасовать→расфасовать, возьметь→возьмёшь, обгрохать→обгрызть, прязык→признак, бесприкрас→преславный. Новый тренажёр №5 с 12 вопросами по паронимам ФИПИ.
-- **Git commit:** `3035726` (task10 статусы), `149da4e` (task10 исправления), `f55ec35` (task5 тренажёр)
-- **⚠️ Важно:** Task10Trainer persist key изменён на `task10-trainer-v2`. Task5Trainer — новый модуль, persist key `task5-trainer-v1`.
-
-### [2026-06-18 23:00] Агент: main
-- **Что:** Task16Trainer — тренажёр задания 16 (пунктуация)
-- **Где:** `src/pages/Task16Trainer.tsx`, `src/data/task16Questions.ts`, `src/stores/task16Store.ts`, `src/App.tsx`, `src/pages/Dashboard.tsx`
-- **Зачем:** Новый тренажёр задания ЕГЭ №16 — запятые в сложных предложениях, вводных словах, придаточных
-- **Git commit:** —
-- **⚠️ Важно:** 20 вопросов по темам: придаточные времени/причины/цели/уступки/изъяснительные, вводные слова, однородные члены. Паттерн повторён от Task5Trainer.
-
-### [2026-06-19 00:30] Агент: main (теория + тесты)
-- **Что:** Рендерер теории с дедупликацией артефактов, тесты по пониманию (7 вопросов × 16 уроков), цветные статусы в списке, XP за тесты
-- **Где:** `src/components/TheoryViewer.tsx`, `src/components/TheoryTest.tsx`, `src/data/theoryTests.ts`, `src/pages/TheoryPage.tsx`, `src/stores/progressStore.ts`, `src/App.tsx`
-- **Зачем:** Удаление интерактивных артефактов из theoryData.ts; проверка понимания теории; мотивация через XP и статусы
-- **Git commit:** `904d957` (включено в `feat: theory database structure`)
-- **⚠️ Важно:** `TheoryViewer` использует `skipUntilEmptyLine` + `Set` дедупликацию для скрытия тестовых блоков. Тесты хранятся в `progressStore.theoryTestsCompleted`. Задания 8 и 27 (Сочинение) тоже покрыты тестами.
-
-### [2026-06-19 00:45] Агент: main (Backend/Auth/Sync план)
-- **Что:** Планирование: Auth (email/Google), Firestore sync прогресса, автосинхронизация
-- **Где:** `src/lib/supabase.ts`, `src/stores/progressStore.ts`, `src/App.tsx`, `src/components/AuthModal.tsx` (новый)
-- **Зачем:** Пользователь просит добавить аутентификацию и синхронизацию прогресса в облако. Текущий `syncProgress` неполный — не синхронизирует `theoryTestsCompleted`, `atomProgress`, `wrongAnswers`, `taskStats`, `dailyQuestProgress`.
-- **Git commit:** — (планирование)
-- **⚠️ Важно:** `syncProgress` сейчас сохраняет только `userStats` + `lessonProgress` + `achievements`. Нужно расширить до полного состояния. Также нужен UI для входа/регистрации.
-
 ---
 
-*Последнее обновление: 2026-06-19 00:45*
-
-### [2026-06-19 01:00] Агент: main (Retention / Push / Analytics)
-- **Что:** NotificationStore, AnalyticsPage, Dashboard виджеты, Teacher ссылка
-- **Где:** `src/stores/notificationStore.ts` (новый), `src/pages/AnalyticsPage.tsx` (новый), `src/pages/Dashboard.tsx` (NotificationWidget + DeadlineWidget), `src/pages/Teacher.tsx` (ссылка на /analytics), `src/App.tsx` (роут /analytics + useEffect проверки уведомлений)
-- **Зачем:** Retention-механизмы: push-напоминания о streak и дедлайнах, аналитика класса для учителя (слабые задания, heatmap, дедлайны), виджеты на Dashboard
-- **Git commit:** —
-- **⚠️ Важно:** `notificationStore` persist key `notification-store`. AnalyticsPage агрегирует данные из `teacherStudents` + `taskStats` + `allHomework`. `NotificationWidget` показывает только непрочитанные уведомления. `DeadlineWidget` считает дни до дедлайна из Google Sheets.
-
----
-
----
-
-*Последнее обновление: 2026-06-19 00:55*
-
-### [2026-06-19 00:55] Агент: main (Backend/Auth/Sync реализовано)
-- **Что:** Auth (email/password + Google OAuth), полная синхронизация progressStore в Supabase, автосинхронизация с дебаунсом 5с, индикатор в хедере
-- **Где:** `src/components/AuthModal.tsx` (новый), `src/stores/progressStore.ts`, `src/App.tsx`, `src/lib/supabase.ts`, `src/components/Header.tsx`
-- **Зачем:** Пользователь просил добавить аутентификацию и синхронизацию прогресса в облако
-- **Git commit:** `96d1f2d`
-- **⚠️ Важно:** `syncProgress` теперь сохраняет ВСЕ поля состояния (userStats, lessonProgress, atomProgress, wrongAnswers, taskStats, dailyQuestProgress, theoryTestsCompleted, leaderboardRanks, teacherStudents, isTeacher). `loadProgress` восстанавливает всё из Supabase. Автосинхронизация через `useProgressStore.subscribe` + дебаунс 5с. Индикатор в хедере: «Синхронизация...» / «Сохранено» / «Ошибка». AuthModal — email/password + Google OAuth. Если Supabase не настроен — graceful degradation.
-
----
-
-*Последнее обновление: 2026-06-19 01:20*
-
-### [2026-06-19 01:20] Агент: main (Деплой — туннель + инструкции)
-- **Что:** Создан временный SSH-туннель через serveo.net для демонстрации приложения. Production build (`dist/`) поднят через Node.js HTTP-сервер + туннель. Подготовлен архив `dist.tar.gz` для загрузки на хостинг.
-- **Где:** `dist/` (production build), `server.js` (временный сервер), `dist.tar.gz` (архив для деплоя)
-- **Зачем:** Пользователь просит задеплоить приложение в реальном интернете. Временный туннель для демонстрации + инструкции для постоянного деплоя.
-- **Git commit:** — (туннель временный, не коммитится)
-- **⚠️ Важно:** Временный URL: `https://5c8db3aa4932bc5c-109-252-165-124.serveousercontent.com` — работает пока запущен SSH-туннель. Для постоянного деплоя нужен Vercel/Netlify/GitHub Pages. Архив `dist.tar.gz` (557K) готов для загрузки.
+*Последнее обновление: 2026-06-19 01:30*

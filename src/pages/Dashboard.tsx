@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Volume2, Calendar, AlertCircle, Bell, Clock } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useNotificationStore } from '../stores/notificationStore'
+import { useStudentStore } from '../stores/studentStore'
 import { useAccentTrainerStore } from '../stores/accentTrainerStore'
 import { useTask5Store } from '../stores/task5Store'
 import { useTask10Store } from '../stores/task10Store'
@@ -21,6 +22,8 @@ export function Dashboard() {
   const navigate = useNavigate()
   const [showXPModal, setShowXPModal] = useState(false)
   const stats = useProgressStore((s) => s.userStats)
+  const activeProfile = useStudentStore((s) => s.getActiveProfile())
+  const displayName = activeProfile?.name || stats.name || 'ученик'
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const achievements = useProgressStore((s) => s.achievements)
   const checkHeartRestore = useProgressStore((s) => s.checkHeartRestore)
@@ -79,7 +82,7 @@ export function Dashboard() {
           <RankBadge level={stats.level} size="md" showName />
         </motion.div>
         <h1 className="text-2xl font-bold text-gray-800 mt-2">
-          Привет, {stats.name || 'ученик'}! 👋
+          Привет, {displayName}! 👋
         </h1>
         <p className="text-gray-500 mt-1">Готов к ЕГЭ по русскому?</p>
       </div>

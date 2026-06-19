@@ -1,13 +1,16 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { Flame, Heart, Zap, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from './Popover'
 import { motion } from 'framer-motion'
+import { ProfileSwitcher } from './ProfileSwitcher'
+import { StudentRegistrationModal } from './StudentRegistrationModal'
 
 export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
+  const [showRegModal, setShowRegModal] = useState(false)
 
   const streakStart = stats.lastActivityDate
     ? new Date(new Date(stats.lastActivityDate).getTime() - (stats.streak - 1) * 86400000).toLocaleDateString('ru-RU')
@@ -22,9 +25,12 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
         @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
       `}</style>
       <div className="max-w-md mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
-          <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
+            <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
+          </div>
+          <ProfileSwitcher onAddStudent={() => setShowRegModal(true)} />
         </div>
         <div className="flex items-center gap-3">
           {/* Sync indicator + auth */}
@@ -116,6 +122,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           </motion.button>
         </div>
       </div>
+      <StudentRegistrationModal isOpen={showRegModal} onClose={() => setShowRegModal(false)} />
     </header>
   )
 }

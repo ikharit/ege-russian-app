@@ -1,18 +1,44 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock, ChevronRight } from 'lucide-react'
+import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock, ChevronRight, UserPlus, TrendingUp, Target, SwitchCamera } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useStudentStore } from '../stores/studentStore'
 import { course } from '../data/courseData'
 import { useNavigate } from 'react-router-dom'
 import { allHomework, nonstandardStudents } from '../data/gsheets/homeworkData'
+import { StudentRegistrationModal } from '../components/StudentRegistrationModal'
 
 export function Teacher() {
   const navigate = useNavigate()
-  const students = useProgressStore((s) => s.teacherStudents)
+  const mockStudents = useProgressStore((s) => s.teacherStudents)
   const isTeacher = useProgressStore((s) => s.isTeacher)
   const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'assign' | 'analytics'>('overview')
+  const [showRegModal, setShowRegModal] = useState(false)
+
+  const profiles = useStudentStore((s) => s.profiles)
+  const getProfileStats = useStudentStore((s) => s.getProfileStats)
+  const switchProfile = useStudentStore((s) => s.switchProfile)
+
+  // Combine real profiles + mock data for display
+  const realStudents = profiles.map(p => {
+    const stats = getProfileStats(p.id)
+    return {
+      id: p.id,
+      name: p.name,
+      lastActive: p.lastActive,
+      lessonsCompleted: stats.lessonsCompleted,
+      totalAttempts: stats.totalAttempts,
+      averageScore: stats.accuracy,
+      weakTopics: stats.weakTopics,
+      emoji: p.emoji,
+      className: p.className,
+      history: p.history,
+    }
+  })
+
+  const students: any[] = realStudents.length > 0 ? realStudents : mockStudents
 
   if (!isTeacher) {
     return (
@@ -35,11 +61,16 @@ export function Teacher() {
     const daysDiff = (Date.now() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
     return daysDiff <= 7
   }).length
-  const avgScore = Math.round(students.reduce((sum, s) => sum + s.averageScore, 0) / totalStudents)
+  const avgScore = totalStudents > 0 ? Math.round(students.reduce((sum, s) => sum + s.averageScore, 0) / totalStudents) : 0
 
   const student = selectedStudent ? students.find(s => s.id === selectedStudent) : null
 
   if (student) {
+    const isRealProfile = profiles.some(p => p.id === student.id)
+    const profile = isRealProfile ? profiles.find(p => p.id === student.id) : null
+    const history = profile?.history || []
+    const hasHistory = history.length > 1
+
     return (
       <div className="max-w-md mx-auto px-4 py-6">
         <button onClick={() => setSelectedStudent(null)} className="flex items-center gap-2 text-gray-500 mb-4">
@@ -48,10 +79,11 @@ export function Teacher() {
         <div className="card mb-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-14 h-14 rounded-full bg-duo-green/20 flex items-center justify-center text-2xl">
-              👨‍🎓
+              {student.emoji || '👨‍🎓'}
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800">{student.name}</h2>
+              {student.className && <p className="text-xs text-gray-400">{student.className}</p>}
               <p className="text-sm text-gray-500">Последняя активность: {student.lastActive}</p>
             </div>
           </div>
@@ -71,6 +103,55 @@ export function Teacher() {
           </div>
         </div>
 
+        {/* Dynamics chart */}
+        {hasHistory && (
+          <div className="card mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp size={20} className="text-duo-blue" />
+              <h3 className="font-bold text-gray-700">Динамика прогресса</h3>
+            </div>
+            <div className="space-y-3">
+              {/* XP mini chart */}
+              <div>
+                <p className="text-xs text-gray-500 mb-1">XP</p>
+                <div className="flex items-end gap-1 h-20">
+                  {history.slice(-7).map((h, i) => {
+                    const maxXP = Math.max(...history.slice(-7).map(h => h.xp), 1)
+                    const height = maxXP > 0 ? (h.xp / maxXP) * 100 : 0
+                    return (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div
+                          className="w-full bg-duo-blue/60 rounded-t-sm min-h-[4px]"
+                          style={{ height: `${Math.max(height, 4)}%` }}
+                        />
+                        <span className="text-[9px] text-gray-400">{h.date.slice(5)}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+              {/* Accuracy mini chart */}
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Точность (%)</p>
+                <div className="flex items-end gap-1 h-20">
+                  {history.slice(-7).map((h, i) => {
+                    const height = h.accuracy
+                    return (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div
+                          className={`w-full rounded-t-sm min-h-[4px] ${h.accuracy >= 70 ? 'bg-duo-green/60' : h.accuracy >= 50 ? 'bg-duo-yellow/60' : 'bg-duo-red/60'}`}
+                          style={{ height: `${Math.max(height, 4)}%` }}
+                        />
+                        <span className="text-[9px] text-gray-400">{h.date.slice(5)}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="card">
           <div className="flex items-center gap-2 mb-3">
             <TrendingDown size={20} className="text-duo-red" />
@@ -78,7 +159,7 @@ export function Teacher() {
           </div>
           {student.weakTopics.length > 0 ? (
             <div className="flex flex-col gap-2">
-              {student.weakTopics.map((topic, idx) => (
+              {student.weakTopics.map((topic: string, idx: number) => (
                 <div key={idx} className="flex items-center gap-2 bg-duo-red/10 rounded-lg p-2">
                   <AlertTriangle size={16} className="text-duo-red" />
                   <span className="text-sm text-gray-700">{topic}</span>
@@ -88,7 +169,50 @@ export function Teacher() {
           ) : (
             <p className="text-sm text-gray-500">Все темы освоены хорошо!</p>
           )}
-          <button className="btn-primary w-full mt-4">
+          {isRealProfile && (
+            <button
+              onClick={() => {
+                const currentProgress = useProgressStore.getState()
+                const progressSnapshot = {
+                  userStats: currentProgress.userStats,
+                  lessonProgress: currentProgress.lessonProgress,
+                  atomProgress: currentProgress.atomProgress,
+                  wrongAnswers: currentProgress.wrongAnswers,
+                  taskStats: currentProgress.taskStats,
+                  achievements: currentProgress.achievements,
+                  lastUnlockedAchievement: currentProgress.lastUnlockedAchievement,
+                  currentLessonId: currentProgress.currentLessonId,
+                  currentLessonStartTime: currentProgress.currentLessonStartTime,
+                  currentLessonHeartsLost: currentProgress.currentLessonHeartsLost,
+                  heartRestoreCount: currentProgress.heartRestoreCount,
+                  exportCount: currentProgress.exportCount,
+                  dailyQuestProgress: currentProgress.dailyQuestProgress,
+                  leaderboardRanks: currentProgress.leaderboardRanks,
+                  theoryTestsCompleted: currentProgress.theoryTestsCompleted,
+                  isTeacher: currentProgress.isTeacher,
+                  userId: currentProgress.userId,
+                }
+                switchProfile(student.id, progressSnapshot)
+                const newProfile = useStudentStore.getState().getProfileById(student.id)
+                if (newProfile) {
+                  useProgressStore.setState((state) => ({
+                    ...state,
+                    ...newProfile.progress,
+                    userStats: {
+                      ...newProfile.progress.userStats,
+                      name: newProfile.name,
+                    }
+                  }))
+                }
+                navigate('/')
+              }}
+              className="btn-primary w-full mt-4 bg-duo-green hover:bg-duo-green/90"
+            >
+              <SwitchCamera size={16} className="inline mr-2" />
+              Переключиться на этого ученика
+            </button>
+          )}
+          <button className="btn-primary w-full mt-2">
             <Mail size={16} className="inline mr-2" />
             Назначить дополнительное задание
           </button>
@@ -397,6 +521,17 @@ export function Teacher() {
           <AnalyticsTab />
         </div>
       )}
+
+      {/* Add student button */}
+      <button
+        onClick={() => setShowRegModal(true)}
+        className="btn-primary flex items-center justify-center gap-2 mt-2"
+      >
+        <UserPlus size={16} />
+        Добавить ученика
+      </button>
+
+      <StudentRegistrationModal isOpen={showRegModal} onClose={() => setShowRegModal(false)} />
     </div>
   )
 }
