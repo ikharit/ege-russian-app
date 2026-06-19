@@ -278,10 +278,14 @@ export function Leaderboard() {
                 const minHeight = 90
                 const maxHeight = 170
                 const getHeight = (entry: typeof top3[0]) => {
-                  const val = mode === 'xp' ? entry.xp : 
-                    mode === 'streak' ? (entry.streak || 0) : 
-                    mode === 'accuracy' ? ((entry as any).accuracy || 0) :
-                    (entry as any).homeworkPercent || 0
+                  const values: Record<string, number> = {
+                    xp: entry.xp,
+                    streak: entry.streak || 0,
+                    achievements: (entry as any).achievements?.length || 0,
+                    accuracy: (entry as any).accuracy || 0,
+                    homework: (entry as any).homeworkPercent || 0,
+                  }
+                  const val = values[mode] || 0
                   return minHeight + (val / maxVal) * (maxHeight - minHeight)
                 }
                 return [1, 0, 2].map(podiumIdx => {
