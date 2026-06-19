@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2 } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
+import { useClassStore } from '../stores/classStore'
 import { course } from '../data/courseData'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
@@ -18,6 +19,7 @@ import { MistakesCard } from '../components/dashboard/MistakesCard'
 import { DashboardNotificationWidget } from '../components/dashboard/DashboardNotificationWidget'
 import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadlineWidget'
 import { WhatToStudyToday } from '../components/WhatToStudyToday'
+import { SmartPathCard } from '../components/SmartPathCard'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -36,6 +38,13 @@ export function Dashboard() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const achievements = useProgressStore((s) => s.achievements)
   const checkHeartRestore = useProgressStore((s) => s.checkHeartRestore)
+  const getStudentClass = useClassStore((s) => s.getStudentClass)
+  const getLeaderboard = useClassStore((s) => s.getLeaderboard)
+  const studentClass = activeProfile ? getStudentClass(activeProfile.id) : null
+  const classLeaderboard = studentClass ? getLeaderboard(studentClass.id) : []
+  const myClassRank = activeProfile && studentClass
+    ? classLeaderboard.findIndex(e => e.profileId === activeProfile.id) + 1
+    : -1
 
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)
@@ -182,6 +191,9 @@ export function Dashboard() {
       {/* Daily Quests */}
       <DailyQuests />
 
+      {/* Smart Path */}
+      <SmartPathCard />
+
       {/* What to study today */}
       <WhatToStudyToday />
 
@@ -283,6 +295,65 @@ export function Dashboard() {
           </div>
         )}
       </motion.div>
+
+      {/* My Class Card */}
+      {studentClass ? (
+        <motion.div
+          className="card bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200 cursor-pointer"
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate(`/class/${studentClass.id}`)}
+          onKeyDown={(e) => handleKeyNav(e, () => navigate(`/class/${studentClass.id}`))}
+          role="button"
+          tabIndex={0}
+          aria-label="Мой класс"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center text-white">
+                <Users size={24} />
+              </div>
+              <div>
+                <p className="text-xs text-indigo-500 uppercase tracking-wide font-bold">Мой класс</p>
+                <p className="font-bold text-gray-800">{studentClass.name}</p>
+                <p className="text-xs text-gray-500">{studentClass.teacherName} • {studentClass.students.length} учеников</p>
+              </div>
+            </div>
+            <div className="text-right">
+              {myClassRank > 0 && (
+                <div className="flex items-center gap-1">
+                  <Trophy size={14} className="text-yellow-500" />
+                  <span className="text-xs font-bold text-gray-600">#{myClassRank}</span>
+                </div>
+              )}
+              <ChevronRight size={24} className="text-indigo-400" />
+            </div>
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div
+          className="card bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200 cursor-pointer"
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate('/join-class')}
+          onKeyDown={(e) => handleKeyNav(e, () => navigate('/join-class'))}
+          role="button"
+          tabIndex={0}
+          aria-label="Присоединиться к классу"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-gray-300 flex items-center justify-center text-white">
+                <UserPlus size={24} />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-bold">Класс</p>
+                <p className="font-bold text-gray-800">Присоединиться к классу</p>
+                <p className="text-xs text-gray-500">Введите код приглашения от учителя</p>
+              </div>
+            </div>
+            <ChevronRight size={24} className="text-gray-400" />
+          </div>
+        </motion.div>
+      )}
 
       {/* Continue lesson */}
       {nextLesson && (

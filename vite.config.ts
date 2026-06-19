@@ -67,6 +67,8 @@ export default defineConfig({
         manualChunks: {
           dooshin: ['./src/data/sections/dooshin'],
           recharts: ['recharts'],
+          'framer-motion': ['framer-motion'],
+          supabase: ['@supabase/supabase-js'],
         },
       },
     },

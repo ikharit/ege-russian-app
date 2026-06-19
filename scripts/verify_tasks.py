@@ -100,6 +100,13 @@ VALIDATION_RULES = {
         'single_check': 'options_contains_correct',
         'correct_answer_format': 'mixed',
     },
+    # Задание 20: расстановка запятых (цифры в скобках)
+    '20': {
+        'sources': ['dooshin20.ts'],
+        'allowed_types': ['text'],
+        'text_check': 'contains_numbered_positions',
+        'correct_answer_format': 'comma_positions',
+    },
 }
 
 VALID_SEPARATE_HYPHEN = ['слитно', 'раздельно', 'дефис', 'дефисное']
@@ -185,7 +192,7 @@ def determine_task_number(question_id: str) -> str:
     # основной: q9, q10, q11, q12, q13, q14, q15, q16, q17, q19
     
     if question_id.startswith('qd'):
-        # qd9-1, qd10-1 и т.д.
+        # qd9-1, qd10-1, qd20-1 и т.д.
         match = re.match(r'qd(\d+)', question_id)
         if match:
             return match.group(1)
@@ -199,6 +206,8 @@ def determine_task_number(question_id: str) -> str:
         return '16'
     if 'n_nn' in question_id or 'nnn' in question_id:
         return '15'
+    if 'dooshin20' in question_id:
+        return '20'
     
     return 'unknown'
 
@@ -246,6 +255,15 @@ def validate_question(q: Dict, task_num: str) -> List[str]:
                     errors.append(f"correctAnswer '{ans}' не является числом")
         # Для single correctAnswer — может быть слово (проверяется ниже через options)
     
+    elif ca_format == 'comma_positions':
+        # Задание 20: correctAnswer — либо placeholder '?', либо цифры через запятую
+        for ans in q['correctAnswer']:
+            if ans == '?':
+                # Placeholder — допустимо, но выдаём предупреждение
+                pass  # Не считаем ошибкой
+            elif not re.match(r'^[\d,\s]+$', ans):
+                errors.append(f"correctAnswer '{ans}' не соответствует формату цифр через запятую (например, '1, 3, 5')")
+    
     # 4. Проверка text
     text = q.get('text', '')
     text_check = rules.get('text_check', '')
@@ -273,6 +291,11 @@ def validate_question(q: Dict, task_num: str) -> List[str]:
         if not any(p in text for p in [',', '—', ':', ';', '...', '?!']):
             # Это может быть нормально для некоторых вопросов — просто предупреждение
             pass
+    
+    elif text_check == 'contains_numbered_positions':
+        # Задание 20: текст должен содержать цифры в скобках (1), (2) и т.д.
+        if not re.search(r'\(\d+\)', text):
+            errors.append(f"Текст вопроса не содержит цифр в скобках (1), (2) и т.д.")
     
     elif text_check == 'any':
         # Не проверяем текст

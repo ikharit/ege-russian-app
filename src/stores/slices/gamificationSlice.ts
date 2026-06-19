@@ -11,6 +11,7 @@ export interface LeaderboardEntry {
   streak: number
   lessonsCompleted: number
   updatedAt: string
+  achievements?: string[]
 }
 
 export interface TeacherStudent {

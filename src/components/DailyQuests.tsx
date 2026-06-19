@@ -13,18 +13,16 @@ const typeIcons = {
 }
 
 const typeColors = {
-  questions: { bg: 'bg-emerald-100', icon: 'text-emerald-600', ring: 'ring-emerald-400' },
-  lessons: { bg: 'bg-blue-100', icon: 'text-blue-600', ring: 'ring-blue-400' },
-  perfect: { bg: 'bg-amber-100', icon: 'text-amber-600', ring: 'ring-amber-400' },
-  time: { bg: 'bg-sky-100', icon: 'text-sky-600', ring: 'ring-sky-400' },
-  streak: { bg: 'bg-orange-100', icon: 'text-orange-600', ring: 'ring-orange-400' },
+  questions: { bg: 'bg-emerald-100', icon: 'text-emerald-600', ring: 'ring-emerald-400', bar: 'bg-emerald-400' },
+  lessons: { bg: 'bg-blue-100', icon: 'text-blue-600', ring: 'ring-blue-400', bar: 'bg-blue-400' },
+  perfect: { bg: 'bg-amber-100', icon: 'text-amber-600', ring: 'ring-amber-400', bar: 'bg-amber-400' },
+  time: { bg: 'bg-sky-100', icon: 'text-sky-600', ring: 'ring-sky-400', bar: 'bg-sky-400' },
+  streak: { bg: 'bg-orange-100', icon: 'text-orange-600', ring: 'ring-orange-400', bar: 'bg-orange-400' },
 }
 
 export function DailyQuests() {
   const dailyQuestProgress = useProgressStore((s) => s.dailyQuestProgress)
-  const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
   const claimQuestReward = useProgressStore((s) => s.claimQuestReward)
-  const addXP = useProgressStore((s) => s.addXP)
 
   const today = new Date().toISOString().split('T')[0]
 
@@ -45,69 +43,69 @@ export function DailyQuests() {
     })
   }, [dailyQuestProgress, today])
 
-  const handleClaim = (questId: string, rewardXP: number) => {
-    const success = claimQuestReward(questId)
-    if (success) {
-      // XP already added by store
-    }
+  const handleClaim = (questId: string) => {
+    claimQuestReward(questId)
   }
 
   const totalReward = questsWithProgress
     .filter(q => q.completed && !q.claimed)
     .reduce((sum, q) => sum + q.rewardXP, 0)
 
+  const completedCount = questsWithProgress.filter(q => q.claimed).length
+
   return (
     <div className="card">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Target size={20} className="text-duo-purple" />
-          <h3 className="font-bold text-gray-700">Ежедневные квесты</h3>
+          <Target size={18} className="text-duo-purple" />
+          <h3 className="font-bold text-gray-700 text-sm">Ежедневные квесты</h3>
+          <span className="text-[10px] text-gray-400 font-medium">{completedCount}/{dailyQuests.length}</span>
         </div>
         {totalReward > 0 && (
           <motion.button
-            className="flex items-center gap-1 bg-duo-green text-white px-3 py-1 rounded-full text-xs font-bold"
+            className="flex items-center gap-1 bg-duo-green text-white px-2.5 py-1 rounded-full text-[10px] font-bold"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => {
               questsWithProgress.forEach(q => {
-                if (q.completed && !q.claimed) handleClaim(q.id, q.rewardXP)
+                if (q.completed && !q.claimed) handleClaim(q.id)
               })
             }}
           >
-            <Gift size={14} />
+            <Gift size={12} />
             Забрать {totalReward} XP
           </motion.button>
         )}
       </div>
 
-      <div className="flex flex-col gap-3">
-        {questsWithProgress.map((quest, idx) => {
+      <div className="grid grid-cols-2 gap-2">
+        {questsWithProgress.map((quest) => {
           const Icon = typeIcons[quest.type]
           const colors = typeColors[quest.type]
           const isNotStarted = !quest.claimed && !quest.completed && quest.percent === 0
+
           return (
             <motion.div
               key={quest.id}
-              className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
-                quest.claimed 
-                  ? 'bg-green-50/60 border border-green-200' 
-                  : quest.completed 
-                    ? 'bg-amber-50 border border-amber-200 shadow-sm' 
+              className={`flex items-center gap-2 p-2 rounded-xl border transition-all duration-300 ${
+                quest.claimed
+                  ? 'bg-green-50/60 border-green-200'
+                  : quest.completed
+                    ? 'bg-amber-50 border-amber-200 shadow-sm'
                     : isNotStarted
-                      ? 'bg-gray-50 border border-gray-100 opacity-40'
-                      : 'bg-white border border-gray-200 shadow-sm'
+                      ? 'bg-gray-50 border-gray-100 opacity-50'
+                      : 'bg-white border-gray-200 shadow-sm'
               }`}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.05 }}
+              whileHover={!quest.claimed ? { scale: 1.02 } : undefined}
+              whileTap={!quest.claimed ? { scale: 0.98 } : undefined}
             >
               {/* Icon with state-based styling */}
-              <div className="relative">
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                  quest.claimed 
-                    ? 'bg-duo-green text-white scale-110' 
-                    : quest.completed 
-                      ? `${colors.bg} ${colors.icon} ring-2 ${colors.ring} ring-offset-2` 
+              <div className="relative shrink-0">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                  quest.claimed
+                    ? 'bg-duo-green text-white'
+                    : quest.completed
+                      ? `${colors.bg} ${colors.icon} ring-2 ${colors.ring} ring-offset-1`
                       : isNotStarted
                         ? 'bg-gray-200 text-gray-400 grayscale'
                         : `${colors.bg} ${colors.icon}`
@@ -120,7 +118,7 @@ export function DailyQuests() {
                         animate={{ scale: 1, rotate: 0 }}
                         exit={{ scale: 0 }}
                       >
-                        <Sparkles size={20} />
+                        <Sparkles size={16} />
                       </motion.div>
                     ) : quest.completed ? (
                       <motion.div
@@ -129,7 +127,7 @@ export function DailyQuests() {
                         animate={{ scale: 1 }}
                         exit={{ scale: 0 }}
                       >
-                        <Check size={20} strokeWidth={3} />
+                        <Check size={16} strokeWidth={3} />
                       </motion.div>
                     ) : (
                       <motion.div
@@ -137,55 +135,54 @@ export function DailyQuests() {
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
                       >
-                        <Icon size={20} />
+                        <Icon size={16} />
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-                
+
                 {/* Little check badge for completed */}
                 {quest.completed && !quest.claimed && (
                   <motion.div
-                    className="absolute -top-1 -right-1 w-4 h-4 bg-duo-green rounded-full flex items-center justify-center"
+                    className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-duo-green rounded-full flex items-center justify-center"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring' }}
                   >
-                    <Check size={10} className="text-white" strokeWidth={3} />
+                    <Check size={8} className="text-white" strokeWidth={3} />
                   </motion.div>
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <p className={`font-bold text-sm ${
-                    quest.claimed ? 'text-gray-400 line-through' : 
-                    quest.completed ? 'text-gray-800' : 
+                <div className="flex items-center justify-between gap-1">
+                  <p className={`text-xs font-bold truncate ${
+                    quest.claimed ? 'text-gray-400 line-through' :
+                    quest.completed ? 'text-gray-800' :
                     isNotStarted ? 'text-gray-400' : 'text-gray-700'
                   }`}>
                     {quest.title}
                   </p>
-                  <span className={`text-xs font-bold flex items-center gap-0.5 ${
+                  <span className={`text-[10px] font-bold flex items-center gap-0.5 shrink-0 ${
                     quest.claimed ? 'text-duo-green' : 'text-duo-yellow'
                   }`}>
                     <Zap size={10} />
                     {quest.rewardXP}
                   </span>
                 </div>
-                <p className={`text-xs ${quest.claimed || isNotStarted ? 'text-gray-400' : 'text-gray-500'}`}>{quest.description}</p>
 
                 {/* Progress bar — hidden for not started, colored for active/completed */}
                 {!quest.claimed && !isNotStarted && (
-                  <div className="mt-1.5">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="mt-1">
+                    <div className="w-full bg-gray-200 rounded-full h-1.5">
                       <motion.div
-                        className={`h-2 rounded-full ${
-                          quest.completed 
-                            ? 'bg-duo-yellow' 
-                            : quest.percent > 60 
-                              ? 'bg-emerald-400' 
-                              : quest.percent > 30 
-                                ? 'bg-amber-400' 
+                        className={`h-1.5 rounded-full ${
+                          quest.completed
+                            ? 'bg-duo-yellow'
+                            : quest.percent > 60
+                              ? colors.bar
+                              : quest.percent > 30
+                                ? 'bg-amber-400'
                                 : 'bg-gray-400'
                         }`}
                         initial={{ width: 0 }}
@@ -193,29 +190,24 @@ export function DailyQuests() {
                         transition={{ duration: 0.5 }}
                       />
                     </div>
-                    <div className="flex justify-between mt-0.5">
-                      <p className="text-xs text-gray-400">
-                        {quest.current} / {quest.target}
-                      </p>
-                      {quest.percent > 0 && quest.percent < 100 && (
-                        <p className="text-xs text-gray-400">{quest.percent}%</p>
-                      )}
-                    </div>
+                    <p className="text-[10px] text-gray-400 mt-0.5">
+                      {quest.current} / {quest.target}
+                    </p>
                   </div>
                 )}
-                {/* For not started, show just a faint hint */}
+                {/* For not started, show faint dash */}
                 {isNotStarted && (
-                  <p className="text-xs text-gray-300 mt-1">Ещё не начато</p>
+                  <p className="text-[10px] text-gray-300 mt-0.5">—</p>
                 )}
               </div>
 
               {/* Claim button */}
               {quest.completed && !quest.claimed && (
                 <motion.button
-                  className="bg-duo-green text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 shadow-sm"
+                  className="bg-duo-green text-white px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 shadow-sm"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleClaim(quest.id, quest.rewardXP)}
+                  onClick={() => handleClaim(quest.id)}
                 >
                   Забрать
                 </motion.button>

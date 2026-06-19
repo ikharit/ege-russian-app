@@ -32,7 +32,7 @@ vi.mock('../components/QuestionCard', () => ({
     <div data-testid="question-card">
       <p>{question.text}</p>
       <button onClick={() => onAnswer(true)}>Correct</button>
-      <button onClick={() => onAnswer(false)}>Wrong</button>
+      <button onClick={() => onAnswer(false, ['wrong'])}>Wrong</button>
       <button onClick={onNext}>Next</button>
       <span>{questionNumber}/{totalQuestions}</span>
     </div>

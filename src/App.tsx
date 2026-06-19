@@ -39,6 +39,7 @@ import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
+import { useClassStore, ProgressData } from './stores/classStore'
 import { useNotificationStore } from './stores/notificationStore'
 import { useStudentStore } from './stores/studentStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
@@ -259,6 +260,29 @@ export default function App() {
       useStudentStore.getState().addHistoryPoint(progressSnapshot)
       // Cache in IndexedDB for offline access
       syncProgressIfOnline(progressSnapshot).catch(() => {})
+    })
+    return () => unsubscribe()
+  }, [])
+
+  // Auto-sync progress to class store (for class leaderboard)
+  useEffect(() => {
+    const unsubscribe = useProgressStore.subscribe((state) => {
+      const activeProfileId = useStudentStore.getState().activeProfileId
+      if (!activeProfileId) return
+      const classStore = useClassStore.getState()
+      const studentClass = classStore.getStudentClass(activeProfileId)
+      if (!studentClass) return
+      const progressSnapshot: ProgressData = {
+        userStats: state.userStats,
+        lessonProgress: state.lessonProgress,
+        taskStats: state.taskStats,
+        achievements: state.achievements,
+        atomProgress: state.atomProgress,
+        wrongAnswers: state.wrongAnswers,
+        theoryTestsCompleted: state.theoryTestsCompleted,
+        dailyQuestProgress: state.dailyQuestProgress,
+      }
+      classStore.updateStudentProgress(studentClass.id, activeProfileId, progressSnapshot)
     })
     return () => unsubscribe()
   }, [])

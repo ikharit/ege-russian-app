@@ -68,6 +68,12 @@ export const orthographyAllSections: Section[] = [
         subtitle: 'Н / НН',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-') || l.id.startsWith('lesson-dooshin-15') || l.id.startsWith('qd15-')),
       },
+      {
+        id: 'group-task20',
+        title: 'Задание 20',
+        subtitle: 'Расстановка запятых (Дощинский)',
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-dooshin-20') || l.id.startsWith('qd20-')),
+      },
     ],
   }
 ]

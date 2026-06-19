@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar, BookOpen } from 'lucide-react'
+import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar, BookOpen, Star, Award, TrendingUp } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from '../components/Popover'
 import { getStatusById } from '../data/statuses'
@@ -26,7 +26,7 @@ export function Leaderboard() {
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
-  const [mode, setMode] = useState<'xp' | 'streak' | 'homework'>('xp')
+  const [mode, setMode] = useState<'xp' | 'streak' | 'homework' | 'achievements' | 'accuracy'>('xp')
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
   useEffect(() => {
@@ -43,6 +43,7 @@ export function Leaderboard() {
     level: userStats.level,
     streak: userStats.streak,
     lessonsCompleted: completedCount,
+    achievements: useProgressStore((s) => s.achievements),
     updatedAt: userStats.lastActivityDate || new Date().toISOString()
   }
 
@@ -58,6 +59,18 @@ export function Leaderboard() {
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
   const sortedByStreak = [...filtered].sort((a, b) => (b.streak || 0) - (a.streak || 0))
+    .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
+
+  const sortedByAchievements = [...filtered].sort((a, b) => (b.achievements?.length || 0) - (a.achievements?.length || 0))
+    .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
+
+  const sortedByAccuracy = [...filtered]
+    .filter(e => e.lessonsCompleted > 0)
+    .map(e => ({ 
+      ...e, 
+      accuracy: e.lessonsCompleted > 0 ? Math.round((e.xp / (e.lessonsCompleted * 20)) * 100) : 0 
+    }))
+    .sort((a, b) => (b as any).accuracy - (a as any).accuracy)
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
   // Homework champions — real students only
@@ -88,7 +101,11 @@ export function Leaderboard() {
     return entries
   }, [])
 
-  const fullLeaderboard = mode === 'xp' ? sortedByXP : mode === 'streak' ? sortedByStreak : homeworkRankings
+  const fullLeaderboard = mode === 'xp' ? sortedByXP 
+    : mode === 'streak' ? sortedByStreak 
+    : mode === 'achievements' ? sortedByAchievements
+    : mode === 'accuracy' ? sortedByAccuracy
+    : homeworkRankings
 
   const getRankIcon = (rank: number) => {
     if (rank === 1) return <Crown size={20} className="text-yellow-500" />
@@ -167,11 +184,34 @@ export function Leaderboard() {
         <h1 className="text-2xl font-bold text-gray-800">Рейтинг</h1>
       </div>
 
-      {/* Mode selector */}
+      {/* Weekly Challenge Badge */}
+      {period === 'week' && fullLeaderboard.length > 0 && (
+        <motion.div 
+          className="card bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200 mb-4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center gap-3">
+            <Crown size={24} className="text-yellow-500" />
+            <div>
+              <p className="text-sm font-bold text-gray-800">🏆 Лидер недели</p>
+              <p className="text-xs text-gray-500">
+                {fullLeaderboard[0].name} — {mode === 'xp' ? `${fullLeaderboard[0].xp} XP` : 
+                  mode === 'streak' ? `🔥 ${fullLeaderboard[0].streak || 0} дней` :
+                  mode === 'achievements' ? `⭐ ${((fullLeaderboard[0] as any).achievements || []).length} достижений` :
+                  mode === 'accuracy' ? `${(fullLeaderboard[0] as any).accuracy || 0}% точность` :
+                  `${(fullLeaderboard[0] as any).homeworkPercent}% домашки`}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
       <div className="flex gap-2 mb-4">
         {[
           { key: 'xp' as const, label: 'По XP', icon: Trophy },
           { key: 'streak' as const, label: 'По страйку', icon: Flame },
+          { key: 'achievements' as const, label: 'По достижениям', icon: Award },
+          { key: 'accuracy' as const, label: 'По точности', icon: TrendingUp },
           { key: 'homework' as const, label: 'По домашке', icon: BookOpen },
         ].map(m => (
           <button
@@ -228,11 +268,21 @@ export function Leaderboard() {
             <div className="flex items-end justify-center gap-3 mb-8">
               {(() => {
                 const top3 = fullLeaderboard.slice(0, 3)
-                const maxVal = Math.max(...top3.map(e => mode === 'xp' ? e.xp : mode === 'streak' ? (e.streak || 0) : (e as any).homeworkPercent || 0))
+                const maxVal = Math.max(...top3.map(e => 
+                  mode === 'xp' ? e.xp : 
+                  mode === 'streak' ? (e.streak || 0) : 
+                  mode === 'achievements' ? ((e as any).achievements?.length || 0) :
+                  mode === 'accuracy' ? ((e as any).accuracy || 0) :
+                  (e as any).homeworkPercent || 0
+                ))
                 const minHeight = 90
                 const maxHeight = 170
                 const getHeight = (entry: typeof top3[0]) => {
-                  const val = mode === 'xp' ? entry.xp : mode === 'streak' ? (entry.streak || 0) : (entry as any).homeworkPercent || 0
+                  const val = mode === 'xp' ? entry.xp : 
+                    mode === 'streak' ? (entry.streak || 0) : 
+                    mode === 'achievements' ? ((entry as any).achievements?.length || 0) :
+                    mode === 'accuracy' ? ((entry as any).accuracy || 0) :
+                    (entry as any).homeworkPercent || 0
                   return minHeight + (val / maxVal) * (maxHeight - minHeight)
                 }
                 return [1, 0, 2].map(podiumIdx => {
@@ -270,6 +320,10 @@ export function Leaderboard() {
                           <p className="text-xs text-duo-green font-bold">{entry.xp} XP</p>
                         ) : mode === 'streak' ? (
                           <p className="text-xs text-orange-500 font-bold">🔥 {entry.streak || 0}</p>
+                        ) : mode === 'achievements' ? (
+                          <p className="text-xs text-duo-purple font-bold">⭐ {(entry as any).achievements?.length || 0}</p>
+                        ) : mode === 'accuracy' ? (
+                          <p className="text-xs text-duo-blue font-bold">{(entry as any).accuracy || 0}%</p>
                         ) : (
                           <p className="text-xs text-duo-blue font-bold">{(entry as any).homeworkPercent}%</p>
                         )}
@@ -329,6 +383,16 @@ export function Leaderboard() {
                           <p className="font-bold text-sm text-orange-500">🔥 {entry.streak || 0}</p>
                           <p className="text-xs text-gray-400">дней</p>
                         </>
+                      ) : mode === 'achievements' ? (
+                        <>
+                          <p className="font-bold text-sm text-duo-purple">⭐ {(entry as any).achievements?.length || 0}</p>
+                          <p className="text-xs text-gray-400">достижений</p>
+                        </>
+                      ) : mode === 'accuracy' ? (
+                        <>
+                          <p className="font-bold text-sm text-duo-blue">{(entry as any).accuracy || 0}%</p>
+                          <p className="text-xs text-gray-400">точность</p>
+                        </>
                       ) : (
                         <>
                           <p className="font-bold text-sm text-duo-blue">{(entry as any).homeworkPercent}%</p>
@@ -352,7 +416,13 @@ export function Leaderboard() {
         <p className="text-center text-xs text-gray-500 mt-1">
           {mode === 'xp' 
             ? 'Решайте больше заданий, чтобы подняться выше!'
-            : 'Занимайтесь каждый день, чтобы увеличить страйк!'}
+            : mode === 'streak'
+            ? 'Занимайтесь каждый день, чтобы увеличить страйк!'
+            : mode === 'achievements'
+            ? 'Собирайте достижения, чтобы стать лидером!'
+            : mode === 'accuracy'
+            ? 'Отвечайте правильно чаще, чтобы повысить точность!'
+            : 'Выполняйте домашнее задание, чтобы быть в топе!'}
         </p>
       </div>
     </div>
