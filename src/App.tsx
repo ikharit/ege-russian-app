@@ -118,6 +118,33 @@ export default function App() {
     init()
   }, [setUserId, loadProgress, setUserName])
 
+  // Handle OAuth callback (Google auth redirect)
+  useEffect(() => {
+    if (!isSupabaseConfigured) return
+    const hash = window.location.hash
+    if (hash.includes('auth-code-callback') || hash.includes('access_token')) {
+      const handleCallback = async () => {
+        const { data, error } = await supabase.auth.getSession()
+        if (data?.session?.user) {
+          setUserId(data.session.user.id)
+          setUserEmail(data.session.user.email || null)
+          if (data.session.user.user_metadata?.name) {
+            setUserName(data.session.user.user_metadata.name)
+          } else if (data.session.user.email) {
+            setUserName(data.session.user.email.split('@')[0])
+          }
+          await loadProgress()
+          // Clean up URL
+          window.history.replaceState({}, document.title, window.location.pathname)
+        }
+        if (error) {
+          console.error('OAuth callback error:', error)
+        }
+      }
+      handleCallback()
+    }
+  }, [setUserId, loadProgress, setUserName])
+
   // Notifications setup
   const permission = useNotificationStore((s) => s.permission)
   const checkAndNotify = useNotificationStore((s) => s.checkAndNotify)
