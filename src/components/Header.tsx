@@ -36,13 +36,13 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           <div className="flex items-center gap-1">
             <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
             <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
-            <span className="text-[10px] bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded font-bold ml-1">v{LATEST_VERSION}</span>
+            <span className="hidden sm:inline text-[10px] bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded font-bold ml-1">v{LATEST_VERSION}</span>
           </div>
           <ProfileSwitcher onAddStudent={() => setShowRegModal(true)} />
         </div>
 
         {/* Right: stats only */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           {/* Streak */}
           <Popover
             content={
@@ -62,8 +62,8 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
               transition={{ duration: 0.2 }}
               animate={stats.streak > 0 ? { scale: [1, 1.08, 1] } : {}}
             >
-              <Flame size={18} fill={stats.streak > 0 ? 'currentColor' : 'none'} className="animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
-              <span className="font-bold text-xs">{stats.streak}</span>
+              <Flame size={20} fill={stats.streak > 0 ? 'currentColor' : 'none'} className="animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
+              <span className="font-bold text-sm">{stats.streak}</span>
             </motion.div>
           </Popover>
 
@@ -86,8 +86,8 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.2 }}
             >
-              <Heart size={18} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} className="animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
-              <span className="font-bold text-xs">{stats.hearts}</span>
+              <Heart size={20} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} className="animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
+              <span className="font-bold text-sm">{stats.hearts}</span>
             </motion.div>
           </Popover>
 
@@ -109,8 +109,8 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             >
               <div className="absolute -top-1 -right-1 w-1 h-1 bg-yellow-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0s' }} />
               <div className="absolute -bottom-0.5 -left-1 w-0.5 h-0.5 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.5s' }} />
-              <Zap size={18} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
-              <span className="font-bold text-xs">{stats.xp}</span>
+              <Zap size={20} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
+              <span className="font-bold text-sm">{stats.xp}</span>
             </motion.div>
           </Popover>
 

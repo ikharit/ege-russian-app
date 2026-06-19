@@ -55,7 +55,7 @@ function BottomNav() {
   ]
 
   return (
-    <nav className="bg-white border-t border-gray-100 px-4 py-2 sticky bottom-0 z-50">
+    <nav className="bg-white border-t border-gray-100 px-4 py-3 sticky bottom-0 z-50">
       <div className="max-w-md mx-auto flex justify-around">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path
@@ -63,12 +63,12 @@ function BottomNav() {
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-colors ${
+              className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-colors ${
                 isActive ? 'text-duo-green' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
-              <tab.icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-xs font-medium">{tab.label}</span>
+              <tab.icon size={28} strokeWidth={isActive ? 2.5 : 2} />
+              <span className="text-sm font-medium">{tab.label}</span>
             </button>
           )
         })}
@@ -217,6 +217,18 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
+
+  // Online/offline status
+  useEffect(() => {
+    const handleOnline = () => console.log('[OfflineCache] Online')
+    const handleOffline = () => console.log('[OfflineCache] Offline')
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
 
   const handleLogout = useCallback(async () => {
     if (!isSupabaseConfigured) return
