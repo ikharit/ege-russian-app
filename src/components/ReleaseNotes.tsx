@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronDown, ChevronUp, Megaphone } from 'lucide-react'
+import { Sparkles, X, ChevronDown, ChevronUp, Megaphone, BookOpen, Wrench, Star } from 'lucide-react'
 import { RELEASE_NOTES, LATEST_VERSION } from '../data/releaseNotes'
 
 const STORAGE_KEY = 'ege-release-notes-dismissed'
@@ -11,6 +11,26 @@ function getDismissedVersion(): string | null {
 
 function setDismissedVersion(version: string) {
   try { localStorage.setItem(STORAGE_KEY, version) } catch {}
+}
+
+function getBulletIcon(type: string) {
+  switch (type) {
+    case 'ege-important': return <Star size={14} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
+    case 'feature': return <Sparkles size={14} className="text-duo-green shrink-0 mt-0.5" />
+    case 'fix': return <Wrench size={14} className="text-duo-blue shrink-0 mt-0.5" />
+    case 'fun': return <BookOpen size={14} className="text-duo-purple shrink-0 mt-0.5" />
+    default: return <Sparkles size={14} className="text-gray-400 shrink-0 mt-0.5" />
+  }
+}
+
+function getBulletClass(type: string) {
+  switch (type) {
+    case 'ege-important': return 'bg-duo-yellow/10 text-gray-800 font-medium'
+    case 'feature': return 'bg-duo-green/5 text-gray-700'
+    case 'fix': return 'bg-duo-blue/5 text-gray-700'
+    case 'fun': return 'bg-duo-purple/5 text-gray-700'
+    default: return 'bg-gray-50 text-gray-700'
+  }
 }
 
 export function ReleaseNotesWidget() {
@@ -57,8 +77,15 @@ export function ReleaseNotesWidget() {
           <div className="flex items-center gap-2">
             <span className="text-2xl">{latest.emoji}</span>
             <div>
-              <h3 className="font-bold text-gray-800">{latest.title}</h3>
-              <p className="text-xs text-gray-400">{latest.date}</p>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-gray-800">{latest.title}</h3>
+                {isUnread && (
+                  <span className="px-2 py-0.5 bg-duo-red text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
+                    NEW
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400">v{latest.version} • {latest.date}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
@@ -88,22 +115,27 @@ export function ReleaseNotesWidget() {
               transition={{ duration: 0.2 }}
             >
               <div className="px-4 pb-4 space-y-2">
-                {latest.bullets.slice(0, 3).map((text, i) => (
+                {latest.bullets.slice(0, 4).map((b, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 p-2 rounded-lg text-sm bg-gray-50 text-gray-700"
+                    className={`flex flex-col gap-1 p-2 rounded-lg text-sm ${getBulletClass(b.type)}`}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-duo-green shrink-0" />
-                    <span>{text}</span>
+                    <div className="flex items-start gap-2">
+                      {getBulletIcon(b.type)}
+                      <span>{b.text}</span>
+                    </div>
+                    {b.impact && (
+                      <span className="text-xs text-gray-500 italic ml-6">{b.impact}</span>
+                    )}
                   </div>
                 ))}
 
-                {latest.bullets.length > 3 && (
+                {latest.bullets.length > 4 && (
                   <button
                     onClick={() => setShowHistory(true)}
                     className="text-xs text-duo-blue font-bold hover:underline w-full text-left pt-1"
                   >
-                    + {latest.bullets.length - 3} пункта и вся история →
+                    + {latest.bullets.length - 4} пункта и вся история →
                   </button>
                 )}
 
@@ -111,7 +143,7 @@ export function ReleaseNotesWidget() {
                   onClick={handleDismiss}
                   className="w-full py-2 mt-2 bg-duo-green text-white text-sm font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
                 >
-                  Ок
+                  Понятно, круто! 🚀
                 </button>
               </div>
             </motion.div>
@@ -139,7 +171,7 @@ export function ReleaseNotesWidget() {
               <div className="sticky top-0 bg-white border-b border-gray-100 p-4 flex items-center justify-between z-10">
                 <div className="flex items-center gap-2">
                   <Megaphone size={20} className="text-duo-blue" />
-                  <h2 className="font-bold text-gray-800">История</h2>
+                  <h2 className="font-bold text-gray-800">История версий</h2>
                 </div>
                 <button
                   onClick={() => setShowHistory(false)}
@@ -159,17 +191,17 @@ export function ReleaseNotesWidget() {
                       <span className="text-xl">{note.emoji}</span>
                       <div>
                         <p className="font-bold text-sm text-gray-800">{note.title}</p>
-                        <p className="text-xs text-gray-400">{note.date}</p>
+                        <p className="text-xs text-gray-400">v{note.version} • {note.date}</p>
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      {note.bullets.map((text, i) => (
+                      {note.bullets.map((b, i) => (
                         <div
                           key={i}
-                          className="flex items-center gap-2 p-1.5 rounded-lg text-xs bg-gray-50 text-gray-700"
+                          className={`flex items-start gap-2 p-1.5 rounded-lg text-xs ${getBulletClass(b.type)}`}
                         >
-                          <span className="w-1 h-1 rounded-full bg-gray-300 shrink-0" />
-                          <span>{text}</span>
+                          {getBulletIcon(b.type)}
+                          <span>{b.text}</span>
                         </div>
                       ))}
                     </div>
