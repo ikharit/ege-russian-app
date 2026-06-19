@@ -20,7 +20,7 @@
 | AccentTrainer | 🟢 | main | Ударения (задание 4) |
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
-| Task5Trainer | 🟢 | main | Паронимы (задание 5), готов |
+| Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Тесты, рендерер, XP. Ждёт скрапинга оставшихся заданий |
