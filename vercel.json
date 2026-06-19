@@ -13,7 +13,7 @@
       ]
     }
   ],
-  "buildCommand": "cd ege-russian-app && npm run build",
-  "outputDirectory": "ege-russian-app/dist",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "framework": "vite"
 }
