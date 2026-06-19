@@ -88,6 +88,9 @@ export function Dashboard() {
         <p className="text-gray-500 mt-1">Готов к ЕГЭ по русскому?</p>
       </div>
 
+      {/* Release Notes */}
+      <ReleaseNotesWidget />
+
       {/* Stats cards */}
       <div className="grid grid-cols-3 gap-3">
         <motion.div
