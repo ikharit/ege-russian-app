@@ -74,16 +74,16 @@ ege-russian-app/
 | CourseMap | 🟢 | main | Звёзды прогресса под нодами |
 | AccentTrainer | 🟢 | main | Ударения (задание 4) |
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
-| **Task16Trainer** | **🔵** | **main** | **Пунктуация (задание 16), новый модуль** |
-| **Task5Trainer** | **🔵** | **main** | **Типографика (задание 5), новый модуль** |
+| Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
+| Task5Trainer | 🟢 | main | Паронимы (задание 5), готов |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Ждёт скрапинга из грамота.ру |
 | Homework data | 🟢 | main | Google Sheets: 9 реальных учеников |
 | ShareResultPage | 🟢 | main | /share — карточка результата |
-| **NotificationStore** | **🔵** | **main** | **Push-уведомления, streak reminders, дедлайны** |
-| **AnalyticsPage** | **🔵** | **main** | **Аналитика класса: слабые задания, ученики, дедлайны** |
-| **StudentStore** | **🔵** | **main** | **Multi-user профили, динамика, регистрация учеников** |
+| NotificationStore | 🟢 | main | Push-уведомления, streak reminders |
+| AnalyticsPage | 🟢 | main | Аналитика класса |
+| StudentStore | 🟢 | main | Multi-user профили, регистрация |
 
 ---
 

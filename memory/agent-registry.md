@@ -21,16 +21,16 @@
 | CourseMap | 🟢 | main | Звёзды под нодами (1-3⭐) |
 | AccentTrainer | 🟢 | main | Ударения (задание 4) |
 | Task10Trainer | 🟢 | main | НЕ/НИ (задание 10) |
-| **Task16Trainer** | **🔵** | **main** | **Пунктуация (задание 16), новый модуль** |
-| **Task5Trainer** | **🔵** | **main** | **Типографика (задание 5), новый модуль** |
+| Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
+| Task5Trainer | 🟢 | main | Паронимы (задание 5), готов |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent store |
 | **Theory (теория)** | 🟢 | **main** | Тесты, рендерер, XP, статусы в списке |
 | Homework data | 🟢 | main | 9 учеников из Google Sheets |
 | ShareResultPage | 🟢 | main | /share — карточка результата |
-| **NotificationStore** | **🔵** | **main** | **Push-уведомления, streak reminders, дедлайны** |
-| **AnalyticsPage** | **🔵** | **main** | **Аналитика класса: слабые задания, ученики, дедлайны** |
-| **StudentStore** | **🔵** | **main** | **Multi-user профили, динамика, регистрация учеников** |
+| NotificationStore | 🟢 | main | Push-уведомления, streak reminders |
+| AnalyticsPage | 🟢 | main | Аналитика класса |
+| StudentStore | 🟢 | main | Multi-user профили, регистрация |
 
 ## Журнал изменений (новые сверху)
 

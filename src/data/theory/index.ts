@@ -11,9 +11,10 @@ import task9Theory from './task9'
 import task10Theory from './task10'
 import task11Theory from './task11'
 import task12Theory from './task12'
+import task13Theory from './task13'
 import task14Theory from './task14'
 
-export { task4Theory, task5Theory, task7Theory, task9Theory, task10Theory, task11Theory, task12Theory, task14Theory }
+export { task4Theory, task5Theory, task7Theory, task9Theory, task10Theory, task11Theory, task12Theory, task13Theory, task14Theory }
 
 const allSections: TS[] = [
   task4Theory,
@@ -23,6 +24,7 @@ const allSections: TS[] = [
   task10Theory,
   task11Theory,
   task12Theory,
+  task13Theory,
   task14Theory,
 ]
 

@@ -1,3 +1,6 @@
+// ⚠️ AGENT NOTICE: All wrong answers go to progressStore.wrongAnswers (unified bank)
+// Do NOT add local error storage. Use: recordWrongAnswer() + updateTaskStats('4', false)
+// See AGENTS.md / memory/agent-registry.md for context
 // UPDATED V3
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

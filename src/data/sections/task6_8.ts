@@ -47,7 +47,7 @@ export const task6_8Sections: Section[] = [
         xpReward: 30,
         prerequisites: [],
         questions: [
-          { id: 'q7-1', type: 'single', text: 'Как правильно?', options: ['гордиться чем', 'гордиться чем-то'], correctAnswer: ['гордиться чем'], explanation: 'Гордиться управляет творительным падежом: гордиться чем.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q7-1', type: 'single', text: 'Как правильно?', options: ['гордиться чем', 'гордиться чем-то'], correctAnswer: ['гордиться чем'], explanation: 'Гордиться управляет творительным падежом: гордиться чем.', difficulty: 'easy', xpReward: 10, atoms: ['task7'] },
         ]
       }
     ]
@@ -70,7 +70,7 @@ export const task6_8Sections: Section[] = [
         xpReward: 40,
         prerequisites: [],
         questions: [
-          { id: 'q8-1', type: 'single', text: 'Какая ошибка в предложении: «Он купил яблоки, груши и хлеб.»?', options: ['нарушение однородности', 'нет ошибки', 'плеоназм', 'тавтология'], correctAnswer: ['нет ошибки'], explanation: 'Яблоки, груши и хлеб — однородные существительные.', difficulty: 'easy', xpReward: 10 },
+          { id: 'q8-1', type: 'single', text: 'Какая ошибка в предложении: «Он купил яблоки, груши и хлеб.»?', options: ['нарушение однородности', 'нет ошибки', 'плеоназм', 'тавтология'], correctAnswer: ['нет ошибки'], explanation: 'Яблоки, груши и хлеб — однородные существительные.', difficulty: 'easy', xpReward: 10, atoms: ['task8'] },
         ]
       }
     ]
