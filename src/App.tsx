@@ -44,9 +44,11 @@ import { EssayPage } from './pages/EssayPage'
 import { DuelPage } from './pages/DuelPage'
 import { MarathonPage } from './pages/MarathonPage'
 import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
+import { ChatPage } from './pages/ChatPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
+import { AIChat } from './components/AIChat'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
@@ -435,6 +437,7 @@ export default function App() {
           <Route path="/duel" element={<DuelPage />} />
           <Route path="/marathon" element={<MarathonPage />} />
           <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/personality-quiz" element={<PersonalityQuiz />} />
         </Routes>
       </main>

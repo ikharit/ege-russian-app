@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
-  ChevronRight, Check, X, Volume2, VolumeX, BookOpen
+  ChevronRight, Check, X, Volume2, VolumeX, BookOpen,
+  ThumbsUp, ThumbsDown
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
-import { ragRetriever, generateExplanation } from '../lib/rag'
+import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -79,6 +80,9 @@ export function BaseTrainer<T>({
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
+
+  const [feedbackGiven, setFeedbackGiven] = useState<Record<string, 'up' | 'down'>>({})
+  const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
 
   const currentQuestion = questions[currentIndex]
   const overall = {
@@ -439,21 +443,78 @@ export function BaseTrainer<T>({
                   const atoms = getAtoms?.(effectiveQuestion) || []
                   const taskAtom = atoms.find((a: string) => a.startsWith('task'))
                   const taskNum = taskAtom ? taskAtom.replace('task', '') : taskNumber
-                  
+
                   if (!taskNum) return null
-                  
+
                   const ragResults = ragRetriever.retrieve(getQuestionText(effectiveQuestion), taskNum, 2)
                   if (ragResults.length === 0) return null
-                  
-                  const ragExp = generateExplanation(getQuestionText(effectiveQuestion), getCorrectAnswer(effectiveQuestion), ragResults)
-                  
+
+                  // Build user history for personalization (P4)
+                  const userHistory = wrongAnswers
+                    .filter(w => w.taskNumber === taskNum)
+                    .reduce((acc, w) => {
+                      const existing = acc.find(a => a.word === w.text)
+                      if (existing) existing.wrongCount++
+                      else acc.push({ word: w.text, wrongCount: 1 })
+                      return acc
+                    }, [] as { word: string; wrongCount: number }[])
+
+                  const ragExp = generateExplanation(
+                    getQuestionText(effectiveQuestion),
+                    getCorrectAnswer(effectiveQuestion),
+                    ragResults,
+                    userHistory
+                  )
+
+                  const topEntry = ragResults[0].entry
+                  const topEntryId = topEntry.id
+                  const hasFeedback = feedbackGiven[topEntryId]
+                  const lessonId = topEntry.lessonId
+
                   return (
                     <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
                       <div className="flex items-center gap-2 mb-1">
                         <BookOpen size={14} className="text-duo-blue" />
                         <span className="text-xs font-bold text-duo-blue">Правило из теории:</span>
                       </div>
-                      <p className="text-xs text-gray-700">{ragExp}</p>
+                      <p className="text-xs text-gray-700 mb-2">{ragExp}</p>
+                      {/* Cross-link to lesson (P5) */}
+                      {lessonId && (
+                        <button
+                          onClick={() => navigate(`/lesson/${lessonId}`)}
+                          className="text-xs text-duo-blue underline hover:text-blue-700 mb-2 block"
+                        >
+                          Перейти к уроку →
+                        </button>
+                      )}
+                      {/* Feedback buttons (P3) */}
+                      <div className="flex items-center gap-2 pt-2 border-t border-blue-100">
+                        <span className="text-xs text-gray-500">Было полезно?</span>
+                        <button
+                          onClick={() => {
+                            if (hasFeedback) return
+                            recordFeedback(topEntryId, true)
+                            setFeedbackGiven(prev => ({ ...prev, [topEntryId]: 'up' }))
+                          }}
+                          disabled={!!hasFeedback}
+                          className={`p-1 rounded hover:bg-blue-100 transition ${hasFeedback === 'up' ? 'text-green-600' : 'text-gray-400'} ${hasFeedback ? 'opacity-50 cursor-default' : ''}`}
+                          aria-label="Полезно"
+                        >
+                          <ThumbsUp size={16} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (hasFeedback) return
+                            recordFeedback(topEntryId, false)
+                            setFeedbackGiven(prev => ({ ...prev, [topEntryId]: 'down' }))
+                          }}
+                          disabled={!!hasFeedback}
+                          className={`p-1 rounded hover:bg-blue-100 transition ${hasFeedback === 'down' ? 'text-red-600' : 'text-gray-400'} ${hasFeedback ? 'opacity-50 cursor-default' : ''}`}
+                          aria-label="Не полезно"
+                        >
+                          <ThumbsDown size={16} />
+                        </button>
+                      </div>
                     </div>
                   )
                 })()}

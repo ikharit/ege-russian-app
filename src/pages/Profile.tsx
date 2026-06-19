@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
+import { useChatStore } from '../stores/chatStore'
 import { SyncStatus } from '../components/SyncStatus'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
@@ -15,6 +16,160 @@ import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { getPlayerTypeLabel, getPlayerTypeDescription, getPlayerTypeIcon, getPlayerTypeColor, type PlayerType } from '../utils/personalityEngine'
+
+function AIAssistantSection() {
+  const apiKey = useChatStore((s) => s.apiKey)
+  const provider = useChatStore((s) => s.provider)
+  const apiEndpoint = useChatStore((s) => s.apiEndpoint)
+  const connectionStatus = useChatStore((s) => s.connectionStatus)
+  const setApiKey = useChatStore((s) => s.setApiKey)
+  const setProvider = useChatStore((s) => s.setProvider)
+  const setEndpoint = useChatStore((s) => s.setEndpoint)
+  const checkConnection = useChatStore((s) => s.checkConnection)
+  const clearMessages = useChatStore((s) => s.clearMessages)
+
+  const [localKey, setLocalKey] = useState(apiKey || '')
+  const [localEndpoint, setLocalEndpoint] = useState(apiEndpoint)
+  const [showCustom, setShowCustom] = useState(provider === 'custom')
+
+  useEffect(() => {
+    setLocalKey(apiKey || '')
+  }, [apiKey])
+
+  useEffect(() => {
+    setLocalEndpoint(apiEndpoint)
+  }, [apiEndpoint])
+
+  const handleSaveKey = () => {
+    setApiKey(localKey)
+  }
+
+  const handleProviderChange = (p: 'kimi' | 'openai' | 'custom') => {
+    setProvider(p)
+    setShowCustom(p === 'custom')
+    if (p !== 'custom') {
+      setLocalEndpoint('')
+    }
+  }
+
+  const statusConfig = {
+    unknown: { icon: AlertTriangle, color: 'text-yellow-500', bg: 'bg-yellow-50', label: 'Не проверено' },
+    checking: { icon: Loader2, color: 'text-blue-500', bg: 'bg-blue-50', label: 'Проверка...' },
+    connected: { icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-50', label: 'Работает' },
+    error: { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50', label: 'Ошибка соединения' },
+    no_key: { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50', label: 'Нет ключа' },
+  }
+
+  const StatusIcon = statusConfig[connectionStatus].icon
+
+  return (
+    <div className="card">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-duo-purple to-duo-blue flex items-center justify-center text-white">
+          <Bot size={20} />
+        </div>
+        <div>
+          <h3 className="font-bold text-gray-700">AI-ассистент</h3>
+          <p className="text-xs text-gray-500">Настройка API ключа для AI-репетитора</p>
+        </div>
+      </div>
+
+      {/* Provider selector */}
+      <div className="mb-3">
+        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Провайдер</label>
+        <div className="flex gap-2">
+          {(['kimi', 'openai', 'custom'] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => handleProviderChange(p)}
+              className={`flex-1 py-2 rounded-lg text-xs font-bold transition-colors ${
+                provider === p
+                  ? 'bg-duo-purple text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {p === 'kimi' ? 'Kimi' : p === 'openai' ? 'OpenAI' : 'Custom'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* API Key */}
+      <div className="mb-3">
+        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">API ключ</label>
+        <div className="flex gap-2">
+          <input
+            type="password"
+            value={localKey}
+            onChange={(e) => setLocalKey(e.target.value)}
+            placeholder="sk-..."
+            className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
+          />
+          <button
+            onClick={handleSaveKey}
+            className="px-3 py-2 bg-duo-green text-white rounded-lg text-xs font-bold hover:bg-duo-green/90 transition-colors"
+          >
+            Сохранить
+          </button>
+        </div>
+      </div>
+
+      {/* Custom endpoint */}
+      {showCustom && (
+        <div className="mb-3">
+          <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Endpoint URL</label>
+          <input
+            type="text"
+            value={localEndpoint}
+            onChange={(e) => {
+              setLocalEndpoint(e.target.value)
+              setEndpoint(e.target.value)
+            }}
+            placeholder="https://api.example.com/v1/chat/completions"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
+          />
+        </div>
+      )}
+
+      {/* Status */}
+      <div className={`flex items-center gap-2 p-2.5 rounded-lg ${statusConfig[connectionStatus].bg} mb-3`}>
+        <StatusIcon size={16} className={`${statusConfig[connectionStatus].color} ${connectionStatus === 'checking' ? 'animate-spin' : ''}`} />
+        <span className={`text-xs font-bold ${statusConfig[connectionStatus].color}`}>
+          {statusConfig[connectionStatus].label}
+        </span>
+      </div>
+
+      {/* Check button */}
+      <button
+        onClick={checkConnection}
+        disabled={connectionStatus === 'checking' || !apiKey}
+        className={`w-full py-2 rounded-lg font-bold text-sm transition-colors mb-3 ${
+          !apiKey || connectionStatus === 'checking'
+            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            : 'bg-duo-purple text-white hover:bg-duo-purple/90'
+        }`}
+      >
+        {connectionStatus === 'checking' ? 'Проверка...' : 'Проверить соединение'}
+      </button>
+
+      {/* Clear history */}
+      <button
+        onClick={() => {
+          if (confirm('Очистить историю чата? Это действие нельзя отменить.')) {
+            clearMessages()
+          }
+        }}
+        className="w-full py-2 rounded-lg font-bold text-sm border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
+      >
+        Очистить историю чата
+      </button>
+
+      <p className="text-[10px] text-gray-400 mt-3 text-center">
+        Введите свой API ключ. Данные не передаются третьим лицам. Ключ хранится только на вашем устройстве.
+      </p>
+    </div>
+  )
+}
 
 export function Profile() {
   const navigate = useNavigate()
@@ -531,6 +686,9 @@ export function Profile() {
           ⚠️ Войдите, чтобы не потерять прогресс на других устройствах
         </div>
       </div>
+
+      {/* AI Assistant Section */}
+      <AIAssistantSection />
 
       {/* Achievements with popover */}
       <Popover

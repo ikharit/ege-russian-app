@@ -1,25 +1,56 @@
-# План: IRT + Error Pattern Analysis
+# ML/RAG Deep Dive Plan
 
-## Этап 1: Типы
-- Обновить `src/types/index.ts`: добавить `difficulty?: number`, `errorType?: string` в `Question`, создать `AnswerHistory` и связанные типы.
+## Overview
+Implement 5 ML-adjacent improvements to the EGE Russian app, ordered by impact/effort.
 
-## Этап 2: Движки
-- Создать `src/utils/irtEngine.ts` — Rasch 1PL модель, updateAbility, selectNextQuestion, calibrateDifficulty.
-- Создать `src/utils/errorPatternAnalyzer.ts` — detectErrorType для заданий 5, 9, 10, 16, analyzeErrors, confidence scoring.
+## Stage 1 — Parallel (Independent)
 
-## Этап 3: Хранилище
-- Обновить `src/stores/progressStore.ts` — добавить `answerHistory`, записывать при каждом ответе, добавить `getErrorAnalysis()`.
-- Обновить `src/stores/slices/lessonAnalyticsSlice.ts` — записывать `answerHistory` при правильных/неправильных ответах.
+### Worker_1: ML Predictive Score (Linear Regression)
+**File:** `src/utils/predictiveScore.ts`
+**Goal:** Replace rule-based prediction with online trainable linear regression.
+**Features:** per-task accuracy, streak, total answered, SRS due count, weak atom count, days to exam.
+**Training:** Online gradient descent on each exam result (compare predicted vs actual, update weights).
+**Output:** Updated `predictiveScore.ts` + `ProgressState` integration.
 
-## Этап 4: Адаптивный движок
-- Обновить `src/utils/adaptiveEngine.ts` — интегрировать `selectNextQuestion` из IRT, добавить error-specific приоритет в рекомендации.
+### Worker_2: Semantic RAG (TF-IDF + Fuse Hybrid)
+**File:** `src/lib/rag.ts`
+**Goal:** Add local TF-IDF semantic search on top of existing fuse.js fuzzy search.
+**Implementation:**
+- Build TF-IDF vectors for all 1061 entries at load time.
+- Vectorize query, compute cosine similarity.
+- Hybrid ranking: 0.5 * TF-IDF score + 0.5 * (1 - fuse score).
+**Output:** Updated `rag.ts` with `buildTFIDF()` and `retrieveSemantic()`.
 
-## Этап 5: Страницы
-- Создать `src/pages/ErrorAnalysisPage.tsx` — топ-5 паттернов, рекомендации, график accuracy (recharts), кнопка "Тренировать".
-- Обновить `src/pages/MistakesReview.tsx` — группировать по `errorType`, показывать инсайты.
+### Worker_3: Error Pattern Clustering
+**Files:** `src/utils/errorPatternAnalyzer.ts`, `src/components/BaseTrainer.tsx`
+**Goal:** Surface systematic error patterns to the user.
+**Implementation:**
+- Aggregate wrong answers by `errorType` (from `question.errorType` or inferred from `taskNumber` + `atoms`).
+- Show a card: «У вас систематическая ошибка: {pattern}. Вот 3 урока на эту тему».
+**Output:** Updated `errorPatternAnalyzer.ts` + new UI card in `BaseTrainer` or `Dashboard`.
 
-## Этап 6: Маршрутизация
-- Обновить `src/App.tsx` — добавить `/error-analysis`.
+### Worker_4: IRT Engine (Item Response Theory)
+**Files:** `src/utils/irtEngine.ts` (new), `src/components/BaseTrainer.tsx`
+**Goal:** Estimate student ability θ and select questions where P(correct) ≈ 0.6.
+**Implementation:**
+- `IRTEngine` class: maintains θ, updates after each answer (Bayesian or Elo-like).
+- `selectQuestion(questions, θ)` → returns question with difficulty closest to θ + 0.4 (for 60% success rate).
+- Integrate into `BaseTrainer` shuffling logic.
+**Formula:** P(correct) = 1 / (1 + e^(-(θ - b)))
+**Output:** New `irtEngine.ts` + `BaseTrainer` integration.
 
-## Этап 7: Проверка сборки
-- `npm run build` — проверить отсутствие ошибок TypeScript.
+## Stage 2 — Sequential (Depends on Stage 1 progress)
+
+### Worker_5: Bayesian Knowledge Tracing (BKT) for Atoms
+**Files:** `src/utils/bktEngine.ts` (new), `src/stores/progressStore.ts`
+**Goal:** Track P(knows atom) for each atom and recommend lessons accordingly.
+**Implementation:**
+- `BKTModel` class: 4 parameters per atom (P(L0), P(T), P(G), P(S)).
+- Update after each atom-tagged question.
+- Integrate into `getWeakAtoms()` for adaptive recommendations.
+**Output:** New `bktEngine.ts` + integration into `progressStore`.
+
+## Validation
+- After each stage: `npm run build` must pass.
+- After Stage 1: `npm run validate:rag` must still pass (0 errors).
+- After all: `npm run test` (if tests exist).

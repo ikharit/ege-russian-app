@@ -176,3 +176,4 @@ Last updated: 2026-06-20 by agent
 - **Duel achievements**: 5 новых ачивок (`ach-duel-first`, `ach-duel-win`, `ach-duel-wins-3`, `ach-duel-fast`, `ach-duel-perfect`) в `achievements.ts` + проверка в `achievementChecker.ts` через `useDuelStore.getState().duels`.
 - **Teacher class card**: В Dashboard.tsx добавлена карточка "Мои классы" для учителя (`isTeacher`) — ведёт на `/teacher/classroom`.
 - **Class system UX**: Проверено — `TeacherClassroom.tsx` уже содержит полный UI создания класса, inviteCode, копирование, удаление, табы (ученики/ДЗ/лидерборд).
+- **Course structure fix**: Убрано дублирование `examTasksSections` в `courseData.ts`. Задания 17-21 теперь внутри "Пунктуации" (через `punctuationAll.ts`). Добавлены задания 22-27 как отдельная секция.

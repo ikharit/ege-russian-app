@@ -9,7 +9,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "test": "vitest",
-    "validate:questions": "npx tsx src/data/validators/runValidation.ts"
+    "validate:questions": "npx tsx src/data/validators/runValidation.ts",
+    "validate:rag": "node scripts/verify-rag.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",

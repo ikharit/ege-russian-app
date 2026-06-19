@@ -394,3 +394,23 @@ import { getAtomById } from '../data/atomization/atoms'
 **Статус:** ✅ Уже было в `src/components/QuestionCard.tsx` (строки 192-227)
 **Где**: `QuestionCard.tsx`, `src/lib/rag.ts`
 **Решение**: При неправильном ответе вызывается `ragRetriever.retrieve(question.text, taskNumber, 3)` → `generateExplanation()` → показывает правило + `TheoryQuickReference`. Если RAG не нашёл — fallback к `getRelevantRules()`. Не требует LLM, работает полностью offline.
+
+---
+
+## ✅ БАГ-5: Разделы курса дублируются (17-21 вынесены отдельно от Пунктуации)
+
+**Статус:** ✅ Исправлено (2026-06-21)
+
+**Где**: `src/data/courseData.ts`, `src/data/sections/punctuationAll.ts`, `src/data/sections/examTasks.ts`
+
+**Проблема**: `examTasksSections` (задания 17-21) были импортированы напрямую в `courseData.ts` и отображались как отдельные топ-уровневые секции, вместо того чтобы быть внутри "Пунктуации".
+
+**Решение**:
+1. Убран `...examTasksSections` из `courseData.ts`
+2. Добавлен `...task22_27Sections` для заданий 22-27
+3. В `punctuationAll.ts` добавлены уроки из `examTasks.ts` (task20, task21) как группы внутри секции "Пунктуация"
+4. Task 17-19 уже были в `punctuation.ts`, task 20-21 добавлены из `examTasks.ts`
+
+**Код фикса**: `src/data/courseData.ts` — строки импортов и `sections` array. `src/data/sections/punctuationAll.ts` — импорт `examTasksSections` и фильтрация уроков в группы.
+
+**Как проверить**: Открыть Dashboard → раздел "Пунктуация" → внутри группы 16-21. Задания 22-27 — отдельная секция. Нет дублирования.

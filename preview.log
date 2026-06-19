@@ -1,0 +1,7 @@
+
+> ege-russian-app@0.0.1 preview
+> vite preview --port 4174
+
+Port 4174 is in use, trying another one...
+  ➜  Local:   http://localhost:4175/
+  ➜  Network: use --host to expose

@@ -5,7 +5,7 @@ import { grammarSections } from './sections/grammarMorphologySyntax'
 import { orthographyAllSections } from './sections/orthographyAll'
 import { punctuationAllSections } from './sections/punctuationAll'
 import { dooshinMetaSection } from './sections/dooshinMeta'
-import { examTasksSections } from './sections/examTasks'
+import { task22_27Sections } from './sections/task22_27'
 
 export const course: Course = {
   id: 'ege-russian-2025',
@@ -17,7 +17,7 @@ export const course: Course = {
     ...grammarSections,
     ...orthographyAllSections,
     ...punctuationAllSections,
-    ...examTasksSections,
+    ...task22_27Sections,
     dooshinMetaSection,
   ]
 }

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
+import { useChatStore } from '../stores/chatStore'
 import { course } from '../data/courseData'
+import { AIChat } from '../components/AIChat'
 import { RankBadge } from '../components/RankBadge'
 import { XPDetailModal } from '../components/XPDetailModal'
 import { DailyQuests } from '../components/DailyQuests'
@@ -236,6 +238,7 @@ function SectionTitle({ title, action }: { title: string; action?: { label: stri
 export function Dashboard() {
   const navigate = useNavigate()
   const [showXPModal, setShowXPModal] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(false)
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const stats = useProgressStore((s) => s.userStats)
   const isTeacher = useProgressStore((s) => s.isTeacher)
@@ -774,6 +777,40 @@ export function Dashboard() {
       </div>
 
       <XPDetailModal isOpen={showXPModal} onClose={() => setShowXPModal(false)} />
+
+      {/* AI Chat FAB */}
+      <motion.button
+        className="fixed z-50 bottom-[88px] right-4 w-14 h-14 rounded-full bg-gradient-to-br from-duo-purple to-duo-blue text-white shadow-lg flex items-center justify-center"
+        style={{ boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4)' }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsChatOpen(true)}
+        animate={{
+          scale: [1, 1.08, 1],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          repeatDelay: 3,
+        }}
+        aria-label="Открыть AI-чат"
+      >
+        <MessageCircle size={24} />
+        {(() => {
+          const stats = useProgressStore.getState().userStats
+          const srsData = useProgressStore.getState().srsData
+          const dueCount = getDueReviews(srsData).length
+          const showBadge = dueCount > 0 || stats.streak < 3
+          if (!showBadge) return null
+          return (
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-duo-red text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
+              {dueCount > 0 ? dueCount : '!'}
+            </span>
+          )
+        })()}
+      </motion.button>
+
+      <AIChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   )
 }
