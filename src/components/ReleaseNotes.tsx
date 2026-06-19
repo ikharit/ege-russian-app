@@ -38,7 +38,7 @@ export function ReleaseNotesWidget() {
   const [dismissed, setDismissed] = useState(getDismissedVersion())
   const [showHistory, setShowHistory] = useState(false)
 
-  const latest = RELEASE_NOTES[0]
+  const latest = RELEASE_NOTES[0] as any
   const isUnread = dismissed !== LATEST_VERSION
   const recentCount = RELEASE_NOTES.length
 
@@ -115,7 +115,7 @@ export function ReleaseNotesWidget() {
               transition={{ duration: 0.2 }}
             >
               <div className="px-4 pb-4 space-y-2">
-                {latest.bullets.slice(0, 4).map((b, i) => (
+                {latest.bullets.slice(0, 4).map((b: any, i: number) => (
                   <div
                     key={i}
                     className={`flex flex-col gap-1 p-2 rounded-lg text-sm ${getBulletClass(b.type)}`}
@@ -195,7 +195,7 @@ export function ReleaseNotesWidget() {
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      {note.bullets.map((b, i) => (
+                      {note.bullets.map((b: any, i: number) => (
                         <div
                           key={i}
                           className={`flex items-start gap-2 p-1.5 rounded-lg text-xs ${getBulletClass(b.type)}`}
