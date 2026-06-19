@@ -17,6 +17,8 @@ const path = require('path');
 // Valid vowel alternations according to theory/task9.ts (both directions)
 const VALID_VOWEL_ALTERNATIONS = [
   // Standard vowel alternations (both directions)
+  // Note: о/ё is a valid phonetic alternation, but in school EGE task 9
+  // it's usually treated as a verifiable root (e.g., жечь/поджёг), not alternating
   'а/о', 'о/а', 'и/е', 'е/и', 'а/я', 'я/а', 'о/ё', 'ё/о',
   // Root-specific alternations (both directions)
   'лаг/лож', 'лож/лаг',
