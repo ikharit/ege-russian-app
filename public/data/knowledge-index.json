@@ -1646,16 +1646,16 @@
     "source": "explanations/task9-word-explanations.json",
     "taskNumber": "9",
     "word": "блистательный",
-    "content": "Корень -блист- (проверяемый). Проверьте через однокоренное: блестеть, блеск.",
-    "explanation": "Корень -блист- (проверяемый). Проверьте через однокоренное: блестеть, блеск.",
+    "content": "Корень -блист- (чередующийся). Чередование гласных: блест/блист (блестеть, блеск).",
+    "explanation": "Корень -блист- (чередующийся). Чередование гласных: блест/блист (блестеть, блеск).",
     "tags": [
-      "root_verifiable",
+      "root_vowel_alternation",
       "task9",
       "roots"
     ],
     "relatedAtoms": [
       "task9",
-      "root_verifiable"
+      "root_vowel_alternation"
     ]
   },
   {
@@ -1850,16 +1850,16 @@
     "source": "explanations/task9-word-explanations.json",
     "taskNumber": "9",
     "word": "непостижимый",
-    "content": "Корень -постиж- (проверяемый). Проверьте через однокоренное: постигать.",
-    "explanation": "Корень -постиж- (проверяемый). Проверьте через однокоренное: постигать.",
+    "content": "Корень -постиж- (чередующийся). Чередование согласных: постиг/постиж (постигать).",
+    "explanation": "Корень -постиж- (чередующийся). Чередование согласных: постиг/постиж (постигать).",
     "tags": [
-      "root_verifiable",
+      "root_vowel_alternation",
       "task9",
       "roots"
     ],
     "relatedAtoms": [
       "task9",
-      "root_verifiable"
+      "root_vowel_alternation"
     ]
   },
   {
@@ -1986,16 +1986,16 @@
     "source": "explanations/task9-word-explanations.json",
     "taskNumber": "9",
     "word": "напряжение",
-    "content": "Корень -напряж- (проверяемый). Проверьте через однокоренное: напрягать.",
-    "explanation": "Корень -напряж- (проверяемый). Проверьте через однокоренное: напрягать.",
+    "content": "Корень -напряж- (чередующийся). Чередование согласных: напряг/напряж (напрягать).",
+    "explanation": "Корень -напряж- (чередующийся). Чередование согласных: напряг/напряж (напрягать).",
     "tags": [
-      "root_verifiable",
+      "root_vowel_alternation",
       "task9",
       "roots"
     ],
     "relatedAtoms": [
       "task9",
-      "root_verifiable"
+      "root_vowel_alternation"
     ]
   },
   {

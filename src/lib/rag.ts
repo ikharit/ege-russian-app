@@ -147,15 +147,32 @@ export function verifyExplanation(
     const rule = result.entry
     const ruleContent = (rule.content + ' ' + rule.explanation).toLowerCase()
 
-    // If rule says "проверяемый", generated should not say "непроверяемый"
+    // Type contradictions
     if (ruleContent.includes('проверяемый') && normalized.includes('непроверяемый')) {
       issues.push(`Контрадикция: правило говорит «проверяемый», объяснение говорит «непроверяемый»`)
     }
     if (ruleContent.includes('чередующийся') && normalized.includes('проверяемый')) {
       issues.push(`Контрадикция: правило говорит «чередующийся», объяснение говорит «проверяемый»`)
     }
+    if (ruleContent.includes('чередующийся') && normalized.includes('непроверяемый')) {
+      issues.push(`Контрадикция: правило говорит «чередующийся», объяснение говорит «непроверяемый»`)
+    }
     if (ruleContent.includes('непроверяемый') && normalized.includes('проверяемый')) {
       issues.push(`Контрадикция: правило говорит «непроверяемый», объяснение говорит «проверяемый»`)
+    }
+
+    // 2. Check consistency: if explanation says "проверяемый", the check word must share the root
+    if (normalized.includes('проверяемый') && rule.word) {
+      const checkWordMatch = normalized.match(/однокоренное[:\s]+(\S+)/)
+      if (checkWordMatch) {
+        const checkWord = checkWordMatch[1].toLowerCase().replace(/[,.!?]$/, '')
+        const wordRoot = rule.word.toLowerCase().replace(/[аеёиоуыэюя]/g, '').replace(/[^а-яё]/g, '')
+        const checkRoot = checkWord.replace(/[аеёиоуыэюя]/g, '').replace(/[^а-яё]/g, '')
+        // If roots differ significantly, it's likely alternation, not verifiable
+        if (wordRoot.length > 2 && checkRoot.length > 2 && wordRoot !== checkRoot) {
+          issues.push(`Подозрение: «проверяемый» корень, но проверочное слово «${checkWord}» имеет другой корень (${checkRoot} vs ${wordRoot}) — возможно, чередование`)
+        }
+      }
     }
   }
 

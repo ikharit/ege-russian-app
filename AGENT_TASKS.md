@@ -22,44 +22,17 @@
 
 ---
 
-### БАГ-2: Соединительные линии между уроками на карте курса не отображаются
+### ✅ БАГ-2: Соединительные линии между уроками на карте курса не отображаются
 
-**Где**: `src/pages/CourseMap.tsx`
+**Статус:** ✅ Исправлено (2026-06-20)
 
-**Проблема**: Вот этот код (строки ~60-65):
+**Где**: `src/pages/CourseMap.tsx` (строка ~186)
 
-```tsx
-{!isLast && (
-  <div className="absolute left-8 mt-16 w-0.5 h-4 bg-gray-200" style={{ position: 'relative' }} />
-)}
-```
+**Решение**: Убран конфликтующий `style={{ position: 'relative' }}` (override'ил `absolute` в className). Родитель `<div className="flex items-center gap-4 relative">` уже имеет `relative`. Линия позиционирована как `absolute left-6 top-12 h-9 w-0.5 bg-gray-200` — точно соединяет центр нижней границы кнопки (48px) с центром верхней границы следующей кнопки (gap 12px + 48px div + 24px центр = 84px = 48px + 36px).
 
-`absolute` в className, но inline `style={{ position: 'relative' }}` — они конфликтуют, и `left-8 mt-16` не работают как задумано. Линии либо не видны, либо расположены хаотично.
+**Код фикса**: `src/pages/CourseMap.tsx`, строка 186: `{!isLast && <div className="absolute left-6 top-12 h-9 w-0.5 bg-gray-200" />}`
 
-**Что нужно сделать**:
-
-1. Убрать `style={{ position: 'relative' }}` (он конфликтует с `absolute`).
-2. Обёртка `<div className="flex items-center gap-4">` должна иметь `relative`, чтобы `absolute` линия позиционировалась относительно неё.
-3. Линия должна быть вертикальной и соединять узлы.
-
-**Исправленный JSX для урока**:
-
-```tsx
-<div key={lesson.id} className="flex items-center gap-4 relative">
-  {/* Узел */}
-  <motion.button ... >...</motion.button>
-
-  {/* Текст */}
-  <div className="flex-1">...</div>
-
-  {/* Линия — только если не последний урок в секции */}
-  {!isLast && (
-    <div className="absolute left-8 top-16 w-0.5 h-6 bg-gray-200" />
-  )}
-</div>
-```
-
-**Как проверить**: Открыть `/course` — между уроками должны быть серые вертикальные линии.
+**Как проверить**: Открыть `/course` — между уроками должны быть серые вертикальные линии, соединяющие узлы.
 
 ---
 

@@ -183,7 +183,7 @@ export function CourseMap() {
           </div>
         </Popover>
 
-        {!isLast && <div className="absolute left-6 top-14 w-0.5 h-6 bg-gray-200" />}
+        {!isLast && <div className="absolute left-6 top-12 h-9 w-0.5 bg-gray-200" />}
       </div>
     )
   }

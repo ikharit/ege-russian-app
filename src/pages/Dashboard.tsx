@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -21,6 +21,7 @@ import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadli
 import { WhatToStudyToday } from '../components/WhatToStudyToday'
 import { SmartPathCard } from '../components/SmartPathCard'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
+import { getEssayStats } from '../data/essayData'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -465,6 +466,31 @@ export function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Essays Card */}
+      <motion.div
+        className="card bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200 cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/essay')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/essay'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Сочинения"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-rose-500 flex items-center justify-center text-white">
+              <PenTool size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-rose-500 uppercase tracking-wide font-bold">Письменная часть</p>
+              <p className="font-bold text-gray-800">Сочинения</p>
+              <p className="text-xs text-gray-500">{getEssayStats().completed}/{getEssayStats().total} тем написано</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-rose-400" />
+        </div>
+      </motion.div>
+
       {/* Games Card — compact, fun, distinct from trainers */}
       <motion.div
         className="card bg-gradient-to-br from-purple-100 to-fuchsia-50 border-purple-200"
@@ -640,17 +666,19 @@ function StudyPlanWidget() {
   const getTodayTasks = useStudyPlanStore((s) => s.getTodayTasks)
   const completeTask = useStudyPlanStore((s) => s.completeTask)
   const getProgress = useStudyPlanStore((s) => s.getProgress)
+  const getAssessment = useStudyPlanStore((s) => s.getAssessment)
 
   if (!plan || !examDate) return null
 
   const todayTasks = getTodayTasks()
   const progress = getProgress()
+  const assessment = getAssessment()
   const daysToExam = Math.ceil((new Date(examDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
   const completedToday = todayTasks.filter((t) => t.completed).length
 
   return (
     <motion.div
-      className="card bg-gradient-to-br from-duo-green/10 to-white border-duo-green/20 cursor-pointer"
+      className={`card bg-gradient-to-br from-duo-green/10 to-white border-duo-green/20 cursor-pointer ${assessment.status === 'critical' ? 'border-duo-red/30' : assessment.status === 'behind' ? 'border-duo-yellow/30' : ''}`}
       whileHover={{ scale: 1.01 }}
       onClick={() => navigate('/study-plan')}
       role="button"
@@ -674,7 +702,14 @@ function StudyPlanWidget() {
             </p>
           </div>
         </div>
-        <ChevronRight size={24} className="text-duo-green/50" />
+        <div className="text-right">
+          <p className="text-xs text-gray-400">Цель</p>
+          <p className="text-lg font-bold text-duo-green">{plan.targetScore}</p>
+        </div>
+      </div>
+
+      <div className={`mt-2 text-xs font-bold ${assessment.color}`}>
+        {assessment.label} — {assessment.message}
       </div>
 
       {todayTasks.length > 0 && (

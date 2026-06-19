@@ -37,6 +37,8 @@ import { AdaptiveTrainerPage } from './pages/AdaptiveTrainerPage'
 import { ExamVariantsList } from './pages/ExamVariantsList'
 import { ExamVariantPage } from './pages/ExamVariantPage'
 import { ExamResultsPage } from './pages/ExamResultsPage'
+import { EssayTopicsList } from './pages/EssayTopicsList'
+import { EssayPage } from './pages/EssayPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -94,7 +96,7 @@ type SyncStatus = 'idle' | 'syncing' | 'saved' | 'error'
 export default function App() {
   const navigate = useNavigate()
   const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname.startsWith('/exam/')
+  const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname.startsWith('/exam/') || location.pathname.startsWith('/essay/')
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
@@ -394,6 +396,8 @@ export default function App() {
           <Route path="/exam" element={<ExamVariantsList />} />
           <Route path="/exam/:variantId" element={<ExamVariantPage />} />
           <Route path="/exam/:variantId/results" element={<ExamResultsPage />} />
+          <Route path="/essay" element={<EssayTopicsList />} />
+          <Route path="/essay/:topicId" element={<EssayPage />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task6-trainer" element={<Task6Trainer />} />
           <Route path="/task7-trainer" element={<Task7Trainer />} />
