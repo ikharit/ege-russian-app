@@ -482,6 +482,13 @@ export function Profile() {
 
       {/* Actions */}
       <div className="flex flex-col gap-3">
+        <button onClick={() => navigate('/parent')} className="card flex items-center gap-3 text-left hover:bg-gray-50 transition-colors">
+          <Users size={20} className="text-duo-green" />
+          <div>
+            <p className="font-bold text-sm">Родительский кабинет</p>
+            <p className="text-xs text-gray-500">Прогресс ученика</p>
+          </div>
+        </button>
         <button onClick={handleExport} className="card flex items-center gap-3 text-left hover:bg-gray-50 transition-colors">
           <Download size={20} className="text-duo-blue" />
           <div>

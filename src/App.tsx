@@ -305,6 +305,7 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/teacher/:studentName" element={<StudentHomework />} />
+          <Route path="/parent" element={<ParentDashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />

@@ -19,13 +19,3 @@ export const dooshinSection: Section = {
     lessons: s.lessons.map(l => ({ ...l, sectionId: 'section-dooshin-all' }))
   }))
 }
-
-// Lightweight meta-section for eager loading (questions stripped)
-export const dooshinMetaSection: Section = {
-  ...dooshinSection,
-  lessons: dooshinSection.lessons.map(l => ({ ...l, questions: [] })),
-  groups: dooshinSection.groups?.map(g => ({
-    ...g,
-    lessons: g.lessons.map(l => ({ ...l, questions: [] }))
-  }))
-}
