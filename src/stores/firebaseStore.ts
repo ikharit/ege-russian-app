@@ -210,11 +210,11 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
         try {
           if (op.type === 'progress') {
             const docRef = doc(db, 'users', firebaseUser.uid, 'progress', 'main')
-            await setDoc(docRef, { ...op.payload, updatedAt: serverTimestamp() }, { merge: true })
+            await setDoc(docRef, { ...(op.payload as object), updatedAt: serverTimestamp() } as Record<string, unknown>, { merge: true })
           } else if (op.type === 'class') {
             const classId = op.payload.classId as string
             const docRef = doc(db, 'classes', classId)
-            await setDoc(docRef, { ...op.payload.classRoom, updatedAt: serverTimestamp(), updatedBy: firebaseUser.uid }, { merge: true })
+            await setDoc(docRef, { ...(op.payload.classRoom as object), updatedAt: serverTimestamp(), updatedBy: firebaseUser.uid } as Record<string, unknown>, { merge: true })
           }
         } catch {
           remaining.push(op)

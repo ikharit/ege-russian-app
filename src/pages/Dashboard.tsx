@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -20,6 +20,7 @@ import { DashboardNotificationWidget } from '../components/dashboard/DashboardNo
 import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadlineWidget'
 import { WhatToStudyToday } from '../components/WhatToStudyToday'
 import { SmartPathCard } from '../components/SmartPathCard'
+import { useStudyPlanStore } from '../stores/studyPlanStore'
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -494,5 +495,83 @@ export function Dashboard() {
 
       <XPDetailModal isOpen={showXPModal} onClose={() => setShowXPModal(false)} />
     </div>
+  )
+}
+
+function StudyPlanWidget() {
+  const navigate = useNavigate()
+  const plan = useStudyPlanStore((s) => s.plan)
+  const examDate = useStudyPlanStore((s) => s.examDate)
+  const getTodayTasks = useStudyPlanStore((s) => s.getTodayTasks)
+  const completeTask = useStudyPlanStore((s) => s.completeTask)
+  const getProgress = useStudyPlanStore((s) => s.getProgress)
+
+  if (!plan || !examDate) return null
+
+  const todayTasks = getTodayTasks()
+  const progress = getProgress()
+  const daysToExam = Math.ceil((new Date(examDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+  const completedToday = todayTasks.filter((t) => t.completed).length
+
+  return (
+    <motion.div
+      className="card bg-gradient-to-br from-duo-green/10 to-white border-duo-green/20 cursor-pointer"
+      whileHover={{ scale: 1.01 }}
+      onClick={() => navigate('/study-plan')}
+      role="button"
+      tabIndex={0}
+      aria-label="План подготовки к ЕГЭ"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-duo-green flex items-center justify-center text-white">
+            <Target size={24} />
+          </div>
+          <div>
+            <p className="text-xs text-duo-green uppercase tracking-wide font-bold">План подготовки</p>
+            <p className="font-bold text-gray-800">
+              {daysToExam > 0 ? `${daysToExam} дн. до экзамена` : 'Экзамен сегодня!'}
+            </p>
+            <p className="text-xs text-gray-500">
+              {todayTasks.length > 0
+                ? `${completedToday}/${todayTasks.length} задач сегодня • ${progress.percent}% всего плана`
+                : 'Нет задач на сегодня'}
+            </p>
+          </div>
+        </div>
+        <ChevronRight size={24} className="text-duo-green/50" />
+      </div>
+
+      {todayTasks.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-duo-green/10 space-y-2">
+          {todayTasks.slice(0, 2).map((task) => (
+            <div key={task.id} className="flex items-center justify-between text-sm">
+              <span className={`${task.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                {task.title}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  completeTask(task.id)
+                }}
+                className={`text-sm ${task.completed ? 'text-duo-green' : 'text-gray-300 hover:text-duo-green'}`}
+              >
+                {task.completed ? '✓' : '○'}
+              </button>
+            </div>
+          ))}
+          {todayTasks.length > 2 && (
+            <p className="text-xs text-gray-400 text-center">+{todayTasks.length - 2} ещё...</p>
+          )}
+        </div>
+      )}
+
+      <div className="w-full bg-gray-100 rounded-full h-2 mt-3">
+        <div
+          className="bg-duo-green h-2 rounded-full transition-all"
+          style={{ width: `${progress.percent}%` }}
+        />
+      </div>
+    </motion.div>
   )
 }

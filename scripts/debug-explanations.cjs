@@ -55,6 +55,8 @@ const newContent = content.replace(questionRegex, (match, prefix, oldExplanation
   
   if (count === 1) {
     console.log('ID:', id);
+    console.log('Atoms raw:', atomsMatch ? atomsMatch[0] : 'null');
+    console.log('Atoms parsed:', atoms);
     console.log('Old:', oldExplanation);
     console.log('New:', newExplanation);
     console.log('Equal:', newExplanation === oldExplanation);

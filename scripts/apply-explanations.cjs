@@ -155,9 +155,9 @@ for (const file of files) {
   let content = fs.readFileSync(filePath, 'utf-8');
 
   // Find all questions and replace explanations
-  const questionRegex = /(\{ id: "qd\d+-\d+", type: 'text', text: '[^']+', correctAnswer: \[[^\]]+\], explanation: )'([^']+)'/g;
+  const questionRegex = /(\{ id: "qd\d+-\d+", type: 'text', text: '[^']+', correctAnswer: \[[^\]]+\], explanation: )'([^']+)'([^}]*)\}/g;
 
-  let newContent = content.replace(questionRegex, (match, prefix, oldExplanation) => {
+  let newContent = content.replace(questionRegex, (match, prefix, oldExplanation, suffix) => {
     // Extract question data from the match
     const idMatch = match.match(/id: "(qd\d+-\d+)"/);
     const textMatch = match.match(/text: '([^']+)'/);
@@ -177,7 +177,7 @@ for (const file of files) {
       changedQuestions++;
     }
 
-    return prefix + "'" + newExplanation + "'";
+    return prefix + "'" + newExplanation + "'" + suffix + '}';
   });
 
   if (newContent !== content) {

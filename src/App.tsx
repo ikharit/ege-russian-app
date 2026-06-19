@@ -32,6 +32,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage'
 import { TeacherClassroom } from './pages/TeacherClassroom'
 import { JoinClass } from './pages/JoinClass'
 import { ClassDetail } from './pages/ClassDetail'
+import { StudyPlanPage } from './pages/StudyPlanPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -383,6 +384,7 @@ export default function App() {
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
           <Route path="/trainers" element={<TrainersPage />} />
+          <Route path="/study-plan" element={<StudyPlanPage />} />
           <Route path="/games" element={<MiniGames />} />
           <Route path="/accent-trainer" element={<AccentTrainer />} />
           <Route path="/task6-trainer" element={<Task6Trainer />} />
