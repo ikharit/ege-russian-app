@@ -135,7 +135,7 @@ ege-russian-app/
 - **Что:** A. Починен production build (PWA `backgroundSync` убран, TS ошибки в Profile/ParentDashboard). B. Dooshin разделён на 4 файла + lazy loading через `dooshinMeta.ts` + dynamic import в `Lesson.tsx`. C. Тесты расширены до 54 (Statistics.test.tsx, dooshin-ачивки). D. Bundle оптимизирован: `recharts` в отдельный chunk (-155 KB gzip).
 - **Где:** `vite.config.ts` (PWA, manualChunks), `src/data/sections/dooshin/` (task9-12 + index), `src/data/sections/dooshinMeta.ts` (новый, 92 урока без questions), `src/data/sections/dooshinUnified.ts` (dynamic import target), `src/pages/Lesson.tsx` (lazy loader + spinner), `src/pages/Statistics.test.tsx` (новый), `src/stores/slices/achievementChecker.test.ts` (+2 dooshin теста), `src/stores/slices/achievementChecker.ts` (багфикс completedLessons id), `src/pages/Profile.tsx` (импорты), `src/pages/ParentDashboard.tsx` (TS fix), `package.json` (type: module, скрипты), `scripts/gen-dooshin-meta.js` (генератор мета-файла)
 - **Зачем:** Пользователь выбрал все 4 пункта: деплой был сломан, dooshin 3777 строк грузил bundle, ачивки dooshin не работали из-за бага `Object.values()` без id, main bundle был перегружен recharts
-- **Git commit:** — (пока не закоммичено)
+- **Git commit:** `e1b25ae`
 - **⚠️ Важно:** 
   - `dooshin.ts` в `src/data/sections/` — 2-строчный реэкспорт, НЕ УДАЛЯТЬ до полного перехода. 
   - `courseData.ts` импортирует `dooshinMetaSection` (лёгкий, без questions). 

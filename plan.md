@@ -1,46 +1,50 @@
-# План: Backend / Auth / Firestore Sync
+# План: Полноценное приложение для подготовки к ЕГЭ по русскому языку
 
-## Текущее состояние
-- `src/lib/supabase.ts` — есть mockSupabase, `isSupabaseConfigured`, типы `Profile`, `UserProgress`, `LeaderboardEntry`
-- `progressStore.ts` — есть `syncProgress`/`loadProgress`, но они синхронизируют только `userStats`, `lessonProgress`, `achievements` (не включают `theoryTestsCompleted`, `atomProgress`, `wrongAnswers`, `taskStats`, `dailyQuestProgress`)
-- `setUserId` — есть, но нет UI для аутентификации
-- Нет автосинхронизации при изменениях
+## Этап 1: ML-Адаптивность (Smart Learning Engine) — PRIORITY
+**Цель:** Персонализированные рекомендации уроков на основе данных о прогрессе
+- Создать `adaptiveEngine.ts` — алгоритм оценки слабых тем, learning curve, forgetting curve
+- Улучшить `WhatToStudyToday` — smart recommendations вместо random
+- Добавить "Smart Path" карточку в Dashboard
+- Алгоритм: учитывать accuracy по заданиям, время ответа, частоту ошибок, дни с последней практики
+- Скилл: `report-writing` (для алгоритма) + `coder` (для имплементации)
 
-## Что нужно сделать
+## Этап 2: Система классов (Classroom System) — PRIORITY
+**Цель:** Учитель создаёт класс, ученики присоединяются по коду
+- Создать `classStore.ts` — Zustand store для классов (localStorage + Firebase-ready)
+- Создать `TeacherClassroom.tsx` — управление классом, invite codes, прогресс учеников
+- Создать `JoinClass.tsx` — страница для ученика (ввод кода)
+- Обновить `ChallengesPage` — классовый лидерборд (не только локальные профили)
+- Скилл: `coder` + `plan` (для архитектуры)
 
-### Stage 1: Улучшить syncProgress / loadProgress
-- `syncProgress` должен сохранять ВСЕ данные из progressStore:
-  - `userStats`, `lessonProgress`, `atomProgress`, `wrongAnswers`, `achievements`, `taskStats`, `dailyQuestProgress`, `theoryTestsCompleted`, `leaderboardRanks`, `teacherStudents`, `isTeacher`
-- `loadProgress` должен загружать все эти данные и восстанавливать состояние
-- Добавить `onConflict: 'user_id'` для upsert
+## Этап 3: Firebase Backend — Sync & Auth
+**Цель:** Облачная синхронизация прогресса между устройствами
+- Создать `firebaseStore.ts` — CRUD с localStorage fallback
+- Auth: anonymous + Google (optional)
+- Cloud Firestore: users, classes, progress, homework
+- Offline support: sync when online
+- Скилл: `coder` (Firebase SDK integration)
 
-### Stage 2: Auth UI (AuthModal.tsx)
-- Компонент с входом через email/password
-- Вход через Google OAuth (Supabase Auth)
-- Регистрация нового пользователя
-- Состояния: loading, error, success
-- После входа — автозагрузка прогресса + автосинхронизация
+## Этап 4: ФИПИ Варианты (Real Exam Variants)
+**Цель:** Структурированные варианты ЕГЭ с реальными вопросами
+- Создать `fipiVariants.ts` — 5-10 вариантов ЕГЭ (структура: 26 заданий)
+- Создать `ExamVariantPage.tsx` — прохождение варианта под таймер
+- Результаты: баллы, primary/secondary, сравнение с порогом
+- Скилл: `deep-research-swarm` (для поиска реальных вариантов) + `coder`
 
-### Stage 3: Интеграция в App.tsx
-- Добавить AuthModal в маршрутизацию или в Dashboard
-- Показывать кнопку "Войти" в профиле/хедере
-- После входа — скрыть модалку, показать имя пользователя
-- Добавить `useEffect` для автосинхронизации при изменении progressStore
+## Этап 5: Задания 17-26 + Сочинение
+**Цель:** Полное покрытие всех заданий ЕГЭ
+- Задания 17-26: речевые ошибки, пунктуация, лексика, грамматика
+- Сочинение: 15 тем, критерии оценки, чеклист
+- Скилл: `deep-research-swarm` (для контента) + `coder`
 
-### Stage 4: Автосинхронизация
-- `useEffect` в App.tsx — подписывается на изменения progressStore
-- Дебаунс 5 секунд после последнего изменения
-- Синхронизировать только если пользователь авторизован
-- Индикатор синхронизации (зелёная точка / "Сохранено")
+---
 
-## Файлы для изменения
-1. `src/lib/supabase.ts` — расширить типы, добавить auth helpers
-2. `src/stores/progressStore.ts` — расширить syncProgress/loadProgress
-3. `src/components/AuthModal.tsx` — новый файл
-4. `src/App.tsx` — интеграция AuthModal, автосинхронизация
-5. `src/types/index.ts` — возможно расширить типы
+## Порядок выполнения
+1. Этап 1 + Этап 2 параллельно (независимые)
+2. Этап 3 (зависит от Этапа 2 — структура классов)
+3. Этап 4 + Этап 5 параллельно (независимые, контент-heavy)
 
-## Примечания
-- Supabase уже подключён через `VITE_SUPABASE_URL` и `VITE_SUPABASE_ANON_KEY`
-- Если env vars не заданы — mockSupabase предотвращает ошибки
-- Для Google OAuth нужно настроить Provider в Supabase Dashboard (не в коде)
+## Агенты
+- `Адаптивность_Разработчик` — ML-Engine + UI
+- `Классы_Разработчик` — Classroom System
+- `Контент_Исследователь` — ФИПИ + задания 17-26 (позже)
