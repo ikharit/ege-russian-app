@@ -53,6 +53,10 @@ export function StudyPlanPage() {
   const getProgress = useStudyPlanStore((s) => s.getProgress)
   const getTodayTasks = useStudyPlanStore((s) => s.getTodayTasks)
 
+  const targetScore = useStudyPlanStore((s) => s.targetScore)
+  const setTargetScore = useStudyPlanStore((s) => s.setTargetScore)
+  const getAssessment = useStudyPlanStore((s) => s.getAssessment)
+
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date()
     return today.toISOString().split('T')[0]
@@ -60,6 +64,7 @@ export function StudyPlanPage() {
 
   const todayTasks = getTodayTasks()
   const progress = getProgress()
+  const assessment = getAssessment()
 
   const daysToExam = examDate
     ? Math.ceil((new Date(examDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
@@ -105,6 +110,27 @@ export function StudyPlanPage() {
                 if (e.target.value) setExamDate(e.target.value)
               }}
             />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">Цель — балл на ЕГЭ</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min="60"
+                max="100"
+                step="5"
+                value={targetScore}
+                className="flex-1 accent-duo-green"
+                onChange={(e) => setTargetScore(Number(e.target.value))}
+              />
+              <span className="text-lg font-bold text-duo-green w-12 text-right">{targetScore}</span>
+            </div>
+            <p className="text-xs text-gray-400 mt-1">
+              {targetScore >= 90 ? 'Максимум — все задания + 5 пробников' :
+               targetScore >= 80 ? 'Высокий — 95% материала + 4 пробника' :
+               targetScore >= 70 ? 'Средний — 85% материала + 3 пробника' :
+               'Минимум — 70% материала + 2 пробника'}
+            </p>
           </div>
           <button
             onClick={() => setExamDate(defaultDate)}
@@ -162,6 +188,20 @@ export function StudyPlanPage() {
           />
         </div>
         <p className="text-xs text-gray-400 mt-1">{progress.percent}% выполнено</p>
+      </div>
+
+      {/* Assessment card */}
+      <div className={`card border-l-4 ${assessment.status === 'ahead' ? 'border-l-duo-green bg-duo-green/5' : assessment.status === 'ontrack' ? 'border-l-blue-400 bg-blue-50' : assessment.status === 'behind' ? 'border-l-duo-yellow bg-duo-yellow/5' : 'border-l-duo-red bg-duo-red/5'}`}>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className={`text-sm font-bold ${assessment.color}`}>{assessment.label}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{assessment.message}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-gray-400">Цель</p>
+            <p className="text-lg font-bold text-duo-green">{plan.targetScore}</p>
+          </div>
+        </div>
       </div>
 
       {/* Today's tasks */}
