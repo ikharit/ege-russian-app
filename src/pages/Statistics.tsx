@@ -13,20 +13,58 @@ export function Statistics() {
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed')
   const totalLessons = course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
 
-  // Calculate per-section stats
-  const sectionStats = course.sections.map(section => {
-    const sectionLessons = section.lessons
-    const completed = sectionLessons.filter(l => lessonProgress[l.id]?.status === 'completed').length
-    const totalScore = sectionLessons.reduce((sum, l) => sum + (lessonProgress[l.id]?.bestScore || 0), 0)
-    const avgScore = completed > 0 ? Math.round(totalScore / completed) : 0
-    return {
-      name: section.title,
-      completed,
-      total: sectionLessons.length,
-      score: avgScore,
-      fill: section.color
+  // Map dooshin task numbers to base sections
+  const dooshinTaskToSection: Record<string, string> = {
+    '9': 'section-orthography',
+    '10': 'section-orthography',
+    '11': 'section-orthography',
+    '12': 'section-orthography',
+    '13': 'section-orthography',
+    '14': 'section-orthography',
+    '15': 'section-orthography',
+    '16': 'section-punctuation',
+    '17': 'section-punctuation',
+    '18': 'section-punctuation',
+    '19': 'section-punctuation',
+    '20': 'section-punctuation',
+  }
+
+  // Distribute dooshin lessons into base sections
+  const dooshinSection = course.sections.find(s => s.id === 'section-dooshin-all')
+  const dooshinLessonIdsBySection = new Map<string, string[]>()
+  if (dooshinSection) {
+    for (const lesson of dooshinSection.lessons) {
+      const match = lesson.id.match(/lesson-dooshin-(\d+)-/)
+      if (match) {
+        const targetSection = dooshinTaskToSection[match[1]]
+        if (targetSection) {
+          const arr = dooshinLessonIdsBySection.get(targetSection) || []
+          arr.push(lesson.id)
+          dooshinLessonIdsBySection.set(targetSection, arr)
+        }
+      }
     }
-  })
+  }
+
+  // Calculate per-section stats (excluding dooshin, merging its lessons)
+  const sectionStats = course.sections
+    .filter(s => s.id !== 'section-dooshin-all')
+    .map(section => {
+      const baseLessonIds = section.lessons.map(l => l.id)
+      const dooshinIds = dooshinLessonIdsBySection.get(section.id) || []
+      const allLessonIds = [...baseLessonIds, ...dooshinIds]
+
+      const completed = allLessonIds.filter(id => lessonProgress[id]?.status === 'completed').length
+      const totalScore = allLessonIds.reduce((sum, id) => sum + (lessonProgress[id]?.bestScore || 0), 0)
+      const avgScore = completed > 0 ? Math.round(totalScore / completed) : 0
+      return {
+        name: section.title,
+        completed,
+        total: allLessonIds.length,
+        score: avgScore,
+        fill: section.color
+      }
+    })
 
   const radarData = sectionStats.map(s => ({
     subject: s.name.replace('Орфография: ', '').replace('Пунктуация: ', '').slice(0, 15),
