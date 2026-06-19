@@ -82,60 +82,17 @@ loadProgress: async () => {
 
 ---
 
-### БАГ-4: Dashboard предлагает "Продолжить" уже пройденный урок
+### ✅ БАГ-4: Dashboard предлагает "Продолжить" уже пройденный урок
 
-**Где**: `src/pages/Dashboard.tsx`, строки ~25-35
+**Статус:** ✅ Исправлено (2026-06-20)
 
-**Проблема**: Если все уроки `completed`, логика падает в `if (!nextLesson)` и берёт `course.sections[0].lessons[0]` — который уже пройден. Пользователь видит "Продолжить обучение" на пройденный урок.
+**Где**: `src/pages/Dashboard.tsx`, строки ~63-88
 
-**Текущий код**:
+**Решение**: Если все уроки `completed` (`!nextLesson`), логика ищет урок с наихудшим `bestScore` для повторения (`worstLesson`). В JSX карточки добавлена проверка `allCompleted ? 'Все уроки пройдены! 🎉' : lessonProgress[nextLesson.lesson.id]?.status === 'completed' ? 'Повторить' : 'Продолжить обучение'`. Пользователь видит "Все уроки пройдены! 🎉" и "Повторить" для урока с худшим результатом.
 
-```tsx
-let nextLesson = null
-for (const section of course.sections) {
-  for (const lesson of section.lessons) {
-    const prog = lessonProgress[lesson.id]
-    if (!prog || prog.status === 'available' || prog.status === 'started') {
-      nextLesson = { lesson, section }
-      break
-    }
-  }
-  if (nextLesson) break
-}
-if (!nextLesson) {
-  nextLesson = { lesson: course.sections[0].lessons[0], section: course.sections[0] }
-}
-```
+**Код фикса**: `src/pages/Dashboard.tsx`, строки 74-88 (`worstLesson` логика) и строка 376 (`allCompleted` в JSX).
 
-**Что нужно сделать**:
-
-1. Если `!nextLesson` (всё пройдено), показать другую карточку:
-   - Заголовок: "Все уроки пройдены! 🎉"
-   - Текст: "Повторите слабые темы или пройдите пробный экзамен."
-   - Кнопка: "К карте курса" → `navigate('/course')`
-2. ИЛИ предложить урок с наихудшим `bestScore` для повторения.
-
-**Минимальный фикс**:
-
-```tsx
-if (!nextLesson) {
-  // Найти урок с наименьшим bestScore для повторения
-  let worstLesson = null
-  let worstScore = 101
-  for (const section of course.sections) {
-    for (const lesson of section.lessons) {
-      const score = lessonProgress[lesson.id]?.bestScore ?? 0
-      if (score < worstScore) {
-        worstScore = score
-        worstLesson = { lesson, section }
-      }
-    }
-  }
-  nextLesson = worstLesson || { lesson: course.sections[0].lessons[0], section: course.sections[0] }
-}
-```
-
-И добавить в карточку текст: `prog?.status === 'completed' ? 'Повторить' : 'Продолжить обучение'`.
+**Как проверить**: Пройти все уроки → Dashboard покажет "Все уроки пройдены! 🎉" и предложит повторить урок с наихудшим score.
 
 ---
 
