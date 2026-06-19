@@ -37,6 +37,7 @@ import { useProgressStore } from './stores/progressStore'
 import { useNotificationStore } from './stores/notificationStore'
 import { useStudentStore } from './stores/studentStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
+import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 
 import TheoryPage from './pages/TheoryPage'
 import TheoryEditorPage from './pages/TheoryEditorPage'
@@ -181,7 +182,7 @@ export default function App() {
     checkNotifications()
   }, [])
 
-  // Auto-save progress to student store
+  // Auto-save progress to student store + IndexedDB
   useEffect(() => {
     const unsubscribe = useProgressStore.subscribe((state) => {
       const activeProfileId = useStudentStore.getState().activeProfileId
@@ -207,6 +208,8 @@ export default function App() {
       }
       useStudentStore.getState().updateActiveProfile(progressSnapshot)
       useStudentStore.getState().addHistoryPoint(progressSnapshot)
+      // Cache in IndexedDB for offline access
+      syncProgressIfOnline(progressSnapshot).catch(() => {})
     })
     return () => unsubscribe()
   }, [])

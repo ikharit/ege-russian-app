@@ -26,6 +26,15 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          dooshin: ['./src/data/sections/dooshin'],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
