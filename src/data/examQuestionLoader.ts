@@ -30,6 +30,60 @@ const dataSourceMap: Record<string, unknown[]> = {
   task16: task16Questions,
 }
 
+interface AccentQuestion {
+  id: string
+  word: string
+  normalized: string
+  stressIndex: number
+  explanation: string
+  difficulty: 'easy' | 'medium' | 'hard'
+}
+
+interface Task5Sentence {
+  id: number
+  text: string
+  isError: boolean
+}
+
+interface Task5Question {
+  id: string
+  sentences: Task5Sentence[]
+  explanation: string
+}
+
+interface Task10Row {
+  id: number
+  words: string[]
+}
+
+interface Task10Question {
+  id: string
+  rows: Task10Row[]
+  correctAnswers: number[]
+  explanation: string
+}
+
+interface Task16Sentence {
+  id: number
+  text: string
+}
+
+interface Task16Question {
+  id: string
+  instruction: string
+  sentences: Task16Sentence[]
+  correctAnswer: number
+  explanation: string
+}
+
+interface SimpleQuestion {
+  id: string
+  text: string
+  options: string[]
+  correctAnswer: string[]
+  explanation: string
+}
+
 export function loadQuestionsForTask(
   variantId: string,
   taskNumber: number,
@@ -40,7 +94,7 @@ export function loadQuestionsForTask(
   const raw = getQuestionsForTask(variantId, taskNumber, allQuestions, count)
 
   if (dataSource === 'accent') {
-    return raw.map((q: any) => ({
+    return (raw as AccentQuestion[]).map((q) => ({
       id: q.id,
       type: 'text' as const,
       text: `Выберите ударную букву в слове: ${q.word}`,
@@ -53,13 +107,13 @@ export function loadQuestionsForTask(
   }
 
   if (dataSource === 'task5') {
-    return raw.map((q: any) => {
-      const errorSentence = q.sentences.find((s: any) => s.isError)
+    return (raw as Task5Question[]).map((q) => {
+      const errorSentence = q.sentences.find((s) => s.isError)
       return {
         id: q.id,
         type: 'single' as const,
         text: 'В одном из приведённых ниже предложений неверно употреблено выделенное слово. Найдите это предложение.',
-        options: q.sentences.map((s: any) => s.text),
+        options: q.sentences.map((s) => s.text),
         correctAnswer: errorSentence ? [errorSentence.text] : [],
         explanation: q.explanation,
         difficulty: 'medium' as const,
@@ -70,14 +124,14 @@ export function loadQuestionsForTask(
   }
 
   if (dataSource === 'task10') {
-    return raw.map((q: any) => {
-      const correctRows = q.rows.filter((r: any) => q.correctAnswers.includes(r.id))
+    return (raw as Task10Question[]).map((q) => {
+      const correctRows = q.rows.filter((r) => q.correctAnswers.includes(r.id))
       return {
         id: q.id,
         type: 'ege-multiple' as const,
         text: 'Укажите ряды, в которых во всех словах пропущена одна и та же буква.',
-        options: q.rows.map((r: any) => r.words.join(', ')),
-        correctAnswer: correctRows.map((r: any) => r.words.join(', ')),
+        options: q.rows.map((r) => r.words.join(', ')),
+        correctAnswer: correctRows.map((r) => r.words.join(', ')),
         explanation: q.explanation,
         difficulty: 'hard' as const,
         xpReward: 5,
@@ -87,13 +141,13 @@ export function loadQuestionsForTask(
   }
 
   if (dataSource === 'task16') {
-    return raw.map((q: any) => {
-      const correctSentence = q.sentences.find((s: any) => s.id === q.correctAnswer)
+    return (raw as Task16Question[]).map((q) => {
+      const correctSentence = q.sentences.find((s) => s.id === q.correctAnswer)
       return {
         id: q.id,
         type: 'single' as const,
         text: q.instruction,
-        options: q.sentences.map((s: any) => s.text),
+        options: q.sentences.map((s) => s.text),
         correctAnswer: correctSentence ? [correctSentence.text] : [],
         explanation: q.explanation,
         difficulty: 'hard' as const,
@@ -104,7 +158,7 @@ export function loadQuestionsForTask(
   }
 
   // Default: SimpleQuestion
-  return raw.map((q: any) => ({
+  return (raw as SimpleQuestion[]).map((q) => ({
     id: q.id,
     type: 'single' as const,
     text: q.text,

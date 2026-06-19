@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Timer, ArrowLeft, SkipForward, Flag, AlertCircle } from 'lucide-react'
@@ -15,12 +15,37 @@ export function ExamVariantPage() {
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
+  const timeLeftRef = useRef(timeLeft)
+  useEffect(() => { timeLeftRef.current = timeLeft }, [timeLeft])
   const [isFinished, setIsFinished] = useState(false)
   const [taskScores, setTaskScores] = useState<Record<number, number>>({})
+  const taskScoresRef = useRef(taskScores)
+  useEffect(() => { taskScoresRef.current = taskScores }, [taskScores])
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [isStarted, setIsStarted] = useState(false)
 
   const saveExamResult = useProgressStore((s) => s.saveExamResult)
+
+  const finishExam = useCallback(() => {
+    if (!variant || isFinished) return
+    setIsFinished(true)
+    const scores = taskScoresRef.current
+    const primaryScore = Object.values(scores).reduce((a, b) => a + b, 0)
+    const secondaryScore = convertPrimaryToSecondary(primaryScore, variant.primaryScore)
+    const timeSpent = (variant.timeLimit * 60) - timeLeftRef.current
+
+    const result = {
+      variantId: variant.id,
+      date: new Date().toISOString(),
+      primaryScore,
+      secondaryScore,
+      taskScores: scores,
+      timeSpent,
+    }
+
+    saveExamResult(result)
+    navigate(`/exam/${variant.id}/results`)
+  }, [variant, isFinished, saveExamResult, navigate])
 
   // Initialize timer
   useEffect(() => {
@@ -65,26 +90,6 @@ export function ExamVariantPage() {
     )
     setCurrentQuestion(loaded[0] || null)
   }, [variant, currentTaskIndex, isStarted])
-
-  const finishExam = useCallback(() => {
-    if (!variant || isFinished) return
-    setIsFinished(true)
-    const primaryScore = Object.values(taskScores).reduce((a, b) => a + b, 0)
-    const secondaryScore = convertPrimaryToSecondary(primaryScore, variant.primaryScore)
-    const timeSpent = (variant.timeLimit * 60) - timeLeft
-
-    const result = {
-      variantId: variant.id,
-      date: new Date().toISOString(),
-      primaryScore,
-      secondaryScore,
-      taskScores,
-      timeSpent,
-    }
-
-    saveExamResult(result)
-    navigate(`/exam/${variant.id}/results`)
-  }, [variant, taskScores, timeLeft, isFinished, saveExamResult, navigate])
 
   const handleAnswer = useCallback(
     (correct: boolean) => {
