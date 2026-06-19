@@ -153,6 +153,9 @@
 - **Домашки:** `src/data/gsheets/homeworkData.ts`
 - **Теория:** `src/data/theory/` — структура для новых заданий, `src/data/theoryTests.ts` — тесты по пониманию, `src/components/TheoryViewer.tsx` — рендерер
 - **Атомы:** `src/data/atomization/atoms.ts`
+- **Реестр заданий:** `TASK_REGISTRY.md` — инструкция для всех агентов по работе с заданиями 9-12
+- **JSON реестр:** `task_registry.json` — 3,242 вопроса, машиночитаемый формат для проверки
+- **Excel реестр:** `Реестр_заданий_9-12_ЕГЭ_Русский.xlsx` (в workspace) — для ручной проверки
 - **Уведомления:** `src/stores/notificationStore.ts`
 - **Аналитика:** `src/pages/AnalyticsPage.tsx`
 - **Ученики:** `src/stores/studentStore.ts` — multi-user профили, динамика
