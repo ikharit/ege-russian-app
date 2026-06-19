@@ -6,11 +6,11 @@ import type {
   AnswerHistory,
   LessonProgress,
   ScheduleDay,
-  SRSItem,
   WrongAnswer,
-  ExamResult,
   WeeklySchedulePreferences,
 } from '../types';
+import type { SRSItem } from './spacedRepetition';
+import type { ExamResult } from '../data/fipiVariants';
 import { getTaskKnowledge, getAvailableTaskNumbers } from '../data/aiKnowledgeBase';
 import { course } from '../data/courseData';
 import { generateWeeklySchedule, exportScheduleToText } from './weeklySchedule';
@@ -74,7 +74,7 @@ const INTENT_KEYWORDS: Record<LocalAIIntent, string[]> = {
 
 export function analyzeIntent(message: string): LocalAIIntent {
   const lower = message.toLowerCase();
-  for (const [intent, keywords] of Object.entries(INTENT_KEYWORDS) as [LocalAIIntent, string][]) {
+  for (const [intent, keywords] of Object.entries(INTENT_KEYWORDS) as [LocalAIIntent, string[]][]) {
     if (intent === 'unknown') continue;
     for (const kw of keywords) {
       if (lower.includes(kw)) return intent;

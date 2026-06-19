@@ -22,11 +22,13 @@ function AIAssistantSection() {
   const provider = useChatStore((s) => s.provider)
   const apiEndpoint = useChatStore((s) => s.apiEndpoint)
   const connectionStatus = useChatStore((s) => s.connectionStatus)
+  const useLocalAI = useChatStore((s) => s.useLocalAI)
   const setApiKey = useChatStore((s) => s.setApiKey)
   const setProvider = useChatStore((s) => s.setProvider)
   const setEndpoint = useChatStore((s) => s.setEndpoint)
   const checkConnection = useChatStore((s) => s.checkConnection)
   const clearMessages = useChatStore((s) => s.clearMessages)
+  const toggleLocalAI = useChatStore((s) => s.toggleLocalAI)
 
   const [localKey, setLocalKey] = useState(apiKey || '')
   const [localEndpoint, setLocalEndpoint] = useState(apiEndpoint)
@@ -61,6 +63,7 @@ function AIAssistantSection() {
   }
 
   const StatusIcon = statusConfig[connectionStatus].icon
+  const isLocalMode = !apiKey || useLocalAI
 
   return (
     <div className="card">
@@ -70,87 +73,118 @@ function AIAssistantSection() {
         </div>
         <div>
           <h3 className="font-bold text-gray-700">AI-ассистент</h3>
-          <p className="text-xs text-gray-500">Настройка API ключа для AI-репетитора</p>
+          <p className="text-xs text-gray-500">
+            {isLocalMode
+              ? 'Работает локально — без API-ключа!'
+              : 'Настройка API ключа для AI-репетитора'}
+          </p>
         </div>
       </div>
 
-      {/* Provider selector */}
-      <div className="mb-3">
-        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Провайдер</label>
-        <div className="flex gap-2">
-          {(['kimi', 'openai', 'custom'] as const).map((p) => (
+      {/* Local AI toggle */}
+      <div className="mb-3 flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-bold text-green-700">🧠 Локальный AI</span>
+          <span className="text-xs text-green-600">Работает без интернета</span>
+        </div>
+        <button
+          onClick={toggleLocalAI}
+          className={`w-12 h-6 rounded-full transition-colors relative ${
+            useLocalAI ? 'bg-duo-green' : 'bg-gray-300'
+          }`}
+        >
+          <div
+            className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+              useLocalAI ? 'translate-x-6' : 'translate-x-0.5'
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* External API settings — only shown when not using local AI or when API key exists */}
+      {(!isLocalMode || apiKey) && (
+        <>
+          {/* Provider selector */}
+          <div className="mb-3">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Провайдер</label>
+            <div className="flex gap-2">
+              {(['kimi', 'openai', 'custom'] as const).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => handleProviderChange(p)}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-colors ${
+                    provider === p
+                      ? 'bg-duo-purple text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {p === 'kimi' ? 'Kimi' : p === 'openai' ? 'OpenAI' : 'Custom'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* API Key */}
+          <div className="mb-3">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">API ключ</label>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={localKey}
+                onChange={(e) => setLocalKey(e.target.value)}
+                placeholder="sk-..."
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
+              />
+              <button
+                onClick={handleSaveKey}
+                className="px-3 py-2 bg-duo-green text-white rounded-lg text-xs font-bold hover:bg-duo-green/90 transition-colors"
+              >
+                Сохранить
+              </button>
+            </div>
+          </div>
+
+          {/* Custom endpoint */}
+          {showCustom && (
+            <div className="mb-3">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Endpoint URL</label>
+              <input
+                type="text"
+                value={localEndpoint}
+                onChange={(e) => {
+                  setLocalEndpoint(e.target.value)
+                  setEndpoint(e.target.value)
+                }}
+                placeholder="https://api.example.com/v1/chat/completions"
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
+              />
+            </div>
+          )}
+
+          {/* Status */}
+          <div className={`flex items-center gap-2 p-2.5 rounded-lg ${statusConfig[connectionStatus].bg} mb-3`}>
+            <StatusIcon size={16} className={`${statusConfig[connectionStatus].color} ${connectionStatus === 'checking' ? 'animate-spin' : ''}`} />
+            <span className={`text-xs font-bold ${statusConfig[connectionStatus].color}`}>
+              {statusConfig[connectionStatus].label}
+            </span>
+          </div>
+
+          {/* Check button — only for external API */}
+          {!isLocalMode && (
             <button
-              key={p}
-              onClick={() => handleProviderChange(p)}
-              className={`flex-1 py-2 rounded-lg text-xs font-bold transition-colors ${
-                provider === p
-                  ? 'bg-duo-purple text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              onClick={checkConnection}
+              disabled={connectionStatus === 'checking' || !apiKey}
+              className={`w-full py-2 rounded-lg font-bold text-sm transition-colors mb-3 ${
+                !apiKey || connectionStatus === 'checking'
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-duo-purple text-white hover:bg-duo-purple/90'
               }`}
             >
-              {p === 'kimi' ? 'Kimi' : p === 'openai' ? 'OpenAI' : 'Custom'}
+              {connectionStatus === 'checking' ? 'Проверка...' : 'Проверить соединение'}
             </button>
-          ))}
-        </div>
-      </div>
-
-      {/* API Key */}
-      <div className="mb-3">
-        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">API ключ</label>
-        <div className="flex gap-2">
-          <input
-            type="password"
-            value={localKey}
-            onChange={(e) => setLocalKey(e.target.value)}
-            placeholder="sk-..."
-            className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
-          />
-          <button
-            onClick={handleSaveKey}
-            className="px-3 py-2 bg-duo-green text-white rounded-lg text-xs font-bold hover:bg-duo-green/90 transition-colors"
-          >
-            Сохранить
-          </button>
-        </div>
-      </div>
-
-      {/* Custom endpoint */}
-      {showCustom && (
-        <div className="mb-3">
-          <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Endpoint URL</label>
-          <input
-            type="text"
-            value={localEndpoint}
-            onChange={(e) => {
-              setLocalEndpoint(e.target.value)
-              setEndpoint(e.target.value)
-            }}
-            placeholder="https://api.example.com/v1/chat/completions"
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-duo-purple/30"
-          />
-        </div>
+          )}
+        </>
       )}
-
-      {/* Status */}
-      <div className={`flex items-center gap-2 p-2.5 rounded-lg ${statusConfig[connectionStatus].bg} mb-3`}>
-        <StatusIcon size={16} className={`${statusConfig[connectionStatus].color} ${connectionStatus === 'checking' ? 'animate-spin' : ''}`} />
-        <span className={`text-xs font-bold ${statusConfig[connectionStatus].color}`}>
-          {statusConfig[connectionStatus].label}
-        </span>
-      </div>
-
-      {/* Check button */}
-      <button
-        onClick={checkConnection}
-        disabled={connectionStatus === 'checking' || !apiKey}
-        className={`w-full py-2 rounded-lg font-bold text-sm transition-colors mb-3 ${
-          !apiKey || connectionStatus === 'checking'
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : 'bg-duo-purple text-white hover:bg-duo-purple/90'
-        }`}
-      >
-        {connectionStatus === 'checking' ? 'Проверка...' : 'Проверить соединение'}
-      </button>
 
       {/* Clear history */}
       <button
@@ -165,7 +199,9 @@ function AIAssistantSection() {
       </button>
 
       <p className="text-[10px] text-gray-400 mt-3 text-center">
-        Введите свой API ключ. Данные не передаются третьим лицам. Ключ хранится только на вашем устройстве.
+        {isLocalMode
+          ? 'AI работает локально на вашем устройстве. Данные не уходят на сервер. Если хотите подключить внешний AI (Kimi, OpenAI) — введите ключ ниже.'
+          : 'Введите свой API ключ. Данные не передаются третьим лицам. Ключ хранится только на вашем устройстве.'}
       </p>
     </div>
   )

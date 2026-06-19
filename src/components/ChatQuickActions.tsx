@@ -1,4 +1,5 @@
 import { ChatContext } from '../utils/aiChat';
+import { getSubskillName } from '../utils/errorPatternAnalyzer';
 
 interface ChatQuickActionsProps {
   context: ChatContext;
@@ -20,7 +21,7 @@ export function ChatQuickActions({ context, onSend }: ChatQuickActionsProps) {
     {
       label: '📝 Дать задание',
       value: weakTopics.length > 0
-        ? `Дай мне задание на тему «${weakTopics[0].errorType}» (задание ${weakTopics[0].taskNumber})`
+        ? `Дай мне задание на тему «${getSubskillName(weakTopics[0].errorType)}» (задание ${weakTopics[0].taskNumber})`
         : 'Дай мне задание для практики',
     },
     {

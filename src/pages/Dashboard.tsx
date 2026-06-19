@@ -716,7 +716,7 @@ export function Dashboard() {
             >
               <div
                 className="flex items-center gap-2.5 cursor-pointer"
-                onClick={() => setExpandedSection(isExpanded ? null : section.id)}
+                onClick={() => navigate(`/course?section=${section.id}`)}
               >
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0" style={{ backgroundColor: section.color }}>
                   {idx + 1}
@@ -727,7 +727,12 @@ export function Dashboard() {
                 </div>
                 <div className="flex items-center gap-1.5 text-right shrink-0">
                   <span className="text-xs font-bold text-gray-600">{sectionCompleted}/{sectionTotal}</span>
-                  <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                  <div
+                    className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); setExpandedSection(isExpanded ? null : section.id) }}
+                  >
+                    <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                  </div>
                 </div>
               </div>
 

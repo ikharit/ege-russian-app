@@ -73,7 +73,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
   );
 }
 
-function TypingIndicator() {
+function TypingIndicator({ isLocalMode }: { isLocalMode: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -85,7 +85,9 @@ function TypingIndicator() {
       </div>
       <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
         <div className="flex items-center gap-1">
-          <span className="text-xs text-gray-500">AI-Репетитор печатает</span>
+          <span className="text-xs text-gray-500">
+            {isLocalMode ? '🧠 Локальный AI печатает' : 'AI-Репетитор печатает'}
+          </span>
           <span className="flex gap-0.5">
             <motion.span
               className="w-1.5 h-1.5 rounded-full bg-duo-purple"
@@ -269,7 +271,9 @@ export function AIChat({ isOpen, onClose }: AIChatProps) {
                   </div>
                   <h3 className="font-bold text-gray-800 dark:text-white mb-1">Привет!</h3>
                   <p className="text-sm text-gray-500 mb-4">
-                    Я твой AI-репетитор. Чем могу помочь? 🎓
+                    {isLocalMode
+                      ? 'Привет! Я — твой AI-репетитор. Работаю без интернета и API-ключей. Знаю всё о твоём прогрессе! 💪'
+                      : 'Я твой AI-репетитор. Чем могу помочь? 🎓'}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {suggestedPrompts.map((prompt, idx) => (
@@ -289,7 +293,7 @@ export function AIChat({ isOpen, onClose }: AIChatProps) {
                 <ChatBubble key={msg.id} message={msg} />
               ))}
 
-              {isLoading && <TypingIndicator />}
+              {isLoading && <TypingIndicator isLocalMode={isLocalMode} />}
 
               <div ref={messagesEndRef} />
             </div>
