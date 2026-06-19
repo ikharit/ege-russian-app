@@ -20,10 +20,10 @@ export function ProfileSwitcher({ onAddStudent }: ProfileSwitcherProps) {
     return (
       <button
         onClick={onAddStudent}
-        className="flex items-center gap-2 px-3 py-1.5 bg-duo-green text-white rounded-full text-sm font-bold hover:bg-duo-green/90 transition-colors"
+        className="w-7 h-7 flex items-center justify-center bg-duo-green/10 text-duo-green rounded-full hover:bg-duo-green/20 transition-colors"
+        title="Добавить ученика"
       >
         <UserPlus size={14} />
-        Добавить ученика
       </button>
     )
   }
@@ -79,11 +79,11 @@ export function ProfileSwitcher({ onAddStudent }: ProfileSwitcherProps) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm font-bold hover:bg-gray-50 transition-colors"
+        className="flex items-center gap-0.5 text-sm hover:bg-gray-50 rounded-full transition-colors px-1 py-0.5"
+        title={activeProfile?.name || 'Ученик'}
       >
-        <span className="text-lg">{activeProfile?.emoji || '🎓'}</span>
-        <span className="text-gray-800 max-w-[80px] truncate">{activeProfile?.name || 'ученик'}</span>
-        <ChevronDown size={14} className="text-gray-400" />
+        <span className="text-base">{activeProfile?.emoji || '🎓'}</span>
+        <ChevronDown size={12} className="text-gray-400" />
       </button>
 
       <AnimatePresence>
@@ -95,7 +95,7 @@ export function ProfileSwitcher({ onAddStudent }: ProfileSwitcherProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-2"
+              className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-2"
             >
               <p className="px-3 py-1 text-xs text-gray-400 font-bold uppercase tracking-wide">Ученики</p>
               {profiles.map((p) => (

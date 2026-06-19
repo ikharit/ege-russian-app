@@ -17,7 +17,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
     : '—'
 
   return (
-    <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-100 px-4 py-2.5 sticky top-0 z-50">
       <style>{`
         @keyframes xp-bounce { 0%,100%{transform:scale(1) rotate(0deg)} 20%{transform:scale(1.2) rotate(-2deg)} 40%{transform:scale(0.9) rotate(1deg)} 60%{transform:scale(1.15) rotate(-1deg)} 80%{transform:scale(1) rotate(0deg)} }
         @keyframes flame-flicker { 0%,100%{transform:scale(1);opacity:1} 25%{transform:scale(1.12);opacity:0.8} 50%{transform:scale(0.95);opacity:1} 75%{transform:scale(1.08);opacity:0.9} }
@@ -25,6 +25,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
         @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
       `}</style>
       <div className="max-w-md mx-auto flex items-center justify-between">
+        {/* Left: Logo + compact profile */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
             <img src="./icon.svg" alt="" className="w-8 h-8 rounded-lg" onError={(e) => (e.currentTarget.style.display = 'none')} />
@@ -32,14 +33,9 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           </div>
           <ProfileSwitcher onAddStudent={() => setShowRegModal(true)} />
         </div>
-        <div className="flex items-center gap-3">
-          {/* Sync indicator + auth */}
-          {syncIndicator && (
-            <div className="hidden sm:flex">
-              {syncIndicator}
-            </div>
-          )}
 
+        {/* Right: stats only */}
+        <div className="flex items-center gap-2.5">
           {/* Streak */}
           <Popover
             content={
@@ -54,13 +50,13 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             }
           >
             <motion.div
-              className="flex items-center gap-1 text-orange-500 cursor-pointer"
+              className="flex items-center gap-0.5 text-orange-500 cursor-pointer"
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.2 }}
               animate={stats.streak > 0 ? { scale: [1, 1.08, 1] } : {}}
             >
-              <Flame size={20} fill={stats.streak > 0 ? 'currentColor' : 'none'} className="animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
-              <span className="font-bold text-sm">{stats.streak}</span>
+              <Flame size={18} fill={stats.streak > 0 ? 'currentColor' : 'none'} className="animate-[flame-flicker_1.2s_ease-in-out_infinite]" />
+              <span className="font-bold text-xs">{stats.streak}</span>
             </motion.div>
           </Popover>
 
@@ -79,12 +75,12 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             }
           >
             <motion.div
-              className="flex items-center gap-1 text-duo-red cursor-pointer"
+              className="flex items-center gap-0.5 text-duo-red cursor-pointer"
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.2 }}
             >
-              <Heart size={20} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} className="animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
-              <span className="font-bold text-sm">{stats.hearts}</span>
+              <Heart size={18} fill={stats.hearts < stats.maxHearts ? 'currentColor' : 'none'} className="animate-[heart-pulse_1.2s_ease-in-out_infinite]" />
+              <span className="font-bold text-xs">{stats.hearts}</span>
             </motion.div>
           </Popover>
 
@@ -100,25 +96,25 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             }
           >
             <motion.div
-              className="flex items-center gap-1 text-duo-yellow cursor-pointer relative"
+              className="flex items-center gap-0.5 text-duo-yellow cursor-pointer relative"
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.2 }}
             >
               <div className="absolute -top-1 -right-1 w-1 h-1 bg-yellow-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0s' }} />
               <div className="absolute -bottom-0.5 -left-1 w-0.5 h-0.5 bg-orange-400 rounded-full animate-[sparkle_1.5s_infinite]" style={{ animationDelay: '0.5s' }} />
-              <Zap size={20} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
-              <span className="font-bold text-sm">{stats.xp}</span>
+              <Zap size={18} fill="currentColor" className="animate-[xp-bounce_2s_ease-in-out_infinite]" />
+              <span className="font-bold text-xs">{stats.xp}</span>
             </motion.div>
           </Popover>
 
           {/* Profile */}
           <motion.button
             onClick={() => navigate('/profile')}
-            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+            className="flex items-center text-gray-500 hover:text-gray-700 transition-colors"
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
           >
-            <User size={20} />
+            <User size={18} />
           </motion.button>
         </div>
       </div>
