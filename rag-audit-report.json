@@ -1,0 +1,3724 @@
+{
+  "timestamp": "2026-06-19T21:20:21.596Z",
+  "summary": {
+    "errors": 48,
+    "warnings": 486,
+    "files": 7
+  },
+  "issues": [
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"галактика\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"космонавт\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"период\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"диапазон\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"гипотеза\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"панорама\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"парашют\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"винегрет\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вокзал\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"рационализировать\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"аквамарин\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"ветеранский\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"сатирический\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"хаотичный\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"капюшон\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"галерея\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"палисадник\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"интенсивный\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"равнобедренный\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вестибюль\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вентилятор\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"интеллигент\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"волейбол\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"логичный\"",
+      "severity": "error",
+      "message": "Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'",
+      "suggestion": "Remove \"проверяемый\" and mark as \"непроверяемый, иноязычный\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"цепочках\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'цепочка' has different root (цпчк vs цпчкх) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"цпчкх/цпчк\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"нарастить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs нрстть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"нрстть/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"растущий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs рстщй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рстщй/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"касается\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs кстс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"кстс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"плавник\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плыть' has different root (плть vs плвнк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"плвнк/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"поскачу\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'скакать' has different root (сккть vs пскч) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пскч/сккть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"поглощение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'поглощать' has different root (пглщть vs пглщн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пглщн/пглщть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"предположительный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'положить' has different root (плжть vs прдплжтльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прдплжтльнй/плжть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"опоздание\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'опоздать' has different root (пздть vs пздн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пздн/пздть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"запинаться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пинать' has different root (пнть vs зпнтьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"зпнтьс/пнть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расстилается\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стилить' has different root (стлть vs рсстлтс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсстлтс/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"возникновение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'возникать' has different root (взнкть vs взнкнвн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"взнкнвн/взнкть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вырастить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs врстть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врстть/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выражать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'выразить' has different root (врзть vs вржть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вржть/врзть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"укрощение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'укрощать' has different root (крщть vs крщн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"крщн/крщть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"примерил\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пример' has different root (прмр vs прмрл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прмрл/прмр\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"чётное\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'чётный' has different root (чтнй vs чтн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"чтн/чтнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"доросли\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'дорослый' has different root (дрслй vs дрсл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"дрсл/дрслй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"примерить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пример' has different root (прмр vs прмрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прмрть/прмр\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"умалять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'умаяться' has different root (мтьс vs млть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"млть/мтьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"поплавок\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плыть' has different root (плть vs пплвк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пплвк/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вырасти\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs врст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врст/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"скачу\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'скакать' has different root (сккть vs скч) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"скч/сккть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"отраслевая\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'отрасль' has different root (трсль vs трслв) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"трслв/трсль\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расчёска\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'чесать' has different root (чсть vs рсчск) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсчск/чсть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"макание\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'макать' has different root (мкть vs мкн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"мкн/мкть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"космонавтика\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs ксмнвтк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"ксмнвтк/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"запастись\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'запасть' has different root (зпсть vs зпстсь) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"зпстсь/зпсть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"перекалить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'калить' has different root (клть vs прклть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прклть/клть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выровнить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'ровный' has different root (рвнй vs врвнть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врвнть/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"загоревший\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'загореть' has different root (згрть vs згрвшй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"згрвшй/згрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"уравнять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнть/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"плавучесть\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плыть' has different root (плть vs плвчсть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"плвчсть/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"шёпот\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'шептать' has different root (шптть vs шпт) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"шпт/шптть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"богатство\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'богатый' has different root (бгтй vs бгтств) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"бгтств/бгтй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"касательная\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs кстльн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"кстльн/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"пригорью\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пригореть' has different root (пргрть vs пргрь) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пргрь/пргрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"оправдание\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'право' has different root (прв vs првдн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"првдн/прв\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"врасти\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs врст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врст/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"шёлковый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'шёлк' has different root (шлк vs шлквй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"шлквй/шлк\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"растительный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs рсттльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсттльнй/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"почётный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'чётный' has different root (чтнй vs пчтнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пчтнй/чтнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"уравнение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнн/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"возраст\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs взрст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"взрст/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выдираю\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs вдр) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вдр/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"касать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs ксть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"ксть/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"прорастающий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs пррстщй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пррстщй/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расстилающийся\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стилить' has different root (стлть vs рсстлщйс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсстлщйс/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"прикоснувшись\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs пркснвшсь) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пркснвшсь/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выраженный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'выразить' has different root (врзть vs вржннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вржннй/врзть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"продираться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs прдртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прдртьс/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вырасить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врсть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врсть/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"скачок\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'скакать' has different root (сккть vs скчк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"скчк/сккть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"максимализм\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'макать' has different root (мкть vs мксмлзм) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"мксмлзм/мкть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"перенимать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs прнмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прнмть/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"возрастной\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs взрстнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"взрстнй/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"покоситься\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs пкстьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пкстьс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"директорский\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs дрктрскй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"дрктрскй/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"подниматься\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs пднмтьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пднмтьс/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"растительность\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs рсттльнсть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсттльнсть/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"сдирать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs сдрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сдрть/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"загорающий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'загореть' has different root (згрть vs згрщй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"згрщй/згрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вырастать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs врстть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врстть/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"предположение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'положить' has different root (плжть vs прдплжн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прдплжн/плжть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"нарастающий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs нрстщй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"нрстщй/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"пировать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'переть' has different root (прть vs првть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"првть/прть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"обдирать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs бдрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"бдрть/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"прикасаться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs пркстьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пркстьс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"загораться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'загореть' has different root (згрть vs згртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"згртьс/згрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выросли\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врсл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врсл/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"разнимать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs рзнмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рзнмть/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"старожилы\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стареть' has different root (стрть vs стржл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"стржл/стрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"искоса\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs скс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"скс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"дирижёр\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'драть' has different root (дрть vs држр) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"држр/дрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"единомышленники\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'единый' has different root (днй vs днмшлннк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"днмшлннк/днй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"макнуть\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'макать' has different root (мкть vs мкнть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"мкнть/мкть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"примерять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пример' has different root (прмр vs прмрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прмрть/прмр\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выразить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врзть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врзть/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"занимательный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs знмтльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"знмтльнй/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"увядание\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вянуть' has different root (внть vs вдн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вдн/внть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"подрасти\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs пдрст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пдрст/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выровнять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'ровный' has different root (рвнй vs врвнть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врвнть/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"непромокаемый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'промокать' has different root (прмкть vs нпрмкмй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"нпрмкмй/прмкть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"коснулся\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs кснлс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"кснлс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"вплотну\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плоть' has different root (плть vs вплтн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вплтн/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"уплотнять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плоть' has different root (плть vs плтнть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"плтнть/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расстилать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стилить' has different root (стлть vs рсстлть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсстлть/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"поднимать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs пднмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пднмть/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"скрипят\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'скрип' has different root (скрп vs скрпт) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"скрпт/скрп\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"седина\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'единый' has different root (днй vs сдн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сдн/днй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"отнимать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs тнмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"тнмть/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"смириться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'смирение' has different root (смрн vs смртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"смртьс/смрн\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"единение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'единый' has different root (днй vs днн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"днн/днй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"усмирённый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'смирение' has different root (смрн vs смрннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"смрннй/смрн\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выраст\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs врст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врст/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выращенный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врщннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врщннй/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"усмирять\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'смирение' has different root (смрн vs смрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"смрть/смрн\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"уравновесить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнвсть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнвсть/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"скосить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs сксть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сксть/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"загорелый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'загореть' has different root (згрть vs згрлй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"згрлй/згрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выразительный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врзтльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врзтльнй/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"растение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'расти' has different root (рст vs рстн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рстн/рст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"старожил\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стареть' has different root (стрть vs стржл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"стржл/стрть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"правительство\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'право' has different root (прв vs првтльств) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"првтльств/прв\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"покосившийся\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs пксвшйс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пксвшйс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"прикоснуться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'касаться' has different root (кстьс vs пркснтьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пркснтьс/кстьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"скрипач\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'скрип' has different root (скрп vs скрпч) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"скрпч/скрп\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"понимать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'нимать' has different root (нмть vs пнмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пнмть/нмть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"плавучий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'плыть' has different root (плть vs плвчй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"плвчй/плть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выросла\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'вырыть' has different root (врть vs врсл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"врсл/врть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"распознавать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'познавать' has different root (пзнвть vs рспзнвть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рспзнвть/пзнвть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"подмочить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'мочить' has different root (мчть vs пдмчть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пдмчть/мчть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"знакомить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'знакомый' has different root (знкмй vs знкмть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"знкмть/знкмй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"шерстка\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'шерсть' has different root (шрсть vs шрстк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"шрстк/шрсть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расспроси\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'спросить' has different root (спрсть vs рсспрс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсспрс/спрсть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"пшенная\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'пшено' has different root (пшн vs пшнн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пшнн/пшн\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"молодожёны\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'молодой' has different root (млдй vs млджн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"млджн/млдй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"абрикосовый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'абрикос' has different root (бркс vs брксвй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"брксвй/бркс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"прожевал\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'жевать' has different root (жвть vs пржвл) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пржвл/жвть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"постановление\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'постановить' has different root (пстнвть vs пстнвлн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пстнвлн/пстнвть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"разгораться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs рзгртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рзгртьс/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выместить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'место' has different root (мст vs вмстть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вмстть/мст\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"равностьоронний\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнстьрннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнстьрннй/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"ростовщичество\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'ростовщик' has different root (рствщк vs рствщчств) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рствщчств/рствщк\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"добираться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs дбртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"дбртьс/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"равняться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнтьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнтьс/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"цифровизация\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'цифра' has different root (цфр vs цфрвзц) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"цфрвзц/цфр\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"благотворительный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'благотворить' has different root (блгтврть vs блгтвртльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"блгтвртльнй/блгтврть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"гладкошерстный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'шерсть' has different root (шрсть vs глдкшрстнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"глдкшрстнй/шрсть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"молоде\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'молодой' has different root (млдй vs млд) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"млд/млдй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горелый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грлй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грлй/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"могучий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'мочь' has different root (мчь vs мгчй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"мгчй/мчь\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"здоровье\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'здоровый' has different root (здрвй vs здрвь) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"здрвь/здрвй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"сиреневый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'сирень' has different root (срнь vs срнвй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"срнвй/срнь\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"мозговой\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'мозг' has different root (мзг vs мзгвй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"мзгвй/мзг\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"расстелить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стелить' has different root (стлть vs рсстлть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рсстлть/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"собираться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs сбртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сбртьс/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"облегчить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'легкий' has different root (лгкй vs блгчть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"блгчть/лгкй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"подровняться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'ровный' has different root (рвнй vs пдрвнтьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пдрвнтьс/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"хвастливый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'хвастать' has different root (хвстть vs хвстлвй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"хвстлвй/хвстть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"избирательно\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs збртльн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"збртльн/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"отдалённый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'далёкий' has different root (длкй vs тдлннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"тдлннй/длкй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"пробираться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs прбртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"прбртьс/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"избирательный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs збртльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"збртльнй/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"разбираться\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs рзбртьс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рзбртьс/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"погорельцы\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs пгрльц) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пгрльц/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"разгорающийся\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs рзгрщйс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рзгрщйс/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"постелить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стелить' has different root (стлть vs пстлть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пстлть/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"издалека\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'далёкий' has different root (длкй vs здлк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"здлк/длкй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"подстелить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стелить' has different root (стлть vs пдстлть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"пдстлть/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"отбирает\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs тбрт) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"тбрт/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"гористая\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грст) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грст/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"наслаждение\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'наслаждаться' has different root (нслждтьс vs нслждн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"нслждн/нслждтьс\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"собирательный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs сбртльнй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сбртльнй/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"нагромоздить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'громоздкий' has different root (грмздкй vs нгрмздть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"нгрмздть/грмздкй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горизонт\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грзнт) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грзнт/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"разгорелся\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs рзгрлс) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рзгрлс/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"равнина\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнн/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"выбирать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs вбрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"вбрть/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горделиво\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грдлв) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грдлв/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горделивый\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грдлвй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грдлвй/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"собирать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs сбрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"сбрть/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"равнинный\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'равный' has different root (рвнй vs рвнннй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"рвнннй/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горячий\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грчй) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грчй/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"возгорание\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs взгрн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"взгрн/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"катастрофа\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'катить' has different root (ктть vs ктстрф) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"ктстрф/ктть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"забирать\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'брать' has different root (брть vs збрть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"збрть/брть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"горемыка\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грмк) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грмк/грть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"застелить\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'стелить' has different root (стлть vs зстлть) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"зстлть/стлть\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"поровну\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'ровный' has different root (рвнй vs првн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"првн/рвнй\""
+    },
+    {
+      "file": "wordExplanations.json",
+      "location": "word: \"гормон\"",
+      "severity": "warning",
+      "message": "Marked as 'проверяемый' but check word 'гореть' has different root (грть vs грмн) — likely чередование",
+      "suggestion": "Change to 'чередующийся' with pattern like \"грмн/грть\""
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"рационализировать\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"аквамарин\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"ветеранский\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"сатирический\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"хаотичный\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"капюшон\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"галерея\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"парашют\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"винегрет\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"палисадник\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"интенсивный\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"равнобедренный\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"вестибюль\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"вентилятор\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"интеллигент\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"волейбол\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"панорама\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"диапазон\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"период\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"галактика\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"космонавт\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"гипотеза\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"логичный\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "task9-word-explanations.json",
+      "location": "word: \"вокзал\"",
+      "severity": "error",
+      "message": "Foreign word marked as 'проверяемый'"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "dooshin20.ts",
+      "location": "atoms: [task20]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task17, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task18, punctuation_complex]",
+      "severity": "warning",
+      "message": "Atom references task 18 but no theory rules found for that task",
+      "suggestion": "Add theory/task18.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task19, accent]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task20, paronyms]",
+      "severity": "warning",
+      "message": "Atom references task 20 but no theory rules found for that task",
+      "suggestion": "Add theory/task20.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task21, lexical_norms]",
+      "severity": "warning",
+      "message": "Atom references task 21 but no theory rules found for that task",
+      "suggestion": "Add theory/task21.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task22, grammar_norms]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task23, spelling]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task24, punctuation_text]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task25, editing]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "examTasks.ts",
+      "location": "atoms: [task26, syntax]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "punctuation.ts",
+      "location": "atoms: [task17, punctuation]",
+      "severity": "warning",
+      "message": "Atom references task 17 but no theory rules found for that task",
+      "suggestion": "Add theory/task17.ts or check atom name"
+    },
+    {
+      "file": "punctuation.ts",
+      "location": "atoms: [task19, punctuation]",
+      "severity": "warning",
+      "message": "Atom references task 19 but no theory rules found for that task",
+      "suggestion": "Add theory/task19.ts or check atom name"
+    },
+    {
+      "file": "task1_3.ts",
+      "location": "atoms: [task1, text_connections]",
+      "severity": "warning",
+      "message": "Atom references task 1 but no theory rules found for that task",
+      "suggestion": "Add theory/task1.ts or check atom name"
+    },
+    {
+      "file": "task1_3.ts",
+      "location": "atoms: [task2, lexicology]",
+      "severity": "warning",
+      "message": "Atom references task 2 but no theory rules found for that task",
+      "suggestion": "Add theory/task2.ts or check atom name"
+    },
+    {
+      "file": "task1_3.ts",
+      "location": "atoms: [task3, speech_errors]",
+      "severity": "warning",
+      "message": "Atom references task 3 but no theory rules found for that task",
+      "suggestion": "Add theory/task3.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task22, tropes]",
+      "severity": "warning",
+      "message": "Atom references task 22 but no theory rules found for that task",
+      "suggestion": "Add theory/task22.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task23, text_comprehension]",
+      "severity": "warning",
+      "message": "Atom references task 23 but no theory rules found for that task",
+      "suggestion": "Add theory/task23.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task24, information_types]",
+      "severity": "warning",
+      "message": "Atom references task 24 but no theory rules found for that task",
+      "suggestion": "Add theory/task24.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task25, lexical_analysis]",
+      "severity": "warning",
+      "message": "Atom references task 25 but no theory rules found for that task",
+      "suggestion": "Add theory/task25.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task26, text_connections]",
+      "severity": "warning",
+      "message": "Atom references task 26 but no theory rules found for that task",
+      "suggestion": "Add theory/task26.ts or check atom name"
+    },
+    {
+      "file": "task22_27.ts",
+      "location": "atoms: [task27, essay]",
+      "severity": "warning",
+      "message": "Atom references task 27 but no theory rules found for that task",
+      "suggestion": "Add theory/task27.ts or check atom name"
+    }
+  ]
+}

@@ -435,7 +435,7 @@ export function BaseTrainer<T>({
                   {getExplanation(effectiveQuestion)}
                 </p>
                 {/* RAG-powered additional explanation for wrong answers */}
-                {!isCorrectAnswer && (() => {
+                {!isCorrect && (() => {
                   const atoms = getAtoms?.(effectiveQuestion) || []
                   const taskAtom = atoms.find((a: string) => a.startsWith('task'))
                   const taskNum = taskAtom ? taskAtom.replace('task', '') : taskNumber
