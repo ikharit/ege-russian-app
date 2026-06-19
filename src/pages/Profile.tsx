@@ -1,15 +1,19 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
+import { useSettingsStore } from '../stores/settingsStore'
 import { SyncStatus } from '../components/SyncStatus'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
 import { getUnlockedStatuses, getStatusById } from '../data/statuses'
 import { Popover } from '../components/Popover'
 import { useNotificationStore } from '../stores/notificationStore'
+import { useStudentStore } from '../stores/studentStore'
+import { useClassStore } from '../stores/classStore'
+import { useStudyPlanStore } from '../stores/studyPlanStore'
 
 export function Profile() {
   const navigate = useNavigate()
@@ -26,6 +30,12 @@ export function Profile() {
   const activeStatusId = useProgressStore((s) => s.userStats.activeStatus)
   const isOnline = useFirebaseStore((s) => s.isOnline)
   const lastSync = useFirebaseStore((s) => s.lastSync)
+
+  // Settings
+  const soundEnabled = useSettingsStore((s) => s.soundEnabled)
+  const toggleSound = useSettingsStore((s) => s.toggleSound)
+  const theme = useSettingsStore((s) => s.theme)
+  const setTheme = useSettingsStore((s) => s.setTheme)
 
   const [isEditing, setIsEditing] = useState(false)
   const [showStatusPicker, setShowStatusPicker] = useState(false)
@@ -64,16 +74,42 @@ export function Profile() {
   const handleExport = () => {
     incrementExportCount()
     const data = {
-      userStats: stats,
-      lessonProgress,
-      achievements,
-      exportedAt: new Date().toISOString()
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      progress: {
+        userStats: stats,
+        lessonProgress,
+        achievements,
+        atomProgress: useProgressStore.getState().atomProgress,
+        wrongAnswers: useProgressStore.getState().wrongAnswers,
+        taskStats: useProgressStore.getState().taskStats,
+        dailyQuestProgress: useProgressStore.getState().dailyQuestProgress,
+        theoryTestsCompleted: useProgressStore.getState().theoryTestsCompleted,
+        examResults: useProgressStore.getState().examResults,
+        leaderboard: useProgressStore.getState().leaderboard,
+        leaderboardRanks: useProgressStore.getState().leaderboardRanks,
+        isTeacher: useProgressStore.getState().isTeacher,
+        userId: useProgressStore.getState().userId,
+      },
+      student: {
+        profiles: useStudentStore.getState().profiles,
+        activeProfileId: useStudentStore.getState().activeProfileId,
+      },
+      classStore: {
+        classes: useClassStore.getState().classes,
+        activeClassId: useClassStore.getState().activeClassId,
+      },
+      studyPlan: useStudyPlanStore.getState(),
+      settings: {
+        soundEnabled,
+        theme,
+      },
     }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `ege-progress-${new Date().toISOString().split('T')[0]}.json`
+    a.download = `ege-backup-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -87,10 +123,77 @@ export function Profile() {
     const reader = new FileReader()
     reader.onload = (event) => {
       const content = event.target?.result as string
-      const result = importProgress(content)
-      alert(result.message)
-      if (result.success) {
-        window.location.reload()
+      try {
+        const parsed = JSON.parse(content)
+        
+        // Full backup (v2)
+        if (parsed.version === 2) {
+          // Import progress store
+          if (parsed.progress) {
+            const progress = parsed.progress
+            useProgressStore.setState((s: any) => ({
+              ...s,
+              userStats: { ...s.userStats, ...progress.userStats },
+              lessonProgress: { ...s.lessonProgress, ...progress.lessonProgress },
+              achievements: [...new Set([...s.achievements, ...(progress.achievements || [])])],
+              atomProgress: { ...s.atomProgress, ...(progress.atomProgress || {}) },
+              wrongAnswers: [...s.wrongAnswers, ...(progress.wrongAnswers || [])],
+              taskStats: { ...s.taskStats, ...(progress.taskStats || {}) },
+              dailyQuestProgress: { ...s.dailyQuestProgress, ...(progress.dailyQuestProgress || {}) },
+              theoryTestsCompleted: { ...s.theoryTestsCompleted, ...(progress.theoryTestsCompleted || {}) },
+              examResults: [...s.examResults, ...(progress.examResults || [])],
+              leaderboard: progress.leaderboard || s.leaderboard,
+              leaderboardRanks: progress.leaderboardRanks || s.leaderboardRanks,
+              isTeacher: progress.isTeacher ?? s.isTeacher,
+              userId: progress.userId ?? s.userId,
+            }))
+          }
+          // Import student store
+          if (parsed.student) {
+            useStudentStore.setState((s: any) => ({
+              ...s,
+              profiles: parsed.student.profiles || s.profiles,
+              activeProfileId: parsed.student.activeProfileId ?? s.activeProfileId,
+            }))
+          }
+          // Import class store
+          if (parsed.classStore) {
+            useClassStore.setState((s: any) => ({
+              ...s,
+              classes: { ...s.classes, ...(parsed.classStore.classes || {}) },
+              activeClassId: parsed.classStore.activeClassId ?? s.activeClassId,
+            }))
+          }
+          // Import study plan
+          if (parsed.studyPlan) {
+            useStudyPlanStore.setState((s: any) => ({
+              ...s,
+              plan: parsed.studyPlan.plan ?? s.plan,
+              examDate: parsed.studyPlan.examDate ?? s.examDate,
+              targetScore: parsed.studyPlan.targetScore ?? s.targetScore,
+            }))
+          }
+          // Import settings
+          if (parsed.settings) {
+            useSettingsStore.setState((s: any) => ({
+              ...s,
+              soundEnabled: parsed.settings.soundEnabled ?? s.soundEnabled,
+              theme: parsed.settings.theme ?? s.theme,
+            }))
+          }
+          alert('Прогресс успешно импортирован!')
+          window.location.reload()
+          return
+        }
+        
+        // Legacy v1 import (old format)
+        const result = importProgress(content)
+        alert(result.message)
+        if (result.success) {
+          window.location.reload()
+        }
+      } catch (err) {
+        alert('Ошибка чтения файла: ' + (err as Error).message)
       }
     }
     reader.readAsText(file)
@@ -271,6 +374,57 @@ export function Profile() {
             }`}
           />
         </button>
+      </div>
+
+      {/* Sound Toggle */}
+      <div className="card flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {soundEnabled ? <Volume2 size={20} className="text-duo-blue" /> : <VolumeX size={20} className="text-gray-400" />}
+          <div>
+            <p className="font-bold text-sm text-gray-800">Звуковые эффекты</p>
+            <p className="text-xs text-gray-500">{soundEnabled ? 'Включены' : 'Отключены'}</p>
+          </div>
+        </div>
+        <button
+          onClick={toggleSound}
+          className={`w-12 h-6 rounded-full transition-colors relative ${
+            soundEnabled ? 'bg-duo-green' : 'bg-gray-300'
+          }`}
+        >
+          <div
+            className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+              soundEnabled ? 'translate-x-6' : 'translate-x-0.5'
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Theme Toggle */}
+      <div className="card flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {theme === 'dark' ? <Moon size={20} className="text-duo-purple" /> : <Sun size={20} className="text-duo-yellow" />}
+          <div>
+            <p className="font-bold text-sm text-gray-800">Тема</p>
+            <p className="text-xs text-gray-500">
+              {theme === 'dark' ? 'Тёмная' : theme === 'light' ? 'Светлая' : 'Системная'}
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          {(['light', 'dark', 'system'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTheme(t)}
+              className={`px-2 py-1 rounded-md text-xs font-bold transition-colors ${
+                theme === t
+                  ? 'bg-white text-gray-800 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {t === 'light' ? '☀️' : t === 'dark' ? '🌙' : '💻'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Progress details */}

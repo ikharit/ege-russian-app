@@ -39,6 +39,7 @@ import { ExamVariantPage } from './pages/ExamVariantPage'
 import { ExamResultsPage } from './pages/ExamResultsPage'
 import { EssayTopicsList } from './pages/EssayTopicsList'
 import { EssayPage } from './pages/EssayPage'
+import { DuelPage } from './pages/DuelPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -50,6 +51,7 @@ import { useProgressStore } from './stores/progressStore'
 import { useClassStore, ProgressData } from './stores/classStore'
 import { useNotificationStore } from './stores/notificationStore'
 import { useStudentStore } from './stores/studentStore'
+import { useSettingsStore } from './stores/settingsStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 
@@ -69,7 +71,7 @@ function BottomNav() {
   ]
 
   return (
-    <nav className="bg-white border-t border-gray-100 px-4 py-3 sticky bottom-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 px-4 py-3 sticky bottom-0 z-50">
       <div className="max-w-md mx-auto flex justify-around">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path
@@ -78,7 +80,7 @@ function BottomNav() {
               key={tab.path}
               onClick={() => navigate(tab.path)}
               className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-colors ${
-                isActive ? 'text-duo-green' : 'text-gray-400 hover:text-gray-600'
+                isActive ? 'text-duo-green' : 'text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
               }`}
             >
               <tab.icon size={28} strokeWidth={isActive ? 2.5 : 2} />
@@ -359,8 +361,21 @@ export default function App() {
     </div>
   )
 
+  // Theme effect
+  const theme = useSettingsStore((s) => s.theme)
+  useEffect(() => {
+    const effective = theme === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : theme
+    if (effective === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [theme])
+
   return (
-    <div className="min-h-screen bg-duo-snow flex flex-col">
+    <div className="min-h-screen bg-duo-snow dark:bg-gray-900 flex flex-col">
       {!isLesson && <Header syncIndicator={syncIndicator} />}
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
       <AchievementToast
@@ -412,6 +427,7 @@ export default function App() {
           <Route path="/task15-trainer" element={<Task15Trainer />} />
           <Route path="/task16-trainer" element={<Task16Trainer />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/duel" element={<DuelPage />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

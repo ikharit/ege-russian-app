@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -513,6 +513,56 @@ export function Dashboard() {
             </div>
           </div>
           <ChevronRight size={24} className="text-purple-400" />
+        </div>
+      </motion.div>
+
+      {/* Games Card — compact, fun, distinct from trainers */}
+      <motion.div
+        className="card bg-gradient-to-br from-purple-100 to-fuchsia-50 border-purple-200"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/games')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/games'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Игры и развлечения"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center text-white">
+              <Gamepad2 size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-purple-500 uppercase tracking-wide font-bold">Развлечения</p>
+              <p className="font-bold text-gray-800">Игры</p>
+              <p className="text-xs text-gray-500">Переключись и отдохни 🎮</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-purple-400" />
+        </div>
+      </motion.div>
+
+      {/* Duel Card — compete with friends */}
+      <motion.div
+        className="card bg-gradient-to-br from-red-100 to-orange-50 border-red-200 cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => navigate('/duel')}
+        onKeyDown={(e) => handleKeyNav(e, () => navigate('/duel'))}
+        role="button"
+        tabIndex={0}
+        aria-label="Дуэль с друзьями"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center text-white">
+              <Swords size={24} />
+            </div>
+            <div>
+              <p className="text-xs text-red-500 uppercase tracking-wide font-bold">Соревнование</p>
+              <p className="font-bold text-gray-800">Дуэль</p>
+              <p className="text-xs text-gray-500">5 вопросов, кто быстрее? ⚔️</p>
+            </div>
+          </div>
+          <ChevronRight size={24} className="text-red-400" />
         </div>
       </motion.div>
 

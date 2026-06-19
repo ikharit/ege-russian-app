@@ -352,3 +352,45 @@ icons: [
 import { getAtomizedWords, getQuestionsForAtom, getWeakAtoms } from '../data/atomization'
 import { getAtomById } from '../data/atomization/atoms'
 ```
+
+---
+
+## ✅ Новые фичи (выполнено 2026-06-20)
+
+### ✅ ЗВУКИ: Звуковые эффекты с mute
+
+**Статус:** ✅ Выполнено
+**Где**: `src/lib/sounds.ts`, `src/stores/settingsStore.ts`, `src/pages/Profile.tsx`
+**Решение**: Web Audio API synth (sine/sawtooth) — 6 звуков: correct, wrong, lessonComplete, combo, XPup, achievement. `isSoundEnabled()` читает `ege-settings-storage` из localStorage. Toggle в Profile. Добавлены `playXPUpSound()` и `playAchievementSound()`.
+
+---
+
+### ✅ ТЕМНАЯ ТЕМА: Dark mode
+
+**Статус:** ✅ Выполнено
+**Где**: `tailwind.config.js`, `src/App.tsx`, `src/pages/Profile.tsx`
+**Решение**: `darkMode: 'class'` в Tailwind. `useEffect` в App.tsx применяет/убирает класс `dark` на `document.documentElement`. Переключатель в Profile: light ☀️ / dark 🌙 / system 💻. `dark:` классы добавлены в BottomNav и root div.
+
+---
+
+### ✅ ЭКСПОРТ/ИМПОРТ: Полный backup v2
+
+**Статус:** ✅ Выполнено
+**Где**: `src/pages/Profile.tsx`
+**Решение**: Формат `version: 2` включает: progress (userStats, lessonProgress, achievements, atomProgress, wrongAnswers, taskStats, dailyQuest, theoryTests, examResults, leaderboard, isTeacher, userId), student (profiles, activeProfileId), classStore (classes, activeClassId), studyPlan (plan, examDate, targetScore), settings (soundEnabled, theme). Import — merge с текущим или полная замена. Legacy v1 тоже поддерживается.
+
+---
+
+### ✅ ДУЭЛЬ: Соревнование offline-first
+
+**Статус:** ✅ Выполнено
+**Где**: `src/stores/duelStore.ts`, `src/pages/DuelPage.tsx`, `src/App.tsx`, `src/pages/Dashboard.tsx`
+**Решение**: Создатель генерирует 6-значный код (A-Z, 2-9). Соперник вводит код → присоединяется. 5 случайных вопросов из всех заданий. Оба решают offline (на своих устройствах). Результат: score = correct*100 + timeBonus. Победитель определяется по score. Сохраняется в `ege-duel-storage` (24h TTL). Карточка в Dashboard, роут `/duel`.
+
+---
+
+### ✅ RAG ОБЪЯСНЕНИЯ: Умные объяснения ошибок
+
+**Статус:** ✅ Уже было в `src/components/QuestionCard.tsx` (строки 192-227)
+**Где**: `QuestionCard.tsx`, `src/lib/rag.ts`
+**Решение**: При неправильном ответе вызывается `ragRetriever.retrieve(question.text, taskNumber, 3)` → `generateExplanation()` → показывает правило + `TheoryQuickReference`. Если RAG не нашёл — fallback к `getRelevantRules()`. Не требует LLM, работает полностью offline.

@@ -1,3 +1,4 @@
+import Fuse from 'fuse.js'
 import type { TheoryRule } from '../data/theory/task4'
 
 // Unified RAG knowledge base — combines theory rules + word explanations + grammar rules
@@ -13,17 +14,25 @@ export interface KnowledgeEntry {
   explanation: string
   tags: string[]
   relatedAtoms: string[]
+  lessonId?: string // cross-link to lesson
   // Embedding vector (filled by build-index script)
   embedding?: number[]
 }
 
 export interface RetrievalResult {
   entry: KnowledgeEntry
-  score: number // cosine similarity
+  score: number // cosine similarity or fuse score
+}
+
+export interface ExplanationFeedback {
+  entryId: string
+  helpful: boolean
+  timestamp: string
+  userId?: string
 }
 
 // === RETRIEVER (client-side, no external API) ===
-// Uses pre-computed embeddings + cosine similarity
+// Uses fuzzy search + substring matching
 
 export function cosineSimilarity(a: number[], b: number[]): number {
   let dot = 0, normA = 0, normB = 0
@@ -38,6 +47,7 @@ export function cosineSimilarity(a: number[], b: number[]): number {
 export class RAGRetriever {
   private entries: KnowledgeEntry[] = []
   private indexLoaded = false
+  private fuse: Fuse<KnowledgeEntry> | null = null
 
   async loadIndex(): Promise<void> {
     if (this.indexLoaded) return
@@ -45,6 +55,7 @@ export class RAGRetriever {
       const res = await fetch('/data/knowledge-index.json')
       if (!res.ok) throw new Error('Index not found')
       this.entries = await res.json()
+      this.buildFuse()
       this.indexLoaded = true
     } catch (e) {
       console.warn('RAG index not loaded, falling back to theory rules')
@@ -52,12 +63,50 @@ export class RAGRetriever {
     }
   }
 
-  // Fallback: exact match + substring search when no embeddings
+  private buildFuse() {
+    this.fuse = new Fuse(this.entries, {
+      keys: [
+        { name: 'word', weight: 0.4 },
+        { name: 'content', weight: 0.3 },
+        { name: 'explanation', weight: 0.2 },
+        { name: 'tags', weight: 0.1 },
+      ],
+      threshold: 0.4,
+      includeScore: true,
+      ignoreLocation: true,
+    })
+  }
+
+  // Primary: fuzzy search via fuse.js
+  // Fallback: exact match + substring search
   retrieve(query: string, taskNumber: string, topK = 3): RetrievalResult[] {
     const normalized = query.toLowerCase().trim()
     const filtered = this.entries.filter(e => e.taskNumber === taskNumber)
 
-    // Scoring: exact word match > substring > tag match
+    // Try fuse first if available
+    if (this.fuse) {
+      // Search within filtered entries
+      const fuse = new Fuse(filtered, {
+        keys: [
+          { name: 'word', weight: 0.4 },
+          { name: 'content', weight: 0.3 },
+          { name: 'explanation', weight: 0.2 },
+          { name: 'tags', weight: 0.1 },
+        ],
+        threshold: 0.4,
+        includeScore: true,
+        ignoreLocation: true,
+      })
+      const fuseResults = fuse.search(normalized).slice(0, topK)
+      if (fuseResults.length > 0) {
+        return fuseResults.map(r => ({
+          entry: r.item,
+          score: 1 - (r.score || 0), // fuse score is 0-1, lower is better
+        }))
+      }
+    }
+
+    // Fallback: exact match + substring search
     const scored = filtered.map(entry => {
       let score = 0
       const content = (entry.content + ' ' + entry.explanation).toLowerCase()
@@ -99,15 +148,22 @@ export class RAGRetriever {
     }))
     return scored.sort((a, b) => b.score - a.score).slice(0, topK)
   }
+
+  // Get entry by ID for cross-linking
+  getEntryById(id: string): KnowledgeEntry | undefined {
+    return this.entries.find(e => e.id === id)
+  }
 }
 
 // === EXPLANATION GENERATOR ===
 // Uses retrieved rules to generate explanations — NEVER hallucinates
+// Personalizes based on user history
 
 export function generateExplanation(
   word: string,
   correctAnswer: string[],
-  retrievedRules: RetrievalResult[]
+  retrievedRules: RetrievalResult[],
+  userHistory?: { word: string; wrongCount: number }[]
 ): string {
   if (retrievedRules.length === 0) {
     // Ultimate fallback: generic explanation that does NOT make up rules
@@ -125,8 +181,24 @@ export function generateExplanation(
     explanation = rule.explanation
   }
 
-  // Append rule reference for traceability
-  explanation += ` [Источник: ${rule.source}${rule.ruleId ? `/${rule.ruleId}` : ''}]`
+  // Personalize: if user struggled with this topic before, add extra detail
+  const struggledWords = userHistory?.filter(h => h.wrongCount >= 3) || []
+  const isStruggling = struggledWords.some(h => 
+    word.toLowerCase().includes(h.word.toLowerCase()) ||
+    h.word.toLowerCase().includes(word.toLowerCase())
+  )
+
+  if (isStruggling) {
+    // Add detailed explanation from second rule if available
+    const secondRule = retrievedRules[1]
+    if (secondRule) {
+      explanation += ` Подробнее: ${secondRule.entry.explanation}`
+    }
+  }
+
+  // Append rule reference for traceability + lesson link
+  const lessonLink = rule.lessonId ? ` [Урок: ${rule.lessonId}]` : ''
+  explanation += ` [Источник: ${rule.source}${rule.ruleId ? `/${rule.ruleId}` : ''}]${lessonLink}`
 
   return explanation
 }
@@ -195,6 +267,43 @@ export function verifyExplanation(
   }
 
   return { valid: issues.length === 0, issues }
+}
+
+// === FEEDBACK TRACKER ===
+// Stores user feedback on explanations
+
+const FEEDBACK_KEY = 'ege-rag-feedback'
+
+export function getFeedback(): ExplanationFeedback[] {
+  try {
+    const raw = localStorage.getItem(FEEDBACK_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function recordFeedback(entryId: string, helpful: boolean): void {
+  const feedback = getFeedback()
+  feedback.push({
+    entryId,
+    helpful,
+    timestamp: new Date().toISOString(),
+  })
+  try {
+    localStorage.setItem(FEEDBACK_KEY, JSON.stringify(feedback))
+  } catch {}
+}
+
+export function getFeedbackStats(): Record<string, { helpful: number; total: number }> {
+  const feedback = getFeedback()
+  const stats: Record<string, { helpful: number; total: number }> = {}
+  for (const f of feedback) {
+    if (!stats[f.entryId]) stats[f.entryId] = { helpful: 0, total: 0 }
+    stats[f.entryId].total++
+    if (f.helpful) stats[f.entryId].helpful++
+  }
+  return stats
 }
 
 // === AGENT PROMPT BUILDER ===

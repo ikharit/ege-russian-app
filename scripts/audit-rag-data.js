@@ -77,7 +77,7 @@ if (fs.existsSync(wordExpPath)) {
     }
     
     // Check 4: If says 'иноязычный', should not have 'проверяемый'
-    if (exp.includes('иноязычный') && exp.includes('проверяемый')) {
+    if (exp.includes('иноязычный') && /\bпроверяемый\b/.test(exp)) {
       addIssue('wordExplanations.json', `word: "${word}"`, 'error',
         `Foreign words cannot be 'проверяемый' — they are always 'непроверяемый'`,
         'Remove "проверяемый" and mark as "непроверяемый, иноязычный"');
