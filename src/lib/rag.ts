@@ -56,6 +56,7 @@ export class RAGRetriever {
       if (!res.ok) throw new Error('Index not found')
       this.entries = await res.json()
       this.buildFuse()
+      this.buildTFIDF()
       this.indexLoaded = true
     } catch (e) {
       console.warn('RAG index not loaded, falling back to theory rules')
@@ -75,6 +76,168 @@ export class RAGRetriever {
       includeScore: true,
       ignoreLocation: true,
     })
+  }
+
+  // ─── TF-IDF Semantic Search ───
+  private idf: Map<string, number> = new Map()
+  private tfidfVectors: Map<string, Map<string, number>> = new Map()
+  private tfidfBuilt = false
+
+  private buildTFIDF() {
+    const stopWords = new Set([
+      'и','в','во','не','на','с','со','а','то','все','для','от','что','как','к','по','из','за','о','об','же',
+      'то','это','при','но','если','или','чтобы','так','также','у','же','да','нет','бы','было','быть','есть',
+      'только','даже','ещё','уже','можно','нужно','надо','пример','правило','исключение','слово','корень',
+      'пишется','пишутся','писать','пишем','пишет','буква','буквы','знак','знаки','слитно','раздельно','дефис',
+      'ставится','не','ставить','слово','корень','суффикс','приставка','окончание','ударение','падеж','число',
+    ])
+
+    const tokenize = (text: string): string[] => {
+      const matches = text.toLowerCase().match(/[а-яё]+/g) || []
+      return matches.filter(w => w.length > 2 && !stopWords.has(w))
+    }
+
+    // 1. Tokenize all documents
+    const docs: { id: string; tokens: string[] }[] = []
+    for (const entry of this.entries) {
+      const text = `${entry.content} ${entry.explanation} ${entry.tags.join(' ')} ${entry.word || ''}`
+      docs.push({ id: entry.id, tokens: tokenize(text) })
+    }
+
+    // 2. Compute DF (document frequency)
+    const df = new Map<string, number>()
+    for (const doc of docs) {
+      const unique = new Set(doc.tokens)
+      for (const t of unique) {
+        df.set(t, (df.get(t) || 0) + 1)
+      }
+    }
+
+    // 3. Compute IDF
+    const N = docs.length
+    this.idf = new Map()
+    for (const [term, count] of df.entries()) {
+      this.idf.set(term, Math.log(N / (count + 1)) + 1) // smoothed idf
+    }
+
+    // 4. Compute TF-IDF vectors
+    this.tfidfVectors = new Map()
+    for (const doc of docs) {
+      const tf = new Map<string, number>()
+      for (const t of doc.tokens) {
+        tf.set(t, (tf.get(t) || 0) + 1)
+      }
+      const vector = new Map<string, number>()
+      let norm = 0
+      for (const [term, freq] of tf.entries()) {
+        const idf = this.idf.get(term) || 0
+        const val = freq * idf
+        vector.set(term, val)
+        norm += val * val
+      }
+      // Normalize
+      const normSqrt = Math.sqrt(norm)
+      if (normSqrt > 0) {
+        for (const [term, val] of vector.entries()) {
+          vector.set(term, val / normSqrt)
+        }
+      }
+      this.tfidfVectors.set(doc.id, vector)
+    }
+
+    this.tfidfBuilt = true
+  }
+
+  // Cosine similarity between two sparse TF-IDF vectors
+  private cosineSimilaritySparse(a: Map<string, number>, b: Map<string, number>): number {
+    let dot = 0
+    for (const [term, valA] of a.entries()) {
+      const valB = b.get(term)
+      if (valB !== undefined) {
+        dot += valA * valB
+      }
+    }
+    return dot
+  }
+
+  retrieveSemantic(query: string, taskNumber: string, topK = 3): RetrievalResult[] {
+    if (!this.tfidfBuilt || this.entries.length === 0) return []
+
+    const stopWords = new Set([
+      'и','в','во','не','на','с','со','а','то','все','для','от','что','как','к','по','из','за','о','об','же',
+      'то','это','при','но','если','или','чтобы','так','также','у','же','да','нет','бы','было','быть','есть',
+      'только','даже','ещё','уже','можно','нужно','надо','пример','правило','исключение','слово','корень',
+      'пишется','пишутся','писать','пишем','пишет','буква','буквы','знак','знаки','слитно','раздельно','дефис',
+      'ставится','не','ставить','слово','корень','суффикс','приставка','окончание','ударение','падеж','число',
+    ])
+
+    const tokenize = (text: string): string[] => {
+      const matches = text.toLowerCase().match(/[а-яё]+/g) || []
+      return matches.filter(w => w.length > 2 && !stopWords.has(w))
+    }
+
+    // Vectorize query
+    const qTokens = tokenize(query)
+    const qTf = new Map<string, number>()
+    for (const t of qTokens) {
+      qTf.set(t, (qTf.get(t) || 0) + 1)
+    }
+    const qVector = new Map<string, number>()
+    let qNorm = 0
+    for (const [term, freq] of qTf.entries()) {
+      const idf = this.idf.get(term) || 0
+      const val = freq * idf
+      qVector.set(term, val)
+      qNorm += val * val
+    }
+    const qNormSqrt = Math.sqrt(qNorm)
+    if (qNormSqrt > 0) {
+      for (const [term, val] of qVector.entries()) {
+        qVector.set(term, val / qNormSqrt)
+      }
+    }
+
+    // Score all entries matching taskNumber
+    const filtered = this.entries.filter(e => e.taskNumber === taskNumber)
+    const scored = filtered.map(entry => {
+      const vector = this.tfidfVectors.get(entry.id)
+      if (!vector) return { entry, score: 0 }
+      const sim = this.cosineSimilaritySparse(qVector, vector)
+      return { entry, score: sim }
+    })
+
+    return scored
+      .filter(r => r.score > 0.05)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topK)
+  }
+
+  // Hybrid: 0.5 * TF-IDF + 0.5 * (1 - fuseScore)
+  retrieveHybrid(query: string, taskNumber: string, topK = 3): RetrievalResult[] {
+    const semantic = this.retrieveSemantic(query, taskNumber, topK * 2)
+    const fuseRaw = this.retrieve(query, taskNumber, topK * 2)
+
+    // Normalize scores to 0..1
+    const maxSemantic = Math.max(...semantic.map(r => r.score), 0.001)
+    const semanticNorm = new Map(semantic.map(r => [r.entry.id, r.score / maxSemantic]))
+
+    const fuseNorm = new Map(fuseRaw.map(r => [r.entry.id, r.score]))
+
+    // Combine
+    const allIds = new Set([...semanticNorm.keys(), ...fuseNorm.keys()])
+    const combined: RetrievalResult[] = []
+    for (const id of allIds) {
+      const entry = this.entries.find(e => e.id === id)
+      if (!entry) continue
+      const sScore = semanticNorm.get(id) || 0
+      const fScore = fuseNorm.get(id) || 0
+      const hybridScore = 0.5 * sScore + 0.5 * fScore
+      combined.push({ entry, score: hybridScore })
+    }
+
+    return combined
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topK)
   }
 
   // Primary: fuzzy search via fuse.js

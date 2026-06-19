@@ -26,7 +26,7 @@ export function Statistics() {
     : 180
 
   const score = getPredictiveScore(
-    { taskStats, examResults, userStats: stats, lessonProgress, wrongAnswers },
+    { taskStats, examResults, userStats: stats, lessonProgress, wrongAnswers, examDate },
     daysToExam
   )
   const weakTasks = getWeakTasks(score.breakdown, 5)

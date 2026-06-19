@@ -14,11 +14,11 @@ export function PredictiveScoreWidget() {
     userStats: s.userStats,
     lessonProgress: s.lessonProgress,
     wrongAnswers: s.wrongAnswers,
+    examDate: s.examDate,
   }))
 
-  const examDate = useStudyPlanStore((s) => s.examDate)
-  const daysToExam = examDate
-    ? Math.max(0, Math.ceil((new Date(examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+  const daysToExam = state.examDate
+    ? Math.max(0, Math.ceil((new Date(state.examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
     : 180
 
   const score = getPredictiveScore(state, daysToExam)

@@ -1,154 +1,127 @@
 import { PredictiveScore } from '../types';
 import type { ProgressState } from '../stores/progressStore';
 
-type PredictiveScoreInput = Pick<ProgressState, 'taskStats' | 'examResults' | 'userStats' | 'lessonProgress' | 'wrongAnswers'>;
-
-// Max primary scores for EGE tasks (scaled to total 58 for intuitive scale)
-// Tasks 1-24: 2 points each, task 25: 6 points, task 26: 4 points
-const TASK_MAX_SCORES: Record<number, number> = {
-  1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2,
-  11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2,
-  21: 2, 22: 2, 23: 2, 24: 2, 25: 6, 26: 4,
+type PredictiveScoreInput = Pick<ProgressState, 'taskStats' | 'examResults' | 'userStats' | 'lessonProgress' | 'wrongAnswers' | 'examDate'> & {
+  srsData?: Record<string, any>;
+  atomProgress?: Record<string, any>;
 };
 
 const MAX_PRIMARY_TOTAL = 58;
-const SECONDARY_MULTIPLIER = 100 / MAX_PRIMARY_TOTAL; // ≈ 1.724
+const SECONDARY_MULTIPLIER = 100 / MAX_PRIMARY_TOTAL;
 
-// XP-to-primary ratio approximation (calibrated empirically)
-const XP_PER_PRIMARY_POINT = 45;
-// Average time per XP in minutes
-const AVG_MINUTES_PER_XP = 0.5;
+const NUM_TASKS = 26;
+const FEATURE_COUNT = NUM_TASKS + 5;
 
-const THRESHOLD_SCORE = 36;
-const GOOD_SCORE = 60;
-const EXCELLENT_SCORE = 80;
+const LEARNING_RATE = 0.01;
+const WEIGHTS_KEY = 'ege-predictive-weights';
+const BIAS_KEY = 'ege-predictive-bias';
+
+function extractFeatures(state: PredictiveScoreInput): number[] {
+  const features: number[] = [];
+
+  for (let i = 1; i <= NUM_TASKS; i++) {
+    const stat = state.taskStats?.[String(i)];
+    if (stat && stat.total > 0) {
+      features.push(stat.correct / stat.total);
+    } else {
+      features.push(0.5);
+    }
+  }
+
+  features.push(Math.min((state.userStats?.streak || 0) / 30, 1));
+
+  const totalAnswered = state.userStats?.totalQuestionsAnswered || 0;
+  features.push(Math.min(totalAnswered / 500, 1));
+
+  const daysToExam = state.examDate
+    ? Math.max(0, Math.ceil((new Date(state.examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : 180;
+  features.push(Math.min(daysToExam / 365, 1));
+
+  const weakAtoms = Object.values(state.atomProgress || {}).filter((a: any) => a && a.accuracy < 50).length;
+  features.push(Math.min(weakAtoms / 20, 1));
+
+  const now = new Date().toISOString();
+  const dueCount = Object.values(state.srsData || {}).filter((item: any) => item.nextReview <= now).length;
+  features.push(Math.min(dueCount / 50, 1));
+
+  return features;
+}
+
+function loadWeights(): { weights: number[]; bias: number } {
+  try {
+    const w = localStorage.getItem(WEIGHTS_KEY);
+    const b = localStorage.getItem(BIAS_KEY);
+    if (w && b) {
+      return { weights: JSON.parse(w), bias: JSON.parse(b) };
+    }
+  } catch {}
+  return {
+    weights: Array(FEATURE_COUNT).fill(0.02),
+    bias: 30,
+  };
+}
+
+function saveWeights(weights: number[], bias: number): void {
+  try {
+    localStorage.setItem(WEIGHTS_KEY, JSON.stringify(weights));
+    localStorage.setItem(BIAS_KEY, JSON.stringify(bias));
+  } catch {}
+}
+
+function predict(features: number[], weights: number[], bias: number): number {
+  let score = bias;
+  for (let i = 0; i < features.length; i++) {
+    score += features[i] * weights[i];
+  }
+  return Math.max(0, Math.min(100, score));
+}
+
+export function trainPredictiveModel(
+  state: PredictiveScoreInput,
+  actualSecondaryScore: number
+): void {
+  const features = extractFeatures(state);
+  const { weights, bias } = loadWeights();
+
+  const predicted = predict(features, weights, bias);
+  const error = predicted - actualSecondaryScore;
+
+  const newBias = bias - LEARNING_RATE * error;
+  const newWeights = weights.map((w, i) => w - LEARNING_RATE * error * features[i]);
+
+  saveWeights(newWeights, newBias);
+}
 
 export function getPredictiveScore(state: PredictiveScoreInput, daysToExam = 180): PredictiveScore {
-  const taskStats = state.taskStats || {};
-  const examResults = state.examResults || [];
-  const userStats = state.userStats;
-  const lessonProgress = state.lessonProgress || {};
+  const features = extractFeatures(state);
+  const { weights, bias } = loadWeights();
+  const predictedSecondary = predict(features, weights, bias);
 
-  let totalAnswers = 0;
-  let totalCorrect = 0;
   const breakdown: Record<number, number> = {};
-
-  // Calculate per-task accuracy and predicted score
-  for (let taskNum = 1; taskNum <= 26; taskNum++) {
-    const stat = taskStats[String(taskNum)];
-    let accuracy: number;
-
-    if (stat && stat.total > 0) {
-      accuracy = stat.correct / stat.total;
-      totalAnswers += stat.total;
-      totalCorrect += stat.correct;
-    } else {
-      // No data: default to 50% for unknown tasks, but lower confidence
-      accuracy = 0.5;
-    }
-
-    const maxScore = TASK_MAX_SCORES[taskNum] || 0;
-    breakdown[taskNum] = Math.round(accuracy * maxScore * 10) / 10;
-  }
-
-  // Boost accuracy from exam results if available
-  if (examResults.length > 0) {
-    const latest = examResults[examResults.length - 1];
-    if (latest?.taskScores) {
-      for (let taskNum = 1; taskNum <= 26; taskNum++) {
-        const examScore = latest.taskScores[taskNum];
-        if (examScore !== undefined && examScore >= 0) {
-          const maxScore = TASK_MAX_SCORES[taskNum] || 1;
-          const examAccuracy = examScore / maxScore;
-          // Weighted average: 60% practice + 40% exam (exam is more reliable per-question but may have fewer questions)
-          const practiceAccuracy = taskStats[String(taskNum)] && taskStats[String(taskNum)].total > 0
-            ? taskStats[String(taskNum)].correct / taskStats[String(taskNum)].total
-            : 0.5;
-          const blendedAccuracy = (practiceAccuracy * 0.6) + (examAccuracy * 0.4);
-          breakdown[taskNum] = Math.round(blendedAccuracy * maxScore * 10) / 10;
-        }
-      }
-    }
-  }
-
-  // Sum up predicted primary score
   let predictedPrimary = 0;
-  for (let taskNum = 1; taskNum <= 26; taskNum++) {
-    predictedPrimary += breakdown[taskNum];
-  }
-  predictedPrimary = Math.round(predictedPrimary * 10) / 10;
-  predictedPrimary = Math.min(MAX_PRIMARY_TOTAL, Math.max(0, predictedPrimary));
-
-  // Convert to secondary (test) score
-  const predictedSecondary = Math.round(predictedPrimary * SECONDARY_MULTIPLIER);
-
-  // Confidence: based on total answers (more data = higher confidence)
-  // Target: 500 answers for 100% confidence
-  const confidence = Math.min(1, totalAnswers / 500);
-
-  // Calculate needed XP for each threshold based on current pace
-  const totalXP = userStats?.xp || 0;
-  const totalLessonsCompleted = Object.values(lessonProgress).filter(l => l.status === 'completed').length;
-
-  // Days since start (heuristic: first lesson completion or 30 days ago if nothing)
-  let daysSinceStart = 30;
-  const completedDates = Object.values(lessonProgress)
-    .filter(l => l.completedAt)
-    .map(l => new Date(l.completedAt!).getTime())
-    .sort((a, b) => a - b);
-  if (completedDates.length > 0) {
-    const firstDate = completedDates[0];
-    const now = Date.now();
-    daysSinceStart = Math.max(1, Math.floor((now - firstDate) / (1000 * 60 * 60 * 24)));
+  for (let i = 1; i <= NUM_TASKS; i++) {
+    const taskAcc = features[i - 1];
+    const maxScore = i <= 24 ? 2 : i === 25 ? 6 : 4;
+    const taskPredicted = Math.round(taskAcc * maxScore * 10) / 10;
+    breakdown[i] = taskPredicted;
+    predictedPrimary += taskPredicted;
   }
 
-  const xpPerDay = totalXP / daysSinceStart;
-  const xpPerPrimaryPoint = XP_PER_PRIMARY_POINT;
+  const secondary = Math.round(predictedSecondary * 10) / 10;
+  const primary = Math.round(predictedPrimary * 10) / 10;
 
-  function neededXP(targetSecondary: number): number {
-    const neededPrimary = targetSecondary / SECONDARY_MULTIPLIER;
-    const primaryGap = Math.max(0, neededPrimary - predictedPrimary);
-    return Math.round(primaryGap * xpPerPrimaryPoint);
-  }
-
-  const neededForThreshold = neededXP(THRESHOLD_SCORE);
-  const neededForGood = neededXP(GOOD_SCORE);
-  const neededForExcellent = neededXP(EXCELLENT_SCORE);
-
-  // Recommended daily minutes to reach the closest realistic goal
-  const closestGoal = predictedSecondary < THRESHOLD_SCORE ? THRESHOLD_SCORE
-    : predictedSecondary < GOOD_SCORE ? GOOD_SCORE
-    : predictedSecondary < EXCELLENT_SCORE ? EXCELLENT_SCORE : 100;
-
-  const neededForClosest = neededXP(closestGoal);
-  const daysToExamSafe = Math.max(1, daysToExam);
-
-  let recommendedDaily: number;
-  if (xpPerDay > 0) {
-    const projectedDays = neededForClosest / xpPerDay;
-    if (projectedDays <= daysToExamSafe) {
-      // On track: maintain current pace
-      recommendedDaily = Math.round(xpPerDay * AVG_MINUTES_PER_XP);
-    } else {
-      // Behind: need to increase pace
-      const neededXpPerDay = neededForClosest / daysToExamSafe;
-      recommendedDaily = Math.round(neededXpPerDay * AVG_MINUTES_PER_XP);
-    }
-  } else {
-    // No XP yet: estimate from scratch
-    recommendedDaily = Math.round((neededForClosest / daysToExamSafe) * AVG_MINUTES_PER_XP);
-  }
-  recommendedDaily = Math.max(10, Math.min(240, recommendedDaily));
-
-  // Cap predictions realistically
-  const finalPrimary = Math.round(predictedPrimary * 10) / 10;
-  const finalSecondary = Math.min(100, Math.max(0, predictedSecondary));
+  // Calculate needed scores for milestones
+  const neededForThreshold = Math.max(0, 36 - primary);
+  const neededForGood = Math.max(0, 60 - primary);
+  const neededForExcellent = Math.max(0, 80 - primary);
+  const recommendedDaily = daysToExam > 0 ? Math.ceil((neededForGood * 45) / daysToExam) : 45;
 
   return {
-    predictedPrimary: finalPrimary,
-    predictedSecondary: finalSecondary,
-    confidence: Math.round(confidence * 100) / 100,
+    predictedPrimary: primary,
+    predictedSecondary: secondary,
     breakdown,
+    confidence: 0.7,
     neededForThreshold,
     neededForGood,
     neededForExcellent,
@@ -157,24 +130,17 @@ export function getPredictiveScore(state: PredictiveScoreInput, daysToExam = 180
   };
 }
 
-export function getScoreLabel(score: number): { label: string; color: string } {
-  if (score >= 80) return { label: 'Отлично', color: 'text-green-600' };
-  if (score >= 60) return { label: 'Хорошо', color: 'text-blue-600' };
-  if (score >= 36) return { label: 'Проходной балл', color: 'text-yellow-600' };
-  return { label: 'Ниже порога', color: 'text-red-600' };
-}
-
-export function getWeakTasks(breakdown: Record<number, number>, limit = 3): { taskNumber: number; gap: number }[] {
-  const tasks: { taskNumber: number; gap: number }[] = [];
-  for (let taskNum = 1; taskNum <= 26; taskNum++) {
-    const maxScore = TASK_MAX_SCORES[taskNum] || 0;
-    if (maxScore === 0) continue;
-    const current = breakdown[taskNum] || 0;
-    const gap = maxScore - current;
-    if (gap > 0) {
-      tasks.push({ taskNumber: taskNum, gap });
-    }
+export function getWeakTasks(breakdown: Record<number, number>, limit = 5): { taskNumber: number; predictedScore: number; gap: number }[] {
+  const maxScores: Record<number, number> = {};
+  for (let i = 1; i <= 26; i++) {
+    maxScores[i] = i <= 24 ? 2 : i === 25 ? 6 : 4;
   }
-  tasks.sort((a, b) => b.gap - a.gap);
-  return tasks.slice(0, limit);
+  return Object.entries(breakdown)
+    .map(([task, score]) => ({
+      taskNumber: Number(task),
+      predictedScore: score,
+      gap: maxScores[Number(task)] - score,
+    }))
+    .sort((a, b) => a.predictedScore - b.predictedScore)
+    .slice(0, limit);
 }
