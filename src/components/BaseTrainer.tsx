@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
-  ChevronRight, Check, X, Volume2, VolumeX
+  ChevronRight, Check, X, Volume2, VolumeX, BookOpen
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { ragRetriever, generateExplanation } from '../lib/rag'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -429,9 +430,34 @@ export function BaseTrainer<T>({
               )}
             </div>
             {settings.showExplanation && (
-              <p className="text-sm text-gray-600">
-                {getExplanation(effectiveQuestion)}
-              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">
+                  {getExplanation(effectiveQuestion)}
+                </p>
+                {/* RAG-powered additional explanation for wrong answers */}
+                {!isCorrectAnswer && (() => {
+                  const atoms = getAtoms?.(effectiveQuestion) || []
+                  const taskAtom = atoms.find((a: string) => a.startsWith('task'))
+                  const taskNum = taskAtom ? taskAtom.replace('task', '') : taskNumber
+                  
+                  if (!taskNum) return null
+                  
+                  const ragResults = ragRetriever.retrieve(getQuestionText(effectiveQuestion), taskNum, 2)
+                  if (ragResults.length === 0) return null
+                  
+                  const ragExp = generateExplanation(getQuestionText(effectiveQuestion), getCorrectAnswer(effectiveQuestion), ragResults)
+                  
+                  return (
+                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
+                      <div className="flex items-center gap-2 mb-1">
+                        <BookOpen size={14} className="text-duo-blue" />
+                        <span className="text-xs font-bold text-duo-blue">Правило из теории:</span>
+                      </div>
+                      <p className="text-xs text-gray-700">{ragExp}</p>
+                    </div>
+                  )
+                })()}
+              </div>
             )}
           </motion.div>
         )}
