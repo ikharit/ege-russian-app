@@ -113,3 +113,22 @@ export interface Achievement {
   icon: string
   condition: string
 }
+
+export type StudyTaskType = 'lesson' | 'trainer' | 'review' | 'mock' | 'rest'
+
+export interface StudyTask {
+  id: string
+  date: string // ISO YYYY-MM-DD
+  type: StudyTaskType
+  title: string
+  description: string
+  targetId?: string // lesson id or trainer path
+  duration: number // minutes
+  completed: boolean
+}
+
+export interface StudyPlan {
+  examDate: string
+  tasks: StudyTask[]
+  generatedAt: string
+}

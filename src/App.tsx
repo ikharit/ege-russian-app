@@ -34,6 +34,7 @@ import { JoinClass } from './pages/JoinClass'
 import { ClassDetail } from './pages/ClassDetail'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
+import { SyncStatus } from './components/SyncStatus'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
@@ -291,9 +292,28 @@ export default function App() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  // Firebase init
+  useEffect(() => {
+    let cleanup: (() => void) | undefined
+    const init = async () => {
+      const { useFirebaseStore } = await import('./stores/firebaseStore')
+      await useFirebaseStore.getState().initFirebase()
+      cleanup = useFirebaseStore.getState().setupOfflineListener()
+    }
+    init()
+    return () => {
+      if (cleanup) cleanup()
+    }
+  }, [])
+
   // Online/offline status
   useEffect(() => {
-    const handleOnline = () => console.log('[OfflineCache] Online')
+    const handleOnline = () => {
+      console.log('[OfflineCache] Online')
+      import('./stores/firebaseStore').then(({ useFirebaseStore }) => {
+        useFirebaseStore.getState().processOfflineQueue().catch(() => {})
+      })
+    }
     const handleOffline = () => console.log('[OfflineCache] Offline')
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
@@ -313,15 +333,7 @@ export default function App() {
 
   const syncIndicator = (
     <div className="flex items-center gap-1.5">
-      {syncStatus === 'syncing' && (
-        <span className="text-xs text-duo-blue font-medium">Синхронизация...</span>
-      )}
-      {syncStatus === 'saved' && (
-        <span className="text-xs text-duo-green font-medium">Сохранено</span>
-      )}
-      {syncStatus === 'error' && (
-        <span className="text-xs text-red-500 font-medium">Ошибка сохранения</span>
-      )}
+      <SyncStatus />
       {userId ? (
         <button
           onClick={handleLogout}

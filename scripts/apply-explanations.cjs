@@ -1,6 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load word-specific explanations
+const wordExplanationsPath = path.join(__dirname, '../src/data/explanations/wordExplanations.json');
+const wordExplanations = fs.existsSync(wordExplanationsPath) 
+  ? JSON.parse(fs.readFileSync(wordExplanationsPath, 'utf-8'))
+  : {};
+
 // Inline explanation engine logic (CommonJS version)
 function extractWord(text, correctAnswer) {
   const match = text.match(/([а-яёА-ЯЁ]+_[а-яёА-ЯЁ]+)/i);
@@ -94,14 +100,26 @@ function generateTask10Explanation(word) {
 }
 
 function generateTask9Explanation(word) {
+  const lowerWord = word.toLowerCase();
+  if (wordExplanations[lowerWord]) {
+    return wordExplanations[lowerWord];
+  }
   return 'Проверяемый/непроверяемый/чередующийся корень. Подберите однокоренное слово для проверки: «' + word + '».';
 }
 
 function generateTask11Explanation(word) {
+  const lowerWord = word.toLowerCase();
+  if (wordExplanations[lowerWord]) {
+    return wordExplanations[lowerWord];
+  }
   return 'Проверьте правописание суффикса в слове «' + word + '».';
 }
 
 function generateTask12Explanation(word) {
+  const lowerWord = word.toLowerCase();
+  if (wordExplanations[lowerWord]) {
+    return wordExplanations[lowerWord];
+  }
   return 'Проверьте окончание/суффикс в слове «' + word + '».';
 }
 

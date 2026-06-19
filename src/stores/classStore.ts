@@ -82,6 +82,8 @@ interface ClassStoreActions {
   setActiveClassId: (classId: string | null) => void
   getClassesByTeacher: (teacherName: string) => ClassRoom[]
   getLeaderboard: (classId: string) => { profileId: string; name: string; emoji: string; xp: number; lessonsCompleted: number; accuracy: number }[]
+  syncClass: (classId: string) => Promise<void>
+  subscribeToClass: (classId: string, onUpdate: (data: ClassRoom | null) => void) => Promise<() => void>
 }
 
 export type ClassStore = ClassStoreState & ClassStoreActions
@@ -241,6 +243,11 @@ export const useClassStore = create<ClassStore>()(
             },
           },
         }))
+        if (typeof navigator !== 'undefined' && navigator.onLine) {
+          import('./firebaseStore').then(({ useFirebaseStore }) => {
+            useFirebaseStore.getState().syncClassData(classId).catch(() => {})
+          })
+        }
       },
 
       removeHomework: (classId, homeworkId) => {
@@ -264,6 +271,16 @@ export const useClassStore = create<ClassStore>()(
 
       getClassesByTeacher: (teacherName) => {
         return Object.values(get().classes).filter(c => c.teacherName === teacherName)
+      },
+
+      syncClass: async (classId: string) => {
+        const { useFirebaseStore } = await import('./firebaseStore')
+        await useFirebaseStore.getState().syncClassData(classId)
+      },
+
+      subscribeToClass: async (classId: string, onUpdate: (data: ClassRoom | null) => void) => {
+        const { subscribeToClass } = await import('./firebaseStore')
+        return subscribeToClass(classId, onUpdate)
       },
 
       getLeaderboard: (classId) => {

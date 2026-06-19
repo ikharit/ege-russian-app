@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer } from '../types'
 import { achievements as allAchievements, course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
+import { ExamResult } from '../data/fipiVariants'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { getInitialStats, createUserActions } from './slices/userSlice'
 import { createLessonActions, createAnalyticsActions } from './slices/lessonAnalyticsSlice'
@@ -30,6 +31,7 @@ interface ProgressState {
   userId: string | null
   theoryTestsCompleted: Record<string, { completed: boolean; score: number; xpEarned: number; completedAt?: string }>
   taskStats: Record<string, { total: number; correct: number; wrong: number; lastAttemptAt: string }>
+  examResults: ExamResult[]
 
   startLesson: (lessonId: string) => void
   completeLesson: (lessonId: string, score: number, xpEarned: number) => void
@@ -75,6 +77,10 @@ interface ProgressState {
   completeTheoryTest: (taskNumber: string, score: number, xpEarned: number) => void
   setActiveStatus: (statusId: string) => void
   importProgress: (data: string) => { success: boolean; message: string }
+  saveExamResult: (result: ExamResult) => void
+  getExamResults: () => ExamResult[]
+  getBestExamResult: (variantId: string) => ExamResult | undefined
+  migrateToFirebase: () => Promise<void>
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -99,6 +105,7 @@ export const useProgressStore = create<ProgressState>()(
       isTeacher: false,
       userId: null,
       theoryTestsCompleted: {},
+      examResults: [],
 
       checkAchievements: createAchievementChecker(get),
       completeTheoryTest: (taskNumber, score, xpEarned) => {
@@ -153,6 +160,7 @@ export const useProgressStore = create<ProgressState>()(
             })
             
             const mergedAchievements = [...new Set([...s.achievements, ...(parsed.achievements || [])])]
+            const mergedExamResults = [...s.examResults, ...(parsed.examResults || [])]
             
             return {
               userStats: {
@@ -168,6 +176,7 @@ export const useProgressStore = create<ProgressState>()(
               wrongAnswers: [...s.wrongAnswers, ...(parsed.wrongAnswers || [])],
               taskStats: { ...s.taskStats, ...(parsed.taskStats || {}) },
               theoryTestsCompleted: { ...s.theoryTestsCompleted, ...(parsed.theoryTestsCompleted || {}) },
+              examResults: mergedExamResults,
             }
           })
           
@@ -177,8 +186,37 @@ export const useProgressStore = create<ProgressState>()(
         }
       },
 
+      saveExamResult: (result: ExamResult) => {
+        set((s: any) => ({
+          examResults: [...s.examResults, result],
+        }))
+      },
+
+      getExamResults: () => get().examResults,
+
+      getBestExamResult: (variantId: string) => {
+        const results = get().examResults.filter((r: ExamResult) => r.variantId === variantId)
+        if (results.length === 0) return undefined
+        return results.reduce((best: ExamResult, r: ExamResult) =>
+          r.secondaryScore > best.secondaryScore ? r : best
+        )
+      },
+
       ...createUserActions(set, get),
-      ...createLessonActions(set, get),
+      ...(() => {
+        const lessonActions = createLessonActions(set, get)
+        return {
+          ...lessonActions,
+          completeLesson: (lessonId: string, score: number, xpEarned: number) => {
+            lessonActions.completeLesson(lessonId, score, xpEarned)
+            if (typeof navigator !== 'undefined' && navigator.onLine) {
+              import('./firebaseStore').then(({ useFirebaseStore }) => {
+                useFirebaseStore.getState().syncProgress().catch(() => {})
+              })
+            }
+          },
+        }
+      })(),
       ...createAnalyticsActions(set, get),
       ...createGamificationActions(set, get),
       ...createSyncActions(
@@ -194,7 +232,12 @@ export const useProgressStore = create<ProgressState>()(
         () => get().leaderboardRanks,
         () => get().teacherStudents,
         () => get().isTeacher,
+        () => get().examResults,
       ),
+      migrateToFirebase: async () => {
+        const { useFirebaseStore } = await import('./firebaseStore')
+        await useFirebaseStore.getState().migrateToFirebase()
+      },
     }),
     {
       name: 'ege-progress-storage',

@@ -108,6 +108,9 @@ export function Dashboard() {
       {/* Release Notes */}
       <ReleaseNotesWidget />
 
+      {/* Study Plan Widget */}
+      <StudyPlanWidget />
+
       {/* Stats cards */}
       <div className="grid grid-cols-3 gap-3">
         <motion.div

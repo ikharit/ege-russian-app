@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useFirebaseStore } from '../stores/firebaseStore'
+import { SyncStatus } from '../components/SyncStatus'
 import { achievements as allAchievements, getAchievementProgress } from '../data/achievements'
 import { getAchievementIcon } from '../data/achievementIcons'
 import { getUnlockedStatuses, getStatusById } from '../data/statuses'
@@ -22,6 +24,8 @@ export function Profile() {
   const leaderboardRanks = useProgressStore((s) => s.leaderboardRanks)
   const name = useProgressStore((s) => s.userStats.name || 'ученик')
   const activeStatusId = useProgressStore((s) => s.userStats.activeStatus)
+  const isOnline = useFirebaseStore((s) => s.isOnline)
+  const lastSync = useFirebaseStore((s) => s.lastSync)
 
   const [isEditing, setIsEditing] = useState(false)
   const [showStatusPicker, setShowStatusPicker] = useState(false)
@@ -276,6 +280,48 @@ export function Profile() {
           <div className="flex justify-between"><span className="text-gray-500">Уроков пройдено</span><span className="font-bold">{completedLessons}</span></div>
           <div className="flex justify-between"><span className="text-gray-500">Всего попыток</span><span className="font-bold">{totalQuestions}</span></div>
           <div className="flex justify-between"><span className="text-gray-500">Лучший результат</span><span className="font-bold">{bestScore}%</span></div>
+        </div>
+      </div>
+
+      {/* Cloud sync section */}
+      <div className="card">
+        <h3 className="font-bold text-gray-700 mb-3">Облачная синхронизация</h3>
+        <div className="flex items-center gap-2 mb-3">
+          <SyncStatus />
+        </div>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-500">Статус</span>
+            <span className="font-bold">
+              {isOnline ? 'Онлайн' : 'Оффлайн'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-500">Последний sync</span>
+            <span className="font-bold">
+              {lastSync ? new Date(lastSync).toLocaleString('ru-RU') : '—'}
+            </span>
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            const store = useFirebaseStore.getState()
+            if (store.isOnline) {
+              store.syncProgress().then(() => {
+                alert('Прогресс синхронизирован!')
+              }).catch(() => {
+                alert('Ошибка синхронизации')
+              })
+            } else {
+              alert('Нет подключения к интернету')
+            }
+          }}
+          className="mt-3 w-full py-2 bg-duo-green text-white rounded-lg font-bold text-sm hover:bg-duo-green/90 transition-colors"
+        >
+          Синхронизировать сейчас
+        </button>
+        <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-800">
+          ⚠️ Войдите, чтобы не потерять прогресс на других устройствах
         </div>
       </div>
 
