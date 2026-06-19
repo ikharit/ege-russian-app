@@ -79,6 +79,17 @@ export const achievements: Achievement[] = [
   { id: 'ach-mistake-10', title: 'Десятка', description: 'Исправьте 10 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_10' },
   { id: 'ach-mistake-25', title: 'Четверть', description: 'Исправьте 25 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_25' },
   { id: 'ach-mistake-all', title: 'Всё чисто', description: 'Исправьте все ошибки (раздел пуст)', icon: 'CheckCircle', condition: 'fix_mistake_all' },
+  
+  // === ДОЩИНСКИЙ ===
+  { id: 'ach-dooshin-first', title: 'Первый вариант', description: 'Пройдите первый урок из Дощинского', icon: 'BookOpen', condition: 'dooshin_first' },
+  { id: 'ach-dooshin-5', title: 'Пять вариантов', description: 'Пройдите 5 уроков из Дощинского', icon: 'BookOpen', condition: 'dooshin_5' },
+  { id: 'ach-dooshin-10', title: 'Десятка вариантов', description: 'Пройдите 10 уроков из Дощинского', icon: 'BookOpen', condition: 'dooshin_10' },
+  { id: 'ach-dooshin-20', title: 'Половина пути', description: 'Пройдите 20 уроков из Дощинского', icon: 'BookOpen', condition: 'dooshin_20' },
+  { id: 'ach-dooshin-all', title: 'Мастер Дощинского', description: 'Пройдите все уроки из Дощинского (50 вариантов)', icon: 'Trophy', condition: 'dooshin_all' },
+  { id: 'ach-dooshin-9', title: 'Корни — освоены', description: 'Пройдите все уроки задания 9 из Дощинского', icon: 'Award', condition: 'dooshin_9' },
+  { id: 'ach-dooshin-task-10', title: 'НЕ/НИ — покорены', description: 'Пройдите все уроки задания 10 из Дощинского', icon: 'Award', condition: 'dooshin_task_10' },
+  { id: 'ach-dooshin-11', title: 'Суффиксы — в кармане', description: 'Пройдите все уроки задания 11 из Дощинского', icon: 'Award', condition: 'dooshin_11' },
+  { id: 'ach-dooshin-12', title: 'Окончания — наизусть', description: 'Пройдите все уроки задания 12 из Дощинского', icon: 'Award', condition: 'dooshin_12' },
 ]
 
 export function getAchievementProgress(id: string, stats: any, progress: any): { current: number, target: number } {
@@ -112,6 +123,16 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-mistake-10': { current: stats.mistakesFixed || 0, target: 10 },
     'ach-mistake-25': { current: stats.mistakesFixed || 0, target: 25 },
     'ach-mistake-all': { current: stats.mistakesFixed || 0, target: 1 },
+    // Дощинский
+    'ach-dooshin-first': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.startsWith('lesson-dooshin')).length, target: 1 },
+    'ach-dooshin-5': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.startsWith('lesson-dooshin')).length, target: 5 },
+    'ach-dooshin-10': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.startsWith('lesson-dooshin')).length, target: 10 },
+    'ach-dooshin-20': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.startsWith('lesson-dooshin')).length, target: 20 },
+    'ach-dooshin-all': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.startsWith('lesson-dooshin')).length, target: 40 },
+    'ach-dooshin-9': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.match(/^lesson-dooshin-9-/)).length, target: 10 },
+    'ach-dooshin-task-10': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.match(/^lesson-dooshin-10-/)).length, target: 10 },
+    'ach-dooshin-11': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.match(/^lesson-dooshin-11-/)).length, target: 10 },
+    'ach-dooshin-12': { current: Object.values(progress).filter((l: any) => l.status === 'completed' && l.id?.match(/^lesson-dooshin-12-/)).length, target: 10 },
   }
   return map[id] || { current: 0, target: 1 }
 }
