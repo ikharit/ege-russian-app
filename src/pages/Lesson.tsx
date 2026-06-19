@@ -12,6 +12,7 @@ import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { getTheoryForLesson } from '../lib/theoryMapper'
 import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSound } from '../lib/sounds'
+import { detectErrorType } from '../utils/errorPatternAnalyzer'
 
 export function Lesson() {
   const { lessonId } = useParams()
@@ -26,6 +27,7 @@ export function Lesson() {
   const recordAtomAttempt = useProgressStore((s) => s.recordAtomAttempt)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
+  const recordAnswer = useProgressStore((s) => s.recordAnswer)
 
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
@@ -34,6 +36,8 @@ export function Lesson() {
   const [direction, setDirection] = useState(0)
   const [showTheory, setShowTheory] = useState(false)
   const { showComboToast, ToastOverlay } = useComboToasts()
+
+  const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const courseLesson = section?.lessons.find(l => l.id === lessonId)
@@ -93,6 +97,7 @@ export function Lesson() {
   const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
 
   const handleAnswer = useCallback((isCorrect: boolean, userAnswer?: string[]) => {
+    const timeSpent = Date.now() - questionStartTime
     recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
@@ -126,12 +131,25 @@ export function Lesson() {
         updateTaskStats(taskNumber, isCorrect)
       }
     }
-  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id, updateTaskStats])
+    // Record answer history for IRT + Error Pattern Analysis
+    const taskAtom = currentQuestion.atoms?.find(a => a.startsWith('task'))
+    const taskNumber = taskAtom ? taskAtom.replace('task', '') : ''
+    const errorType = !isCorrect ? detectErrorType(taskNumber, currentQuestion.text, currentQuestion.explanation) : undefined
+    recordAnswer({
+      questionId: currentQuestion.id,
+      taskNumber,
+      correct: isCorrect,
+      errorType,
+      timestamp: new Date().toISOString(),
+      timeSpent,
+    })
+  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id, updateTaskStats, questionStartTime, recordAnswer])
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx < questions.length - 1) {
       setDirection(1)
       setCurrentQuestionIdx(prev => prev + 1)
+      setQuestionStartTime(Date.now())
     } else {
       setGameOverReason('completed')
     }

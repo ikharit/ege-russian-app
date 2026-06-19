@@ -14,6 +14,7 @@ import { useNotificationStore } from '../stores/notificationStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
+import { getPlayerTypeLabel, getPlayerTypeDescription, getPlayerTypeIcon, getPlayerTypeColor, type PlayerType } from '../utils/personalityEngine'
 
 export function Profile() {
   const navigate = useNavigate()
@@ -30,6 +31,8 @@ export function Profile() {
   const activeStatusId = useProgressStore((s) => s.userStats.activeStatus)
   const isOnline = useFirebaseStore((s) => s.isOnline)
   const lastSync = useFirebaseStore((s) => s.lastSync)
+  const playerProfile = useProgressStore((s) => s.getPlayerProfile())
+  const setPlayerProfile = useProgressStore((s) => s.setPlayerProfile)
 
   // Settings
   const soundEnabled = useSettingsStore((s) => s.soundEnabled)
@@ -334,6 +337,56 @@ export function Profile() {
             <p className="text-xs text-gray-500">Рекорд</p>
           </div>
         </div>
+      </div>
+
+      {/* Personality Type Section */}
+      <div className="card">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-bold text-gray-700">Мой тип личности</h3>
+          <button
+            onClick={() => navigate('/personality-quiz')}
+            className="text-xs text-duo-blue font-bold hover:underline"
+          >
+            {playerProfile ? 'Изменить' : 'Пройти тест'}
+          </button>
+        </div>
+        {playerProfile ? (
+          <div className="flex items-center gap-3">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl font-bold shrink-0"
+              style={{ backgroundColor: getPlayerTypeColor(playerProfile.type) }}
+            >
+              {getPlayerTypeIcon(playerProfile.type)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-gray-800">{getPlayerTypeLabel(playerProfile.type)}</p>
+              <p className="text-xs text-gray-500">{getPlayerTypeDescription(playerProfile.type)}</p>
+              <div className="flex gap-2 mt-1.5 flex-wrap">
+                {(Object.entries(playerProfile.scores) as [PlayerType, number][])
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([type, score]) => (
+                    <span
+                      key={type}
+                      className="text-[10px] px-2 py-0.5 rounded-full font-bold text-white"
+                      style={{ backgroundColor: getPlayerTypeColor(type) + 'CC' }}
+                    >
+                      {getPlayerTypeLabel(type)} {score}%
+                    </span>
+                  ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-sm text-gray-500 mb-2">Пройди короткий тест, чтобы узнать свой тип!</p>
+            <button
+              onClick={() => navigate('/personality-quiz')}
+              className="px-4 py-2 bg-duo-green text-white rounded-xl text-sm font-bold hover:bg-duo-green/90 transition-colors"
+            >
+              Пройти тест
+            </button>
+          </div>
+        )}
       </div>
 
       {/* My Homework button */}

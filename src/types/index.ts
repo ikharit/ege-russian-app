@@ -23,6 +23,8 @@ export interface Question {
   difficulty: 'easy' | 'medium' | 'hard'
   xpReward: number
   atoms?: string[]        // ← atom IDs this question tests (e.g. ['prefix_pre_pri', 'pre_pri_dictionary'])
+  irtDifficulty?: number  // IRT calibrated difficulty (-3 to +3)
+  errorType?: string        // Error pattern tag for analysis
 }
 
 export interface UserAtomProgress {
@@ -104,6 +106,8 @@ export interface UserStats {
   streakFreezeLastReset?: string
   currentCombo?: number
   maxCombo?: number
+  playerProfile?: PlayerProfile
+  emotionalState?: EmotionalState
 }
 
 export interface Achievement {
@@ -112,6 +116,35 @@ export interface Achievement {
   description: string
   icon: string
   condition: string
+}
+
+export type PlayerType = 'achiever' | 'explorer' | 'socializer' | 'killer'
+
+export interface PlayerProfile {
+  type: PlayerType
+  scores: Record<PlayerType, number>
+  detectedAt: string
+  source: 'quiz' | 'behavior'
+}
+
+export interface EmotionalState {
+  recentAccuracy: number
+  sessionDuration: number
+  errorsInRow: number
+  successesInRow: number
+  lastVisit: string
+  lastExamDate?: string
+  lastStreakBeforeBreak?: number
+  newLevelReached?: boolean
+  previousLevel?: number
+  overdueSRSLessons?: number
+  comboAtStart?: number
+}
+
+export interface MotivationalMessage {
+  text: string
+  tone: 'encouraging' | 'celebrating' | 'calming' | 'challenging'
+  icon: string
 }
 
 export type StudyTaskType = 'lesson' | 'trainer' | 'review' | 'mock' | 'rest'
@@ -125,6 +158,19 @@ export interface StudyTask {
   targetId?: string // lesson id or trainer path
   duration: number // minutes
   completed: boolean
+}
+
+export interface EssayProgress {
+  topicId: string
+  status: 'not_started' | 'draft' | 'completed'
+  draftText: string
+  savedAt: string
+  selfCheck?: {
+    k1: number
+    k2: number
+    k3: number
+    k4: number
+  }
 }
 
 export interface StudyPlan {
@@ -145,15 +191,66 @@ export interface EssayTopic {
   keyPoints: string[]
 }
 
-export interface EssayProgress {
-  topicId: string
-  status: 'not_started' | 'draft' | 'completed'
-  draftText: string
-  savedAt: string
-  selfCheck?: {
-    k1: number
-    k2: number
-    k3: number
-    k4: number
-  }
+export interface ScheduleDay {
+  day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+  items: ScheduleItem[];
+  totalTime: number; // минуты
+}
+
+export interface ScheduleItem {
+  type: 'lesson' | 'review' | 'exam' | 'essay' | 'break';
+  lessonId?: string;
+  title: string;
+  duration: number; // минуты
+  reason: string; // почему это в расписании
+}
+
+export interface PredictiveScore {
+  predictedPrimary: number; // первичный балл (0-58)
+  predictedSecondary: number; // тестовый балл (0-100)
+  confidence: number; // 0-1, насколько уверены (растёт с данными)
+  breakdown: Record<number, number>; // taskNumber -> predicted score
+  neededForThreshold: number; // сколько XP/уроков нужно до 36 баллов (минимум)
+  neededForGood: number; // до 60 баллов
+  neededForExcellent: number; // до 80 баллов
+  timeToExam: number; // дней до экзамена (default: 180)
+  recommendedDaily: number; // минут в день для достижения цели
+}
+
+export interface WeeklySchedulePreferences {
+  availableTimePerDay?: Partial<Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', number>>;
+  activeDays?: ('mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun')[];
+  focus?: 'weak' | 'all' | 'exam';
+}
+
+
+// ─── IRT & Error Pattern Analysis Types ───
+
+export interface AnswerHistory {
+  questionId: string
+  taskNumber: string
+  correct: boolean
+  errorType?: string
+  timestamp: string
+  timeSpent: number // milliseconds
+}
+
+export interface ErrorPattern {
+  taskNumber: number
+  errorType: string
+  frequency: number
+  lastOccurred: string
+  confidence: number
+}
+
+export interface WeakSubskill {
+  taskNumber: number
+  subskill: string
+  accuracy: number
+}
+
+export interface ErrorAnalysis {
+  patterns: ErrorPattern[]
+  weakSubskills: WeakSubskill[]
+  recommendations: string[]
 }

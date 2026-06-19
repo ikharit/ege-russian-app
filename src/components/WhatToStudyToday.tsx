@@ -23,6 +23,9 @@ import {
   Recommendation,
   RecommendationReason,
 } from '../utils/adaptiveEngine'
+import { getPersonalityMotivation, type PlayerType } from '../utils/personalityEngine'
+import { formatNextReview, formatInterval, getDueReviews, getOverdueCount } from '../utils/spacedRepetition'
+import type { SRSItem } from '../utils/spacedRepetition'
 
 const REASON_CONFIG: Record<
   RecommendationReason,
@@ -70,10 +73,12 @@ function RecommendationItem({
   rec,
   index,
   onNavigate,
+  personalityCTA,
 }: {
   rec: Recommendation
   index: number
   onNavigate: (lessonId: string) => void
+  personalityCTA?: string
 }) {
   const [showWhy, setShowWhy] = useState(false)
   const config = REASON_CONFIG[rec.reason]
@@ -107,6 +112,9 @@ function RecommendationItem({
               <span className="text-gray-300">•</span>
               <span>~{rec.estimatedTime} мин</span>
             </div>
+            {personalityCTA && (
+              <p className="text-xs mt-1 font-medium text-duo-green-dark">{personalityCTA}</p>
+            )}
           </div>
         </div>
 
@@ -155,26 +163,111 @@ function RecommendationItem({
   )
 }
 
+function getLessonInfo(lessonId: string): { title: string; sectionTitle: string; sectionColor: string } | undefined {
+  for (const section of course.sections) {
+    const lesson = section.lessons.find((l) => l.id === lessonId)
+    if (lesson) {
+      return { title: lesson.title, sectionTitle: section.title, sectionColor: section.color }
+    }
+  }
+  return undefined
+}
+
+function SRSReviewItem({
+  item,
+  onNavigate,
+}: {
+  item: SRSItem
+  onNavigate: (lessonId: string) => void
+}) {
+  const lessonInfo = getLessonInfo(item.lessonId)
+  const dateLabel = formatNextReview(item)
+  const intervalLabel = formatInterval(item)
+
+  return (
+    <div
+      className="flex items-center justify-between p-3 rounded-xl bg-white border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all"
+      onClick={() => onNavigate(item.lessonId)}
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-duo-blue/10">
+          <RotateCcw size={20} className="text-duo-blue" />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-gray-700">
+            {lessonInfo?.title ?? item.lessonId}
+          </p>
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span>{lessonInfo?.sectionTitle ?? '—'}</span>
+            <span className="text-gray-300">•</span>
+            <span>{intervalLabel}</span>
+          </div>
+        </div>
+      </div>
+      <div className="text-right">
+        <span
+          className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+            dateLabel.includes('Просрочено')
+              ? 'bg-duo-red/10 text-duo-red'
+              : dateLabel === 'Сегодня'
+              ? 'bg-duo-blue/10 text-duo-blue'
+              : 'bg-gray-100 text-gray-500'
+          }`}
+        >
+          {dateLabel}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function WhatToStudyToday() {
   const navigate = useNavigate()
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const taskStats = useProgressStore((s) => s.taskStats)
+  const srsData = useProgressStore((s) => s.srsData)
+  const playerProfile = useProgressStore((s) => s.getPlayerProfile())
+  const playerType: PlayerType = playerProfile?.type || 'achiever'
 
   const recommendations = useMemo(() => {
+    const analysis = useProgressStore.getState().getErrorAnalysis()
     return getSmartRecommendations(
       {
         userStats,
         lessonProgress,
         taskStats,
+        srsData,
         course,
       },
+      analysis.patterns,
       3
     )
-  }, [userStats, lessonProgress, taskStats])
+  }, [userStats, lessonProgress, taskStats, srsData])
+
+  const dueReviews = useMemo(() => {
+    return getDueReviews(srsData)
+  }, [srsData])
+
+  const overdueCount = useMemo(() => {
+    return getOverdueCount(srsData)
+  }, [srsData])
 
   const handleNavigate = (lessonId: string) => {
     navigate(`/lesson/${lessonId}`)
+  }
+
+  const getPersonalityCTA = (rec: Recommendation): string => {
+    switch (playerType) {
+      case 'achiever':
+        return `Пройди этот урок и получишь ${rec.estimatedTime * 5} XP!`
+      case 'explorer':
+        return `Новая тема: "${rec.lessonTitle}" — ты ещё не изучал!`
+      case 'socializer':
+        return `Твой класс проходит это задание — присоединяйся!`
+      case 'killer':
+        return `Только 30% учеников справляются с этим заданием. Сможешь?`
+    }
   }
 
   if (recommendations.length === 0) {
@@ -206,30 +299,63 @@ export function WhatToStudyToday() {
   }
 
   return (
-    <motion.div
-      className="card bg-gradient-to-br from-duo-blue/5 to-duo-purple/5 border-duo-blue/20"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <BrainCircuit size={20} className="text-duo-purple" />
-        <h3 className="font-bold text-gray-700">Что учить сегодня</h3>
-      </div>
+    <div className="flex flex-col gap-4">
+      {/* SRS Due Reviews Section */}
+      {dueReviews.length > 0 && (
+        <motion.div
+          className="card bg-gradient-to-br from-duo-blue/5 to-white border-duo-blue/20"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <RotateCcw size={20} className="text-duo-blue" />
+              <h3 className="font-bold text-gray-700">🔁 Повторение по расписанию</h3>
+            </div>
+            {overdueCount > 0 && (
+              <span className="text-xs font-bold bg-duo-red/10 text-duo-red px-2 py-0.5 rounded-full">
+                Просрочено: {overdueCount}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            {dueReviews.map((item) => (
+              <SRSReviewItem
+                key={item.lessonId}
+                item={item}
+                onNavigate={handleNavigate}
+              />
+            ))}
+          </div>
+        </motion.div>
+      )}
 
-      <div className="flex flex-col gap-2">
-        {recommendations.map((rec, idx) => (
-          <RecommendationItem
-            key={rec.lessonId}
-            rec={rec}
-            index={idx}
-            onNavigate={handleNavigate}
-          />
-        ))}
-      </div>
+      <motion.div
+        className="card bg-gradient-to-br from-duo-blue/5 to-duo-purple/5 border-duo-blue/20"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <BrainCircuit size={20} className="text-duo-purple" />
+          <h3 className="font-bold text-gray-700">Что учить сегодня</h3>
+        </div>
 
-      <p className="text-xs text-gray-400 mt-2 text-center">
-        Рекомендации основаны на твоём прогрессе и адаптированы под тебя
-      </p>
-    </motion.div>
+        <div className="flex flex-col gap-2">
+          {recommendations.map((rec, idx) => (
+            <RecommendationItem
+              key={rec.lessonId}
+              rec={rec}
+              index={idx}
+              onNavigate={handleNavigate}
+              personalityCTA={getPersonalityCTA(rec)}
+            />
+          ))}
+        </div>
+
+        <p className="text-xs text-gray-400 mt-2 text-center">
+          Рекомендации основаны на твоём прогрессе и адаптированы под тебя
+        </p>
+      </motion.div>
+    </div>
   )
 }

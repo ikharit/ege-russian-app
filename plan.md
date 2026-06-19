@@ -1,50 +1,25 @@
-# Plan: ФИПИ Exam Variant System
+# План: IRT + Error Pattern Analysis
 
-## Stage 1 — Data Layer
-1. Create `src/data/fipiVariants.ts`
-   - Define types: `FipiVariant`, `FipiTask`, `ExamResult`
-   - Create 5 variants with 15 tasks each (tasks 4-16, 26)
-   - Map each task to existing data sources
-   - Export helper functions to load questions for a task
+## Этап 1: Типы
+- Обновить `src/types/index.ts`: добавить `difficulty?: number`, `errorType?: string` в `Question`, создать `AnswerHistory` и связанные типы.
 
-## Stage 2 — State Layer
-2. Update `src/stores/progressStore.ts`
-   - Add `examResults: ExamResult[]` to state
-   - Add `saveExamResult`, `getExamResults`, `getBestExamResult` actions
-   - Update `importProgress` to merge exam results
+## Этап 2: Движки
+- Создать `src/utils/irtEngine.ts` — Rasch 1PL модель, updateAbility, selectNextQuestion, calibrateDifficulty.
+- Создать `src/utils/errorPatternAnalyzer.ts` — detectErrorType для заданий 5, 9, 10, 16, analyzeErrors, confidence scoring.
 
-## Stage 3 — Pages (independent)
-3. Create `src/pages/ExamVariantsList.tsx`
-   - Card grid showing 5 variants
-   - Difficulty badge, time limit, completion status
-   - Best result display
-   - "Начать" button → `/exam/:variantId`
+## Этап 3: Хранилище
+- Обновить `src/stores/progressStore.ts` — добавить `answerHistory`, записывать при каждом ответе, добавить `getErrorAnalysis()`.
+- Обновить `src/stores/slices/lessonAnalyticsSlice.ts` — записывать `answerHistory` при правильных/неправильных ответах.
 
-4. Create `src/pages/ExamVariantPage.tsx`
-   - Timer (useEffect + setInterval, MM:SS format)
-   - Task navigation with progress bar
-   - Generic question renderer supporting all task types
-   - Skip button (0 points)
-   - "Завершить досрочно" button
-   - Auto-submit on timer expiry
-   - Navigate to results on completion
+## Этап 4: Адаптивный движок
+- Обновить `src/utils/adaptiveEngine.ts` — интегрировать `selectNextQuestion` из IRT, добавить error-specific приоритет в рекомендации.
 
-5. Create `src/pages/ExamResultsPage.tsx`
-   - Primary and test scores
-   - Pass threshold analysis (36/60/80)
-   - Per-task breakdown with correct/incorrect
-   - Weak topics with links to lessons
-   - "Пройти ещё раз" / "Следующий вариант" buttons
+## Этап 5: Страницы
+- Создать `src/pages/ErrorAnalysisPage.tsx` — топ-5 паттернов, рекомендации, график accuracy (recharts), кнопка "Тренировать".
+- Обновить `src/pages/MistakesReview.tsx` — группировать по `errorType`, показывать инсайты.
 
-## Stage 4 — Integration
-6. Update `src/App.tsx`
-   - Add routes: `/exam`, `/exam/:variantId`, `/exam/:variantId/results`
-   - Update `isLesson` check to include exam routes
+## Этап 6: Маршрутизация
+- Обновить `src/App.tsx` — добавить `/error-analysis`.
 
-7. Update `src/pages/Dashboard.tsx`
-   - Add "Варианты ЕГЭ" card between Trainers and Games
-   - Show next uncompleted variant
-   - Progress (X of Y completed)
-
-## Stage 5 — Build Verification
-8. Run `cmd //c "npm run build"` and fix any TS errors
+## Этап 7: Проверка сборки
+- `npm run build` — проверить отсутствие ошибок TypeScript.

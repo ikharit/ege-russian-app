@@ -170,5 +170,9 @@ Last updated: 2026-06-20 by agent
 - **Export/Import v2**: Полный backup всех stores (progress, student, class, studyPlan, settings). Формат `version: 2`. Profile.tsx кнопки экспорта/импорта обновлены.
 - **Duel system**: `src/stores/duelStore.ts` + `src/pages/DuelPage.tsx`. Offline-first: создаёшь дуэль (6-значный код), друг вводит код → 5 случайных вопросов → оба решают offline → результат при сравнении. Карточка в Dashboard. Роут `/duel`.
 - **RAG explanations**: Уже интегрированы в `QuestionCard.tsx` (строки 192-227). При неправильном ответе показывает `ragRetriever.retrieve()` + `generateExplanation()` + `TheoryQuickReference`.
+- **Daily Question**: `src/components/DailyQuestionCard.tsx` — один случайный вопрос в день (seed-based), +15 XP за правильный ответ, сохраняет состояние в localStorage. Компактная карточка в Dashboard.
+- **Marathon**: `src/pages/MarathonPage.tsx` — 20 вопросов подряд, без сердечек, с паузой и таймером. Счёт, точность, среднее время. Роут `/marathon`, карточка в Dashboard.
+- **Weekly Topic**: Компактная карточка в Dashboard — ротируется каждую неделю (5 тем: приставки, НЕ, суффиксы, паронимы, пунктуация). Ведёт на соответствующий тренажёр.
+- **Duel achievements**: 5 новых ачивок (`ach-duel-first`, `ach-duel-win`, `ach-duel-wins-3`, `ach-duel-fast`, `ach-duel-perfect`) в `achievements.ts` + проверка в `achievementChecker.ts` через `useDuelStore.getState().duels`.
 - **Teacher class card**: В Dashboard.tsx добавлена карточка "Мои классы" для учителя (`isTeacher`) — ведёт на `/teacher/classroom`.
 - **Class system UX**: Проверено — `TeacherClassroom.tsx` уже содержит полный UI создания класса, inviteCode, копирование, удаление, табы (ученики/ДЗ/лидерборд).

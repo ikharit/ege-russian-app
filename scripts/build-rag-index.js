@@ -93,6 +93,40 @@ if (fs.existsSync(genericExplanationsPath)) {
   }
 }
 
+// === SOURCE 4: Task-specific word explanations (task4, task5, task10-16) ===
+const taskFiles = [
+  { file: 'task4-word-explanations.json', task: '4', key: 'accents' },
+  { file: 'task5-word-explanations.json', task: '5', key: 'paronyms' },
+  { file: 'task10-word-explanations.json', task: '10', key: 'pre-pri' },
+  { file: 'task11-word-explanations.json', task: '11', key: 'suffixes' },
+  { file: 'task12-word-explanations.json', task: '12', key: 'participles' },
+  { file: 'task13-word-explanations.json', task: '13', key: 'ne-ni' },
+  { file: 'task14-word-explanations.json', task: '14', key: 'spelling' },
+  { file: 'task15-word-explanations.json', task: '15', key: 'punctuation' },
+  { file: 'task16-word-explanations.json', task: '16', key: 'complex-sentences' },
+];
+
+for (const { file, task } of taskFiles) {
+  const filePath = path.join(projectRoot, 'src', 'data', 'explanations', file);
+  if (fs.existsSync(filePath)) {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    for (const [category, words] of Object.entries(data)) {
+      for (const [word, explanation] of Object.entries(words)) {
+        entries.push({
+          id: `word-${task}-${word}`,
+          source: `explanations/${file}`,
+          taskNumber: task,
+          word,
+          content: explanation,
+          explanation,
+          tags: [category, `task${task}`],
+          relatedAtoms: [`task${task}`, category],
+        });
+      }
+    }
+  }
+}
+
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });

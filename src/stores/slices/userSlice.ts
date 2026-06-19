@@ -18,6 +18,13 @@ export const getInitialStats = (): UserStats => ({
   mistakesFixed: 0,
   currentCombo: 0,
   maxCombo: 0,
+  emotionalState: {
+    recentAccuracy: 0,
+    sessionDuration: 0,
+    errorsInRow: 0,
+    successesInRow: 0,
+    lastVisit: '',
+  },
 })
 
 const getToday = () => new Date().toISOString().split('T')[0]

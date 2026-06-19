@@ -75,6 +75,12 @@ export const achievements: Achievement[] = [
   { id: 'ach-collection', title: 'Коллекционер', description: 'Соберите 10 достижений', icon: 'Star', condition: 'collection_10' },
   { id: 'ach-collector', title: 'Магнит', description: 'Соберите 20 достижений', icon: 'Star', condition: 'collection_20' },
   { id: 'ach-quest-master', title: 'Квестоман', description: 'Выполните 10 ежедневных квестов', icon: 'Target', condition: 'quest_master' },
+  // === ДУЭЛИ ===
+  { id: 'ach-duel-first', title: 'Первый поединок', description: 'Создайте или присоединитесь к дуэли', icon: 'Swords', condition: 'duel_first' },
+  { id: 'ach-duel-win', title: 'Победитель', description: 'Выиграйте дуэль', icon: 'Trophy', condition: 'duel_win' },
+  { id: 'ach-duel-wins-3', title: 'Серийный победитель', description: '3 победы в дуэлях', icon: 'Trophy', condition: 'duel_wins_3' },
+  { id: 'ach-duel-fast', title: 'Быстрый стрелок', description: 'Решите дуэль менее чем за 2 минуты', icon: 'Timer', condition: 'duel_fast' },
+  { id: 'ach-duel-perfect', title: 'Идеальная дуэль', description: 'Ответьте правильно на все 5 вопросов в дуэли', icon: 'Star', condition: 'duel_perfect' },
   // === НОВЫЕ: РАБОТА НАД ОШИБКАМИ ===
   { id: 'ach-mistake-1', title: 'Исправлено!', description: 'Исправьте первую ошибку', icon: 'CheckCircle', condition: 'fix_mistake_1' },
   { id: 'ach-mistake-5', title: 'Пятёрка', description: 'Исправьте 5 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_5' },

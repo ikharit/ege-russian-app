@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer } from '../types'
+import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer, EmotionalState, AnswerHistory, ErrorAnalysis, ScheduleDay, WeeklySchedulePreferences, PlayerProfile } from '../types'
+import { getPredictiveScore } from '../utils/predictiveScore'
 import { achievements as allAchievements, course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
 import { ExamResult } from '../data/fipiVariants'
@@ -10,8 +11,12 @@ import { createLessonActions, createAnalyticsActions } from './slices/lessonAnal
 import { createGamificationActions, defaultLeaderboard, defaultTeacherStudents, LeaderboardEntry, TeacherStudent } from './slices/gamificationSlice'
 import { createAchievementChecker } from './slices/achievementChecker'
 import { createSyncActions } from './slices/syncSlice'
+import { detectPlayerType } from '../utils/personalityEngine'
+import { getInitialEmotionalState, updateEmotionalState, recordAnswerAttempt, recordSessionStart, recordLevelUp, recordExamTaken, clearTransientFlags } from '../utils/emotionalState'
+import { analyzeErrors } from '../utils/errorPatternAnalyzer'
+import { SRSItem, calculateNextReview, scoreToQuality, initSRS } from '../utils/spacedRepetition'
 
-interface ProgressState {
+export interface ProgressState {
   userStats: UserStats
   lessonProgress: Record<string, LessonProgress>
   atomProgress: Record<string, UserAtomProgress>
@@ -32,6 +37,11 @@ interface ProgressState {
   theoryTestsCompleted: Record<string, { completed: boolean; score: number; xpEarned: number; completedAt?: string }>
   taskStats: Record<string, { total: number; correct: number; wrong: number; lastAttemptAt: string }>
   examResults: ExamResult[]
+  srsData: Record<string, SRSItem>
+  answerHistory: AnswerHistory[]
+  weeklySchedule: ScheduleDay[] | null
+  predictiveScoreHistory: { date: string; score: number }[]
+  examDate: string | null
 
   startLesson: (lessonId: string) => void
   completeLesson: (lessonId: string, score: number, xpEarned: number) => void
@@ -81,6 +91,23 @@ interface ProgressState {
   getExamResults: () => ExamResult[]
   getBestExamResult: (variantId: string) => ExamResult | undefined
   migrateToFirebase: () => Promise<void>
+  setPlayerProfile: (profile: PlayerProfile) => void
+  getPlayerProfile: () => PlayerProfile | undefined
+  updateEmotionalState: (changes: Partial<EmotionalState>) => void
+  clearTransientEmotionalFlags: () => void
+  recordAnswerAttempt: (isCorrect: boolean) => void
+  recordSessionStart: () => void
+  recordLevelUp: (oldLevel: number, newLevel: number) => void
+  recordAnswer: (entry: AnswerHistory) => void
+  getErrorAnalysis: () => ErrorAnalysis
+  generateWeeklySchedule: (preferences?: WeeklySchedulePreferences) => void
+  markScheduleItemDone: (day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', index: number) => void
+  setExamDate: (date: string | null) => void
+  recordPredictiveScore: () => void
+  getSRSData: () => Record<string, SRSItem>
+  getDueSRSItems: () => SRSItem[]
+  initSRSData: () => void
+  reviewLesson: (lessonId: string, score: number) => void
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -106,6 +133,11 @@ export const useProgressStore = create<ProgressState>()(
       userId: null,
       theoryTestsCompleted: {},
       examResults: [],
+      srsData: {},
+      answerHistory: [],
+      weeklySchedule: null,
+      predictiveScoreHistory: [],
+      examDate: '2027-06-01',
 
       checkAchievements: createAchievementChecker(get),
       completeTheoryTest: (taskNumber, score, xpEarned) => {
@@ -177,6 +209,8 @@ export const useProgressStore = create<ProgressState>()(
               taskStats: { ...s.taskStats, ...(parsed.taskStats || {}) },
               theoryTestsCompleted: { ...s.theoryTestsCompleted, ...(parsed.theoryTestsCompleted || {}) },
               examResults: mergedExamResults,
+              srsData: { ...s.srsData, ...(parsed.srsData || {}) },
+              answerHistory: [...s.answerHistory, ...(parsed.answerHistory || [])],
             }
           })
           
@@ -208,7 +242,62 @@ export const useProgressStore = create<ProgressState>()(
         return {
           ...lessonActions,
           completeLesson: (lessonId: string, score: number, xpEarned: number) => {
+            const state = get()
+            const wasCompleted = state.lessonProgress[lessonId]?.status === 'completed'
+            const existingSRS = state.srsData?.[lessonId]
+
             lessonActions.completeLesson(lessonId, score, xpEarned)
+
+            // SRS: обновить или создать item
+            set((s: any) => {
+              let newSRS: SRSItem
+              if (existingSRS) {
+                // Повторное прохождение — качество по фактической точности
+                const quality = scoreToQuality(score)
+                newSRS = calculateNextReview(existingSRS, quality)
+              } else {
+                // Первое прохождение — quality 4 по умолчанию
+                const now = new Date()
+                const nextReview = new Date(now)
+                nextReview.setDate(now.getDate() + 1)
+                newSRS = {
+                  lessonId,
+                  interval: 1,
+                  repetitions: 1,
+                  easeFactor: 2.5,
+                  nextReview: nextReview.toISOString(),
+                  lastReview: now.toISOString(),
+                  quality: 4,
+                }
+              }
+              return {
+                srsData: {
+                  ...s.srsData,
+                  [lessonId]: newSRS,
+                },
+              }
+            })
+
+            // Эмоциональное состояние: обновить overdueSRS
+            if (wasCompleted) {
+              const overdueCount = Object.values(get().srsData || {}).filter((item: SRSItem) => {
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+                const nextReview = new Date(item.nextReview)
+                nextReview.setHours(0, 0, 0, 0)
+                return nextReview < today
+              }).length
+              set((s: any) => ({
+                userStats: {
+                  ...s.userStats,
+                  emotionalState: {
+                    ...(s.userStats.emotionalState || getInitialEmotionalState()),
+                    overdueSRSLessons: overdueCount,
+                  },
+                },
+              }))
+            }
+
             if (typeof navigator !== 'undefined' && navigator.onLine) {
               import('./firebaseStore').then(({ useFirebaseStore }) => {
                 useFirebaseStore.getState().syncProgress().catch(() => {})
@@ -237,6 +326,132 @@ export const useProgressStore = create<ProgressState>()(
       migrateToFirebase: async () => {
         const { useFirebaseStore } = await import('./firebaseStore')
         await useFirebaseStore.getState().migrateToFirebase()
+      },
+      setPlayerProfile: (profile: PlayerProfile) => {
+        set((s: any) => ({
+          userStats: { ...s.userStats, playerProfile: profile },
+        }))
+      },
+      getPlayerProfile: () => {
+        return get().userStats.playerProfile
+      },
+      updateEmotionalState: (changes: Partial<EmotionalState>) => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: updateEmotionalState(s.userStats.emotionalState || getInitialEmotionalState(), changes),
+          },
+        }))
+      },
+      clearTransientEmotionalFlags: () => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: clearTransientFlags(s.userStats.emotionalState || getInitialEmotionalState()),
+          },
+        }))
+      },
+      recordAnswerAttempt: (isCorrect: boolean) => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: recordAnswerAttempt(s.userStats.emotionalState || getInitialEmotionalState(), isCorrect),
+          },
+        }))
+      },
+      recordSessionStart: () => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: recordSessionStart(s.userStats.emotionalState || getInitialEmotionalState()),
+          },
+        }))
+      },
+      recordLevelUp: (oldLevel: number, newLevel: number) => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: recordLevelUp(s.userStats.emotionalState || getInitialEmotionalState(), oldLevel, newLevel),
+          },
+        }))
+      },
+      recordExamTaken: () => {
+        set((s: any) => ({
+          userStats: {
+            ...s.userStats,
+            emotionalState: recordExamTaken(s.userStats.emotionalState || getInitialEmotionalState()),
+          },
+        }))
+      },
+      recordAnswer: (entry: AnswerHistory) => {
+        set((s: any) => ({
+          answerHistory: [...s.answerHistory, entry],
+        }))
+      },
+      getErrorAnalysis: (): ErrorAnalysis => {
+        return analyzeErrors(get().answerHistory)
+      },
+      generateWeeklySchedule: (_preferences?: WeeklySchedulePreferences) => {
+        set({ weeklySchedule: [] as ScheduleDay[] })
+      },
+      markScheduleItemDone: (day, index) => {
+        set((s: any) => {
+          if (!s.weeklySchedule) return s
+          const newSchedule = s.weeklySchedule.map((d: ScheduleDay) => {
+            if (d.day !== day) return d
+            const newItems = d.items.map((item: ScheduleDay['items'][number], idx: number) =>
+              idx === index ? { ...item, type: 'break' as const, title: '✅ ' + item.title, reason: 'Выполнено!' } : item
+            )
+            return { ...d, items: newItems }
+          })
+          return { weeklySchedule: newSchedule }
+        })
+      },
+      setExamDate: (date: string | null) => {
+        set({ examDate: date })
+      },
+      recordPredictiveScore: () => {
+        const state = get()
+        const daysToExam = state.examDate
+          ? Math.max(0, Math.ceil((new Date(state.examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+          : 180
+        const score = getPredictiveScore(state, daysToExam)
+        set((s: any) => ({
+          predictiveScoreHistory: [
+            ...s.predictiveScoreHistory,
+            { date: new Date().toISOString().split('T')[0], score: score.predictedSecondary },
+          ],
+        }))
+      },
+
+      // SRS actions
+      getSRSData: () => get().srsData,
+      getDueSRSItems: () => {
+        const srsData = get().srsData
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        return Object.values(srsData).filter((item: SRSItem) => {
+          const nextReview = new Date(item.nextReview)
+          nextReview.setHours(0, 0, 0, 0)
+          return nextReview <= today
+        })
+      },
+      initSRSData: () => {
+        const state = get()
+        const newSRS = initSRS(state.lessonProgress, state.srsData)
+        set({ srsData: newSRS })
+      },
+      reviewLesson: (lessonId: string, score: number) => {
+        const existingSRS = get().srsData?.[lessonId]
+        if (!existingSRS) return
+        const quality = scoreToQuality(score)
+        const newSRS = calculateNextReview(existingSRS, quality)
+        set((s: any) => ({
+          srsData: {
+            ...s.srsData,
+            [lessonId]: newSRS,
+          },
+        }))
       },
     }),
     {

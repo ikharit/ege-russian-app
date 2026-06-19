@@ -1,4 +1,5 @@
 import { achievements as allAchievements, course } from '../../data/courseData'
+import { useDuelStore } from '../duelStore'
 
 export function createAchievementChecker(get: any) {
   return (lessonId?: string) => {
@@ -215,6 +216,32 @@ export function createAchievementChecker(get: any) {
       }).length
       if (lessonsToday >= 3) addIfNew('ach-fast-learner')
     }
+
+    // === ДУЭЛИ ===
+    const duels = useDuelStore.getState().duels
+    const myDuelResults = Object.values(duels).flatMap(d =>
+      d.players.filter(p => p.profileId === state.userId || p.profileId === 'guest')
+    )
+    const completedDuels = myDuelResults.filter(p => p.completedAt)
+    if (completedDuels.length >= 1) addIfNew('ach-duel-first')
+    
+    const wins = completedDuels.filter(p => {
+      const duel = Object.values(duels).find(d => d.players.some(pl => pl.profileId === p.profileId))
+      if (!duel || duel.players.length < 2) return false
+      const opponent = duel.players.find(op => op.profileId !== p.profileId)
+      if (!opponent || !opponent.completedAt) return false
+      return p.score > opponent.score
+    })
+    if (wins.length >= 1) addIfNew('ach-duel-win')
+    if (wins.length >= 3) addIfNew('ach-duel-wins-3')
+    
+    const fastDuel = completedDuels.some(p => p.totalTimeMs < 2 * 60 * 1000)
+    if (fastDuel) addIfNew('ach-duel-fast')
+    
+    const perfectDuel = completedDuels.some(p =>
+      p.answers.length === 5 && p.answers.every(a => a.correct)
+    )
+    if (perfectDuel) addIfNew('ach-duel-perfect')
 
     return unlocked
   }

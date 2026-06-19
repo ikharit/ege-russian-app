@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Check, X, RotateCcw, BookOpen, AlertCircle, ChevronRight, Trash2 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import type { WrongAnswer } from '../types'
+import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
 
 export function MistakesReview() {
   const navigate = useNavigate()
@@ -22,10 +23,11 @@ export function MistakesReview() {
   const [isFinished, setIsFinished] = useState(false)
 
   const unreviewed = useMemo(() => wrongAnswers.filter(w => !w.reviewed), [wrongAnswers])
-  const byTask = useMemo(() => {
+  const byErrorType = useMemo(() => {
     const map: Record<string, WrongAnswer[]> = {}
     for (const w of wrongAnswers) {
-      const key = w.taskNumber ? `Задание ${w.taskNumber}` : 'Без задания'
+      const et = detectErrorType(w.taskNumber, w.text, w.explanation)
+      const key = `${getSubskillName(et)} (${w.taskNumber ? `Задание ${w.taskNumber}` : 'Без задания'})`
       if (!map[key]) map[key] = []
       map[key].push(w)
     }
@@ -295,11 +297,11 @@ export function MistakesReview() {
               </button>
             )}
 
-            {/* Grouped by task */}
-            {Object.entries(byTask).map(([taskName, items]) => (
-              <div key={taskName} className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            {/* Grouped by error type */}
+            {Object.entries(byErrorType).map(([errorName, items]) => (
+              <div key={errorName} className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
                 <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
-                  <span className="font-bold text-sm text-gray-700">{taskName}</span>
+                  <span className="font-bold text-sm text-gray-700">{errorName}</span>
                   <span className="text-xs text-gray-500">{items.length} ошибок</span>
                 </div>
                 <div className="divide-y divide-gray-100">

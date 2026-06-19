@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { PersonalityQuiz } from './pages/PersonalityQuiz'
 import { Header } from './components/Header'
 import { Dashboard } from './pages/Dashboard'
 import { CourseMap } from './pages/CourseMap'
@@ -22,6 +23,7 @@ import { Task13Trainer } from './pages/Task13Trainer'
 import { Task14Trainer } from './pages/Task14Trainer'
 import { Task15Trainer } from './pages/Task15Trainer'
 import { MistakesReview } from './pages/MistakesReview'
+import { ErrorAnalysisPage } from './pages/ErrorAnalysisPage'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
 import { MyHomework } from './pages/MyHomework'
@@ -40,6 +42,8 @@ import { ExamResultsPage } from './pages/ExamResultsPage'
 import { EssayTopicsList } from './pages/EssayTopicsList'
 import { EssayPage } from './pages/EssayPage'
 import { DuelPage } from './pages/DuelPage'
+import { MarathonPage } from './pages/MarathonPage'
+import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -404,6 +408,7 @@ export default function App() {
           <Route path="/my-homework" element={<MyHomework />} />
           <Route path="/practice" element={<AdaptivePractice />} />
           <Route path="/mistakes" element={<MistakesReview />} />
+          <Route path="/error-analysis" element={<ErrorAnalysisPage />} />
           <Route path="/adaptive-trainer" element={<AdaptiveTrainerPage />} />
           <Route path="/trainers" element={<TrainersPage />} />
           <Route path="/study-plan" element={<StudyPlanPage />} />
@@ -428,6 +433,9 @@ export default function App() {
           <Route path="/task16-trainer" element={<Task16Trainer />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/duel" element={<DuelPage />} />
+          <Route path="/marathon" element={<MarathonPage />} />
+          <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
+          <Route path="/personality-quiz" element={<PersonalityQuiz />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

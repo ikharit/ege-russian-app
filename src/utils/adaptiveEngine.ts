@@ -1,4 +1,6 @@
-import { Course, Lesson, LessonProgress, Section, UserStats } from '../types';
+import { Course, Lesson, LessonProgress, Section, UserStats, ErrorPattern } from '../types';
+import { SRSItem, getReviewPriority, getDueReviews } from './spacedRepetition';
+import { IRTState } from './irtEngine';
 
 export type RecommendationReason =
   | 'weak_topic'
@@ -23,6 +25,7 @@ export interface AdaptiveEngineState {
   userStats: UserStats;
   lessonProgress: Record<string, LessonProgress>;
   taskStats: Record<string, { total: number; correct: number; wrong: number; lastAttemptAt: string }>;
+  srsData?: Record<string, SRSItem>;
   course: Course;
   examDate?: string;
 }
@@ -134,7 +137,37 @@ function scoreLesson(
   // Not available at all
   if (!available) return null;
 
-  // 1. Forgetting curve: completed > 14 days ago
+  // 1. SRS: интервальное повторение имеет высший приоритет
+  const srsItem = state.srsData?.[lesson.id];
+  if (srsItem) {
+    const srsPriority = getReviewPriority(srsItem);
+    if (srsPriority >= 80) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const nextReview = new Date(srsItem.nextReview);
+      nextReview.setHours(0, 0, 0, 0);
+      const daysDiff = Math.floor((today.getTime() - nextReview.getTime()) / (1000 * 60 * 60 * 24));
+
+      let description: string;
+      if (daysDiff > 0) {
+        description = `Просрочено на ${daysDiff} дн. Пора повторить «${lesson.title}»!`;
+      } else if (daysDiff === 0) {
+        description = `Сегодня на повторение «${lesson.title}». Интервал: ${srsItem.interval} дн.`;
+      } else {
+        description = `Завтра на повторение «${lesson.title}». Интервал: ${srsItem.interval} дн.`;
+      }
+
+      return {
+        lesson,
+        section,
+        priority: Math.min(100, srsPriority),
+        reason: 'review_needed',
+        description,
+      };
+    }
+  }
+
+  // 2. Forgetting curve: completed > 14 days ago (fallback без SRS)
   if (progress?.status === 'completed' && daysSinceCompleted !== null && daysSinceCompleted > 14) {
     return {
       lesson,
@@ -202,9 +235,18 @@ function scoreLesson(
   };
 }
 
+export function selectNextAdaptiveQuestion(
+  pool: string[],
+  irtState: IRTState,
+  targetProbability = 0.7
+): string | null {
+  return irtState.selectNextQuestion(pool, targetProbability);
+}
+
 export function getSmartRecommendations(
   state: AdaptiveEngineState,
-  limit: number = 3
+  errorPatterns: ErrorPattern[] = [],
+  limit = 3
 ): Recommendation[] {
   const allLessons: { lesson: Lesson; section: Section }[] = [];
   for (const section of state.course.sections) {
@@ -258,9 +300,14 @@ export function getSmartRecommendations(
       priority -= 20;
     }
 
-    // Boost variety reason for completed lessons not reviewed in > 7 days
-    if (s.reason === 'review_needed') {
-      // Already high priority, don't reduce
+    // Error pattern boost: if high-confidence error pattern matches task number, boost priority
+    if (taskNumber) {
+      const matchingPattern = errorPatterns.find(
+        p => String(p.taskNumber) === taskNumber && p.confidence > 0.7
+      );
+      if (matchingPattern) {
+        priority += 12;
+      }
     }
 
     processed.push({
@@ -314,7 +361,7 @@ export interface FocusAreaResult {
 }
 
 export function getFocusArea(state: AdaptiveEngineState): FocusAreaResult {
-  const recommendations = getSmartRecommendations(state, 1);
+  const recommendations = getSmartRecommendations(state, [], 1);
   if (recommendations.length === 0) {
     // All done — calculate overall progress
     let totalCompleted = 0;
