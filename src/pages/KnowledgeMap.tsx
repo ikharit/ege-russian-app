@@ -9,7 +9,6 @@ import {
   nodeStatusColors,
   edgeLabelColors,
 } from '../data/knowledgeGraph'
-import type { KnowledgeNode, KnowledgeEdge } from '../types/knowledgeGraph'
 import { Map, RotateCcw, ZoomIn, ZoomOut, Minus } from 'lucide-react'
 import { course } from '../data/courseData'
 
@@ -82,7 +81,7 @@ export function KnowledgeMap() {
     const weakTaskNumbers = new Set(problematicTasks.map((t) => parseInt(t.taskNumber, 10)))
 
     return baseNodes.map((node) => {
-      const sectionId = taskToSectionMap[node.taskNumber]
+      const sectionId = taskToCourseSection[node.taskNumber]
       const allLessonIds = course.sections
         .flatMap((s) => s.groups || [])
         .filter((g) => g.id === sectionId)
@@ -115,10 +114,10 @@ export function KnowledgeMap() {
     const width = 800
     const height = 600
 
-    const simulation = forceSimulation(nodes as unknown as d3.SimulationNodeDatum[])
+    const simulation = forceSimulation(nodes as unknown as any[])
       .force(
         'link',
-        forceLink(edges as unknown as d3.SimulationLinkDatum<d3.SimulationNodeDatum>[])
+        forceLink(edges as unknown as any[])
           .id((d: any) => d.id)
           .distance((d: any) => (d.strength === 3 ? 60 : d.strength === 2 ? 100 : 140))
           .strength((d: any) => d.strength * 0.15)

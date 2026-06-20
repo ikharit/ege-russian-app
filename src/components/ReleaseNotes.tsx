@@ -198,15 +198,15 @@ export function ReleaseNotesWidget() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="h-px flex-1 bg-gray-100" />
-                    <span className="text-[9px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
+                    <span className="text-[8px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
                     <div className="h-px flex-1 bg-gray-100" />
                   </div>
                   {techBullets.map((b: any, i: number) => (
                     <div
                       key={`tech-${i}`}
-                      className="flex items-start gap-2 py-1 px-2 rounded text-[10px] text-gray-400"
+                      className="flex items-start gap-2 py-1 px-2 rounded text-[9px] text-gray-400"
                     >
-                      <Cog size={11} className="shrink-0 mt-0.5 text-gray-300" />
+                      <Cog size={9} className="shrink-0 mt-0.5 text-gray-300" />
                       <span>{b.text}</span>
                     </div>
                   ))}
@@ -340,21 +340,21 @@ export function ReleaseNotesWidget() {
                         </div>
                       )}
 
-                      {/* Tech bullets — микро-шрифт, ещё серее */}
+                      {/* Tech bullets — микро-шрифт, ещё мельче */}
                       {tech.length > 0 && (
                         <div className="px-3 pb-3">
                           <div className="flex items-center gap-2 mb-1">
                             <div className="h-px flex-1 bg-gray-100" />
-                            <span className="text-[9px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
+                            <span className="text-[8px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
                             <div className="h-px flex-1 bg-gray-100" />
                           </div>
                           <div className="space-y-0.5">
                             {tech.map((b: any, i: number) => (
                               <div
                                 key={i}
-                                className="flex items-start gap-1.5 py-0.5 px-1.5 rounded text-[10px] text-gray-400"
+                                className="flex items-start gap-1.5 py-0.5 px-1.5 rounded text-[9px] text-gray-400"
                               >
-                                <Cog size={10} className="shrink-0 mt-0.5 text-gray-300" />
+                                <Cog size={9} className="shrink-0 mt-0.5 text-gray-300" />
                                 <span>{b.text}</span>
                               </div>
                             ))}

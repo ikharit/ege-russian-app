@@ -5,6 +5,7 @@ import { useProgressStore } from '../stores/progressStore'
 import { Popover } from '../components/Popover'
 import { getStatusById } from '../data/statuses'
 import { allHomework } from '../data/gsheets/homeworkData'
+import { calculateComparisonStats, getPercentileColor, getPercentileLabel } from '../utils/comparisonEngine'
 
 function getPeriodStart(period: 'week' | 'month' | 'all'): Date {
   const now = new Date()
@@ -125,6 +126,7 @@ export function Leaderboard() {
     const status = entry.id === 'me' 
       ? getStatusById(useProgressStore.getState().userStats.activeStatus || '')
       : undefined
+    const compStats = entry.id === 'me' ? calculateComparisonStats() : null
     return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
@@ -141,6 +143,15 @@ export function Leaderboard() {
         >
           <span>{status.emoji}</span>
           <span>{status.name}</span>
+        </div>
+      )}
+      {compStats && compStats.hasEnoughData && (
+        <div 
+          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold"
+          style={{ backgroundColor: getPercentileColor(compStats.overallPercentile) + '30', color: getPercentileColor(compStats.overallPercentile) }}
+        >
+          <TrendingUp size={12} />
+          <span>Перцентиль: {compStats.overallPercentile}% — {getPercentileLabel(compStats.overallPercentile)}</span>
         </div>
       )}
       <div className="grid grid-cols-2 gap-2 mt-2">
@@ -364,6 +375,19 @@ export function Leaderboard() {
                               style={{ backgroundColor: myStatus.color + '20', color: myStatus.color }}
                             >
                               {myStatus.emoji}
+                            </span>
+                          ) : null
+                        })()
+                      )}
+                      {entry.id === 'me' && (
+                        (() => {
+                          const comp = calculateComparisonStats()
+                          return comp.hasEnoughData ? (
+                            <span 
+                              className="text-[10px] px-1.5 py-0.5 rounded-full font-bold"
+                              style={{ backgroundColor: getPercentileColor(comp.overallPercentile) + '20', color: getPercentileColor(comp.overallPercentile) }}
+                            >
+                              {comp.overallPercentile}%
                             </span>
                           ) : null
                         })()

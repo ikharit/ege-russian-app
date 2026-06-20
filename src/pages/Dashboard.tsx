@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -706,6 +706,45 @@ export function Dashboard() {
       {/* Notifications */}
       <DashboardNotificationWidget />
       <DashboardDeadlineWidget />
+
+      {/* Visual features */}
+      <div className="flex flex-col gap-2">
+        <SectionTitle title="Визуализация" />
+        <div className="grid grid-cols-2 gap-3">
+          <motion.div
+            className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/knowledge-map')}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-duo-green/10 flex items-center justify-center">
+                <Map size={20} className="text-duo-green" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-gray-800">Карта знаний</p>
+                <p className="text-[10px] text-gray-400">Связи между темами</p>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div
+            className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/growth')}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-duo-blue/10 flex items-center justify-center">
+                <TrendingUp size={20} className="text-duo-blue" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-gray-800">Мой рост</p>
+                <p className="text-[10px] text-gray-400">Таймлапс прогресса</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
       {/* Sections overview — accordion */}
       <div className="flex flex-col gap-2">

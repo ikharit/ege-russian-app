@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line } from 'recharts'
 import { EGEScorePredictor } from '../components/EGEScorePredictor'
+import { GrowthTimeline } from '../components/GrowthTimeline'
 import { getPredictiveScore, getWeakTasks } from '../utils/predictiveScore'
-import { TrendingUp, AlertCircle, Target } from 'lucide-react'
+import { TrendingUp, AlertCircle, Target, Map } from 'lucide-react'
 
 export function Statistics() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
@@ -15,7 +17,7 @@ export function Statistics() {
   const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
   const examDate = useProgressStore((s) => s.examDate)
   const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory)
-  const [activeTab, setActiveTab] = useState<'progress' | 'topics' | 'forecast'>('progress')
+  const [activeTab, setActiveTab] = useState<'progress' | 'topics' | 'forecast' | 'knowledge' | 'growth'>('progress')
 
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed')
   const totalLessons = course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
@@ -167,6 +169,8 @@ export function Statistics() {
           { key: 'progress' as const, label: 'Прогресс' },
           { key: 'topics' as const, label: 'Темы' },
           { key: 'forecast' as const, label: 'Прогноз' },
+          { key: 'knowledge' as const, label: 'Карта' },
+          { key: 'growth' as const, label: 'Рост' },
         ].map(tab => (
           <button
             key={tab.key}
@@ -380,6 +384,32 @@ export function Statistics() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {activeTab === 'knowledge' && (
+        <div className="flex flex-col gap-4 items-center">
+          <div className="card w-full text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Map size={20} className="text-duo-green" />
+              <h3 className="font-bold text-gray-700">Карта знаний</h3>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">
+              Узнай, как задания ЕГЭ связаны между собой. Кликай на круги, чтобы перейти к разделу.
+            </p>
+            <button
+              onClick={() => navigate('/knowledge-map')}
+              className="px-6 py-3 rounded-xl bg-duo-green text-white font-bold text-sm hover:bg-duo-green-dark transition-colors"
+            >
+              Открыть карту знаний
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'growth' && (
+        <div className="flex flex-col gap-4">
+          <GrowthTimeline />
         </div>
       )}
     </div>

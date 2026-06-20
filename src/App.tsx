@@ -45,10 +45,11 @@ import { EssayPage } from './pages/EssayPage'
 import { DuelPage } from './pages/DuelPage'
 import { MarathonPage } from './pages/MarathonPage'
 import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
-import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
 import { ChatPage } from './pages/ChatPage'
 import { ShopPage } from './pages/ShopPage'
 import { ComparisonPage } from './pages/ComparisonPage'
+import { KnowledgeMap } from './pages/KnowledgeMap'
+import { GrowthPage } from './pages/GrowthPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -492,6 +493,8 @@ export default function App() {
           <Route path="/personality-quiz" element={<PersonalityQuiz />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/comparison" element={<ComparisonPage />} />
+          <Route path="/knowledge-map" element={<KnowledgeMap />} />
+          <Route path="/growth" element={<GrowthPage />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

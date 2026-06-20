@@ -19,6 +19,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
   const [showRegModal, setShowRegModal] = useState(false)
+  const avatar = useShopStore((s) => s.getEquippedAvatar())
 
   const streakStart = stats.lastActivityDate
     ? new Date(new Date(stats.lastActivityDate).getTime() - (stats.streak - 1) * 86400000).toLocaleDateString('ru-RU')
@@ -139,7 +140,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
           >
-            <User size={18} />
+            <span className="text-lg">{avatar}</span>
           </motion.button>
         </div>
       </div>
