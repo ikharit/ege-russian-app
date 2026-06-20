@@ -162,15 +162,21 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-800">Синхронизация</h2>
+                <h2 className="text-xl font-bold text-gray-800">Локальный режим</h2>
                 <button onClick={handleClose} className="p-1 hover:bg-gray-100 rounded-lg">
                   <X size={20} className="text-gray-500" />
                 </button>
               </div>
               <div className="flex items-start gap-3 text-amber-700 bg-amber-50 rounded-xl p-4">
                 <AlertCircle size={20} className="shrink-0 mt-0.5" />
-                <p className="text-sm">Supabase не настроен. Добавьте переменные окружения VITE_SUPABASE_URL и VITE_SUPABASE_ANON_KEY.</p>
+                <p className="text-sm">Все данные сохраняются на этом устройстве. Вход через Google и синхронизация между устройствами пока недоступны — приложение работает в демо-режиме без сервера.</p>
               </div>
+              <button
+                onClick={handleClose}
+                className="w-full py-2.5 mt-4 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
+              >
+                Понятно, продолжить
+              </button>
             </motion.div>
           </motion.div>
         )}

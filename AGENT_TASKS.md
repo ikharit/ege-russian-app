@@ -470,3 +470,52 @@ import { getAtomById } from '../data/atomization/atoms'
 2. Заменены оба использования (groups и flat lessons) на `BoardPath`
 
 **Как проверить**: Открыть /course → раскрыть любую группу → уроки на тропинке с SVG линиями.
+
+---
+
+## ✅ ЗАДАЧА-10: Мобильное приложение (Capacitor)
+
+**Статус:** ✅ Выполнено (2026-06-21)
+
+**Где**: `capacitor.config.json`, `android/`, `ios/`, `src/lib/mobile.ts`, `src/lib/sounds.ts`, `src/App.tsx`, `package.json`
+
+**Проблема**: Только веб-версия (PWA), нет нативного мобильного приложения.
+
+**Решение**:
+1. **Capacitor** интегрирован:
+   - `@capacitor/core`, `@capacitor/cli`, `@capacitor/android`, `@capacitor/ios` установлены
+   - `capacitor.config.json` — конфигурация (appId: com.ege.russian.app, appName: ЕГЭ Русский язык, webDir: dist, splash screen, push notifications)
+   - Платформы Android и iOS добавлены (`npx cap add android`, `npx cap add ios`)
+2. **Нативные плагины**:
+   - `@capacitor/haptics` — тактильная отдача (light/medium/heavy impact, success/warning/error notification)
+   - `@capacitor/push-notifications` — push-уведомления (FCM/APNs), регистрация токена, обработка входящих
+   - `@capacitor/splash-screen` — splash screen при запуске (цвет #58CC02, 2 сек)
+   - `@capacitor/status-bar` — цвет статус-бара под тему (dark/light)
+   - `@capacitor/keyboard` — управление клавиатурой
+   - `@capacitor/app` — обработка back button (Android), app state changes
+3. **Мобильный сервис** (`src/lib/mobile.ts`):
+   - `initMobile()` — инициализация при старте (splash, status bar, keyboard, push, app listeners)
+   - `hapticsImpact()` / `hapticsNotification()` / `hapticsVibrate()` — обёртки с fallback на Vibration API
+   - `setStatusBarColor()` — смена цвета статус-бара
+   - `hideKeyboard()` / `showKeyboard()` — управление клавиатурой
+   - `getPlatform()` / `isNativePlatform()` — определение платформы
+4. **Интеграция в sounds.ts**: все звуковые функции теперь вызывают соответствующий haptics:
+   - `playCorrectSound()` → `hapticsImpact('light')`
+   - `playWrongSound()` → `hapticsNotification('error')`
+   - `playLessonCompleteSound()` → `hapticsNotification('success')`
+   - `playComboSound()` → `hapticsImpact()` (light/medium/heavy по combo)
+   - `playXPUpSound()` → `hapticsImpact('light')`
+   - `playAchievementSound()` → `hapticsNotification('success')`
+5. **Build-скрипты** (package.json):
+   - `npm run mobile:build` → build + cap sync
+   - `npm run mobile:android` → build + sync + open Android Studio
+   - `npm run mobile:ios` → build + sync + open Xcode
+   - `npm run mobile:sync` → cap sync
+
+**Как проверить**:
+1. `npm run mobile:build` → билд + синхронизация
+2. `npm run mobile:android` → открывает Android Studio
+3. В Android Studio: Build → Build APK → установить на устройство
+4. На устройстве: запуск → splash screen → звук + haptics при ответах
+
+**Для iOS**: требуется Mac с Xcode. `npm run mobile:ios` → открывает Xcode → Build & Run на симуляторе/устройстве.

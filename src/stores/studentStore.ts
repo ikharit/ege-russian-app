@@ -145,8 +145,8 @@ export const useStudentStore = create<StudentStore>()(
         if (!activeId) return
         const today = getToday()
         const lessonsCompleted = Object.values(progressData.lessonProgress || {}).filter((l: any) => l.status === 'completed').length
-        const totalAttempts = Object.values(progressData.taskStats || {}).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
-        const totalCorrect = Object.values(progressData.taskStats || {}).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
+        const totalAttempts = Number((Object.values(progressData.taskStats || {}) as any[]).reduce((sum: number, t: any) => sum + (t.total || 0), 0))
+        const totalCorrect = (Object.values(progressData.taskStats || {}) as any[]).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
         const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
 
         set((s) => ({
@@ -177,8 +177,8 @@ export const useStudentStore = create<StudentStore>()(
         }
         const progress = p.progress || {}
         const lessonsCompleted = Object.values(progress.lessonProgress || {}).filter((l: any) => l.status === 'completed').length
-        const totalAttempts = Object.values(progress.taskStats || {}).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
-        const totalCorrect = Object.values(progress.taskStats || {}).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
+        const totalAttempts = Number((Object.values(progress.taskStats || {}) as any[]).reduce((sum: number, t: any) => sum + (t.total || 0), 0))
+        const totalCorrect = (Object.values(progress.taskStats || {}) as any[]).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
         const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
         const weakTopics = Object.entries(progress.taskStats || {})
           .filter(([_, t]: [string, any]) => t.total > 0 && t.wrong > 0 && (t.correct / t.total) < 0.7)

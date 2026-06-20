@@ -10,6 +10,7 @@ import { getPredictiveScore, getWeakTasks } from '../utils/predictiveScore'
 import { TrendingUp, AlertCircle, Target, Map } from 'lucide-react'
 
 export function Statistics() {
+  const navigate = useNavigate()
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const stats = useProgressStore((s) => s.userStats)
   const taskStats = useProgressStore((s) => s.taskStats)
@@ -51,7 +52,7 @@ export function Statistics() {
 
   // Distribute dooshin lessons into base sections
   const dooshinSection = course.sections.find(s => s.id === 'section-dooshin-all')
-  const dooshinLessonIdsBySection = new Map<string, string[]>()
+  const dooshinLessonIdsBySection = new Map() as Map<string, string[]>
   if (dooshinSection) {
     for (const lesson of dooshinSection.lessons) {
       const match = lesson.id.match(/lesson-dooshin-(\d+)-/)

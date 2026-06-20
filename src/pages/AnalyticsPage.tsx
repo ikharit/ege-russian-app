@@ -103,8 +103,8 @@ export function AnalyticsPage() {
         const strong = Object.entries(pTaskStats)
           .filter(([_, s]: [string, any]) => s.total > 0 && (s.correct / s.total) > 0.8)
           .map(([t, _]: [string, any]) => t)
-        const totalAttempts = Object.values(pTaskStats).reduce((sum: number, s: any) => sum + (s.total || 0), 0)
-        const totalCorrect = Object.values(pTaskStats).reduce((sum: number, s: any) => sum + (s.correct || 0), 0)
+        const totalAttempts = Number((Object.values(pTaskStats) as any[]).reduce((sum: number, s: any) => sum + (s.total || 0), 0))
+        const totalCorrect = (Object.values(pTaskStats) as any[]).reduce((sum: number, s: any) => sum + (s.correct || 0), 0)
         return {
           name: profile.name,
           accuracy: totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0,

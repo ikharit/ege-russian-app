@@ -9,6 +9,7 @@ import {
   nodeStatusColors,
   edgeLabelColors,
 } from '../data/knowledgeGraph'
+import type { KnowledgeNode } from '../types/knowledgeGraph'
 import { Map, RotateCcw, ZoomIn, ZoomOut, Minus } from 'lucide-react'
 import { course } from '../data/courseData'
 

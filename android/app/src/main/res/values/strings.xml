@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ЕГЭ Русский язык</string>
+    <string name="title_activity_main">ЕГЭ Русский язык</string>
+    <string name="package_name">com.ege.russian.app</string>
+    <string name="custom_url_scheme">com.ege.russian.app</string>
+</resources>

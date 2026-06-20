@@ -20,8 +20,8 @@ export interface Question {
   correctAnswer: string[]
   explanation: string
   theory?: string
-  difficulty: 'easy' | 'medium' | 'hard'
-  xpReward: number
+  difficulty?: 'easy' | 'medium' | 'hard'
+  xpReward?: number
   atoms?: string[]        // ← atom IDs this question tests (e.g. ['prefix_pre_pri', 'pre_pri_dictionary'])
   irtDifficulty?: number  // IRT calibrated difficulty (-3 to +3)
   errorType?: string        // Error pattern tag for analysis

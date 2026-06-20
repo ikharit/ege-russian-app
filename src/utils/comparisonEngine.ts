@@ -77,8 +77,8 @@ function collectStudentData(): StudentData[] {
   for (const profile of profiles.slice(0, 9)) {
     const progress = profile.progress || {}
     const pTaskStats = progress.taskStats || {}
-    const pTotalAttempts = Object.values(pTaskStats).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
-    const pTotalCorrect = Object.values(pTaskStats).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
+    const pTotalAttempts = (Object.values(pTaskStats) as any[]).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
+    const pTotalCorrect = (Object.values(pTaskStats) as any[]).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
     const pAccuracy = pTotalAttempts > 0 ? Math.round((pTotalCorrect / pTotalAttempts) * 100) : 0
 
     const pAnswerHistory = progress.answerHistory || []

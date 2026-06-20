@@ -474,7 +474,7 @@ function getDailyQuestXP(): number {
       const quest = q as { xp?: number }
       return sum + (quest.xp || 0)
     }, 0)
-    return totalXP || 50
+    return (totalXP as number) || 50
   } catch {
     return 50
   }

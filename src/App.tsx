@@ -49,11 +49,12 @@ import { useStudentStore } from './stores/studentStore'
 import { useSettingsStore } from './stores/settingsStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
+import { initMobile } from './lib/mobile'
 
 import TheoryPage from './pages/TheoryPage'
 
 // Lazy-loaded pages (rarely used, heavy bundles) — all use named exports, wrap with default
-const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage').then(m => ({ default: m.TheoryEditorPage })))
+const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage'))
 const MistakesReview = lazy(() => import('./pages/MistakesReview').then(m => ({ default: m.MistakesReview })))
 const ErrorAnalysisPage = lazy(() => import('./pages/ErrorAnalysisPage').then(m => ({ default: m.ErrorAnalysisPage })))
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })))
@@ -117,7 +118,7 @@ export default function App() {
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
 
-  const [authModalOpen, setAuthModalOpen] = useState(true)
+  const [authModalOpen, setAuthModalOpen] = useState(false)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
@@ -168,6 +169,11 @@ export default function App() {
     // Initialize FCM (registers service worker)
     initFCM().catch(() => {})
   }, [initFCM])
+
+  useEffect(() => {
+    // Initialize mobile features (haptics, status bar, push, etc.)
+    initMobile().catch(() => {})
+  }, [])
 
   useEffect(() => {
     // Listen for foreground FCM messages
@@ -491,6 +497,16 @@ export default function App() {
             <Route path="/task13-trainer" element={<Task13Trainer />} />
             <Route path="/task14-trainer" element={<Task14Trainer />} />
             <Route path="/task15-trainer" element={<Task15Trainer />} />
+            {/* Legacy trainers - not available */}
+            {/* <Route path="/task1-trainer" element={<Task1Trainer />} /> */}
+            {/* <Route path="/task2-trainer" element={<Task2Trainer />} /> */}
+            {/* <Route path="/task3-trainer" element={<Task3Trainer />} /> */}
+            {/* <Route path="/task18-trainer" element={<Task18Trainer />} /> */}
+            {/* <Route path="/task22-trainer" element={<Task22Trainer />} /> */}
+            {/* <Route path="/task24-trainer" element={<Task24Trainer />} /> */}
+            {/* <Route path="/task25-trainer" element={<Task25Trainer />} /> */}
+            {/* <Route path="/task3-swipe" element={<Task3SwipeTrainer />} /> */}
+            {/* <Route path="/task25-swipe" element={<Task25SwipeTrainer />} /> */}
             <Route path="/task16-trainer" element={<Task16Trainer />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/duel" element={<DuelPage />} />

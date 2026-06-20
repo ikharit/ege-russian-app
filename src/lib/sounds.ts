@@ -1,3 +1,5 @@
+import { hapticsImpact, hapticsNotification } from './mobile'
+
 // Simple synth-based sound effects using Web Audio API
 let audioCtx: AudioContext | null = null
 
@@ -21,6 +23,7 @@ function isSoundEnabled(): boolean {
 
 export function playCorrectSound() {
   if (!isSoundEnabled()) return
+  hapticsImpact('light')
   try {
     const ctx = getCtx()
     const osc = ctx.createOscillator()
@@ -41,6 +44,7 @@ export function playCorrectSound() {
 
 export function playWrongSound() {
   if (!isSoundEnabled()) return
+  hapticsNotification('error')
   try {
     const ctx = getCtx()
     const osc = ctx.createOscillator()
@@ -61,6 +65,7 @@ export function playWrongSound() {
 
 export function playLessonCompleteSound() {
   if (!isSoundEnabled()) return
+  hapticsNotification('success')
   try {
     const ctx = getCtx()
     const notes = [523.25, 659.25, 783.99, 1046.50] // C5, E5, G5, C6
@@ -83,6 +88,7 @@ export function playLessonCompleteSound() {
 
 export function playComboSound(combo: number) {
   if (!isSoundEnabled()) return
+  hapticsImpact(combo >= 10 ? 'heavy' : combo >= 5 ? 'medium' : 'light')
   try {
     const ctx = getCtx()
     const baseFreq = combo >= 10 ? 1046.50 : combo >= 5 ? 783.99 : 659.25
@@ -103,6 +109,7 @@ export function playComboSound(combo: number) {
 
 export function playXPUpSound() {
   if (!isSoundEnabled()) return
+  hapticsImpact('light')
   try {
     const ctx = getCtx()
     const osc = ctx.createOscillator()
@@ -123,6 +130,7 @@ export function playXPUpSound() {
 
 export function playAchievementSound() {
   if (!isSoundEnabled()) return
+  hapticsNotification('success')
   try {
     const ctx = getCtx()
     const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]
