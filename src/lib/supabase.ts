@@ -110,6 +110,8 @@ export async function resetPasswordForEmail(email: string) {
   })
   return { data, error }
 }
+
+export async function signOut() {
   if (!isSupabaseConfigured) return { error: null }
   const { error } = await supabase.auth.signOut()
   return { error }
