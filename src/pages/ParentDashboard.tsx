@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Users, Trophy, Flame, BookOpen, Target, TrendingUp, Calendar, AlertTriangle, Zap } from 'lucide-react'
+import { ArrowLeft, Users, Trophy, Flame, BookOpen, Target, TrendingUp, Calendar, AlertTriangle, Zap, FileText } from 'lucide-react'
 import { useStudentStore } from '../stores/studentStore'
 import { useProgressStore } from '../stores/progressStore'
 import { allHomework } from '../data/gsheets/homeworkData'
@@ -36,6 +36,20 @@ export function ParentDashboard() {
           <ArrowLeft size={20} />
         </button>
         <h1 className="text-xl font-bold text-gray-800">Родительский кабинет</h1>
+        {selectedProfileId && (
+          <button
+            onClick={() => {
+              import('../utils/pdfGenerator').then(({ generateParentReportHTML, openReportInNewTab }) => {
+                const html = generateParentReportHTML(selectedProfileId)
+                openReportInNewTab(html)
+              })
+            }}
+            className="ml-auto flex items-center gap-2 px-4 py-2 bg-duo-green text-white rounded-xl font-bold text-sm hover:bg-duo-green-dark transition-colors shadow-md"
+          >
+            <FileText size={16} />
+            Отчёт PDF
+          </button>
+        )}
       </div>
 
       {/* Child selector */}

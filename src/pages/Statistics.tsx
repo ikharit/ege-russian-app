@@ -7,7 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { EGEScorePredictor } from '../components/EGEScorePredictor'
 import { GrowthTimeline } from '../components/GrowthTimeline'
 import { getPredictiveScore, getWeakTasks } from '../utils/predictiveScore'
-import { TrendingUp, AlertCircle, Target, Map } from 'lucide-react'
+import { TrendingUp, AlertCircle, Target, FileText } from 'lucide-react'
 
 export function Statistics() {
   const navigate = useNavigate()
@@ -52,7 +52,7 @@ export function Statistics() {
 
   // Distribute dooshin lessons into base sections
   const dooshinSection = course.sections.find(s => s.id === 'section-dooshin-all')
-  const dooshinLessonIdsBySection = new Map() as Map<string, string[]>
+  const dooshinLessonIdsBySection: Map<string, string[]> = new Map()
   if (dooshinSection) {
     for (const lesson of dooshinSection.lessons) {
       const match = lesson.id.match(/lesson-dooshin-(\d+)-/)
@@ -142,7 +142,21 @@ export function Statistics() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Статистика</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Статистика</h1>
+        <button
+          onClick={() => {
+            import('../utils/pdfGenerator').then(({ generateStudentPortfolioHTML, openReportInNewTab }) => {
+              const html = generateStudentPortfolioHTML()
+              openReportInNewTab(html)
+            })
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-duo-green text-white rounded-xl font-bold text-sm hover:bg-duo-green-dark transition-colors shadow-md"
+        >
+          <FileText size={16} />
+          PDF
+        </button>
+      </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-3 mb-6">
@@ -392,7 +406,7 @@ export function Statistics() {
         <div className="flex flex-col gap-4 items-center">
           <div className="card w-full text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
-              <Map size={20} className="text-duo-green" />
+              <Target size={20} className="text-duo-green" />
               <h3 className="font-bold text-gray-700">Карта знаний</h3>
             </div>
             <p className="text-sm text-gray-500 mb-4">

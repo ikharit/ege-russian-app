@@ -59,7 +59,7 @@ export class RAGRetriever {
       this.buildTFIDF()
       this.indexLoaded = true
     } catch (e) {
-      console.warn('RAG index not loaded, falling back to theory rules')
+      if (import.meta.env.DEV) console.warn('RAG index not loaded, falling back to theory rules')
       this.entries = []
     }
   }

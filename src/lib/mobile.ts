@@ -32,7 +32,6 @@ export async function initMobile() {
   App.addListener('appStateChange', ({ isActive }) => {
     if (isActive) {
       // App came to foreground — check heart restore, sync data
-      console.log('App is active')
     }
   })
 
@@ -97,7 +96,6 @@ async function registerPushNotifications() {
     }
 
     if (permStatus.receive !== 'granted') {
-      console.log('Push notification permission not granted')
       return
     }
 
@@ -106,29 +104,25 @@ async function registerPushNotifications() {
 
     // Listeners
     PushNotifications.addListener('registration', (token) => {
-      console.log('Push registration token:', token.value)
       // TODO: Send token to backend
     })
 
     PushNotifications.addListener('registrationError', (err) => {
-      console.error('Push registration error:', err.error)
+      if (import.meta.env.DEV) console.error('Push registration error:', err.error)
     })
 
     PushNotifications.addListener('pushNotificationReceived', (notification) => {
-      console.log('Push received:', notification)
       // Show in-app notification or update badge
     })
 
     PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
-      console.log('Push action performed:', action)
       // Handle notification tap (e.g., navigate to specific screen)
     })
 
     // Get delivered notifications (for badge count)
     const delivered = await PushNotifications.getDeliveredNotifications()
-    console.log('Delivered notifications:', delivered)
   } catch (e) {
-    console.error('Push notification setup failed:', e)
+    if (import.meta.env.DEV) console.error('Push notification setup failed:', e)
   }
 }
 
@@ -146,7 +140,6 @@ export async function scheduleLocalNotification(options: {
 
   // Capacitor Local Notifications plugin needed
   // For now, skip — add @capacitor/local-notifications if needed
-  console.log('Local notification scheduled:', options)
 }
 
 // ── Status Bar ───────────────────────────────────────────

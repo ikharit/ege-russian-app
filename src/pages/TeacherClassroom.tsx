@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Users, UserPlus, Copy, Trophy, BookOpen, Calendar, Trash2, ChevronRight,
-  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School
+  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText
 } from 'lucide-react'
 import { useClassStore, ClassRoom, ClassHomework } from '../stores/classStore'
 import { useStudentStore } from '../stores/studentStore'
@@ -120,6 +120,18 @@ export function TeacherClassroom() {
                 <h2 className="text-xl font-bold text-gray-800">{selectedClass.name}</h2>
                 <p className="text-sm text-gray-500">{selectedClass.teacherName}</p>
               </div>
+              <button
+                onClick={() => {
+                  import('../utils/pdfGenerator').then(({ generateTeacherReportHTML, openReportInNewTab }) => {
+                    const html = generateTeacherReportHTML(selectedClass.id)
+                    openReportInNewTab(html)
+                  })
+                }}
+                className="ml-auto flex items-center gap-2 px-4 py-2 bg-duo-green text-white rounded-xl font-bold text-sm hover:bg-duo-green-dark transition-colors shadow-md"
+              >
+                <FileText size={16} />
+                Отчёт PDF
+              </button>
             </div>
             <button
               onClick={() => {

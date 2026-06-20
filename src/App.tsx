@@ -1,38 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
-import { PersonalityQuiz } from './pages/PersonalityQuiz'
 import { Header } from './components/Header'
+import { FlashcardsPage } from './pages/FlashcardsPage'
 import { TodayPage } from './pages/TodayPage'
 import { Dashboard } from './pages/Dashboard'
 import { CourseMap } from './pages/CourseMap'
 import { Lesson } from './pages/Lesson'
 import { Statistics } from './pages/Statistics'
-import { Leaderboard } from './pages/Leaderboard'
-import { Teacher } from './pages/Teacher'
-import { Profile } from './pages/Profile'
-import { AdaptivePractice } from './pages/AdaptivePractice'
-import { AccentTrainer } from './pages/AccentTrainer'
-import { Task5Trainer } from './pages/Task5Trainer'
-import { Task10Trainer } from './pages/Task10Trainer'
-import { Task16Trainer } from './pages/Task16Trainer'
-import { Task6Trainer } from './pages/Task6Trainer'
-import { Task7Trainer } from './pages/Task7Trainer'
-import { Task8Trainer } from './pages/Task8Trainer'
-import { Task9Trainer } from './pages/Task9Trainer'
-import { Task11Trainer } from './pages/Task11Trainer'
-import { Task12Trainer } from './pages/Task12Trainer'
-import { Task13Trainer } from './pages/Task13Trainer'
-import { Task14Trainer } from './pages/Task14Trainer'
-import { Task15Trainer } from './pages/Task15Trainer'
-import { MiniGames } from './pages/MiniGames'
-import { StudentHomework } from './pages/StudentHomework'
-import { MyHomework } from './pages/MyHomework'
-import { ChallengesPage } from './pages/ChallengesPage'
-import { ParentDashboard } from './pages/ParentDashboard'
-import { TrainersPage } from './pages/TrainersPage'
-import { JoinClass } from './pages/JoinClass'
-import { ClassDetail } from './pages/ClassDetail'
-import { ExamVariantsList } from './pages/ExamVariantsList'
-import { EssayTopicsList } from './pages/EssayTopicsList'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -54,6 +27,34 @@ import { initMobile } from './lib/mobile'
 import TheoryPage from './pages/TheoryPage'
 
 // Lazy-loaded pages (rarely used, heavy bundles) — all use named exports, wrap with default
+const PersonalityQuiz = lazy(() => import('./pages/PersonalityQuiz').then(m => ({ default: m.PersonalityQuiz })))
+const Leaderboard = lazy(() => import('./pages/Leaderboard').then(m => ({ default: m.Leaderboard })))
+const Teacher = lazy(() => import('./pages/Teacher').then(m => ({ default: m.Teacher })))
+const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })))
+const AdaptivePractice = lazy(() => import('./pages/AdaptivePractice').then(m => ({ default: m.AdaptivePractice })))
+const AccentTrainer = lazy(() => import('./pages/AccentTrainer').then(m => ({ default: m.AccentTrainer })))
+const Task5Trainer = lazy(() => import('./pages/Task5Trainer').then(m => ({ default: m.Task5Trainer })))
+const Task6Trainer = lazy(() => import('./pages/Task6Trainer').then(m => ({ default: m.Task6Trainer })))
+const Task7Trainer = lazy(() => import('./pages/Task7Trainer').then(m => ({ default: m.Task7Trainer })))
+const Task8Trainer = lazy(() => import('./pages/Task8Trainer').then(m => ({ default: m.Task8Trainer })))
+const Task9Trainer = lazy(() => import('./pages/Task9Trainer').then(m => ({ default: m.Task9Trainer })))
+const Task10Trainer = lazy(() => import('./pages/Task10Trainer').then(m => ({ default: m.Task10Trainer })))
+const Task11Trainer = lazy(() => import('./pages/Task11Trainer').then(m => ({ default: m.Task11Trainer })))
+const Task12Trainer = lazy(() => import('./pages/Task12Trainer').then(m => ({ default: m.Task12Trainer })))
+const Task13Trainer = lazy(() => import('./pages/Task13Trainer').then(m => ({ default: m.Task13Trainer })))
+const Task14Trainer = lazy(() => import('./pages/Task14Trainer').then(m => ({ default: m.Task14Trainer })))
+const Task15Trainer = lazy(() => import('./pages/Task15Trainer').then(m => ({ default: m.Task15Trainer })))
+const Task16Trainer = lazy(() => import('./pages/Task16Trainer').then(m => ({ default: m.Task16Trainer })))
+const MiniGames = lazy(() => import('./pages/MiniGames').then(m => ({ default: m.MiniGames })))
+const StudentHomework = lazy(() => import('./pages/StudentHomework').then(m => ({ default: m.StudentHomework })))
+const MyHomework = lazy(() => import('./pages/MyHomework').then(m => ({ default: m.MyHomework })))
+const ChallengesPage = lazy(() => import('./pages/ChallengesPage').then(m => ({ default: m.ChallengesPage })))
+const ParentDashboard = lazy(() => import('./pages/ParentDashboard').then(m => ({ default: m.ParentDashboard })))
+const TrainersPage = lazy(() => import('./pages/TrainersPage').then(m => ({ default: m.TrainersPage })))
+const ExamVariantsList = lazy(() => import('./pages/ExamVariantsList').then(m => ({ default: m.ExamVariantsList })))
+const EssayTopicsList = lazy(() => import('./pages/EssayTopicsList').then(m => ({ default: m.EssayTopicsList })))
+const JoinClass = lazy(() => import('./pages/JoinClass').then(m => ({ default: m.JoinClass })))
+const ClassDetail = lazy(() => import('./pages/ClassDetail').then(m => ({ default: m.ClassDetail })))
 const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage'))
 const MistakesReview = lazy(() => import('./pages/MistakesReview').then(m => ({ default: m.MistakesReview })))
 const ErrorAnalysisPage = lazy(() => import('./pages/ErrorAnalysisPage').then(m => ({ default: m.ErrorAnalysisPage })))
@@ -148,7 +149,7 @@ export default function App() {
           window.history.replaceState({}, document.title, window.location.pathname)
         }
         if (error) {
-          console.error('OAuth callback error:', error)
+          if (import.meta.env.DEV) console.error('OAuth callback error:', error)
         }
       }
       handleCallback()
@@ -350,12 +351,11 @@ export default function App() {
   // Online/offline status
   useEffect(() => {
     const handleOnline = () => {
-      console.log('[OfflineCache] Online')
       import('./stores/firebaseStore').then(({ useFirebaseStore }) => {
         useFirebaseStore.getState().processOfflineQueue().catch(() => {})
       })
     }
-    const handleOffline = () => console.log('[OfflineCache] Offline')
+    const handleOffline = () => {}
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
     return () => {
@@ -479,6 +479,7 @@ export default function App() {
             <Route path="/adaptive-trainer" element={<AdaptiveTrainerPage />} />
             <Route path="/trainers" element={<TrainersPage />} />
             <Route path="/study-plan" element={<StudyPlanPage />} />
+            <Route path="/flashcards" element={<FlashcardsPage />} />
             <Route path="/games" element={<MiniGames />} />
             <Route path="/exam" element={<ExamVariantsList />} />
             <Route path="/exam/:variantId" element={<ExamVariantPage />} />

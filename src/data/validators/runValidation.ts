@@ -1,7 +1,7 @@
 import { course } from '../courseData'
 import { validateQuestion, printValidationReport } from './questionValidator'
 
-console.log('🔍 Запуск валидации заданий ЕГЭ...\n')
+if (import.meta.env.DEV) console.log('🔍 Запуск валидации заданий ЕГЭ...\n')
 
 const allErrors: any[] = []
 const seenQuestionIds = new Set<string>()
@@ -32,7 +32,7 @@ for (const section of course.sections) {
 printValidationReport(allErrors)
 
 if (allErrors.length > 0) {
-  console.log(`\n❌ Найдено ${allErrors.length} ошибок`)
+  if (import.meta.env.DEV) console.log(`\n❌ Найдено ${allErrors.length} ошибок`)
 } else {
-  console.log('\n✅ Все задания корректны!')
+  if (import.meta.env.DEV) console.log('\n✅ Все задания корректны!')
 }

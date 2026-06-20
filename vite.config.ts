@@ -61,6 +61,7 @@ export default defineConfig({
     })
   ],
   build: {
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       plugins: [visualizer({ open: false, filename: 'dist/stats.html' })],
       output: {
@@ -69,6 +70,9 @@ export default defineConfig({
           recharts: ['recharts'],
           'framer-motion': ['framer-motion'],
           supabase: ['@supabase/supabase-js'],
+          lucide: ['lucide-react'],
+          router: ['react-router-dom'],
+          vendor: ['react', 'react-dom'],
         },
       },
     },

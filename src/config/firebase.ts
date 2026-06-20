@@ -18,11 +18,11 @@ export const db = getFirestore(app)
 export const messaging = getMessaging(app)
 
 enableIndexedDbPersistence(db).catch((err: { code?: string }) => {
-  if (err.code === 'failed-precondition') {
-    console.warn('Firebase persistence failed: multiple tabs open')
+if (err.code === 'failed-precondition') {
+    if (import.meta.env.DEV) console.warn('Firebase persistence failed: multiple tabs open')
   } else if (err.code === 'unimplemented') {
-    console.warn('Firebase persistence not supported in this browser')
+    if (import.meta.env.DEV) console.warn('Firebase persistence not supported in this browser')
   } else {
-    console.warn('Firebase persistence error:', err)
+    if (import.meta.env.DEV) console.warn('Firebase persistence error:', err)
   }
 })

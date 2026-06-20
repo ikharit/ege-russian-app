@@ -1,435 +1,368 @@
-import type { ReactElement } from 'react'
-import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
-import { createRoot } from 'react-dom/client'
-import type { ReportPreviewData } from '../components/ReportPreview'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
 import { course } from '../data/courseData'
-import { achievements as allAchievements } from '../data/achievements'
 import { getPredictiveScore } from './predictiveScore'
-import { calculateComparisonStats } from './comparisonEngine'
-import { getSmartRecommendations } from './adaptiveEngine'
-import { analyzeErrors, getSubskillName } from './errorPatternAnalyzer'
-import { formatNextReview, formatInterval } from './spacedRepetition'
-import type { ExamResult } from '../data/fipiVariants'
-import type { WrongAnswer } from '../types/index'
+import { analyzeErrors } from './errorPatternAnalyzer'
 
-export interface ReportOptions {
+export interface ReportData {
   type: 'parent' | 'teacher' | 'student' | 'class'
   studentId?: string
   classId?: string
   dateRange?: { from: string; to: string }
-  includeCharts?: boolean
-  includeRecommendations?: boolean
 }
 
-export type PDFReport = jsPDF
-
-const REPORT_CONTAINER_ID = 'report-render-container'
-
-function getContainer(): HTMLElement {
-  let container = document.getElementById(REPORT_CONTAINER_ID)
-  if (!container) {
-    container = document.createElement('div')
-    container.id = REPORT_CONTAINER_ID
-    container.style.position = 'absolute'
-    container.style.left = '-9999px'
-    container.style.top = '0'
-    container.style.width = '210mm'
-    container.style.zIndex = '-1'
-    document.body.appendChild(container)
-  }
-  return container
+function escapeHtml(text: string): string {
+  const div = document.createElement('div')
+  div.textContent = text
+  return div.innerHTML
 }
 
-async function waitForRender(ms = 800): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function elementToCanvas(el: HTMLElement): Promise<HTMLCanvasElement> {
-  return html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff',
-    logging: false,
-    width: 794,
-    height: 1123,
-  })
-}
-
-export async function generatePDF(
-  element: ReactElement,
-  filename: string
-): Promise<void> {
-  const container = getContainer()
-  container.innerHTML = ''
-
-  const root = createRoot(container)
-  root.render(element)
-
-  await waitForRender(1000)
-
-  const pages = container.querySelectorAll<HTMLElement>('.report-page')
-  if (pages.length === 0) {
-    root.unmount()
-    throw new Error('No report pages found')
-  }
-
-  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-
-  for (let i = 0; i < pages.length; i++) {
-    const canvas = await elementToCanvas(pages[i])
-    const imgData = canvas.toDataURL('image/png')
-
-    if (i > 0) pdf.addPage()
-    pdf.addImage(imgData, 'PNG', 0, 0, 210, 297)
-  }
-
-  pdf.save(filename)
-
-  root.unmount()
-  container.innerHTML = ''
-}
-
-export function formatDateRu(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
-}
-
-export function formatDateShort(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })
-}
-
-export function getDaysToExam(examDateStr: string | null): number {
-  if (!examDateStr) return 180
-  const exam = new Date(examDateStr)
-  const now = new Date()
-  now.setHours(0, 0, 0, 0)
-  exam.setHours(0, 0, 0, 0)
-  const diff = Math.ceil((exam.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-  return Math.max(0, diff)
-}
-
-export type { ReportPreviewData }
-
-// ─── Data builders ───
-
-function getTotalLessons(): number {
-  return course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
-}
-
-function buildKnowledgeMap(progress: Record<string, { status?: string }>): { section: string; completed: number; total: number; color: string }[] {
-  return course.sections
-    .filter((s) => s.id !== 'section-dooshin-all')
-    .map((section) => {
-      const completed = section.lessons.filter((l) => progress[l.id]?.status === 'completed').length
-      return {
-        section: section.title,
-        completed,
-        total: section.lessons.length,
-        color: section.color,
+function generateStyles(): string {
+  return `
+    <style>
+      @page { size: A4; margin: 15mm; }
+      * { box-sizing: border-box; }
+      body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; color: #333; background: #fff; line-height: 1.5; }
+      .page { max-width: 800px; margin: 0 auto; page-break-after: always; }
+      .page:last-child { page-break-after: auto; }
+      .header { text-align: center; border-bottom: 3px solid #58cc02; padding-bottom: 15px; margin-bottom: 20px; }
+      .header h1 { margin: 0; font-size: 24px; color: #1cb0f6; }
+      .header .subtitle { color: #666; font-size: 14px; margin-top: 5px; }
+      .header .date { color: #999; font-size: 12px; margin-top: 5px; }
+      .section { margin: 20px 0; }
+      .section h2 { font-size: 18px; color: #58cc02; border-bottom: 2px solid #e5e5e5; padding-bottom: 8px; margin-bottom: 15px; }
+      .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 15px 0; }
+      .stat-card { background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; border-left: 4px solid #58cc02; }
+      .stat-card .value { font-size: 28px; font-weight: bold; color: #58cc02; }
+      .stat-card .label { font-size: 12px; color: #666; margin-top: 5px; }
+      table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
+      th { background: #58cc02; color: white; padding: 10px; text-align: left; font-weight: 600; }
+      td { padding: 10px; border-bottom: 1px solid #eee; }
+      tr:nth-child(even) { background: #f8f9fa; }
+      .progress-bar { width: 100%; height: 20px; background: #e5e5e5; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+      .progress-bar .fill { height: 100%; background: #58cc02; border-radius: 10px; text-align: center; color: white; font-size: 12px; line-height: 20px; }
+      .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+      .badge-green { background: #d4edda; color: #155724; }
+      .badge-yellow { background: #fff3cd; color: #856404; }
+      .badge-red { background: #f8d7da; color: #721c24; }
+      .recommendation { background: #e8f5e9; border-left: 4px solid #58cc02; padding: 12px 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+      .footer { text-align: center; color: #999; font-size: 11px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+      @media print {
+        body { padding: 0; }
+        .no-print { display: none; }
       }
-    })
+    </style>
+  `
 }
 
-export function buildParentReportData(studentId: string): ReportPreviewData {
-  const progress = useProgressStore.getState()
-  const student = useStudentStore.getState().getProfileById(studentId)
-  const stats = student?.progress?.userStats || progress.userStats
-  const lessonProgress = student?.progress?.lessonProgress || progress.lessonProgress
-  const taskStats = student?.progress?.taskStats || progress.taskStats
-  const wrongAnswers = student?.progress?.wrongAnswers || progress.wrongAnswers
-  const examResults = student?.progress?.examResults || progress.examResults
-  const examDate = progress.examDate
-  const daysToExam = getDaysToExam(examDate)
-  const completedLessons = (Object.values(lessonProgress) as any[]).filter((l: any) => l.status === 'completed').length
-  const totalAttempts = (Object.values(taskStats) as any[]).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
-  const totalCorrect = (Object.values(taskStats) as any[]).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
-  const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
-  const score = getPredictiveScore(
-    { taskStats, examResults, userStats: stats, lessonProgress, wrongAnswers, examDate },
-    daysToExam
-  )
-  const comparison = calculateComparisonStats()
-  const errorAnalysis = analyzeErrors(progress.answerHistory || [])
-  const recommendations = errorAnalysis.recommendations
-  const allStudents = useStudentStore.getState().profiles
-  const currentStudent = allStudents.find((s) => s.id === studentId)
-  const history = currentStudent?.history || []
-  const activityHistory = history.map((h) => ({
-    date: h.date,
-    xp: h.xp,
-    accuracy: h.accuracy,
-  }))
-  const weakTopics = errorAnalysis.patterns.slice(0, 5).map((p) => ({
-    task: `Задание ${p.taskNumber}`,
-    errorType: getSubskillName(p.errorType),
-    count: p.frequency,
-    recommendation: recommendations.find((r) => r.includes(String(p.taskNumber))) || `Повтори задание ${p.taskNumber}`,
-  }))
-  const weeklySchedule = (progress.weeklySchedule || []).flatMap((day) =>
-    day.items.map((item) => ({
-      day: day.day,
-      title: item.title,
-      duration: item.duration,
-    }))
-  )
+export function generateParentReportHTML(studentId: string): string {
+  const studentStore = useStudentStore.getState()
+  const progressStore = useProgressStore.getState()
+  const profile = studentStore.profiles.find(p => p.id === studentId)
+  const stats = studentStore.getProfileStats(studentId)
+  const progress = progressStore
 
-  return {
-    type: 'parent',
-    studentName: stats.name || student?.name || 'Ученик',
-    studentEmoji: student?.emoji || '🎓',
-    date: new Date().toLocaleDateString('ru-RU'),
-    footerText: 'ЕГЭ Русский — Подготовка',
-    level: stats.level || 1,
-    xp: stats.xp || 0,
-    streak: stats.streak || 0,
-    accuracy,
-    predictedScore: score.predictedSecondary,
-    lessonsCompleted: completedLessons,
-    totalLessons: getTotalLessons(),
-    daysToExam,
-    activityHistory,
-    weakTopics,
-    speedPercentile: comparison.speedPercentile,
-    accuracyPercentile: comparison.accuracyPercentile,
-    efficiencyPercentile: comparison.efficiencyPercentile,
-    streakPercentile: comparison.streakPercentile,
-    recommendations,
-    weeklySchedule,
-    className: '',
-    teacherName: '',
-    students: [],
-    classWeakTopics: [],
-    homework: [],
-    achievements: [],
-    examResults: [],
-    taskStats: [],
-    srsItems: [],
-    smartPath: [],
-    knowledgeMap: buildKnowledgeMap(lessonProgress),
-  }
+  if (!profile || !stats) return '<p>Нет данных</p>'
+
+  const totalLessons = course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
+  const completedLessons = Object.values(progress.lessonProgress).filter((l: any) => l.status === 'completed').length
+  const completedPercent = Math.round((completedLessons / totalLessons) * 100)
+  
+  const predictive = getPredictiveScore(progress)
+  const errorAnalysis = analyzeErrors((progress.wrongAnswers || []) as any)
+  const topErrors = errorAnalysis.patterns.slice(0, 5)
+  
+  const today = new Date().toLocaleDateString('ru-RU')
+  const examDate = progress.examDate || '2027-06-01'
+  const daysToExam = Math.max(0, Math.ceil((new Date(examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+
+  const errorRows = topErrors.length > 0
+    ? topErrors.map(e => `
+      <tr>
+        <td>Задание ${e.taskNumber}</td>
+        <td>${escapeHtml(e.errorType)}</td>
+        <td>${e.frequency}</td>
+        <td>${Math.round(e.confidence * 100)}%</td>
+      </tr>
+    `).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:#999">Пока нет ошибок — отлично! 🎉</td></tr>'
+
+  return `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Отчёт — ${escapeHtml(profile.name)}</title>
+  ${generateStyles()}
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>📊 Отчёт о прогрессе</h1>
+      <div class="subtitle">${escapeHtml(profile.name)}</div>
+      <div class="date">Сгенерировано: ${today}</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="value">${stats.level}</div>
+        <div class="label">Уровень</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.xp}</div>
+        <div class="label">XP</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.streak || 0} 🔥</div>
+        <div class="label">Стрик (дней)</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.accuracy}%</div>
+        <div class="label">Точность</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎯 Прогресс по курсу</h2>
+      <div class="progress-bar">
+        <div class="fill" style="width: ${completedPercent}%">${completedPercent}%</div>
+      </div>
+      <p>Пройдено <strong>${completedLessons}</strong> из <strong>${totalLessons}</strong> уроков</p>
+    </div>
+
+    <div class="section">
+      <h2>📝 Предсказание на ЕГЭ</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="value">${predictive.predictedSecondary}</div>
+          <div class="label">Тестовый балл</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">${predictive.confidence}%</div>
+          <div class="label">Уверенность</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">${daysToExam}</div>
+          <div class="label">Дней до экзамена</div>
+        </div>
+      </div>
+      <p>Для <strong>80+</strong> нужно: ${predictive.neededForExcellent > 0 ? `ещё ${predictive.neededForExcellent} XP` : 'всё готово! 🎉'}</p>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="section">
+      <h2>🧠 Слабые места</h2>
+      <table>
+        <thead>
+          <tr><th>Задание</th><th>Тип ошибки</th><th>Количество</th><th>Уверенность</th></tr>
+        </thead>
+        <tbody>
+          ${errorRows}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>💡 Рекомендации</h2>
+      ${errorAnalysis.recommendations.slice(0, 5).map(r => `<div class="recommendation">${escapeHtml(r)}</div>`).join('')}
+      ${errorAnalysis.recommendations.length === 0 ? '<div class="recommendation">Отлично! Ошибок почти нет. Продолжай в том же духе! 🌟</div>' : ''}
+    </div>
+
+    <div class="footer">
+      📚 ЕГЭ Русский — Подготовка | Сгенерировано ${today}
+    </div>
+  </div>
+</body>
+</html>
+  `
 }
 
-export function buildTeacherReportData(classId: string): ReportPreviewData {
+export function generateTeacherReportHTML(classId: string): string {
   const classStore = useClassStore.getState()
-  const classRoom = classStore.getClassById(classId)
-  if (!classRoom) {
-    throw new Error('Class not found')
-  }
-  const students = classRoom.students.map((st) => {
-    const progress = st.progress
-    const lessonsCompleted = progress
-      ? Object.values(progress.lessonProgress || {}).filter((l: { status?: string }) => l.status === 'completed').length
-      : 0
-    const totalAttempts = Object.values(progress?.taskStats || {}).reduce((sum: number, t: { total?: number }) => sum + (t.total || 0), 0)
-    const totalCorrect = Object.values(progress?.taskStats || {}).reduce((sum: number, t: { correct?: number }) => sum + (t.correct || 0), 0)
-    const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
-    const daysToExam = getDaysToExam(useProgressStore.getState().examDate)
-    const score = getPredictiveScore(
-      {
-        taskStats: progress?.taskStats || {},
-        examResults: (progress?.examResults || []) as ExamResult[],
-        userStats: progress?.userStats || { xp: 0, level: 1, streak: 0, maxStreak: 0, lastActivityDate: '', hearts: 5, maxHearts: 5, achievements: [], name: st.name },
-        lessonProgress: progress?.lessonProgress || {},
-        wrongAnswers: (progress?.wrongAnswers || []) as WrongAnswer[],
-        examDate: useProgressStore.getState().examDate,
-      },
-      daysToExam
-    )
-    return {
-      name: st.name,
-      emoji: st.emoji,
-      level: progress?.userStats?.level || 1,
-      xp: progress?.userStats?.xp || 0,
-      accuracy,
-      lessonsCompleted,
-      streak: progress?.userStats?.streak || 0,
-      predictedScore: score.predictedSecondary,
-    }
-  })
+  const studentStore = useStudentStore.getState()
+  const cls = classStore.classes[classId]
+  
+  if (!cls) return '<p>Класс не найден</p>'
 
-  // Aggregate class weak topics
-  const taskErrorMap = new Map<string, { count: number; total: number }>()
-  for (const st of classRoom.students) {
-    const taskStats = st.progress?.taskStats || {}
-    for (const [task, stat] of Object.entries(taskStats)) {
-      const s = stat as { total: number; correct: number; wrong: number }
-      if (!taskErrorMap.has(task)) taskErrorMap.set(task, { count: 0, total: 0 })
-      const entry = taskErrorMap.get(task)!
-      entry.total += s.total || 0
-      entry.count += s.wrong || 0
-    }
-  }
-  const classWeakTopics = Array.from(taskErrorMap.entries())
-    .filter(([_, v]) => v.total > 0 && v.count > 0)
-    .map(([task, v]) => ({
-      task: `Задание ${task}`,
-      studentCount: classRoom.students.filter((st) => {
-        const s = st.progress?.taskStats?.[task] as { wrong?: number } | undefined
-        return s && s.wrong && s.wrong > 0
-      }).length,
-      errorPercent: Math.round((v.count / v.total) * 100),
-    }))
-    .sort((a, b) => b.errorPercent - a.errorPercent)
-    .slice(0, 10)
+  const today = new Date().toLocaleDateString('ru-RU')
+  const students = cls.students || []
+  
+  const studentRows = students.map(s => {
+    const stats = studentStore.getProfileStats(s.id)
+    const progress = useProgressStore.getState()
+    const completed = Object.values(progress.lessonProgress).filter((l: any) => l.status === 'completed').length
+    return `
+      <tr>
+        <td>${escapeHtml(s.name)}</td>
+        <td>${stats?.level || 1}</td>
+        <td>${stats?.xp || 0}</td>
+        <td>${stats?.accuracy || 0}%</td>
+        <td>${completed}</td>
+        <td>${stats?.streak || 0}</td>
+      </tr>
+    `
+  }).join('')
 
-  const homework = classRoom.homework.map((hw) => {
-    const total = classRoom.students.length
-    const completed = 0 // Placeholder — homework completion tracking not implemented
-    return {
-      title: hw.taskTitle || hw.taskNumber,
-      deadline: new Date(hw.deadline).toLocaleDateString('ru-RU'),
-      completed,
-      total,
-      status: new Date(hw.deadline) < new Date() ? (completed >= total ? 'Сдано' : 'Просрочено') : 'Активно',
-    }
-  })
+  const homeworkRows = (cls.homework || []).map(hw => {
+    const status = new Date(hw.deadline) < new Date() ? '❌ Просрочено' : '⏳ В процессе'
+    return `
+      <tr>
+        <td>${escapeHtml(hw.taskTitle)}</td>
+        <td>${new Date(hw.deadline).toLocaleDateString('ru-RU')}</td>
+        <td>-</td>
+        <td>${status}</td>
+      </tr>
+    `
+  }).join('')
 
-  const recommendations = classWeakTopics.length > 0
-    ? [`Обратите внимание на ${classWeakTopics[0].task} — ${classWeakTopics[0].errorPercent}% ошибок`, `Повторите ${classWeakTopics.slice(0, 3).map((w) => w.task).join(', ')} на уроке`]
-    : ['Класс справляется хорошо! Продолжайте в том же духе.']
+  return `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Отчёт по классу — ${escapeHtml(cls.name)}</title>
+  ${generateStyles()}
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>🏫 Отчёт по классу</h1>
+      <div class="subtitle">${escapeHtml(cls.name)} | Учитель: ${escapeHtml(cls.teacherName)}</div>
+      <div class="date">Сгенерировано: ${today}</div>
+    </div>
 
-  return {
-    type: 'teacher',
-    studentName: '',
-    studentEmoji: '',
-    date: new Date().toLocaleDateString('ru-RU'),
-    footerText: 'ЕГЭ Русский — Подготовка',
-    level: 0,
-    xp: 0,
-    streak: 0,
-    accuracy: 0,
-    predictedScore: 0,
-    lessonsCompleted: 0,
-    totalLessons: 0,
-    daysToExam: 0,
-    activityHistory: [],
-    weakTopics: [],
-    speedPercentile: 0,
-    accuracyPercentile: 0,
-    efficiencyPercentile: 0,
-    streakPercentile: 0,
-    recommendations,
-    weeklySchedule: [],
-    className: classRoom.name,
-    teacherName: classRoom.teacherName,
-    students,
-    classWeakTopics,
-    homework,
-    achievements: [],
-    examResults: [],
-    taskStats: [],
-    srsItems: [],
-    smartPath: [],
-    knowledgeMap: [],
-  }
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="value">${students.length}</div>
+        <div class="label">Учеников</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${Math.round(students.reduce((sum, s) => sum + (studentStore.getProfileStats(s.id)?.xp || 0), 0) / Math.max(students.length, 1))}</div>
+        <div class="label">Средний XP</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${(cls.homework || []).length}</div>
+        <div class="label">Домашних заданий</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>👥 Прогресс учеников</h2>
+      <table>
+        <thead>
+          <tr><th>Имя</th><th>Уровень</th><th>XP</th><th>Точность</th><th>Уроки</th><th>Стрик</th></tr>
+        </thead>
+        <tbody>
+          ${studentRows || '<tr><td colspan="6" style="text-align:center;color:#999">Нет учеников</td></tr>'}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="section">
+      <h2>📚 Домашние задания</h2>
+      <table>
+        <thead>
+          <tr><th>Название</th><th>Дедлайн</th><th>Сдавших</th><th>Статус</th></tr>
+        </thead>
+        <tbody>
+          ${homeworkRows || '<tr><td colspan="4" style="text-align:center;color:#999">Нет домашних заданий</td></tr>'}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      📚 ЕГЭ Русский — Подготовка | Сгенерировано ${today}
+    </div>
+  </div>
+</body>
+</html>
+  `
 }
 
-export function buildStudentReportData(): ReportPreviewData {
+export function generateStudentPortfolioHTML(): string {
   const progress = useProgressStore.getState()
   const stats = progress.userStats
-  const lessonProgress = progress.lessonProgress
-  const taskStats = progress.taskStats
-  const examResults = progress.examResults
-  const examDate = progress.examDate
-  const daysToExam = getDaysToExam(examDate)
-  const completedLessons = (Object.values(lessonProgress) as any[]).filter((l: any) => l.status === 'completed').length
-  const totalAttempts = (Object.values(taskStats) as any[]).reduce((sum: number, t: any) => sum + (t.total || 0), 0)
-  const totalCorrect = (Object.values(taskStats) as any[]).reduce((sum: number, t: any) => sum + (t.correct || 0), 0)
-  const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
-  const score = getPredictiveScore(
-    { taskStats, examResults, userStats: stats, lessonProgress, wrongAnswers: progress.wrongAnswers, examDate },
-    daysToExam
-  )
-  const achievements = progress.achievements.map((id) => {
-    const ach = allAchievements.find((a) => a.id === id)
-    return {
-      id,
-      title: ach?.title || id,
-      description: ach?.description || '',
-      date: undefined,
-    }
-  })
-  const examResultsFormatted = examResults.map((er) => ({
-    variant: er.variantId || 'Вариант',
-    date: er.date ? new Date(er.date).toLocaleDateString('ru-RU') : '—',
-    primaryScore: er.primaryScore || 0,
-    secondaryScore: er.secondaryScore || 0,
-  }))
-  const taskStatsFormatted = Object.entries(taskStats).map(([taskNum, stat]) => {
-    const s = stat as { total: number; correct: number; lastAttemptAt: string }
-    return {
-      taskNum: Number(taskNum),
-      total: s.total || 0,
-      correct: s.correct || 0,
-      accuracy: s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0,
-      avgTime: 0, // Not tracked per task in current store
-    }
-  })
-  const srsItems = Object.values(progress.srsData || {}).map((item) => ({
-    lesson: item.lessonId,
-    nextReview: formatNextReview(item),
-    interval: formatInterval(item),
-  }))
-  const adaptiveState = {
-    userStats: stats,
-    lessonProgress,
-    taskStats,
-    srsData: progress.srsData,
-    course,
-    examDate,
-  }
-  const smartPath = getSmartRecommendations(adaptiveState, analyzeErrors(progress.answerHistory).patterns, 5).map((r) => ({
-    title: r.lessonTitle,
-    description: r.description,
-    priority: r.priority,
-    sectionColor: r.sectionColor,
-  }))
+  const achievements = progress.achievements || []
+  const examResults = progress.examResults || []
+  const today = new Date().toLocaleDateString('ru-RU')
 
-  return {
-    type: 'student',
-    studentName: stats.name || 'Ученик',
-    studentEmoji: '🎓',
-    date: new Date().toLocaleDateString('ru-RU'),
-    footerText: 'ЕГЭ Русский — Подготовка',
-    level: stats.level || 1,
-    xp: stats.xp || 0,
-    streak: stats.streak || 0,
-    accuracy,
-    predictedScore: score.predictedSecondary,
-    lessonsCompleted: completedLessons,
-    totalLessons: getTotalLessons(),
-    daysToExam,
-    activityHistory: [],
-    weakTopics: [],
-    speedPercentile: 0,
-    accuracyPercentile: 0,
-    efficiencyPercentile: 0,
-    streakPercentile: 0,
-    recommendations: [],
-    weeklySchedule: [],
-    className: '',
-    teacherName: '',
-    students: [],
-    classWeakTopics: [],
-    homework: [],
-    achievements,
-    examResults: examResultsFormatted,
-    taskStats: taskStatsFormatted,
-    srsItems,
-    smartPath,
-    knowledgeMap: buildKnowledgeMap(lessonProgress),
+  const achievementList = achievements.map(a => {
+    const ach = getAchievementById(a)
+    return `<span class="badge badge-green">${ach ? ach.title : a}</span>`
+  }).join(' ')
+
+  const examRows = examResults.map((r: any) => `
+    <tr>
+      <td>${r.variantId}</td>
+      <td>${new Date(r.date).toLocaleDateString('ru-RU')}</td>
+      <td>${r.primaryScore}</td>
+      <td>${r.secondaryScore}</td>
+    </tr>
+  `).join('')
+
+  return `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Моё портфолио</title>
+  ${generateStyles()}
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>📖 Моё портфолио</h1>
+      <div class="subtitle">${escapeHtml(stats.name || 'Ученик')}</div>
+      <div class="date">${today}</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="value">${stats.level}</div><div class="label">Уровень</div></div>
+      <div class="stat-card"><div class="value">${stats.xp}</div><div class="label">XP</div></div>
+      <div class="stat-card"><div class="value">${stats.streak || 0} 🔥</div><div class="label">Стрик</div></div>
+      <div class="stat-card"><div class="value">${achievements.length}</div><div class="label">Достижений</div></div>
+    </div>
+
+    <div class="section">
+      <h2>🏆 Достижения</h2>
+      <p>${achievementList || 'Пока нет достижений — продолжай учиться!'}</p>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="section">
+      <h2>📝 Пройденные варианты</h2>
+      <table>
+        <thead><tr><th>Вариант</th><th>Дата</th><th>Первичный</th><th>Тестовый</th></tr></thead>
+        <tbody>${examRows || '<tr><td colspan="4" style="text-align:center;color:#999">Пока не пройдено ни одного варианта</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      📚 ЕГЭ Русский — Подготовка | Сгенерировано ${today}
+    </div>
+  </div>
+</body>
+</html>
+  `
+}
+
+function getAchievementById(id: string) {
+  // Import dynamically to avoid circular dependency
+  try {
+    const { achievements } = require('../data/achievements')
+    return achievements.find((a: any) => a.id === id)
+  } catch {
+    return null
   }
 }
 
-export function buildClassComparisonReportData(classId: string): ReportPreviewData {
-  // Same as teacher but with type 'class'
-  const data = buildTeacherReportData(classId)
-  data.type = 'class'
-  return data
+export function openReportInNewTab(html: string) {
+  const blob = new Blob([html], { type: 'text/html; charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  window.open(url, '_blank')
 }
-

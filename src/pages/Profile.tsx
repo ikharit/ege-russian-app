@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, ShoppingBag } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, ShoppingBag, FileText } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -807,6 +807,31 @@ export function Profile() {
 
       {/* AI Assistant Section */}
       <AIAssistantSection />
+
+      {/* Portfolio Report */}
+      <motion.div
+        className="card cursor-pointer"
+        whileHover={{ scale: 1.01 }}
+        onClick={() => {
+          import('../utils/pdfGenerator').then(({ generateStudentPortfolioHTML, openReportInNewTab }) => {
+            const html = generateStudentPortfolioHTML()
+            openReportInNewTab(html)
+          })
+        }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-duo-green flex items-center justify-center text-white">
+              <FileText size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-800">Моё портфолио</p>
+              <p className="text-xs text-gray-500">Сгенерировать PDF-отчёт</p>
+            </div>
+          </div>
+          <ChevronRight size={20} className="text-gray-400" />
+        </div>
+      </motion.div>
 
       {/* Achievements with popover */}
       <Popover

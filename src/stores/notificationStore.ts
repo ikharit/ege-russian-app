@@ -141,7 +141,7 @@ export const useNotificationStore = create<NotificationState>()(
           set({ fcmToken: token })
           return token
         } catch (err) {
-          console.warn('[FCM] Failed to get token:', err)
+          if (import.meta.env.DEV) console.warn('[FCM] Failed to get token:', err)
           return null
         }
       },
@@ -168,7 +168,7 @@ export const useNotificationStore = create<NotificationState>()(
             await get().getFCMToken()
           }
         } catch (err) {
-          console.warn('[FCM] Init failed:', err)
+          if (import.meta.env.DEV) console.warn('[FCM] Init failed:', err)
         }
       },
 

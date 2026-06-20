@@ -151,21 +151,21 @@ export function validateAllQuestions(questions: Question[], taskId: string): Val
 
 export function printValidationReport(errors: ValidationError[]) {
   if (errors.length === 0) {
-    console.log('✅ Все задания прошли валидацию!')
+    if (import.meta.env.DEV) console.log('✅ Все задания прошли валидацию!')
     return
   }
-  console.log(`\n❌ Найдено ${errors.length} ошибок:\n`)
+  if (import.meta.env.DEV) console.log(`\n❌ Найдено ${errors.length} ошибок:\n`)
   const grouped: Record<string, ValidationError[]> = {}
   for (const e of errors) {
     if (!grouped[e.type]) grouped[e.type] = []
     grouped[e.type].push(e)
   }
   for (const [type, errs] of Object.entries(grouped)) {
-    console.log(`\n【${type}】— ${errs.length}:`)
+    if (import.meta.env.DEV) console.log(`\n【${type}】— ${errs.length}:`)
     for (const e of errs) {
-      console.log(`  • ${e.questionId}: ${e.message}`)
-      if (e.text) console.log(`    Текст: "${e.text.substring(0, 80)}..."`)
-      if (e.options) console.log(`    Варианты: ${e.options.join(' | ')}`)
+      if (import.meta.env.DEV) console.log(`  • ${e.questionId}: ${e.message}`)
+      if (e.text) { if (import.meta.env.DEV) console.log(`    Текст: "${e.text.substring(0, 80)}..."`) }
+      if (e.options) { if (import.meta.env.DEV) console.log(`    Варианты: ${e.options.join(' | ')}`) }
     }
   }
 }

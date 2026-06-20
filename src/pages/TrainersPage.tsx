@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Volume2, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Volume2, ChevronRight, BookOpen } from 'lucide-react'
 import { AccentTrainerMiniProgress } from '../components/dashboard/AccentTrainerMiniProgress'
 import { Task5MiniProgress } from '../components/dashboard/Task5MiniProgress'
 import { Task10MiniProgress } from '../components/dashboard/Task10MiniProgress'
@@ -296,40 +296,48 @@ export function TrainersPage() {
       </div>
 
       {/* Trainer Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {trainers.map((trainer) => (
-          <motion.div
-            key={trainer.id}
-            className={`card bg-gradient-to-br ${trainer.bgGradient} ${trainer.borderColor} cursor-pointer`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(trainer.path)}
-            onKeyDown={(e) => handleKeyNav(e, () => navigate(trainer.path))}
-            role="button"
-            tabIndex={0}
-            aria-label={`Тренажёр ${trainer.title}, ${trainer.taskNumber}`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <div className={`w-8 h-8 rounded-lg ${trainer.color} flex items-center justify-center text-white text-sm font-bold`}>
-                {trainer.icon || trainer.taskNumber}
+      {trainers.length > 0 ? (
+        <div className="grid grid-cols-2 gap-3">
+          {trainers.map((trainer) => (
+            <motion.div
+              key={trainer.id}
+              className={`card bg-gradient-to-br ${trainer.bgGradient} ${trainer.borderColor} cursor-pointer`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(trainer.path)}
+              onKeyDown={(e) => handleKeyNav(e, () => navigate(trainer.path))}
+              role="button"
+              tabIndex={0}
+              aria-label={`Тренажёр ${trainer.title}, ${trainer.taskNumber}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-8 h-8 rounded-lg ${trainer.color} flex items-center justify-center text-white text-sm font-bold`}>
+                  {trainer.icon || trainer.taskNumber}
+                </div>
+                <span className={`text-xs font-bold uppercase tracking-wide ${trainer.textColor}`}>
+                  {trainer.taskNumber}
+                </span>
               </div>
-              <span className={`text-xs font-bold uppercase tracking-wide ${trainer.textColor}`}>
-                {trainer.taskNumber}
-              </span>
-            </div>
-            <p className="font-bold text-gray-800 text-sm leading-tight">{trainer.title}</p>
-            <p className="text-xs text-gray-500 mt-1">{trainer.subtitle}</p>
-            {trainer.miniProgress && (
-              <div className="mt-2">
-                {trainer.miniProgress}
+              <p className="font-bold text-gray-800 text-sm leading-tight">{trainer.title}</p>
+              <p className="text-xs text-gray-500 mt-1">{trainer.subtitle}</p>
+              {trainer.miniProgress && (
+                <div className="mt-2">
+                  {trainer.miniProgress}
+                </div>
+              )}
+              <div className="flex justify-end mt-1">
+                <ChevronRight size={16} className="text-gray-300" />
               </div>
-            )}
-            <div className="flex justify-end mt-1">
-              <ChevronRight size={16} className="text-gray-300" />
-            </div>
-          </motion.div>
-        ))}
-      </div>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
+          <BookOpen size={40} className="text-gray-400 mx-auto mb-3" />
+          <h3 className="font-bold text-gray-800 text-lg">Нет доступных тренажёров</h3>
+          <p className="text-sm text-gray-500 mt-1">Проверьте позже или обновите страницу</p>
+        </div>
+      )}
     </div>
   )
 }

@@ -35,6 +35,7 @@ export interface ProgressData {
   achievements: string[]
   atomProgress?: Record<string, unknown>
   wrongAnswers?: unknown[]
+  examResults?: unknown[]
   theoryTestsCompleted?: Record<string, { completed: boolean; score: number; xpEarned: number; completedAt?: string }>
   dailyQuestProgress?: Record<string, unknown>
 }

@@ -223,8 +223,7 @@ export default function TheoryEditorPage() {
   const handleSave = (blocks: EditorBlock[]) => {
     const text = blocksToText(blocks)
     // In a real app, this would save to backend or localStorage
-    // For now, we'll log it and show a preview
-    console.log('Saved theory text:', text)
+    // For now, we'll show a preview
     alert('Теория сохранена (в консоли)! В реальном приложении здесь будет сохранение в базу данных.')
   }
 

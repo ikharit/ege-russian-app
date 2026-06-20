@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp, Smile } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -549,7 +549,7 @@ export function Dashboard() {
       <ComparisonStats />
 
       {/* Weak topics */}
-      {problematicTasks.length > 0 && (
+      {problematicTasks.length > 0 ? (
         <motion.div
           className="bg-white rounded-2xl p-3 shadow-sm border border-duo-red/20 cursor-pointer hover:shadow-md transition-all"
           whileHover={{ scale: 1.01 }}
@@ -574,12 +574,18 @@ export function Dashboard() {
             ))}
           </div>
         </motion.div>
+      ) : (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+          <Smile size={32} className="text-duo-green mx-auto mb-2" />
+          <h3 className="font-bold text-gray-800">Отлично! У тебя нет проблемных заданий</h3>
+          <p className="text-sm text-gray-500 mt-1">Так держать!</p>
+        </div>
       )}
 
       {/* Plan & Schedule */}
-      {(plan && examDate) && (
-        <div className="flex flex-col gap-2">
-          <SectionTitle title="План" />
+      <div className="flex flex-col gap-2">
+        <SectionTitle title="План" />
+        {(plan && examDate) ? (
           <div className="grid grid-cols-2 gap-2">
             <motion.div
               className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md"
@@ -622,11 +628,23 @@ export function Dashboard() {
               </div>
             </motion.div>
           </div>
-          {assessment && (
-            <p className={`text-[10px] font-bold px-3 ${assessment.color}`}>{assessment.label} — {assessment.message}</p>
-          )}
-        </div>
-      )}
+        ) : (
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+            <Target size={32} className="text-duo-green mx-auto mb-3" />
+            <h3 className="font-bold text-gray-800">Нет плана подготовки</h3>
+            <p className="text-sm text-gray-500 mt-1 mb-4">Создай персональный план, чтобы эффективнее готовиться к ЕГЭ</p>
+            <button
+              onClick={() => navigate('/study-plan')}
+              className="bg-duo-green text-white font-bold px-6 py-2.5 rounded-xl hover:bg-duo-green/90 transition-colors text-sm"
+            >
+              Создать план
+            </button>
+          </div>
+        )}
+        {assessment && (
+          <p className={`text-[10px] font-bold px-3 ${assessment.color}`}>{assessment.label} — {assessment.message}</p>
+        )}
+      </div>
 
       {/* Class & Teacher */}
       <div className="flex flex-col gap-2">

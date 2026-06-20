@@ -81,7 +81,7 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
         get().setFirebaseUser(user)
       })
     } catch (err) {
-      console.warn('Firebase anonymous auth failed:', err)
+      if (import.meta.env.DEV) console.warn('Firebase anonymous auth failed:', err)
     }
   },
 
@@ -134,7 +134,7 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
       )
       get().setLastSync(new Date().toISOString())
     } catch (err) {
-      console.error('Firebase syncProgress error:', err)
+      if (import.meta.env.DEV) console.error('Firebase syncProgress error:', err)
     } finally {
       get().setSyncing(false)
     }
@@ -173,7 +173,7 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
       )
       get().setLastSync(new Date().toISOString())
     } catch (err) {
-      console.error('Firebase syncClassData error:', err)
+      if (import.meta.env.DEV) console.error('Firebase syncClassData error:', err)
     } finally {
       get().setSyncing(false)
     }
@@ -225,7 +225,7 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
         get().setLastSync(new Date().toISOString())
       }
     } catch (err) {
-      console.error('Firebase processOfflineQueue error:', err)
+      if (import.meta.env.DEV) console.error('Firebase processOfflineQueue error:', err)
     } finally {
       get().setSyncing(false)
     }
@@ -234,7 +234,7 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
   migrateToFirebase: async () => {
     const { firebaseUser, isOnline } = get()
     if (!firebaseUser || !isOnline) {
-      console.warn('Cannot migrate: offline or no user')
+      if (import.meta.env.DEV) console.warn('Cannot migrate: offline or no user')
       return
     }
 
@@ -279,9 +279,9 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
       }
 
       get().setLastSync(new Date().toISOString())
-      console.log('Migration to Firebase completed')
+      if (import.meta.env.DEV) console.log('Migration to Firebase completed')
     } catch (err) {
-      console.error('Firebase migration error:', err)
+      if (import.meta.env.DEV) console.error('Firebase migration error:', err)
     } finally {
       get().setSyncing(false)
     }
@@ -304,7 +304,7 @@ export function subscribeToClass(
       }
     },
     (err) => {
-      console.error('Firebase subscribeToClass error:', err)
+      if (import.meta.env.DEV) console.error('Firebase subscribeToClass error:', err)
       onUpdate(null)
     }
   )

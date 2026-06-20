@@ -48,7 +48,6 @@ export async function writeStudentResults(results: StudentResult[]): Promise<{ s
 export async function readHomeworkData(): Promise<any[]> {
   const url = getGASWebAppURL()
   if (!url) {
-    console.warn('[GSheets] URL не настроен')
     return []
   }
 

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
   ChevronRight, Check, X, Volume2, VolumeX, BookOpen,
-  ThumbsUp, ThumbsDown, AlertTriangle
+  ThumbsUp, ThumbsDown, AlertTriangle, Inbox
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
@@ -31,6 +31,7 @@ export interface BaseTrainerProps<T> {
   title: string
   taskNumber: string
   questions: T[]
+  isLoading?: boolean
   getQuestionId: (q: T) => string
   getQuestionText: (q: T) => string
   getOptions: (q: T) => string[]
@@ -56,6 +57,7 @@ export function BaseTrainer<T>({
   title,
   taskNumber,
   questions,
+  isLoading = false,
   getQuestionId,
   getQuestionText,
   getOptions,
@@ -335,12 +337,57 @@ export function BaseTrainer<T>({
     )
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-duo-snow flex flex-col p-6 max-w-2xl mx-auto w-full">
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-10 w-10 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-6 w-40 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-10 w-10 bg-gray-200 rounded-xl animate-pulse" />
+        </div>
+        {/* Progress bar skeleton */}
+        <div className="h-3 w-full bg-gray-200 rounded-full animate-pulse mb-6" />
+        {/* Question card skeleton */}
+        <div className="h-40 bg-gray-200 rounded-2xl animate-pulse mb-4" />
+        {/* Option skeletons */}
+        <div className="space-y-3 w-full">
+          <div className="h-14 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-14 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-14 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-14 bg-gray-200 rounded-xl animate-pulse" />
+        </div>
+        {/* Button skeleton */}
+        <div className="h-12 w-full max-w-md bg-gray-200 rounded-xl animate-pulse mt-6" />
+      </div>
+    )
+  }
+
   if (!effectiveQuestion) {
     return (
       <div className="min-h-screen bg-duo-snow flex flex-col items-center justify-center p-6">
-        <div className="card max-w-md w-full text-center space-y-4">
-          <p className="text-gray-500">Загрузка...</p>
-        </div>
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="card max-w-md w-full text-center space-y-6"
+        >
+          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+            <Inbox size={40} className="text-gray-400" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800">Вопросы закончились</h2>
+            <p className="text-gray-500 mt-1">
+              В этом тренажёре пока нет доступных вопросов
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/trainers')}
+            className="btn-primary w-full flex items-center justify-center gap-2"
+          >
+            <ArrowLeft size={18} />
+            Назад к тренажёрам
+          </button>
+        </motion.div>
       </div>
     )
   }
