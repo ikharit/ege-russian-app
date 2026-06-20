@@ -23,33 +23,16 @@ import { Task12Trainer } from './pages/Task12Trainer'
 import { Task13Trainer } from './pages/Task13Trainer'
 import { Task14Trainer } from './pages/Task14Trainer'
 import { Task15Trainer } from './pages/Task15Trainer'
-import { MistakesReview } from './pages/MistakesReview'
-import { ErrorAnalysisPage } from './pages/ErrorAnalysisPage'
 import { MiniGames } from './pages/MiniGames'
 import { StudentHomework } from './pages/StudentHomework'
 import { MyHomework } from './pages/MyHomework'
 import { ChallengesPage } from './pages/ChallengesPage'
 import { ParentDashboard } from './pages/ParentDashboard'
 import { TrainersPage } from './pages/TrainersPage'
-import { AnalyticsPage } from './pages/AnalyticsPage'
-import { TeacherClassroom } from './pages/TeacherClassroom'
 import { JoinClass } from './pages/JoinClass'
 import { ClassDetail } from './pages/ClassDetail'
-import { StudyPlanPage } from './pages/StudyPlanPage'
-import { AdaptiveTrainerPage } from './pages/AdaptiveTrainerPage'
 import { ExamVariantsList } from './pages/ExamVariantsList'
-import { ExamVariantPage } from './pages/ExamVariantPage'
-import { ExamResultsPage } from './pages/ExamResultsPage'
 import { EssayTopicsList } from './pages/EssayTopicsList'
-import { EssayPage } from './pages/EssayPage'
-import { DuelPage } from './pages/DuelPage'
-import { MarathonPage } from './pages/MarathonPage'
-import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
-import { ChatPage } from './pages/ChatPage'
-import { ShopPage } from './pages/ShopPage'
-import { ComparisonPage } from './pages/ComparisonPage'
-import { KnowledgeMap } from './pages/KnowledgeMap'
-import { GrowthPage } from './pages/GrowthPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -68,7 +51,26 @@ import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 
 import TheoryPage from './pages/TheoryPage'
-import TheoryEditorPage from './pages/TheoryEditorPage'
+
+// Lazy-loaded pages (rarely used, heavy bundles) — all use named exports, wrap with default
+const TheoryEditorPage = lazy(() => import('./pages/TheoryEditorPage').then(m => ({ default: m.TheoryEditorPage })))
+const MistakesReview = lazy(() => import('./pages/MistakesReview').then(m => ({ default: m.MistakesReview })))
+const ErrorAnalysisPage = lazy(() => import('./pages/ErrorAnalysisPage').then(m => ({ default: m.ErrorAnalysisPage })))
+const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })))
+const TeacherClassroom = lazy(() => import('./pages/TeacherClassroom').then(m => ({ default: m.TeacherClassroom })))
+const StudyPlanPage = lazy(() => import('./pages/StudyPlanPage').then(m => ({ default: m.StudyPlanPage })))
+const AdaptiveTrainerPage = lazy(() => import('./pages/AdaptiveTrainerPage').then(m => ({ default: m.AdaptiveTrainerPage })))
+const ExamVariantPage = lazy(() => import('./pages/ExamVariantPage').then(m => ({ default: m.ExamVariantPage })))
+const ExamResultsPage = lazy(() => import('./pages/ExamResultsPage').then(m => ({ default: m.ExamResultsPage })))
+const EssayPage = lazy(() => import('./pages/EssayPage').then(m => ({ default: m.EssayPage })))
+const DuelPage = lazy(() => import('./pages/DuelPage').then(m => ({ default: m.DuelPage })))
+const MarathonPage = lazy(() => import('./pages/MarathonPage').then(m => ({ default: m.MarathonPage })))
+const WeeklySchedulePage = lazy(() => import('./pages/WeeklySchedulePage').then(m => ({ default: m.WeeklySchedulePage })))
+const ChatPage = lazy(() => import('./pages/ChatPage').then(m => ({ default: m.ChatPage })))
+const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.ShopPage })))
+const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then(m => ({ default: m.ComparisonPage })))
+const KnowledgeMap = lazy(() => import('./pages/KnowledgeMap').then(m => ({ default: m.KnowledgeMap })))
+const GrowthPage = lazy(() => import('./pages/GrowthPage').then(m => ({ default: m.GrowthPage })))
 
 function BottomNav() {
   const navigate = useNavigate()
@@ -440,62 +442,68 @@ export default function App() {
         onClose={clearLastAchievement}
       />
       <main className="flex-1 overflow-auto">
-        <Routes>
-          <Route path="/" element={<TodayPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/auth" element={<AuthModal isOpen={true} onClose={() => navigate('/')} />} />
-          <Route path="/theory" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryPage /></Suspense>} />
-          <Route path="/theory-editor" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryEditorPage /></Suspense>} />
-          <Route path="/theory-editor/:taskNumber" element={<Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" /></div>}><TheoryEditorPage /></Suspense>} />
-          <Route path="/course" element={<CourseMap />} />
-          <Route path="/lesson/:lessonId" element={<Lesson />} />
-          <Route path="/stats" element={<Statistics />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/teacher" element={<Teacher />} />
-          <Route path="/teacher/classroom" element={<TeacherClassroom />} />
-          <Route path="/teacher/:studentName" element={<StudentHomework />} />
-          <Route path="/join-class" element={<JoinClass />} />
-          <Route path="/class/:classId" element={<ClassDetail />} />
-          <Route path="/challenges" element={<ChallengesPage />} />
-          <Route path="/parent" element={<ParentDashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/my-homework" element={<MyHomework />} />
-          <Route path="/practice" element={<AdaptivePractice />} />
-          <Route path="/mistakes" element={<MistakesReview />} />
-          <Route path="/error-analysis" element={<ErrorAnalysisPage />} />
-          <Route path="/adaptive-trainer" element={<AdaptiveTrainerPage />} />
-          <Route path="/trainers" element={<TrainersPage />} />
-          <Route path="/study-plan" element={<StudyPlanPage />} />
-          <Route path="/games" element={<MiniGames />} />
-          <Route path="/exam" element={<ExamVariantsList />} />
-          <Route path="/exam/:variantId" element={<ExamVariantPage />} />
-          <Route path="/exam/:variantId/results" element={<ExamResultsPage />} />
-          <Route path="/essay" element={<EssayTopicsList />} />
-          <Route path="/essay/:topicId" element={<EssayPage />} />
-          <Route path="/accent-trainer" element={<AccentTrainer />} />
-          <Route path="/task6-trainer" element={<Task6Trainer />} />
-          <Route path="/task7-trainer" element={<Task7Trainer />} />
-          <Route path="/task8-trainer" element={<Task8Trainer />} />
-          <Route path="/task9-trainer" element={<Task9Trainer />} />
-          <Route path="/task5-trainer" element={<Task5Trainer />} />
-          <Route path="/task10-trainer" element={<Task10Trainer />} />
-          <Route path="/task11-trainer" element={<Task11Trainer />} />
-          <Route path="/task12-trainer" element={<Task12Trainer />} />
-          <Route path="/task13-trainer" element={<Task13Trainer />} />
-          <Route path="/task14-trainer" element={<Task14Trainer />} />
-          <Route path="/task15-trainer" element={<Task15Trainer />} />
-          <Route path="/task16-trainer" element={<Task16Trainer />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/duel" element={<DuelPage />} />
-          <Route path="/marathon" element={<MarathonPage />} />
-          <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/personality-quiz" element={<PersonalityQuiz />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/comparison" element={<ComparisonPage />} />
-          <Route path="/knowledge-map" element={<KnowledgeMap />} />
-          <Route path="/growth" element={<GrowthPage />} />
-        </Routes>
+        <Suspense fallback={
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" />
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<TodayPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/auth" element={<AuthModal isOpen={true} onClose={() => navigate('/')} />} />
+            <Route path="/theory" element={<TheoryPage />} />
+            <Route path="/theory-editor" element={<TheoryEditorPage />} />
+            <Route path="/theory-editor/:taskNumber" element={<TheoryEditorPage />} />
+            <Route path="/course" element={<CourseMap />} />
+            <Route path="/lesson/:lessonId" element={<Lesson />} />
+            <Route path="/stats" element={<Statistics />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/teacher" element={<Teacher />} />
+            <Route path="/teacher/classroom" element={<TeacherClassroom />} />
+            <Route path="/teacher/:studentName" element={<StudentHomework />} />
+            <Route path="/join-class" element={<JoinClass />} />
+            <Route path="/class/:classId" element={<ClassDetail />} />
+            <Route path="/challenges" element={<ChallengesPage />} />
+            <Route path="/parent" element={<ParentDashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/my-homework" element={<MyHomework />} />
+            <Route path="/practice" element={<AdaptivePractice />} />
+            <Route path="/mistakes" element={<MistakesReview />} />
+            <Route path="/error-analysis" element={<ErrorAnalysisPage />} />
+            <Route path="/adaptive-trainer" element={<AdaptiveTrainerPage />} />
+            <Route path="/trainers" element={<TrainersPage />} />
+            <Route path="/study-plan" element={<StudyPlanPage />} />
+            <Route path="/games" element={<MiniGames />} />
+            <Route path="/exam" element={<ExamVariantsList />} />
+            <Route path="/exam/:variantId" element={<ExamVariantPage />} />
+            <Route path="/exam/:variantId/results" element={<ExamResultsPage />} />
+            <Route path="/essay" element={<EssayTopicsList />} />
+            <Route path="/essay/:topicId" element={<EssayPage />} />
+            <Route path="/accent-trainer" element={<AccentTrainer />} />
+            <Route path="/task6-trainer" element={<Task6Trainer />} />
+            <Route path="/task7-trainer" element={<Task7Trainer />} />
+            <Route path="/task8-trainer" element={<Task8Trainer />} />
+            <Route path="/task9-trainer" element={<Task9Trainer />} />
+            <Route path="/task5-trainer" element={<Task5Trainer />} />
+            <Route path="/task10-trainer" element={<Task10Trainer />} />
+            <Route path="/task11-trainer" element={<Task11Trainer />} />
+            <Route path="/task12-trainer" element={<Task12Trainer />} />
+            <Route path="/task13-trainer" element={<Task13Trainer />} />
+            <Route path="/task14-trainer" element={<Task14Trainer />} />
+            <Route path="/task15-trainer" element={<Task15Trainer />} />
+            <Route path="/task16-trainer" element={<Task16Trainer />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/duel" element={<DuelPage />} />
+            <Route path="/marathon" element={<MarathonPage />} />
+            <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/personality-quiz" element={<PersonalityQuiz />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/comparison" element={<ComparisonPage />} />
+            <Route path="/knowledge-map" element={<KnowledgeMap />} />
+            <Route path="/growth" element={<GrowthPage />} />
+          </Routes>
+        </Suspense>
       </main>
       {!isLesson && <BottomNav />}
     </div>
