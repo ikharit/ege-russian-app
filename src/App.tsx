@@ -110,7 +110,7 @@ export default function App() {
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
 
-  const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [authModalOpen, setAuthModalOpen] = useState(true)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
@@ -119,25 +119,6 @@ export default function App() {
   const loadProgress = useProgressStore((s) => s.loadProgress)
   const setUserName = useProgressStore((s) => s.setUserName)
   const syncProgress = useProgressStore((s) => s.syncProgress)
-
-  // Check initial session on mount
-  useEffect(() => {
-    if (!isSupabaseConfigured) return
-    const init = async () => {
-      const { data } = await supabase.auth.getSession()
-      if (data?.session?.user) {
-        setUserId(data.session.user.id)
-        setUserEmail(data.session.user.email || null)
-        if (data.session.user.user_metadata?.name) {
-          setUserName(data.session.user.user_metadata.name)
-        } else if (data.session.user.email) {
-          setUserName(data.session.user.email.split('@')[0])
-        }
-        await loadProgress()
-      }
-    }
-    init()
-  }, [setUserId, loadProgress, setUserName])
 
   // Handle OAuth callback (Google auth redirect)
   useEffect(() => {
