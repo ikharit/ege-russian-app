@@ -13,6 +13,7 @@ import { task13Questions } from './task13Questions'
 import { task14Questions } from './task14Questions'
 import { task15Questions } from './task15Questions'
 import { task16Questions } from './task16Questions'
+import { task17Questions } from './task17Questions'
 
 const dataSourceMap: Record<string, unknown[]> = {
   accent: allAccentWords,
@@ -28,6 +29,7 @@ const dataSourceMap: Record<string, unknown[]> = {
   task14: task14Questions,
   task15: task15Questions,
   task16: task16Questions,
+  task17: task17Questions,
 }
 
 interface AccentQuestion {
