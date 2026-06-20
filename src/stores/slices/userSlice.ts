@@ -16,6 +16,8 @@ export const getInitialStats = (): UserStats => ({
   totalQuestionsAnswered: 0,
   totalHeartsLost: 0,
   mistakesFixed: 0,
+  weeklyXP: 0,
+  league: 'Бронза',
   currentCombo: 0,
   maxCombo: 0,
   emotionalState: {
@@ -104,11 +106,21 @@ export function createUserActions(set: any, get: any) {
     addXP: (amount: number) => {
       set((s: any) => {
         const newXP = s.userStats.xp + amount
+        const newWeeklyXP = (s.userStats.weeklyXP || 0) + amount
         const newLevel = Math.floor(newXP / 100) + 1
+
+        // Determine league based on weekly XP
+        let league = 'Бронза'
+        if (newWeeklyXP >= 2000) league = 'Алмаз'
+        else if (newWeeklyXP >= 1000) league = 'Золото'
+        else if (newWeeklyXP >= 500) league = 'Серебро'
+
         return {
           userStats: {
             ...s.userStats,
             xp: newXP,
+            weeklyXP: newWeeklyXP,
+            league,
             level: newLevel
           }
         }

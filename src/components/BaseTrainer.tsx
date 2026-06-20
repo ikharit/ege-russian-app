@@ -87,6 +87,7 @@ export function BaseTrainer<T>({
 
   const [combo, setCombo] = useState(0) // session combo streak
   const [maxCombo, setMaxCombo] = useState(0)
+  const [feedbackGiven, setFeedbackGiven] = useState<Record<string, 'up' | 'down'>>({})
   const [sessionErrorPatterns, setSessionErrorPatterns] = useState<Map<string, number>>(new Map())
   const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
 
@@ -561,7 +562,7 @@ export function BaseTrainer<T>({
                           onClick={() => {
                             if (hasFeedback) return
                             recordFeedback(topEntryId, true)
-                            setFeedbackGiven(prev => ({ ...prev, [topEntryId]: 'up' }))
+                            setFeedbackGiven((prev: Record<string, 'up' | 'down'>) => ({ ...prev, [topEntryId]: 'up' }))
                           }}
                           disabled={!!hasFeedback}
                           className={`p-1 rounded hover:bg-blue-100 transition ${hasFeedback === 'up' ? 'text-green-600' : 'text-gray-400'} ${hasFeedback ? 'opacity-50 cursor-default' : ''}`}
@@ -573,7 +574,7 @@ export function BaseTrainer<T>({
                           onClick={() => {
                             if (hasFeedback) return
                             recordFeedback(topEntryId, false)
-                            setFeedbackGiven(prev => ({ ...prev, [topEntryId]: 'down' }))
+                            setFeedbackGiven((prev: Record<string, 'up' | 'down'>) => ({ ...prev, [topEntryId]: 'down' }))
                           }}
                           disabled={!!hasFeedback}
                           className={`p-1 rounded hover:bg-blue-100 transition ${hasFeedback === 'down' ? 'text-red-600' : 'text-gray-400'} ${hasFeedback ? 'opacity-50 cursor-default' : ''}`}

@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react'
+import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp, Play, RotateCcw } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   BookOpen, Pencil, Trophy, Zap,
@@ -18,230 +18,211 @@ import { course } from '../data/courseData'
 import { Popover } from '../components/Popover'
 import type { Lesson } from '../types'
 
+// ── Lesson Card ─────────────────────────────────────────────
+function LessonCard({
+  lesson,
+  index,
+  total,
+  sectionColor,
+  onClick,
+}: {
+  lesson: Lesson
+  index: number
+  total: number
+  sectionColor: string
+  onClick: () => void
+}) {
+  const lessonProgress = useProgressStore((s) => s.lessonProgress)
+  const isLessonAvailable = useProgressStore((s) => s.isLessonAvailable)
+  const prog = lessonProgress[lesson.id]
+
+  const status = (() => {
+    if (prog?.status === 'completed') return 'completed'
+    if (prog?.status === 'started') return 'current'
+    if (isLessonAvailable(lesson.id, lesson.prerequisites)) return 'available'
+    return 'locked'
+  })()
+
+  const isLast = index === total - 1
+
+  const statusConfig = {
+    completed: {
+      bg: 'bg-white',
+      border: 'border-duo-green',
+      iconBg: 'bg-duo-green',
+      icon: <Check size={18} />,
+      text: 'text-gray-800',
+      sub: 'text-duo-green',
+      subText: `✅ Пройдено · ${prog?.bestScore || 0}%`,
+      action: 'Повторить',
+      ActionIcon: RotateCcw,
+    },
+    current: {
+      bg: 'bg-white',
+      border: 'border-duo-yellow',
+      iconBg: 'bg-duo-yellow',
+      icon: <Star size={18} />,
+      text: 'text-gray-800',
+      sub: 'text-duo-yellow',
+      subText: 'Продолжить урок',
+      action: 'Продолжить',
+      ActionIcon: Play,
+    },
+    available: {
+      bg: 'bg-white',
+      border: 'border-gray-200',
+      iconBg: '',
+      icon: <span className="text-sm font-bold">{index + 1}</span>,
+      text: 'text-gray-800',
+      sub: 'text-gray-500',
+      subText: `${lesson.questions.length} вопросов · ${lesson.xpReward} XP`,
+      action: 'Начать',
+      ActionIcon: Play,
+    },
+    locked: {
+      bg: 'bg-gray-50',
+      border: 'border-gray-200',
+      iconBg: 'bg-gray-300',
+      icon: <Lock size={18} />,
+      text: 'text-gray-400',
+      sub: 'text-gray-400',
+      subText: 'Заблокировано',
+      action: '',
+      ActionIcon: Lock,
+    },
+  }
+
+  const cfg = statusConfig[status]
+  const availableStyle = status === 'available' ? { backgroundColor: sectionColor } : {}
+
+  return (
+    <div className="relative">
+      {/* Connector line to next */}
+      {!isLast && (
+        <div className="absolute left-6 top-14 h-[calc(100%+12px)] w-0.5 z-0">
+          <div
+            className={`w-full h-full ${status === 'completed' ? 'bg-duo-green/40' : 'bg-gray-200'}`}
+            style={status === 'completed' ? { backgroundColor: `${sectionColor}60` } : {}}
+          />
+        </div>
+      )}
+
+      <motion.div
+        className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border}`}
+        whileHover={status !== 'locked' ? { scale: 1.01, x: 4 } : {}}
+        whileTap={status !== 'locked' ? { scale: 0.99 } : {}}
+        onClick={onClick}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.05 }}
+      >
+        {/* Status icon */}
+        <div
+          className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 ${cfg.iconBg}`}
+          style={availableStyle}
+        >
+          {cfg.icon}
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <p className={`font-bold text-sm truncate ${cfg.text}`}>{lesson.title}</p>
+          <p className={`text-xs ${cfg.sub}`}>{cfg.subText}</p>
+
+          {/* Progress bar for completed */}
+          {status === 'completed' && prog?.bestScore && (
+            <div className="mt-1.5 w-24 bg-gray-100 rounded-full h-1.5">
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${prog.bestScore}%`, backgroundColor: sectionColor }}
+              />
+            </div>
+          )}
+
+          {/* Stars */}
+          {status === 'completed' && prog && (
+            <div className="flex gap-0.5 mt-1">
+              {[1, 2, 3].map((star) => (
+                <Star
+                  key={star}
+                  size={10}
+                  className={prog.bestScore >= star * 33 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-200'}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Action arrow */}
+        {status !== 'locked' && (
+          <div className="flex items-center gap-1 shrink-0 self-center">
+            <span className="text-xs font-bold text-gray-400 hidden sm:inline">{cfg.action}</span>
+            <cfg.ActionIcon size={16} className="text-gray-400" />
+          </div>
+        )}
+      </motion.div>
+    </div>
+  )
+}
+
+// ── Main Component ──────────────────────────────────────────
 export function CourseMap() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
-  const isLessonAvailable = useProgressStore((s) => s.isLessonAvailable)
 
   const [focusedSection, setFocusedSection] = useState<string | null>(null)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Read section from URL on mount + scroll to it
   useEffect(() => {
     const sectionId = searchParams.get('section')
-    if (sectionId && course.sections.some(s => s.id === sectionId)) {
+    if (sectionId && course.sections.some((s) => s.id === sectionId)) {
       setFocusedSection(sectionId)
-      // Scroll to section after full layout settle
-      const scrollTimer = setTimeout(() => {
-        const el = sectionRefs.current[sectionId]
-        if (el) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            })
-          })
-        }
+      const timer = setTimeout(() => {
+        sectionRefs.current[sectionId]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 500)
-      return () => clearTimeout(scrollTimer)
+      return () => clearTimeout(timer)
     }
   }, [searchParams])
 
-  // Click outside to reset focus
   useEffect(() => {
     if (!focusedSection) return
     const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      // Check if click is inside any section
-      const clickedSection = course.sections.find(s => {
+      const clicked = course.sections.find((s) => {
         const el = sectionRefs.current[s.id]
-        return el && el.contains(target)
+        return el && el.contains(e.target as Node)
       })
-      // If clicked on a different section or outside all sections, reset focus
-      if (!clickedSection || clickedSection.id !== focusedSection) {
-        setFocusedSection(null)
-      }
+      if (!clicked || clicked.id !== focusedSection) setFocusedSection(null)
     }
     document.addEventListener('click', handleClick)
     return () => document.removeEventListener('click', handleClick)
   }, [focusedSection])
 
-  const toggleGroup = (groupId: string) => {
-    setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }))
-  }
-
-  const toggleSection = (sectionId: string) => {
-    setCollapsedSections(prev => {
-      const next = new Set(prev)
-      if (next.has(sectionId)) next.delete(sectionId)
-      else next.add(sectionId)
-      return next
+  const toggleGroup = (id: string) =>
+    setExpandedGroups((p) => ({ ...p, [id]: !p[id] }))
+  const toggleSection = (id: string) =>
+    setCollapsedSections((p) => {
+      const n = new Set(p)
+      n.has(id) ? n.delete(id) : n.add(id)
+      return n
     })
-  }
-
-  const getNodeStatus = (lesson: Lesson) => {
-    const prog = lessonProgress[lesson.id]
-    if (prog?.status === 'completed') return 'completed'
-    if (prog?.status === 'started') return 'current'
-    const available = isLessonAvailable(lesson.id, lesson.prerequisites)
-    if (available) return 'available'
-    return 'locked'
-  }
 
   const getSectionProgress = (section: any) => {
     const completed = section.lessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
     const total = section.lessons.length
-    const avgScore = total > 0
-      ? Math.round(section.lessons.reduce((sum: number, l: any) => sum + (lessonProgress[l.id]?.bestScore || 0), 0) / total)
-      : 0
-    return { completed, total, avgScore, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
+    return {
+      completed,
+      total,
+      pct: total > 0 ? Math.round((completed / total) * 100) : 0,
+    }
   }
 
   const getGroupProgress = (group: any) => {
     const completed = group.lessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
     const total = group.lessons.length
     return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
-  }
-
-  const BoardPath = ({ lessons, sectionColor }: { lessons: Lesson[]; sectionColor: string }) => {
-    const nodeSize = 52
-    const gap = 20
-    const pathWidth = 280
-
-    return (
-      <div className="relative mx-auto" style={{ width: pathWidth, minHeight: lessons.length * (nodeSize + gap) + 40 }}>
-        {/* SVG тропинка */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox={`0 0 ${pathWidth} ${lessons.length * (nodeSize + gap) + 40}`}
-          preserveAspectRatio="none"
-        >
-          {lessons.map((lesson, i) => {
-            if (i === 0) return null
-            const status = getNodeStatus(lesson)
-            const prevStatus = getNodeStatus(lessons[i - 1])
-            const y1 = 20 + (i - 1) * (nodeSize + gap) + nodeSize / 2
-            const y2 = 20 + i * (nodeSize + gap) + nodeSize / 2
-            const x = pathWidth / 2
-            const isPathCompleted = prevStatus === 'completed'
-            
-            return (
-              <line
-                key={`path-${i}`}
-                x1={x}
-                y1={y1}
-                x2={x}
-                y2={y2}
-                stroke={isPathCompleted ? sectionColor : '#e5e7eb'}
-                strokeWidth={isPathCompleted ? 4 : 2}
-                strokeDasharray={isPathCompleted ? 'none' : '6 4'}
-                opacity={isPathCompleted ? 0.6 : 0.4}
-              />
-            )
-          })}
-        </svg>
-
-        {/* Ноды */}
-        <div className="relative flex flex-col items-center" style={{ gap: `${gap}px`, paddingTop: 20, paddingBottom: 20 }}>
-          {lessons.map((lesson, i) => {
-            const status = getNodeStatus(lesson)
-            const prog = lessonProgress[lesson.id]
-
-            const popoverContent = (
-              <div className="space-y-2">
-                <p className="font-bold text-white">{lesson.title}</p>
-                <p className="text-gray-300 text-xs">{lesson.description}</p>
-                <div className="flex items-center gap-3 mt-2">
-                  <div className="flex items-center gap-1 text-xs text-duo-yellow">
-                    <Zap size={12} /><span>{lesson.xpReward} XP</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-gray-400">
-                    <TrendingUp size={12} /><span>{lesson.questions.length} вопр.</span>
-                  </div>
-                </div>
-                {prog?.bestScore > 0 && (
-                  <div className="flex items-center gap-1 text-xs text-duo-green mt-1">
-                    <Trophy size={12} /><span>Лучший: {prog.bestScore}%</span>
-                  </div>
-                )}
-                {lesson.prerequisites.length > 0 && (
-                  <p className="text-xs text-gray-400 mt-1">
-                    Требует: {lesson.prerequisites.map(prId => {
-                      const allLessons = course.sections.flatMap(s => s.lessons)
-                      const pr = allLessons.find(l => l.id === prId)
-                      return pr?.title || prId
-                    }).join(', ')}
-                  </p>
-                )}
-                {status === 'locked' && (
-                  <p className="text-xs text-red-400 mt-1">🔒 Нужно пройти предыдущие уроки</p>
-                )}
-              </div>
-            )
-
-            const isCurrent = status === 'current'
-            const isCompleted = status === 'completed'
-            const isLocked = status === 'locked'
-
-            return (
-              <Popover key={lesson.id} position="bottom" content={popoverContent}>
-                <motion.div
-                  className="relative flex flex-col items-center cursor-pointer"
-                  whileHover={!isLocked ? { scale: 1.05 } : {}}
-                  whileTap={!isLocked ? { scale: 0.95 } : {}}
-                  onClick={() => { if (!isLocked) navigate(`/lesson/${lesson.id}`) }}
-                >
-                  {/* Glow for current */}
-                  {isCurrent && (
-                    <div className="absolute inset-0 rounded-full bg-duo-yellow/30 animate-pulse" style={{ width: nodeSize + 12, height: nodeSize + 12, top: -6, left: -6 }} />
-                  )}
-                  
-                  {/* Node */}
-                  <div
-                    className={`rounded-full flex items-center justify-center text-white font-bold shadow-lg transition-all ${
-                      isLocked ? 'bg-gray-300 shadow-gray-200' : isCompleted ? 'bg-duo-green shadow-green-200' : isCurrent ? 'bg-duo-yellow shadow-yellow-200' : ''
-                    }`}
-                    style={{
-                      width: isCurrent ? nodeSize + 4 : nodeSize,
-                      height: isCurrent ? nodeSize + 4 : nodeSize,
-                      backgroundColor: !isLocked && !isCompleted && !isCurrent ? sectionColor : undefined,
-                      boxShadow: isCurrent ? '0 0 20px rgba(255, 200, 0, 0.4)' : undefined,
-                    }}
-                  >
-                    {isLocked && <Lock size={22} />}
-                    {isCompleted && <Check size={22} />}
-                    {isCurrent && <Star size={22} />}
-                    {!isLocked && !isCompleted && !isCurrent && <span className="text-sm">{i + 1}</span>}
-                  </div>
-
-                  {/* Stars for completed */}
-                  {isCompleted && prog && (
-                    <div className="flex gap-0.5 mt-1.5">
-                      {[1, 2, 3].map((star) => (
-                        <Star key={star} size={12} className={prog.bestScore >= star * 33 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'} />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Label */}
-                  <p className={`text-xs text-center mt-1.5 max-w-[140px] leading-tight ${isLocked ? 'text-gray-400' : 'text-gray-700'}`}>
-                    {lesson.title}
-                  </p>
-
-                  {/* Score badge */}
-                  {isCompleted && prog?.bestScore && (
-                    <span className="text-[10px] font-bold text-duo-green mt-0.5">{prog.bestScore}%</span>
-                  )}
-                </motion.div>
-              </Popover>
-            )
-          })}
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -255,7 +236,10 @@ export function CourseMap() {
           animate={{ opacity: 1, y: 0 }}
         >
           <p className="text-sm text-gray-700">
-            🔍 Показан раздел <span className="font-bold">{course.sections.find(s => s.id === focusedSection)?.title}</span>
+            🔍 Показан раздел{' '}
+            <span className="font-bold">
+              {course.sections.find((s) => s.id === focusedSection)?.title}
+            </span>
           </p>
           <button
             onClick={() => setFocusedSection(null)}
@@ -276,13 +260,13 @@ export function CourseMap() {
           return (
             <motion.div
               key={section.id}
-              ref={el => { sectionRefs.current[section.id] = el }}
+              ref={(el) => { sectionRefs.current[section.id] = el }}
               className={`flex flex-col gap-4 transition-all duration-300 ${
                 isOtherFocused ? 'opacity-15 pointer-events-none' : ''
               } ${isFocused ? 'scale-[1.02]' : ''}`}
               layout
             >
-              {/* Section header */}
+              {/* Section Header */}
               <div className="flex items-center gap-3">
                 <Popover
                   position="right"
@@ -305,11 +289,8 @@ export function CourseMap() {
                   <div
                     className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity flex-1"
                     onClick={() => {
-                      if (isOtherFocused) {
-                        setFocusedSection(null) // Click on dimmed section resets focus
-                      } else {
-                        setFocusedSection(isFocused ? null : section.id)
-                      }
+                      if (isOtherFocused) setFocusedSection(null)
+                      else setFocusedSection(isFocused ? null : section.id)
                     }}
                   >
                     <div
@@ -328,15 +309,15 @@ export function CourseMap() {
                   </div>
                 </Popover>
 
-                {/* Collapse button */}
                 <button
                   onClick={() => toggleSection(section.id)}
                   className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  {isCollapsed
-                    ? <ChevronDown size={18} className="text-gray-400" />
-                    : <ChevronUp size={18} className="text-gray-400" />
-                  }
+                  {isCollapsed ? (
+                    <ChevronDown size={18} className="text-gray-400" />
+                  ) : (
+                    <ChevronUp size={18} className="text-gray-400" />
+                  )}
                 </button>
               </div>
 
@@ -367,7 +348,9 @@ export function CourseMap() {
                               </div>
                               <div className="text-right">
                                 <span className="text-xs font-bold text-duo-green">{gProg.pct}%</span>
-                                <span className="text-xs text-gray-400 ml-1">({gProg.completed}/{gProg.total})</span>
+                                <span className="text-xs text-gray-400 ml-1">
+                                  ({gProg.completed}/{gProg.total})
+                                </span>
                               </div>
                             </button>
                             <AnimatePresence>
@@ -379,8 +362,27 @@ export function CourseMap() {
                                   transition={{ duration: 0.2 }}
                                   className="overflow-hidden"
                                 >
-                                  <div className="px-4 pb-4 pt-2">
-                                    <BoardPath lessons={group.lessons} sectionColor={section.color} />
+                                  <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                                    {group.lessons.map((lesson: any, lIdx: number) => (
+                                      <LessonCard
+                                        key={lesson.id}
+                                        lesson={lesson}
+                                        index={lIdx}
+                                        total={group.lessons.length}
+                                        sectionColor={section.color}
+                                        onClick={() => {
+                                          const status = (() => {
+                                            const p = lessonProgress[lesson.id]
+                                            if (p?.status === 'completed') return 'completed'
+                                            if (p?.status === 'started') return 'current'
+                                            const available = useProgressStore.getState().isLessonAvailable(lesson.id, lesson.prerequisites)
+                                            if (available) return 'available'
+                                            return 'locked'
+                                          })()
+                                          if (status !== 'locked') navigate(`/lesson/${lesson.id}`)
+                                        }}
+                                      />
+                                    ))}
                                   </div>
                                 </motion.div>
                               )}
@@ -390,8 +392,27 @@ export function CourseMap() {
                       })}
                     </div>
                   ) : (
-                    <div className="py-2">
-                      <BoardPath lessons={section.lessons} sectionColor={section.color} />
+                    <div className="flex flex-col gap-3">
+                      {section.lessons.map((lesson, lIdx) => (
+                        <LessonCard
+                          key={lesson.id}
+                          lesson={lesson}
+                          index={lIdx}
+                          total={section.lessons.length}
+                          sectionColor={section.color}
+                          onClick={() => {
+                            const status = (() => {
+                              const p = lessonProgress[lesson.id]
+                              if (p?.status === 'completed') return 'completed'
+                              if (p?.status === 'started') return 'current'
+                              const available = useProgressStore.getState().isLessonAvailable(lesson.id, lesson.prerequisites)
+                              if (available) return 'available'
+                              return 'locked'
+                            })()
+                            if (status !== 'locked') navigate(`/lesson/${lesson.id}`)
+                          }}
+                        />
+                      ))}
                     </div>
                   )}
                 </motion.div>

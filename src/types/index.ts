@@ -99,6 +99,8 @@ export interface UserStats {
   totalLessonTimeMinutes?: number
   totalQuestionsAnswered?: number
   totalHeartsLost?: number
+  weeklyXP?: number
+  league?: string
   activeStatus?: string
   mistakesFixed?: number
   streakFrozen?: boolean
