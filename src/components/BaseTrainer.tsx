@@ -98,6 +98,28 @@ export function BaseTrainer<T>({
   }
   const currentStage = Math.floor(currentIndex / 4) // 4 questions per stage
 
+  // Touch swipe state
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
+  const SWIPE_THRESHOLD = 50
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+  }, [])
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!touchStart) return
+    const dx = e.changedTouches[0].clientX - touchStart.x
+    const dy = e.changedTouches[0].clientY - touchStart.y
+    // Prevent swipe if vertical scroll is dominant
+    if (Math.abs(dy) > Math.abs(dx)) return
+    if (dx > SWIPE_THRESHOLD && currentIndex > 0) {
+      setCurrentIndex((i) => i - 1)
+    } else if (dx < -SWIPE_THRESHOLD && currentIndex < questions.length - 1) {
+      setCurrentIndex((i) => i + 1)
+    }
+    setTouchStart(null)
+  }, [touchStart, currentIndex, questions.length])
+
   // IRT-based adaptive question ordering
   const irt = useState(() => getGlobalIRT())[0]
   const bkt = useState(() => getGlobalBKT())[0]
@@ -469,7 +491,11 @@ export function BaseTrainer<T>({
         )}
 
         {/* Question */}
-        <div className="w-full mb-4">
+        <div
+          className="w-full mb-4"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {renderQuestion({
             question: effectiveQuestion,
             selectedAnswer,

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, X, ChevronDown, ChevronUp, Megaphone, BookOpen, Wrench, Star, History } from 'lucide-react'
+import { Sparkles, X, ChevronDown, ChevronUp, Megaphone, BookOpen, Wrench, Star, History, Cog } from 'lucide-react'
 import { RELEASE_NOTES, LATEST_VERSION } from '../data/releaseNotes'
 
 const STORAGE_KEY = 'ege-release-notes-dismissed'
@@ -13,13 +13,14 @@ function setDismissedVersion(version: string) {
   try { localStorage.setItem(STORAGE_KEY, version) } catch {}
 }
 
-function getBulletIcon(type: string) {
+function getBulletIcon(type: string, size: number = 13) {
   switch (type) {
-    case 'ege-important': return <Star size={13} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
-    case 'feature': return <Sparkles size={13} className="text-duo-green shrink-0 mt-0.5" />
-    case 'fix': return <Wrench size={13} className="text-duo-blue shrink-0 mt-0.5" />
-    case 'fun': return <BookOpen size={13} className="text-duo-purple shrink-0 mt-0.5" />
-    default: return <Sparkles size={13} className="text-gray-400 shrink-0 mt-0.5" />
+    case 'ege-important': return <Star size={size} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
+    case 'feature': return <Sparkles size={size} className="text-duo-green shrink-0 mt-0.5" />
+    case 'fix': return <Wrench size={size} className="text-duo-blue shrink-0 mt-0.5" />
+    case 'fun': return <BookOpen size={size} className="text-duo-purple shrink-0 mt-0.5" />
+    case 'tech': return <Cog size={size} className="text-gray-400 shrink-0 mt-0.5" />
+    default: return <Sparkles size={size} className="text-gray-400 shrink-0 mt-0.5" />
   }
 }
 
@@ -29,6 +30,7 @@ function getBulletClass(type: string) {
     case 'feature': return 'bg-duo-green/5 text-gray-700'
     case 'fix': return 'bg-duo-blue/5 text-gray-700'
     case 'fun': return 'bg-duo-purple/5 text-gray-700'
+    case 'tech': return 'bg-gray-50 text-gray-400'
     default: return 'bg-gray-50 text-gray-700'
   }
 }
@@ -43,8 +45,10 @@ export function ReleaseNotesWidget() {
 
   // Важные пункты — только ege-important для свёрнутого вида
   const importantBullets = latest.bullets.filter((b: any) => b.type === 'ege-important')
-  // Остальные пункты — для развёрнутого вида
-  const otherBullets = latest.bullets.filter((b: any) => b.type !== 'ege-important')
+  // Остальные (feature/fix/fun) для развёрнутого
+  const otherBullets = latest.bullets.filter((b: any) => ['feature', 'fix', 'fun'].includes(b.type))
+  // Технические — tech
+  const techBullets = latest.bullets.filter((b: any) => b.type === 'tech')
 
   const handleDismiss = () => {
     setDismissedVersion(LATEST_VERSION)
@@ -128,7 +132,6 @@ export function ReleaseNotesWidget() {
                   </div>
                 ))}
               </div>
-              {/* Кнопка "Вся история" в свёрнутом виде */}
               <button
                 onClick={() => setShowHistory(true)}
                 className="mt-2 text-[11px] text-gray-400 hover:text-duo-blue font-medium hover:underline flex items-center gap-1"
@@ -140,7 +143,7 @@ export function ReleaseNotesWidget() {
           )}
         </AnimatePresence>
 
-        {/* Expanded content — все пункты */}
+        {/* Expanded content — 3 уровня */}
         <AnimatePresence>
           {expanded && (
             <motion.div
@@ -150,29 +153,29 @@ export function ReleaseNotesWidget() {
               transition={{ duration: 0.2 }}
               className="px-3 pb-3"
             >
-              {/* Важные пункты */}
+              {/* Важные пункты — крупно */}
               {importantBullets.length > 0 && (
                 <div className="space-y-1.5 mb-2">
                   {importantBullets.map((b: any, i: number) => (
                     <div
                       key={`imp-${i}`}
-                      className={`flex flex-col gap-0.5 p-2 rounded-lg text-xs ${getBulletClass(b.type)}`}
+                      className="flex flex-col gap-0.5 p-2.5 rounded-lg bg-duo-yellow/10 border border-duo-yellow/20"
                     >
                       <div className="flex items-start gap-2">
-                        {getBulletIcon(b.type)}
-                        <span className="font-medium">{b.text}</span>
+                        <Star size={14} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
+                        <span className="text-sm font-medium text-gray-800">{b.text}</span>
                       </div>
                       {b.impact && (
-                        <span className="text-[10px] text-gray-500 italic ml-5">{b.impact}</span>
+                        <span className="text-xs text-gray-500 italic ml-6">{b.impact}</span>
                       )}
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Остальные пункты */}
+              {/* Остальные (feature/fix/fun) — мелко */}
               {otherBullets.length > 0 && (
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 mb-2">
                   {otherBullets.map((b: any, i: number) => (
                     <div
                       key={`oth-${i}`}
@@ -185,6 +188,26 @@ export function ReleaseNotesWidget() {
                       {b.impact && (
                         <span className="text-[10px] text-gray-500 italic ml-5">{b.impact}</span>
                       )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Технические — ещё мельче */}
+              {techBullets.length > 0 && (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="h-px flex-1 bg-gray-100" />
+                    <span className="text-[9px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
+                    <div className="h-px flex-1 bg-gray-100" />
+                  </div>
+                  {techBullets.map((b: any, i: number) => (
+                    <div
+                      key={`tech-${i}`}
+                      className="flex items-start gap-2 py-1 px-2 rounded text-[10px] text-gray-400"
+                    >
+                      <Cog size={11} className="shrink-0 mt-0.5 text-gray-300" />
+                      <span>{b.text}</span>
                     </div>
                   ))}
                 </div>
@@ -247,7 +270,8 @@ export function ReleaseNotesWidget() {
               <div className="p-4 space-y-5">
                 {RELEASE_NOTES.map((note, idx) => {
                   const important = note.bullets.filter((b: any) => b.type === 'ege-important')
-                  const others = note.bullets.filter((b: any) => b.type !== 'ege-important')
+                  const others = note.bullets.filter((b: any) => ['feature', 'fix', 'fun'].includes(b.type))
+                  const tech = note.bullets.filter((b: any) => b.type === 'tech')
                   return (
                     <div
                       key={note.version}
@@ -262,7 +286,7 @@ export function ReleaseNotesWidget() {
                             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                               <p className="text-[10px] text-gray-400">v{note.version} • {note.date}</p>
                               <span className="text-[10px] text-gray-400">
-                                {important.length} ключевых{others.length > 0 ? ` · ${others.length} технических` : ''}
+                                {important.length} ключевых{others.length > 0 ? ` · ${others.length} обычных` : ''}{tech.length > 0 ? ` · ${tech.length} технических` : ''}
                               </span>
                             </div>
                           </div>
@@ -289,9 +313,9 @@ export function ReleaseNotesWidget() {
                         </div>
                       )}
 
-                      {/* Other bullets — мелко, компактно */}
+                      {/* Other bullets (feature/fix/fun) — мелко, компактно */}
                       {others.length > 0 && (
-                        <div className="px-3 pb-3">
+                        <div className="px-3 pb-2">
                           <div className="flex items-center gap-2 mb-2">
                             <div className="h-px flex-1 bg-gray-200" />
                             <span className="text-[10px] uppercase tracking-wider text-gray-400 font-medium shrink-0">Остальные изменения</span>
@@ -301,9 +325,36 @@ export function ReleaseNotesWidget() {
                             {others.map((b: any, i: number) => (
                               <div
                                 key={i}
-                                className="flex items-start gap-2 p-2 rounded-lg bg-gray-100/60 text-xs text-gray-600"
+                                className="flex flex-col gap-0.5 p-2 rounded-lg bg-gray-100/60 text-xs text-gray-600"
                               >
-                                {getBulletIcon(b.type)}
+                                <div className="flex items-start gap-2">
+                                  {getBulletIcon(b.type, 12)}
+                                  <span>{b.text}</span>
+                                </div>
+                                {b.impact && (
+                                  <span className="text-[10px] text-gray-400 italic ml-5">{b.impact}</span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Tech bullets — микро-шрифт, ещё серее */}
+                      {tech.length > 0 && (
+                        <div className="px-3 pb-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="h-px flex-1 bg-gray-100" />
+                            <span className="text-[9px] uppercase tracking-wider text-gray-300 font-medium shrink-0">Под капотом</span>
+                            <div className="h-px flex-1 bg-gray-100" />
+                          </div>
+                          <div className="space-y-0.5">
+                            {tech.map((b: any, i: number) => (
+                              <div
+                                key={i}
+                                className="flex items-start gap-1.5 py-0.5 px-1.5 rounded text-[10px] text-gray-400"
+                              >
+                                <Cog size={10} className="shrink-0 mt-0.5 text-gray-300" />
                                 <span>{b.text}</span>
                               </div>
                             ))}

@@ -6,7 +6,9 @@ import { Popover } from './Popover'
 import { motion } from 'framer-motion'
 import { ProfileSwitcher } from './ProfileSwitcher'
 import { StudentRegistrationModal } from './StudentRegistrationModal'
+import { NotificationCenter } from './NotificationCenter'
 import { LATEST_VERSION } from '../data/releaseNotes'
+import { useShopStore } from '../stores/shopStore'
 
 const RN_STORAGE_KEY = 'ege-release-notes-dismissed'
 function isReleaseUnread(): boolean {
@@ -113,6 +115,9 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
               <span className="font-bold text-sm">{stats.xp}</span>
             </motion.div>
           </Popover>
+
+          {/* Notification Center */}
+          <NotificationCenter />
 
           {/* What's New */}
           <motion.button

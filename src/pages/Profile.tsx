@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2 } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, ShoppingBag } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -14,6 +14,7 @@ import { Popover } from '../components/Popover'
 import { useNotificationStore } from '../stores/notificationStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
+import { useShopStore } from '../stores/shopStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { getPlayerTypeLabel, getPlayerTypeDescription, getPlayerTypeIcon, getPlayerTypeColor, type PlayerType } from '../utils/personalityEngine'
 
@@ -207,6 +208,82 @@ function AIAssistantSection() {
   )
 }
 
+function ShopInventorySection() {
+  const navigate = useNavigate()
+  const purchasedItems = useShopStore((s) => s.getPurchasedItems())
+  const equipped = useShopStore((s) => s.equipped)
+  const equip = useShopStore((s) => s.equip)
+  const unequip = useShopStore((s) => s.unequip)
+
+  const categoryLabels: Record<string, string> = {
+    avatar: 'Аватарки',
+    theme: 'Темы',
+    badge: 'Бейджи',
+    sound: 'Звуки',
+    frame: 'Рамки',
+  }
+
+  const itemsByCategory = purchasedItems.reduce((acc, item) => {
+    if (!acc[item.category]) acc[item.category] = []
+    acc[item.category].push(item)
+    return acc
+  }, {} as Record<string, typeof purchasedItems>)
+
+  return (
+    <div className="card">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-gray-700">Мои предметы</h3>
+        <button
+          onClick={() => navigate('/shop')}
+          className="text-xs text-duo-purple font-bold hover:underline flex items-center gap-1"
+        >
+          <ShoppingBag size={14} />
+          В магазин →
+        </button>
+      </div>
+      {purchasedItems.length === 0 ? (
+        <p className="text-sm text-gray-400">Пока нет купленных предметов</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {Object.entries(itemsByCategory).map(([category, items]) => (
+            <div key={category}>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">
+                {categoryLabels[category] || category}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {items.map((item) => {
+                  const isEquipped = equipped[category as keyof typeof equipped] === item.id
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        if (isEquipped) {
+                          unequip(item.category)
+                        } else {
+                          equip(item.id, item.category)
+                        }
+                      }}
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        isEquipped
+                          ? 'bg-duo-green text-white shadow-sm'
+                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                      {isEquipped && <CheckCircle size={12} />}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Profile() {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
@@ -241,6 +318,8 @@ export function Profile() {
   const updateNotifSettings = useNotificationStore((s) => s.updateSettings)
   const requestPermission = useNotificationStore((s) => s.requestPermission)
   const permission = useNotificationStore((s) => s.permission)
+  const sendLocalNotification = useNotificationStore((s) => s.sendLocalNotification)
+  const addNotification = useNotificationStore((s) => s.addNotification)
 
   const completedLessons = Object.values(lessonProgress).filter(l => l.status === 'completed').length
   const unlockedStatuses = getUnlockedStatuses(achievements, leaderboardRanks)
@@ -681,6 +760,9 @@ export function Profile() {
         </div>
       </div>
 
+      {/* My Items */}
+      <ShopInventorySection />
+
       {/* Cloud sync section */}
       <div className="card">
         <h3 className="font-bold text-gray-700 mb-3">Облачная синхронизация</h3>
@@ -982,79 +1064,151 @@ export function Profile() {
           onClick={() => setShowNotificationSettings(false)}
         >
           <motion.div
-            className="bg-white rounded-t-2xl sm:rounded-2xl p-6 w-full max-w-md max-h-[80vh] overflow-y-auto"
+            className="bg-white dark:bg-gray-900 rounded-t-2xl sm:rounded-2xl p-6 w-full max-w-md max-h-[85vh] overflow-y-auto"
             initial={{ y: 300 }}
             animate={{ y: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold">Уведомления</h3>
-              <button onClick={() => setShowNotificationSettings(false)} className="text-gray-400">✕</button>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                <Bell size={20} className="text-duo-green" />
+                Уведомления
+              </h3>
+              <button onClick={() => setShowNotificationSettings(false)} className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">✕</button>
             </div>
-            
-            <div className="flex flex-col gap-4">
-              {/* Permission status */}
-              <div className="p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm font-bold">Статус: {permission === 'granted' ? '✅ Разрешены' : permission === 'denied' ? '❌ Запрещены' : '⏳ Не запрошены'}</p>
-                {permission !== 'granted' && (
-                  <button onClick={requestPermission} className="mt-2 w-full py-2 bg-duo-green text-white rounded-lg font-bold text-sm">
-                    Разрешить уведомления
-                  </button>
-                )}
+
+            {/* Permission status */}
+            <div className={`p-3 rounded-xl mb-4 ${
+              permission === 'granted' ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800' :
+              permission === 'denied' ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' :
+              'bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800'
+            }`}>
+              <div className="flex items-center gap-2">
+                {permission === 'granted' ? <CheckCircle size={16} className="text-green-500" /> :
+                 permission === 'denied' ? <XCircle size={16} className="text-red-500" /> :
+                 <AlertTriangle size={16} className="text-yellow-500" />}
+                <span className={`text-sm font-bold ${
+                  permission === 'granted' ? 'text-green-700 dark:text-green-400' :
+                  permission === 'denied' ? 'text-red-700 dark:text-red-400' :
+                  'text-yellow-700 dark:text-yellow-400'
+                }`}>
+                  {permission === 'granted' ? '✅ Push-уведомления разрешены' :
+                   permission === 'denied' ? '❌ Push-уведомления запрещены' :
+                   '⏳ Разрешение не запрошено'}
+                </span>
               </div>
-
-              {/* Streak reminder */}
-              <label className="flex items-center justify-between">
-                <span className="text-sm">Напоминание о streak</span>
-                <input
-                  type="checkbox"
-                  checked={notifSettings.streakReminder}
-                  onChange={(e) => updateNotifSettings({ streakReminder: e.target.checked })}
-                  className="w-5 h-5 accent-duo-green"
-                />
-              </label>
-
-              {/* Streak time */}
-              {notifSettings.streakReminder && (
-                <div className="ml-4">
-                  <label className="text-xs text-gray-500">Время напоминания</label>
-                  <input
-                    type="time"
-                    value={notifSettings.streakReminderTime}
-                    onChange={(e) => updateNotifSettings({ streakReminderTime: e.target.value })}
-                    className="w-full p-2 border rounded-lg text-sm mt-1"
-                  />
-                </div>
+              {permission === 'denied' && (
+                <p className="text-xs text-gray-500 mt-2">
+                  Чтобы включить уведомления, откройте настройки браузера → Конфиденциальность → Уведомления → Разрешить для этого сайта.
+                </p>
               )}
-
-              {/* Homework deadline */}
-              <label className="flex items-center justify-between">
-                <span className="text-sm">Дедлайн домашки</span>
-                <input
-                  type="checkbox"
-                  checked={notifSettings.homeworkDeadline}
-                  onChange={(e) => updateNotifSettings({ homeworkDeadline: e.target.checked })}
-                  className="w-5 h-5 accent-duo-green"
-                />
-              </label>
-
-              {/* Homework days */}
-              {notifSettings.homeworkDeadline && (
-                <div className="ml-4">
-                  <label className="text-xs text-gray-500">За сколько дней напоминать</label>
-                  <select
-                    value={notifSettings.homeworkReminderDays}
-                    onChange={(e) => updateNotifSettings({ homeworkReminderDays: Number(e.target.value) })}
-                    className="w-full p-2 border rounded-lg text-sm mt-1"
-                  >
-                    <option value={1}>1 день</option>
-                    <option value={2}>2 дня</option>
-                    <option value={3}>3 дня</option>
-                    <option value={7}>Неделю</option>
-                  </select>
-                </div>
+              {permission !== 'granted' && permission !== 'denied' && (
+                <button
+                  onClick={requestPermission}
+                  className="mt-2 w-full py-2 bg-duo-green text-white rounded-lg font-bold text-sm hover:bg-duo-green/90 transition-colors"
+                >
+                  Разрешить уведомления
+                </button>
               )}
             </div>
+
+            {/* Global toggle */}
+            <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+              <div className="flex items-center gap-2">
+                {notifSettings.enabled ? <BellRing size={18} className="text-duo-green" /> : <BellOff size={18} className="text-gray-400" />}
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Push-уведомления</span>
+              </div>
+              <button
+                onClick={() => updateNotifSettings({ enabled: !notifSettings.enabled })}
+                className={`w-12 h-6 rounded-full transition-colors relative ${
+                  notifSettings.enabled ? 'bg-duo-green' : 'bg-gray-300 dark:bg-gray-600'
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+                    notifSettings.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {notifSettings.enabled && (
+              <div className="flex flex-col gap-3">
+                {/* Reminder time */}
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Время напоминания</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(['09:00', '12:00', '18:00', '21:00'] as const).map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => updateNotifSettings({ reminderTime: t })}
+                        className={`py-2 rounded-lg text-xs font-bold transition-colors ${
+                          notifSettings.reminderTime === t
+                            ? 'bg-duo-green text-white'
+                            : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Types */}
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Типы уведомлений</label>
+                  <div className="flex flex-col gap-2">
+                    {[
+                      { key: 'streakReminder' as const, label: '🔥 Стрик', desc: 'Напоминание подержать стрик' },
+                      { key: 'homeworkDeadline' as const, label: '📚 Домашка', desc: 'Дедлайны и напоминания' },
+                      { key: 'examReminder' as const, label: '⏰ ЕГЭ', desc: 'Обратный отсчёт до экзамена' },
+                      { key: 'dailyQuestReminder' as const, label: '🎯 Квесты', desc: 'Ежедневные задания' },
+                      { key: 'srsReminder' as const, label: '🔁 Повторение', desc: 'SRS-напоминания' },
+                      { key: 'achievementReminder' as const, label: '🏆 Достижения', desc: 'Новые достижения' },
+                      { key: 'levelUpReminder' as const, label: '🎉 Уровень', desc: 'При повышении уровня' },
+                    ].map((item) => (
+                      <label key={item.key} className="flex items-center justify-between py-1.5">
+                        <div>
+                          <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{item.label}</span>
+                          <p className="text-[10px] text-gray-400">{item.desc}</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={!!notifSettings[item.key]}
+                          onChange={(e) => updateNotifSettings({ [item.key]: e.target.checked })}
+                          className="w-5 h-5 accent-duo-green"
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* FCM Token (debug) */}
+                <details className="text-xs">
+                  <summary className="text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300">Отладка: FCM Token</summary>
+                  <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded-lg break-all text-[10px] text-gray-500 font-mono">
+                    {useNotificationStore.getState().fcmToken || 'не получен'}
+                  </div>
+                </details>
+
+                {/* Test notification */}
+                <button
+                  onClick={() => {
+                    sendLocalNotification('🧪 Тестовое уведомление', 'Если ты видишь это — push работают!', 'achievement', '/profile')
+                    addNotification({
+                      type: 'achievement',
+                      title: '🧪 Тестовое уведомление',
+                      body: 'Если ты видишь это — push работают!',
+                      actionUrl: '/profile',
+                    })
+                  }}
+                  className="w-full py-2.5 rounded-xl font-bold text-sm border border-duo-green/30 text-duo-green hover:bg-duo-green/5 transition-colors flex items-center justify-center gap-2"
+                >
+                  <TestTube size={16} />
+                  Тестовое уведомление
+                </button>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}

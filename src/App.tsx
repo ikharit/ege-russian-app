@@ -45,7 +45,10 @@ import { EssayPage } from './pages/EssayPage'
 import { DuelPage } from './pages/DuelPage'
 import { MarathonPage } from './pages/MarathonPage'
 import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
+import { WeeklySchedulePage } from './pages/WeeklySchedulePage'
 import { ChatPage } from './pages/ChatPage'
+import { ShopPage } from './pages/ShopPage'
+import { ComparisonPage } from './pages/ComparisonPage'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
@@ -53,6 +56,7 @@ import { AIChat } from './components/AIChat'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, GraduationCap, Gamepad2, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 import { useClassStore, ProgressData } from './stores/classStore'
@@ -151,18 +155,49 @@ export default function App() {
   const permission = useNotificationStore((s) => s.permission)
   const checkAndNotify = useNotificationStore((s) => s.checkAndNotify)
   const requestPermission = useNotificationStore((s) => s.requestPermission)
+  const initFCM = useNotificationStore((s) => s.initFCM)
+  const onForegroundMessage = useNotificationStore((s) => s.onForegroundMessage)
+  const addNotification = useNotificationStore((s) => s.addNotification)
+  const sendLocalNotification = useNotificationStore((s) => s.sendLocalNotification)
+  const [fcmToast, setFcmToast] = useState<{title: string; body: string; type: string} | null>(null)
+
+  useEffect(() => {
+    // Initialize FCM (registers service worker)
+    initFCM().catch(() => {})
+  }, [initFCM])
+
+  useEffect(() => {
+    // Listen for foreground FCM messages
+    const unsub = onForegroundMessage((payload) => {
+      setFcmToast({ title: payload.title, body: payload.body, type: payload.type })
+      // Auto-hide after 5s
+      setTimeout(() => setFcmToast(null), 5000)
+    })
+    return unsub
+  }, [onForegroundMessage])
 
   useEffect(() => {
     if (permission === 'granted') {
       checkAndNotify()
     } else if (permission === 'default') {
-      // Ask once after 10 seconds
+      // Ask once after 15 seconds with context
       const timer = setTimeout(() => {
-        requestPermission()
-      }, 10000)
+        // Show a custom toast first explaining why we need notifications
+        if ('Notification' in window) {
+          requestPermission().then((granted) => {
+            if (granted) {
+              addNotification({
+                type: 'achievement',
+                title: '🔔 Уведомления включены!',
+                body: 'Теперь ты не пропустишь стрик и дедлайны.',
+              })
+            }
+          })
+        }
+      }, 15000)
       return () => clearTimeout(timer)
     }
-  }, [permission, checkAndNotify, requestPermission])
+  }, [permission, checkAndNotify, requestPermission, addNotification])
 
   // Listen to auth state changes
   useEffect(() => {
@@ -366,6 +401,39 @@ export default function App() {
     <div className="min-h-screen bg-duo-snow dark:bg-gray-900 flex flex-col">
       {!isLesson && <Header syncIndicator={syncIndicator} />}
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      {/* FCM Foreground Toast */}
+      <AnimatePresence>
+        {fcmToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: -50, x: '-50%' }}
+            className="fixed top-4 left-1/2 z-[60] max-w-sm w-[90%] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 p-4 flex items-start gap-3"
+          >
+            <div className="w-10 h-10 rounded-full bg-duo-green/10 flex items-center justify-center shrink-0">
+              <span className="text-lg">
+                {fcmToast.type === 'streak' ? '🔥' :
+                 fcmToast.type === 'homework' ? '📚' :
+                 fcmToast.type === 'exam' ? '⏰' :
+                 fcmToast.type === 'daily_quest' ? '🎯' :
+                 fcmToast.type === 'srs' ? '🔁' :
+                 fcmToast.type === 'achievement' ? '🏆' :
+                 fcmToast.type === 'level_up' ? '🎉' : '🔔'}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-sm text-gray-800 dark:text-gray-200">{fcmToast.title}</p>
+              <p className="text-xs text-gray-500 mt-0.5">{fcmToast.body}</p>
+            </div>
+            <button
+              onClick={() => setFcmToast(null)}
+              className="text-gray-400 hover:text-gray-600 shrink-0"
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <AchievementToast
         achievement={unlockedAchievement || null}
         onClose={clearLastAchievement}
@@ -422,6 +490,8 @@ export default function App() {
           <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/personality-quiz" element={<PersonalityQuiz />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/comparison" element={<ComparisonPage />} />
         </Routes>
       </main>
       {!isLesson && <BottomNav />}

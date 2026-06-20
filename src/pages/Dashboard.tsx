@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -26,6 +26,7 @@ import { PredictiveScoreWidget } from '../components/PredictiveScoreWidget'
 import { DailyQuestionCard } from '../components/DailyQuestionCard'
 import { WhatToStudyToday } from '../components/WhatToStudyToday'
 import { SRSCard } from '../components/SRSCard'
+import { ComparisonStats } from '../components/ComparisonStats'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { getEssayStats } from '../data/essayData'
 import { getPlayerTypeLabel, getPlayerTypeIcon, getPlayerTypeColor, getPersonalityMotivation, getPlayerTypeGradient, getPlayerTypeBorder } from '../utils/personalityEngine'
@@ -532,10 +533,20 @@ export function Dashboard() {
             title="Игры"
             subtitle="Отдохни 🎮"
             onClick={() => navigate('/games')}
-            className="col-span-2"
+          />
+          <CompactCard
+            icon={ShoppingBag}
+            iconColor="#fff"
+            iconBg="#8b5cf6"
+            title="Магазин"
+            subtitle="Аватарки и темы"
+            onClick={() => navigate('/shop')}
           />
         </div>
       </div>
+
+      {/* Comparison Stats */}
+      <ComparisonStats />
 
       {/* Weak topics */}
       {problematicTasks.length > 0 && (
