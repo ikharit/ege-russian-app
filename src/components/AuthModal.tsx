@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { LogIn, Mail, Lock, Chrome, Eye, EyeOff, X, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
-import { supabase, isSupabaseConfigured, signInWithEmail, signUpWithEmail, signInWithGoogle } from '../lib/supabase'
+import { LogIn, Mail, Lock, Chrome, Eye, EyeOff, X, Loader2, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { supabase, isSupabaseConfigured, signInWithEmail, signUpWithEmail, signInWithGoogle, resetPasswordForEmail } from '../lib/supabase'
 import { useProgressStore } from '../stores/progressStore'
 
 interface AuthModalProps {
@@ -12,7 +12,7 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const navigate = useNavigate()
-  const [mode, setMode] = useState<'login' | 'register'>('login')
+  const [mode, setMode] = useState<'login' | 'register' | 'forgotPassword'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -110,6 +110,28 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   }
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setSuccess(null)
+
+    if (!email.trim()) {
+      setError('Введите email')
+      return
+    }
+
+    setLoading(true)
+    const { error } = await resetPasswordForEmail(email.trim())
+    setLoading(false)
+
+    if (error) {
+      setError(error.message || 'Ошибка отправки ссылки')
+      return
+    }
+
+    setSuccess('Ссылка для сброса пароля отправлена на email!')
+  }
+
   const handleGoogleLogin = async () => {
     setError(null)
     setSuccess(null)
@@ -177,15 +199,23 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
+                {mode === 'forgotPassword' && (
+                  <button
+                    onClick={() => { setMode('login'); setError(null); setSuccess(null); }}
+                    className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <ArrowLeft size={20} className="text-gray-500" />
+                  </button>
+                )}
                 <div className="w-10 h-10 rounded-xl bg-duo-green/10 flex items-center justify-center">
                   <LogIn size={20} className="text-duo-green" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-800">
-                    {mode === 'login' ? 'Вход' : 'Регистрация'}
+                    {mode === 'login' ? 'Вход' : mode === 'register' ? 'Регистрация' : 'Восстановление пароля'}
                   </h2>
                   <p className="text-xs text-gray-500">
-                    {mode === 'login' ? 'Войдите в аккаунт' : 'Создайте новый аккаунт'}
+                    {mode === 'login' ? 'Войдите в аккаунт' : mode === 'register' ? 'Создайте новый аккаунт' : 'Введите email для сброса пароля'}
                   </p>
                 </div>
               </div>
@@ -221,91 +251,142 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </AnimatePresence>
 
             {/* Form */}
-            <form onSubmit={mode === 'login' ? handleLogin : handleRegister} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">Email</label>
-                <div className="relative">
-                  <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-duo-green/30 focus:border-duo-green transition-all text-sm"
-                    disabled={loading}
-                  />
+            {mode === 'forgotPassword' ? (
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-gray-700">Email</label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-duo-green/30 focus:border-duo-green transition-all text-sm"
+                      disabled={loading}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">Пароль</label>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={mode === 'register' ? 'минимум 6 символов' : '••••••'}
-                    className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-duo-green/30 focus:border-duo-green transition-all text-sm"
-                    disabled={loading}
-                  />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>Отправка...</span>
+                    </>
+                  ) : (
+                    <span>Отправить ссылку для сброса</span>
+                  )}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={mode === 'login' ? handleLogin : handleRegister} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-gray-700">Email</label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-duo-green/30 focus:border-duo-green transition-all text-sm"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-gray-700">Пароль</label>
+                  <div className="relative">
+                    <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={mode === 'register' ? 'минимум 6 символов' : '••••••'}
+                      className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-duo-green/30 focus:border-duo-green transition-all text-sm"
+                      disabled={loading}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                {mode === 'login' && (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => { setMode('forgotPassword'); setError(null); setSuccess(null); }}
+                      className="text-xs text-duo-green hover:underline"
+                    >
+                      Забыли пароль?
+                    </button>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>{mode === 'login' ? 'Вход...' : 'Регистрация...'}</span>
+                    </>
+                  ) : (
+                    <span>{mode === 'login' ? 'Войти' : 'Зарегистрироваться'}</span>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* Divider + Google OAuth + Toggle — только для login/register */}
+            {mode !== 'forgotPassword' && (
+              <>
+                {/* Divider */}
+                <div className="flex items-center gap-3 my-4">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-xs text-gray-400">или</span>
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+
+                {/* Google OAuth */}
+                <button
+                  onClick={handleGoogleLogin}
+                  disabled={loading}
+                  className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <Chrome size={18} className="text-blue-500" />
+                  <span>Войти через Google</span>
+                </button>
+
+                {/* Toggle mode */}
+                <div className="mt-4 text-center">
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onClick={() => {
+                      setMode(mode === 'login' ? 'register' : 'login')
+                      setError(null)
+                      setSuccess(null)
+                    }}
+                    className="text-sm text-duo-green hover:underline font-medium"
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {mode === 'login' ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти'}
                   </button>
                 </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    <span>{mode === 'login' ? 'Вход...' : 'Регистрация...'}</span>
-                  </>
-                ) : (
-                  <span>{mode === 'login' ? 'Войти' : 'Зарегистрироваться'}</span>
-                )}
-              </button>
-            </form>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-4">
-              <div className="flex-1 h-px bg-gray-200" />
-              <span className="text-xs text-gray-400">или</span>
-              <div className="flex-1 h-px bg-gray-200" />
-            </div>
-
-            {/* Google OAuth */}
-            <button
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              <Chrome size={18} className="text-blue-500" />
-              <span>Войти через Google</span>
-            </button>
-
-            {/* Toggle mode */}
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode(mode === 'login' ? 'register' : 'login')
-                  setError(null)
-                  setSuccess(null)
-                }}
-                className="text-sm text-duo-green hover:underline font-medium"
-              >
-                {mode === 'login' ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти'}
-              </button>
-            </div>
+              </>
+            )}
           </motion.div>
         </motion.div>
       )}

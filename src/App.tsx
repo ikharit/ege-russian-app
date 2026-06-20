@@ -51,7 +51,7 @@ import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
 import { AIChat } from './components/AIChat'
 import { achievements } from './data/achievements'
-import { BookOpen, Map, BarChart3, Trophy, GraduationCap, Gamepad2, BookOpenText } from 'lucide-react'
+import { BookOpen, Map, BarChart3, GraduationCap, Gamepad2, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
@@ -74,7 +74,7 @@ function BottomNav() {
     { path: '/course', icon: Map, label: 'Курс' },
     { path: '/theory', icon: BookOpenText, label: 'Теория' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
-    { path: '/dashboard', icon: Trophy, label: 'Обзор' },
+    { path: '/dashboard', icon: LayoutGrid, label: 'Обзор' },
   ]
 
   return (

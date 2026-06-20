@@ -103,7 +103,13 @@ export async function signInWithGoogle() {
   return { data, error }
 }
 
-export async function signOut() {
+export async function resetPasswordForEmail(email: string) {
+  if (!isSupabaseConfigured) return { error: new Error('Supabase not configured') }
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/auth/reset-password'
+  })
+  return { data, error }
+}
   if (!isSupabaseConfigured) return { error: null }
   const { error } = await supabase.auth.signOut()
   return { error }

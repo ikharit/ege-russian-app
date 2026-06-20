@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, X, ChevronDown, ChevronUp, Megaphone, BookOpen, Wrench, Star } from 'lucide-react'
+import { Sparkles, X, ChevronDown, ChevronUp, Megaphone, BookOpen, Wrench, Star, History } from 'lucide-react'
 import { RELEASE_NOTES, LATEST_VERSION } from '../data/releaseNotes'
 
 const STORAGE_KEY = 'ege-release-notes-dismissed'
@@ -15,11 +15,11 @@ function setDismissedVersion(version: string) {
 
 function getBulletIcon(type: string) {
   switch (type) {
-    case 'ege-important': return <Star size={14} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
-    case 'feature': return <Sparkles size={14} className="text-duo-green shrink-0 mt-0.5" />
-    case 'fix': return <Wrench size={14} className="text-duo-blue shrink-0 mt-0.5" />
-    case 'fun': return <BookOpen size={14} className="text-duo-purple shrink-0 mt-0.5" />
-    default: return <Sparkles size={14} className="text-gray-400 shrink-0 mt-0.5" />
+    case 'ege-important': return <Star size={13} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
+    case 'feature': return <Sparkles size={13} className="text-duo-green shrink-0 mt-0.5" />
+    case 'fix': return <Wrench size={13} className="text-duo-blue shrink-0 mt-0.5" />
+    case 'fun': return <BookOpen size={13} className="text-duo-purple shrink-0 mt-0.5" />
+    default: return <Sparkles size={13} className="text-gray-400 shrink-0 mt-0.5" />
   }
 }
 
@@ -35,23 +35,23 @@ function getBulletClass(type: string) {
 
 export function ReleaseNotesWidget() {
   const [expanded, setExpanded] = useState(false)
-  const [dismissed, setDismissed] = useState(getDismissedVersion())
   const [showHistory, setShowHistory] = useState(false)
+  const dismissed = getDismissedVersion()
 
   const latest = RELEASE_NOTES[0] as any
   const isUnread = dismissed !== LATEST_VERSION
-  const recentCount = RELEASE_NOTES.length
 
-  useEffect(() => {
-    if (isUnread) setExpanded(true)
-  }, [isUnread])
+  // Важные пункты — только ege-important для свёрнутого вида
+  const importantBullets = latest.bullets.filter((b: any) => b.type === 'ege-important')
+  // Остальные пункты — для развёрнутого вида
+  const otherBullets = latest.bullets.filter((b: any) => b.type !== 'ege-important')
 
   const handleDismiss = () => {
     setDismissedVersion(LATEST_VERSION)
-    setDismissed(LATEST_VERSION)
     setExpanded(false)
   }
 
+  // Если пользователь уже закрыл эту версию и не разворачивал — показываем кнопку "Что нового"
   if (!isUnread && !expanded) {
     return (
       <button
@@ -60,7 +60,7 @@ export function ReleaseNotesWidget() {
       >
         <Megaphone size={16} />
         Что нового
-        <span className="text-[10px] bg-duo-yellow text-gray-800 px-1.5 py-0.5 rounded font-bold">{recentCount}</span>
+        <span className="text-[10px] bg-duo-yellow text-gray-800 px-1.5 py-0.5 rounded font-bold">{RELEASE_NOTES.length}</span>
       </button>
     )
   }
@@ -70,42 +70,77 @@ export function ReleaseNotesWidget() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`card overflow-hidden ${latest.highlighted ? 'border-duo-yellow/30 bg-gradient-to-br from-duo-yellow/5 to-white' : 'bg-white'}`}
+        className={`rounded-2xl border overflow-hidden ${latest.highlighted ? 'border-duo-yellow/20 bg-gradient-to-br from-duo-yellow/5 to-white' : 'border-gray-100 bg-white'}`}
       >
-        {/* Header */}
-        <div className="flex items-start justify-between p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{latest.emoji}</span>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-bold text-gray-800">{latest.title}</h3>
-                {isUnread && (
-                  <span className="px-2 py-0.5 bg-duo-red text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
-                    NEW
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-gray-400">v{latest.version} • {latest.date}</p>
+        {/* Header — всегда виден */}
+        <div
+          className="flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-50/50 transition-colors"
+          onClick={() => setExpanded(!expanded)}
+        >
+          <span className="text-xl shrink-0">{latest.emoji}</span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <p className="font-bold text-sm text-gray-800 truncate">{latest.title}</p>
+              {isUnread && (
+                <span className="px-1.5 py-0.5 bg-duo-red text-white text-[9px] font-bold rounded-full uppercase tracking-wide shrink-0">
+                  NEW
+                </span>
+              )}
             </div>
+            <p className="text-[10px] text-gray-400">v{latest.version} • {latest.date}</p>
           </div>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              {expanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
-            </button>
-            <button
-              onClick={handleDismiss}
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Прочитано"
-            >
-              <X size={16} className="text-gray-400" />
-            </button>
+          <div className="flex items-center gap-1 shrink-0">
+            {isUnread && (
+              <button
+                onClick={(e) => { e.stopPropagation(); handleDismiss() }}
+                className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Прочитано"
+              >
+                <X size={14} className="text-gray-400" />
+              </button>
+            )}
+            {expanded ? (
+              <ChevronUp size={16} className="text-gray-400" />
+            ) : (
+              <ChevronDown size={16} className="text-gray-400" />
+            )}
           </div>
         </div>
 
-        {/* Content */}
+        {/* Collapsed content — только важные пункты */}
+        <AnimatePresence>
+          {!expanded && importantBullets.length > 0 && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="px-3 pb-2"
+            >
+              <div className="space-y-1.5">
+                {importantBullets.map((b: any, i: number) => (
+                  <div
+                    key={i}
+                    className={`flex items-start gap-2 p-2 rounded-lg text-xs ${getBulletClass(b.type)}`}
+                  >
+                    {getBulletIcon(b.type)}
+                    <span>{b.text}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Кнопка "Вся история" в свёрнутом виде */}
+              <button
+                onClick={() => setShowHistory(true)}
+                className="mt-2 text-[11px] text-gray-400 hover:text-duo-blue font-medium hover:underline flex items-center gap-1"
+              >
+                <History size={12} />
+                Вся история правок/версий →
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Expanded content — все пункты */}
         <AnimatePresence>
           {expanded && (
             <motion.div
@@ -113,47 +148,67 @@ export function ReleaseNotesWidget() {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
+              className="px-3 pb-3"
             >
-              <div className="px-4 pb-4 space-y-2">
-                {latest.bullets.slice(0, 4).map((b: any, i: number) => (
-                  <div
-                    key={i}
-                    className={`flex flex-col gap-1 p-2 rounded-lg text-sm ${getBulletClass(b.type)}`}
-                  >
-                    <div className="flex items-start gap-2">
-                      {getBulletIcon(b.type)}
-                      <span>{b.text}</span>
+              {/* Важные пункты */}
+              {importantBullets.length > 0 && (
+                <div className="space-y-1.5 mb-2">
+                  {importantBullets.map((b: any, i: number) => (
+                    <div
+                      key={`imp-${i}`}
+                      className={`flex flex-col gap-0.5 p-2 rounded-lg text-xs ${getBulletClass(b.type)}`}
+                    >
+                      <div className="flex items-start gap-2">
+                        {getBulletIcon(b.type)}
+                        <span className="font-medium">{b.text}</span>
+                      </div>
+                      {b.impact && (
+                        <span className="text-[10px] text-gray-500 italic ml-5">{b.impact}</span>
+                      )}
                     </div>
-                    {b.impact && (
-                      <span className="text-xs text-gray-500 italic ml-6">{b.impact}</span>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
+              )}
 
-                {latest.bullets.length > 4 && (
-                  <button
-                    onClick={() => setShowHistory(true)}
-                    className="text-xs text-duo-blue font-bold hover:underline w-full text-left pt-1"
-                  >
-                    + {latest.bullets.length - 4} пункта и вся история →
-                  </button>
-                )}
+              {/* Остальные пункты */}
+              {otherBullets.length > 0 && (
+                <div className="space-y-1.5">
+                  {otherBullets.map((b: any, i: number) => (
+                    <div
+                      key={`oth-${i}`}
+                      className={`flex flex-col gap-0.5 p-2 rounded-lg text-xs ${getBulletClass(b.type)}`}
+                    >
+                      <div className="flex items-start gap-2">
+                        {getBulletIcon(b.type)}
+                        <span>{b.text}</span>
+                      </div>
+                      {b.impact && (
+                        <span className="text-[10px] text-gray-500 italic ml-5">{b.impact}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
 
+              {/* Футер */}
+              <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
                 <button
                   onClick={() => setShowHistory(true)}
-                  className="text-xs text-gray-500 hover:text-duo-blue font-medium hover:underline w-full text-left pt-1 flex items-center gap-1"
+                  className="text-[11px] text-duo-blue font-bold hover:underline flex items-center gap-1"
                 >
-                  <BookOpen size={12} />
-                  Вся история версий →
+                  <History size={12} />
+                  Вся история правок/версий →
                 </button>
+              </div>
 
+              {isUnread && (
                 <button
                   onClick={handleDismiss}
-                  className="w-full py-2 mt-2 bg-duo-green text-white text-sm font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
+                  className="w-full py-2 mt-2 bg-duo-green text-white text-xs font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
                 >
                   Понятно, круто! 🚀
                 </button>
-              </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -178,8 +233,8 @@ export function ReleaseNotesWidget() {
             >
               <div className="sticky top-0 bg-white border-b border-gray-100 p-4 flex items-center justify-between z-10">
                 <div className="flex items-center gap-2">
-                  <Megaphone size={20} className="text-duo-blue" />
-                  <h2 className="font-bold text-gray-800">История версий</h2>
+                  <History size={20} className="text-duo-blue" />
+                  <h2 className="font-bold text-gray-800">История правок и версий</h2>
                 </div>
                 <button
                   onClick={() => setShowHistory(false)}
@@ -189,32 +244,75 @@ export function ReleaseNotesWidget() {
                 </button>
               </div>
 
-              <div className="p-4 space-y-4">
-                {RELEASE_NOTES.map((note, idx) => (
-                  <div
-                    key={note.version}
-                    className={`p-4 rounded-xl border ${idx === 0 ? 'border-duo-yellow/30 bg-duo-yellow/5' : 'border-gray-100 bg-gray-50'}`}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">{note.emoji}</span>
-                      <div>
-                        <p className="font-bold text-sm text-gray-800">{note.title}</p>
-                        <p className="text-xs text-gray-400">v{note.version} • {note.date}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-1.5">
-                      {note.bullets.map((b: any, i: number) => (
-                        <div
-                          key={i}
-                          className={`flex items-start gap-2 p-1.5 rounded-lg text-xs ${getBulletClass(b.type)}`}
-                        >
-                          {getBulletIcon(b.type)}
-                          <span>{b.text}</span>
+              <div className="p-4 space-y-5">
+                {RELEASE_NOTES.map((note, idx) => {
+                  const important = note.bullets.filter((b: any) => b.type === 'ege-important')
+                  const others = note.bullets.filter((b: any) => b.type !== 'ege-important')
+                  return (
+                    <div
+                      key={note.version}
+                      className={`rounded-xl border overflow-hidden ${idx === 0 ? 'border-duo-yellow/30 bg-duo-yellow/5' : 'border-gray-100 bg-gray-50'}`}
+                    >
+                      {/* Header */}
+                      <div className="p-3 border-b border-gray-100/50">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl shrink-0">{note.emoji}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-sm text-gray-800 truncate">{note.title}</p>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              <p className="text-[10px] text-gray-400">v{note.version} • {note.date}</p>
+                              <span className="text-[10px] text-gray-400">
+                                {important.length} ключевых{others.length > 0 ? ` · ${others.length} технических` : ''}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Important bullets — крупно, заметно */}
+                      {important.length > 0 && (
+                        <div className="p-3 space-y-2">
+                          {important.map((b: any, i: number) => (
+                            <div
+                              key={i}
+                              className="flex flex-col gap-1 p-3 rounded-lg bg-duo-yellow/10 border border-duo-yellow/20"
+                            >
+                              <div className="flex items-start gap-2">
+                                <Star size={14} className="text-duo-yellow shrink-0 mt-0.5" fill="currentColor" />
+                                <span className="text-sm font-medium text-gray-800">{b.text}</span>
+                              </div>
+                              {b.impact && (
+                                <span className="text-xs text-gray-500 italic ml-6">{b.impact}</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Other bullets — мелко, компактно */}
+                      {others.length > 0 && (
+                        <div className="px-3 pb-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-px flex-1 bg-gray-200" />
+                            <span className="text-[10px] uppercase tracking-wider text-gray-400 font-medium shrink-0">Остальные изменения</span>
+                            <div className="h-px flex-1 bg-gray-200" />
+                          </div>
+                          <div className="space-y-1">
+                            {others.map((b: any, i: number) => (
+                              <div
+                                key={i}
+                                className="flex items-start gap-2 p-2 rounded-lg bg-gray-100/60 text-xs text-gray-600"
+                              >
+                                {getBulletIcon(b.type)}
+                                <span>{b.text}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </motion.div>
           </motion.div>

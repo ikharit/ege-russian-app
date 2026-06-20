@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
+import { speak, isTTSAvailable } from '../lib/tts'
 import { getGlobalIRT } from '../utils/irtEngine'
 import { getGlobalBKT } from '../utils/bktEngine'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
@@ -84,7 +85,8 @@ export function BaseTrainer<T>({
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
 
-  const [feedbackGiven, setFeedbackGiven] = useState<Record<string, 'up' | 'down'>>({})
+  const [combo, setCombo] = useState(0) // session combo streak
+  const [maxCombo, setMaxCombo] = useState(0)
   const [sessionErrorPatterns, setSessionErrorPatterns] = useState<Map<string, number>>(new Map())
   const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
 
@@ -153,8 +155,15 @@ export function BaseTrainer<T>({
     }
 
     if (isRight) {
-      addXP(xpPerCorrect)
+      const comboMultiplier = Math.min(1 + combo * 0.1, 2)
+      const xpWithCombo = Math.round(xpPerCorrect * comboMultiplier)
+      addXP(xpWithCombo)
       updateStreak()
+      setCombo(prev => {
+        const next = prev + 1
+        setMaxCombo(m => Math.max(m, next))
+        return next
+      })
       setStats((s) => ({
         ...s,
         totalCorrect: s.totalCorrect + 1,
@@ -166,6 +175,7 @@ export function BaseTrainer<T>({
         navigator.vibrate(50)
       }
     } else {
+      setCombo(0)
       recordWrongAnswer(
         {
           id: getQuestionId(effectiveQuestion),
@@ -338,6 +348,13 @@ export function BaseTrainer<T>({
                 {stats.streak}
               </span>
             </div>
+            {combo >= 2 && (
+              <div className="flex items-center gap-1 bg-orange-100 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-orange-600">
+                  x{Math.min(1 + combo * 0.1, 2).toFixed(1)}
+                </span>
+              </div>
+            )}
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -345,6 +362,15 @@ export function BaseTrainer<T>({
             >
               <Settings size={18} className="text-gray-400" />
             </button>
+            {isTTSAvailable() && getQuestionText(effectiveQuestion) && (
+              <button
+                onClick={() => speak(getQuestionText(effectiveQuestion))}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Озвучить"
+              >
+                <Volume2 size={18} className="text-duo-blue" />
+              </button>
+            )}
           </div>
         </div>
 
