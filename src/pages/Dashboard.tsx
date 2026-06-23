@@ -29,10 +29,7 @@ import { SRSCard } from '../components/SRSCard'
 import { ComparisonStats } from '../components/ComparisonStats'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { getEssayStats } from '../data/essayData'
-import { getPlayerTypeLabel, getPlayerTypeIcon, getPlayerTypeColor, getPersonalityMotivation, getPlayerTypeGradient, getPlayerTypeBorder } from '../utils/personalityEngine'
 import { getDueReviews, getOverdueCount } from '../utils/spacedRepetition'
-import type { PlayerType } from '../utils/personalityEngine'
-import { detectPlayerType } from '../utils/personalityEngine'
 import type { LucideIcon } from 'lucide-react'
 
 function SRSIndicator() {
@@ -243,14 +240,10 @@ export function Dashboard() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const stats = useProgressStore((s) => s.userStats)
   const isTeacher = useProgressStore((s) => s.isTeacher)
-  const playerProfile = useProgressStore((s) => s.getPlayerProfile())
-  const setPlayerProfile = useProgressStore((s) => s.setPlayerProfile)
   const activeProfile = useStudentStore((s) => s.getActiveProfile())
   const displayName = activeProfile?.name || stats.name || 'ученик'
   const classes = useClassStore((s) => s.classes)
   const totalClassStudents = Object.values(classes).reduce((sum, c) => sum + c.students.length, 0)
-
-  const playerType: PlayerType = playerProfile?.type || 'achiever'
 
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const achievements = useProgressStore((s) => s.achievements)
@@ -265,13 +258,6 @@ export function Dashboard() {
 
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)
-
-  useEffect(() => {
-    if (!playerProfile && Object.keys(lessonProgress).length > 0) {
-      const detected = detectPlayerType(stats, lessonProgress, course, classLeaderboard.length, 0, 0, !!studentClass)
-      setPlayerProfile(detected)
-    }
-  }, [playerProfile, lessonProgress, stats, setPlayerProfile, classLeaderboard.length, studentClass])
 
   useEffect(() => {
     checkHeartRestore()
@@ -693,33 +679,6 @@ export function Dashboard() {
           onClick={() => navigate('/teacher')}
         />
       </div>
-
-      {/* Personality */}
-      {playerProfile && (
-        <motion.div
-          className={`rounded-2xl p-3 cursor-pointer border ${getPlayerTypeBorder(playerType)} bg-gradient-to-r ${getPlayerTypeGradient(playerType)}`}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          onClick={() => navigate('/personality-quiz')}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/personality-quiz') } }}
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: getPlayerTypeColor(playerType) }}>
-              {getPlayerTypeIcon(playerType)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: getPlayerTypeColor(playerType) }}>Мой тип</p>
-              <p className="font-bold text-sm text-gray-800">{getPlayerTypeLabel(playerType)}</p>
-              <p className="text-[10px] text-gray-500 truncate">
-                {getPersonalityMotivation(playerType, { xpToNext: xpInfo.needed, level: stats.level, unlockedTopics: completedCount, totalTopics: totalLessons, classRank: myClassRank > 0 ? myClassRank : undefined, className: studentClass?.name })}
-              </p>
-            </div>
-            <ChevronRight size={16} className="text-gray-400 shrink-0" />
-          </div>
-        </motion.div>
-      )}
 
       {/* Notifications */}
       <DashboardNotificationWidget />

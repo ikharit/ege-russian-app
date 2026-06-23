@@ -23,7 +23,6 @@ import {
   Recommendation,
   RecommendationReason,
 } from '../utils/adaptiveEngine'
-import { getPersonalityMotivation, type PlayerType } from '../utils/personalityEngine'
 import { formatNextReview, formatInterval, getDueReviews, getOverdueCount } from '../utils/spacedRepetition'
 import type { SRSItem } from '../utils/spacedRepetition'
 
@@ -73,12 +72,10 @@ function RecommendationItem({
   rec,
   index,
   onNavigate,
-  personalityCTA,
 }: {
   rec: Recommendation
   index: number
   onNavigate: (lessonId: string) => void
-  personalityCTA?: string
 }) {
   const [showWhy, setShowWhy] = useState(false)
   const config = REASON_CONFIG[rec.reason]
@@ -112,9 +109,6 @@ function RecommendationItem({
               <span className="text-gray-300">•</span>
               <span>~{rec.estimatedTime} мин</span>
             </div>
-            {personalityCTA && (
-              <p className="text-xs mt-1 font-medium text-duo-green-dark">{personalityCTA}</p>
-            )}
           </div>
         </div>
 

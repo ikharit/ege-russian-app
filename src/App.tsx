@@ -27,7 +27,9 @@ import { initMobile } from './lib/mobile'
 import TheoryPage from './pages/TheoryPage'
 
 // Lazy-loaded pages (rarely used, heavy bundles) — all use named exports, wrap with default
-const PersonalityQuiz = lazy(() => import('./pages/PersonalityQuiz').then(m => ({ default: m.PersonalityQuiz })))
+const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m => ({ default: m.Task3SwipeTrainer })))
+const Task25SwipeTrainer = lazy(() => import('./pages/Task25SwipeTrainer').then(m => ({ default: m.Task25SwipeTrainer })))
+const ShareResultPage = lazy(() => import('./pages/ShareResultPage').then(m => ({ default: m.ShareResultPage })))
 const Leaderboard = lazy(() => import('./pages/Leaderboard').then(m => ({ default: m.Leaderboard })))
 const Teacher = lazy(() => import('./pages/Teacher').then(m => ({ default: m.Teacher })))
 const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })))
@@ -80,9 +82,6 @@ const Task18Trainer = lazy(() => import('./pages/Task18Trainer').then(m => ({ de
 const Task22Trainer = lazy(() => import('./pages/Task22Trainer').then(m => ({ default: m.Task22Trainer })))
 const Task24Trainer = lazy(() => import('./pages/Task24Trainer').then(m => ({ default: m.Task24Trainer })))
 const Task25Trainer = lazy(() => import('./pages/Task25Trainer').then(m => ({ default: m.Task25Trainer })))
-const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m => ({ default: m.Task3SwipeTrainer })))
-const Task25SwipeTrainer = lazy(() => import('./pages/Task25SwipeTrainer').then(m => ({ default: m.Task25SwipeTrainer })))
-const ShareResultPage = lazy(() => import('./pages/ShareResultPage').then(m => ({ default: m.ShareResultPage })))
 
 function BottomNav() {
   const navigate = useNavigate()
@@ -523,7 +522,6 @@ export default function App() {
             <Route path="/marathon" element={<MarathonPage />} />
             <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
             <Route path="/chat" element={<ChatPage />} />
-            <Route path="/personality-quiz" element={<PersonalityQuiz />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/comparison" element={<ComparisonPage />} />
             <Route path="/knowledge-map" element={<KnowledgeMap />} />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy, Medal, Brain } from 'lucide-react'
+import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy, Medal, Brain, GraduationCap } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -87,6 +87,8 @@ export function TodayPage() {
   const myClassRank = activeProfile && studentClass
     ? classLeaderboard.findIndex(e => e.profileId === activeProfile.id) + 1
     : -1
+
+  const isTeacher = activeProfile?.role === 'teacher' || useStudentStore((s) => s.isTeacher) || false
 
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)
@@ -396,6 +398,29 @@ export function TodayPage() {
           )}
         </motion.div>
       </div>
+
+      {/* Teacher Panel */}
+      {isTeacher && (
+        <motion.div
+          className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow"
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          onClick={() => navigate('/teacher')}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-lg bg-duo-purple/10 flex items-center justify-center">
+                <GraduationCap size={18} className="text-duo-purple" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-800">Учительская панель</p>
+                <p className="text-[11px] text-gray-400">Классы, ДЗ, отчёты</p>
+              </div>
+            </div>
+            <ChevronRight size={20} className="text-gray-300" />
+          </div>
+        </motion.div>
+      )}
 
       {/* Link to full overview */}
       <motion.div
