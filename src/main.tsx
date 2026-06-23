@@ -5,7 +5,7 @@ import App from './App'
 import './index.css'
 
 // PWA auto-update: reload page when new version is available
-// @ts-expect-error virtual module
+// virtual module (types available)
 import { registerSW } from 'virtual:pwa-register'
 
 registerSW({

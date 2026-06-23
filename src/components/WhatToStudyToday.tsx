@@ -221,8 +221,6 @@ export function WhatToStudyToday() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const taskStats = useProgressStore((s) => s.taskStats)
   const srsData = useProgressStore((s) => s.srsData)
-  const playerProfile = useProgressStore((s) => s.getPlayerProfile())
-  const playerType: PlayerType = playerProfile?.type || 'achiever'
 
   const recommendations = useMemo(() => {
     const analysis = useProgressStore.getState().getErrorAnalysis()
@@ -249,19 +247,6 @@ export function WhatToStudyToday() {
 
   const handleNavigate = (lessonId: string) => {
     navigate(`/lesson/${lessonId}`)
-  }
-
-  const getPersonalityCTA = (rec: Recommendation): string => {
-    switch (playerType) {
-      case 'achiever':
-        return `Пройди этот урок и получишь ${rec.estimatedTime * 5} XP!`
-      case 'explorer':
-        return `Новая тема: "${rec.lessonTitle}" — ты ещё не изучал!`
-      case 'socializer':
-        return `Твой класс проходит это задание — присоединяйся!`
-      case 'killer':
-        return `Только 30% учеников справляются с этим заданием. Сможешь?`
-    }
   }
 
   if (recommendations.length === 0) {
@@ -341,7 +326,6 @@ export function WhatToStudyToday() {
               rec={rec}
               index={idx}
               onNavigate={handleNavigate}
-              personalityCTA={getPersonalityCTA(rec)}
             />
           ))}
         </div>

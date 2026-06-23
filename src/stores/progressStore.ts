@@ -11,7 +11,6 @@ import { createLessonActions, createAnalyticsActions } from './slices/lessonAnal
 import { createGamificationActions, defaultLeaderboard, defaultTeacherStudents, LeaderboardEntry, TeacherStudent } from './slices/gamificationSlice'
 import { createAchievementChecker } from './slices/achievementChecker'
 import { createSyncActions } from './slices/syncSlice'
-import { detectPlayerType } from '../utils/personalityEngine'
 import { getInitialEmotionalState, updateEmotionalState, recordAnswerAttempt, recordSessionStart, recordLevelUp, recordExamTaken, clearTransientFlags } from '../utils/emotionalState'
 import { analyzeErrors } from '../utils/errorPatternAnalyzer'
 import { SRSItem, calculateNextReview, scoreToQuality, initSRS } from '../utils/spacedRepetition'

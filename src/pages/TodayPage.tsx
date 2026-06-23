@@ -88,7 +88,7 @@ export function TodayPage() {
     ? classLeaderboard.findIndex(e => e.profileId === activeProfile.id) + 1
     : -1
 
-  const isTeacher = activeProfile?.role === 'teacher' || useStudentStore((s) => s.isTeacher) || false
+  const isTeacher = activeProfile?.role === 'teacher' || false
 
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)

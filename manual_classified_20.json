@@ -1,0 +1,22 @@
+{
+  "воплощение": {"type": "verifiable", "root": "плот", "verify": "плоть", "alternation": null},
+  "украшение": {"type": "verifiable", "root": "крас", "verify": "красота", "alternation": null},
+  "дешёвый": {"type": "verifiable", "root": "дешёв", "verify": "дешево", "alternation": null},
+  "вымокший": {"type": "verifiable", "root": "мок", "verify": "мокнуть", "alternation": null},
+  "наращение": {"type": "alternating", "root": "ращ", "verify": "расти", "alternation": "раст/рос/ращ"},
+  "отображать": {"type": "alternating", "root": "браж", "verify": "образ", "alternation": "браж/браз"},
+  "безотлагательно": {"type": "alternating", "root": "лаг", "verify": "ложить", "alternation": "лаг/лож"},
+  "неукротимый": {"type": "verifiable", "root": "крот", "verify": "кроткий", "alternation": null},
+  "достижение": {"type": "verifiable", "root": "достиж", "verify": "достигнуть", "alternation": null},
+  "совмещать": {"type": "alternating", "root": "мещ", "verify": "место", "alternation": "мест/мещ"},
+  "коллекционный": {"type": "foreign", "root": "коллекц", "verify": null, "alternation": null},
+  "гениальный": {"type": "foreign", "root": "ген", "verify": null, "alternation": null},
+  "паломничество": {"type": "verifiable", "root": "паломн", "verify": "паломник", "alternation": null},
+  "изобразительный": {"type": "alternating", "root": "браж", "verify": "образ", "alternation": "браж/браз"},
+  "трактовать": {"type": "foreign", "root": "тракт", "verify": null, "alternation": null},
+  "кропотливая": {"type": "unverifiable", "root": "кропот", "verify": null, "alternation": null},
+  "программирование": {"type": "foreign", "root": "программ", "verify": null, "alternation": null},
+  "президент": {"type": "foreign", "root": "президент", "verify": null, "alternation": null},
+  "карниз": {"type": "foreign", "root": "карниз", "verify": null, "alternation": null},
+  "обогащать": {"type": "alternating", "root": "бощ", "verify": "богатый", "alternation": "бог/бощ"}
+}

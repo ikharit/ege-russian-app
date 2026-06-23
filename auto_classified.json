@@ -1,0 +1,1794 @@
+{
+  "территория": {
+    "type": "unverifiable",
+    "root": "территор",
+    "verify": null
+  },
+  "уровень": {
+    "type": "unverifiable",
+    "root": "уровен",
+    "verify": null
+  },
+  "воплощение": {
+    "type": "verifiable",
+    "root": "оплощени",
+    "verify": "воплощение"
+  },
+  "дешёвый": {
+    "type": "verifiable",
+    "root": "дешёв",
+    "verify": "дешёвый"
+  },
+  "украшение": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "корректный": {
+    "type": "unverifiable",
+    "root": "коррект",
+    "verify": null
+  },
+  "монолог": {
+    "type": "unverifiable",
+    "root": "монолог",
+    "verify": null
+  },
+  "вазелин": {
+    "type": "unverifiable",
+    "root": "вазелин",
+    "verify": null
+  },
+  "навигация": {
+    "type": "unverifiable",
+    "root": "навигац",
+    "verify": null
+  },
+  "вымокший": {
+    "type": "verifiable",
+    "root": "ымокш",
+    "verify": "вымокший"
+  },
+  "наращение": {
+    "type": "alternating",
+    "root": "ращ",
+    "verify": "расти",
+    "alternation": "ращ/раст"
+  },
+  "утопический": {
+    "type": "unverifiable",
+    "root": "утоп",
+    "verify": null
+  },
+  "отображать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "безотлагательно": {
+    "type": "alternating",
+    "root": "лаг",
+    "verify": "ложить",
+    "alternation": "лаг/лож"
+  },
+  "неукротимый": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "достижение": {
+    "type": "verifiable",
+    "root": "стижени",
+    "verify": "достижение"
+  },
+  "совмещать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "коллекционный": {
+    "type": "unverifiable",
+    "root": "коллекцион",
+    "verify": null
+  },
+  "гениальный": {
+    "type": "unverifiable",
+    "root": "гениал",
+    "verify": null
+  },
+  "паломничество": {
+    "type": "unverifiable",
+    "root": "паломничеств",
+    "verify": null
+  },
+  "изобразительный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "трактовать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "пейзажист": {
+    "type": "unverifiable",
+    "root": "пейзаж",
+    "verify": null
+  },
+  "кропотливая": {
+    "type": "alternating",
+    "root": "кроп",
+    "verify": "крапать",
+    "alternation": "кроп/крап"
+  },
+  "программирование": {
+    "type": "unverifiable",
+    "root": "программ",
+    "verify": null
+  },
+  "президент": {
+    "type": "unverifiable",
+    "root": "президент",
+    "verify": null
+  },
+  "карниз": {
+    "type": "unverifiable",
+    "root": "карниз",
+    "verify": null
+  },
+  "обогащать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "замесить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "митинговать": {
+    "type": "unverifiable",
+    "root": "митинг",
+    "verify": null
+  },
+  "запрещать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "осведомлённый": {
+    "type": "verifiable",
+    "root": "сведомлённ",
+    "verify": "осведомлённый"
+  },
+  "вертикальный": {
+    "type": "unverifiable",
+    "root": "вертикальн",
+    "verify": null
+  },
+  "тенденциозный": {
+    "type": "unverifiable",
+    "root": "тенденциоз",
+    "verify": null
+  },
+  "терпение": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "оберегаемый": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "анализировать": {
+    "type": "unverifiable",
+    "root": "анализ",
+    "verify": null
+  },
+  "конференция": {
+    "type": "unverifiable",
+    "root": "конференц",
+    "verify": null
+  },
+  "информировать": {
+    "type": "unverifiable",
+    "root": "информ",
+    "verify": null
+  },
+  "упрощённый": {
+    "type": "verifiable",
+    "root": "прощённ",
+    "verify": "упрощённый"
+  },
+  "заблестеть": {
+    "type": "alternating",
+    "root": "блест",
+    "verify": "блестеть",
+    "alternation": "блест/блист"
+  },
+  "результативный": {
+    "type": "unverifiable",
+    "root": "результат",
+    "verify": null
+  },
+  "конкретизировать": {
+    "type": "unverifiable",
+    "root": "конкрет",
+    "verify": null
+  },
+  "примириться": {
+    "type": "alternating",
+    "root": "мир",
+    "verify": "умирать",
+    "alternation": "мир/мер"
+  },
+  "распоряжение": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "прямолинейный": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "заявить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "систематизировать": {
+    "type": "unverifiable",
+    "root": "системат",
+    "verify": null
+  },
+  "поддержать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "характеристика": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "классицистический": {
+    "type": "unverifiable",
+    "root": "классицист",
+    "verify": null
+  },
+  "ориентировочный": {
+    "type": "unverifiable",
+    "root": "ориентиров",
+    "verify": null
+  },
+  "лимитированный": {
+    "type": "unverifiable",
+    "root": "лимит",
+    "verify": null
+  },
+  "систематизация": {
+    "type": "unverifiable",
+    "root": "системат",
+    "verify": null
+  },
+  "выберется": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "повстречаться": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "театральный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "организационный": {
+    "type": "unverifiable",
+    "root": "организац",
+    "verify": null
+  },
+  "палитра": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "ответвление": {
+    "type": "verifiable",
+    "root": "тветвлени",
+    "verify": "ответвление"
+  },
+  "аттракцион": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "цилиндрический": {
+    "type": "unverifiable",
+    "root": "цилиндр",
+    "verify": null
+  },
+  "традиция": {
+    "type": "unverifiable",
+    "root": "традиц",
+    "verify": null
+  },
+  "объединение": {
+    "type": "verifiable",
+    "root": "ъединени",
+    "verify": "объединение"
+  },
+  "сонеты": {
+    "type": "unverifiable",
+    "root": "сонет",
+    "verify": null
+  },
+  "жираф": {
+    "type": "unverifiable",
+    "root": "жираф",
+    "verify": null
+  },
+  "лёг": {
+    "type": "verifiable",
+    "root": "лёг",
+    "verify": "лёг"
+  },
+  "творение": {
+    "type": "alternating",
+    "root": "твор",
+    "verify": "творить",
+    "alternation": "твор/твар"
+  },
+  "мажорный": {
+    "type": "unverifiable",
+    "root": "мажор",
+    "verify": null
+  },
+  "ухажёр": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "замерло": {
+    "type": "alternating",
+    "root": "мер",
+    "verify": "умирать",
+    "alternation": "мер/мир"
+  },
+  "протереть": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "щепковый": {
+    "type": "verifiable",
+    "root": "щепков",
+    "verify": "щепковый"
+  },
+  "ополчение": {
+    "type": "verifiable",
+    "root": "полчени",
+    "verify": "ополчение"
+  },
+  "пловец": {
+    "type": "alternating",
+    "root": "плов",
+    "verify": "плыть",
+    "alternation": "плов/плав"
+  },
+  "спишите": {
+    "type": "verifiable",
+    "root": "пишит",
+    "verify": "спишите"
+  },
+  "выдарать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "мораторий": {
+    "type": "unverifiable",
+    "root": "моратор",
+    "verify": null
+  },
+  "почитатель": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "обжигаться": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": "жечь",
+    "alternation": "жиг/жег"
+  },
+  "проживать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "запевала": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "офицерский": {
+    "type": "unverifiable",
+    "root": "офицер",
+    "verify": null
+  },
+  "образность": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "покарать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "привидение": {
+    "type": "verifiable",
+    "root": "видени",
+    "verify": "привидение"
+  },
+  "вычитание": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "аккомпанировать": {
+    "type": "unverifiable",
+    "root": "компан",
+    "verify": null
+  },
+  "анологичный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "конфликтующий": {
+    "type": "unverifiable",
+    "root": "конфликт",
+    "verify": null
+  },
+  "инженер": {
+    "type": "unverifiable",
+    "root": "инженер",
+    "verify": null
+  },
+  "приласкать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "панцирь": {
+    "type": "unverifiable",
+    "root": "панцир",
+    "verify": null
+  },
+  "цыплёнок": {
+    "type": "verifiable",
+    "root": "цыплёнок",
+    "verify": "цыплёнок"
+  },
+  "впечатлить": {
+    "type": "unverifiable",
+    "root": "впечатл",
+    "verify": null
+  },
+  "трущобы": {
+    "type": "unverifiable",
+    "root": "трущоб",
+    "verify": null
+  },
+  "рассмешить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "пожимать": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "жёлтый": {
+    "type": "verifiable",
+    "root": "жёлт",
+    "verify": "жёлтый"
+  },
+  "мажорная": {
+    "type": "unverifiable",
+    "root": "мажор",
+    "verify": null
+  },
+  "озираться": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "трясина": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "осязание": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "фантастический": {
+    "type": "unverifiable",
+    "root": "фантаст",
+    "verify": null
+  },
+  "традиционный": {
+    "type": "unverifiable",
+    "root": "традиц",
+    "verify": null
+  },
+  "оснащение": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "талант": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "разбогатеть": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "поросль": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "провозглашать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "корифей": {
+    "type": "unverifiable",
+    "root": "корифей",
+    "verify": null
+  },
+  "цистерна": {
+    "type": "unverifiable",
+    "root": "цистерн",
+    "verify": null
+  },
+  "унитожить": {
+    "type": "verifiable",
+    "root": "нитож",
+    "verify": "унитожить"
+  },
+  "команда": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "поклониться": {
+    "type": "alternating",
+    "root": "клон",
+    "verify": "клонить",
+    "alternation": "клон/клан"
+  },
+  "исказить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "сомневаться": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "сбережения": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "блестящий": {
+    "type": "alternating",
+    "root": "блест",
+    "verify": "блестеть",
+    "alternation": "блест/блист"
+  },
+  "проглотить": {
+    "type": "verifiable",
+    "root": "глот",
+    "verify": "проглотить"
+  },
+  "возложение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": "лагать",
+    "alternation": "лож/лаг"
+  },
+  "акварельные": {
+    "type": "unverifiable",
+    "root": "акварель",
+    "verify": null
+  },
+  "вещественные": {
+    "type": "unverifiable",
+    "root": "веществен",
+    "verify": null
+  },
+  "ослеплённый": {
+    "type": "verifiable",
+    "root": "слеплённ",
+    "verify": "ослеплённый"
+  },
+  "суверенитет": {
+    "type": "unverifiable",
+    "root": "суверенитет",
+    "verify": null
+  },
+  "абитуриент": {
+    "type": "unverifiable",
+    "root": "абитуриент",
+    "verify": null
+  },
+  "словосочетание": {
+    "type": "alternating",
+    "root": "чет",
+    "verify": "читать",
+    "alternation": "чет/чит"
+  },
+  "упрощение": {
+    "type": "verifiable",
+    "root": "прощени",
+    "verify": "упрощение"
+  },
+  "благословение": {
+    "type": "alternating",
+    "root": "лаг",
+    "verify": "ложить",
+    "alternation": "лаг/лож"
+  },
+  "расположение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": "лагать",
+    "alternation": "лож/лаг"
+  },
+  "держать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "терпеть": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "меридиан": {
+    "type": "unverifiable",
+    "root": "меридиан",
+    "verify": null
+  },
+  "торжественный": {
+    "type": "verifiable",
+    "root": "торжественн",
+    "verify": "торжественный"
+  },
+  "новелла": {
+    "type": "unverifiable",
+    "root": "новелл",
+    "verify": null
+  },
+  "конкурент": {
+    "type": "unverifiable",
+    "root": "конкурент",
+    "verify": null
+  },
+  "сторониться": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "прочитать": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "чистота": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "сжимать": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "росли": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "укротитель": {
+    "type": "verifiable",
+    "root": "кротитель",
+    "verify": "укротитель"
+  },
+  "канонада": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "предложение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": "лагать",
+    "alternation": "лож/лаг"
+  },
+  "промочить": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "напоминать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "обоняние": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "пловцы": {
+    "type": "alternating",
+    "root": "плов",
+    "verify": "плыть",
+    "alternation": "плов/плав"
+  },
+  "вытереть": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "вывеска": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "ошеломлённый": {
+    "type": "verifiable",
+    "root": "шеломлённ",
+    "verify": "ошеломлённый"
+  },
+  "энциклопедедист": {
+    "type": "unverifiable",
+    "root": "энциклопед",
+    "verify": null
+  },
+  "привилегия": {
+    "type": "unverifiable",
+    "root": "привилег",
+    "verify": null
+  },
+  "развивать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "поласкать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "гармоничный": {
+    "type": "alternating",
+    "root": "гар",
+    "verify": "гореть",
+    "alternation": "гар/гор"
+  },
+  "цивилизация": {
+    "type": "unverifiable",
+    "root": "цивилизац",
+    "verify": null
+  },
+  "цитата": {
+    "type": "unverifiable",
+    "root": "цитат",
+    "verify": null
+  },
+  "проредить": {
+    "type": "verifiable",
+    "root": "ред",
+    "verify": "проредить"
+  },
+  "рецензент": {
+    "type": "unverifiable",
+    "root": "реценз",
+    "verify": null
+  },
+  "загромождать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "компания": {
+    "type": "unverifiable",
+    "root": "компан",
+    "verify": null
+  },
+  "томительный": {
+    "type": "unverifiable",
+    "root": "томительн",
+    "verify": null
+  },
+  "сотворить": {
+    "type": "alternating",
+    "root": "твор",
+    "verify": "творить",
+    "alternation": "твор/твар"
+  },
+  "объединяющий": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "петербургский": {
+    "type": "unverifiable",
+    "root": "петербургск",
+    "verify": null
+  },
+  "благочестивый": {
+    "type": "alternating",
+    "root": "лаг",
+    "verify": "ложить",
+    "alternation": "лаг/лож"
+  },
+  "велосипед": {
+    "type": "unverifiable",
+    "root": "велосипед",
+    "verify": null
+  },
+  "циклический": {
+    "type": "unverifiable",
+    "root": "циклическ",
+    "verify": null
+  },
+  "цилиндр": {
+    "type": "unverifiable",
+    "root": "цилиндр",
+    "verify": null
+  },
+  "недосягаемый": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "просвещение": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "сжег": {
+    "type": "alternating",
+    "root": "жег",
+    "verify": "жечь",
+    "alternation": "жег/жиг"
+  },
+  "трущоба": {
+    "type": "unverifiable",
+    "root": "трущоб",
+    "verify": null
+  },
+  "пощечина": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "стипендия": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "начинать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "берёзовый": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "возрождение": {
+    "type": "verifiable",
+    "root": "озрождени",
+    "verify": "возрождение"
+  },
+  "возразить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "сокровенные": {
+    "type": "verifiable",
+    "root": "кровенны",
+    "verify": "сокровенные"
+  },
+  "затворить": {
+    "type": "alternating",
+    "root": "твор",
+    "verify": "творить",
+    "alternation": "твор/твар"
+  },
+  "черный": {
+    "type": "verifiable",
+    "root": "черн",
+    "verify": "черный"
+  },
+  "щелка": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "ожог": {
+    "type": "verifiable",
+    "root": "жог",
+    "verify": "ожог"
+  },
+  "социальный": {
+    "type": "unverifiable",
+    "root": "социальн",
+    "verify": null
+  },
+  "циклон": {
+    "type": "unverifiable",
+    "root": "циклон",
+    "verify": null
+  },
+  "разминаться": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "симптомы": {
+    "type": "unverifiable",
+    "root": "симптом",
+    "verify": null
+  },
+  "прожорливый": {
+    "type": "verifiable",
+    "root": "жорлив",
+    "verify": "прожорливый"
+  },
+  "шорты": {
+    "type": "verifiable",
+    "root": "шорты",
+    "verify": "шорты"
+  },
+  "жёлуди": {
+    "type": "verifiable",
+    "root": "жёлуд",
+    "verify": "жёлуди"
+  },
+  "мотивировать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "истина": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "экспрессивный": {
+    "type": "verifiable",
+    "root": "экспрессивн",
+    "verify": "экспрессивный"
+  },
+  "рациональный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "цитрусовые": {
+    "type": "verifiable",
+    "root": "цитрусовы",
+    "verify": "цитрусовые"
+  },
+  "замереть": {
+    "type": "alternating",
+    "root": "мер",
+    "verify": "умирать",
+    "alternation": "мер/мир"
+  },
+  "развивается": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "щёлкнуть": {
+    "type": "verifiable",
+    "root": "щёлкн",
+    "verify": "щёлкнуть"
+  },
+  "росток": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "обрамление": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "симпатичный": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "закоренелый": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "воспалительный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "громадных": {
+    "type": "unverifiable",
+    "root": "громад",
+    "verify": null
+  },
+  "тростник": {
+    "type": "unverifiable",
+    "root": "тростник",
+    "verify": null
+  },
+  "умножение": {
+    "type": "verifiable",
+    "root": "множени",
+    "verify": "умножение"
+  },
+  "иньем": {
+    "type": "verifiable",
+    "root": "инь",
+    "verify": "иньем"
+  },
+  "развиваются": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "подростковый": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "кромешная": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "заблестал": {
+    "type": "alternating",
+    "root": "блест",
+    "verify": "блестеть",
+    "alternation": "блест/блист"
+  },
+  "помириться": {
+    "type": "alternating",
+    "root": "мир",
+    "verify": "умирать",
+    "alternation": "мир/мер"
+  },
+  "лепетать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "демонстрировать": {
+    "type": "unverifiable",
+    "root": "демонстрир",
+    "verify": null
+  },
+  "разжигание": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": "жечь",
+    "alternation": "жиг/жег"
+  },
+  "фигурировать": {
+    "type": "unverifiable",
+    "root": "фигурир",
+    "verify": null
+  },
+  "утешение": {
+    "type": "verifiable",
+    "root": "тешени",
+    "verify": "утешение"
+  },
+  "покаяние": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "виноватый": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "полинявшая": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "застилать": {
+    "type": "alternating",
+    "root": "стил",
+    "verify": "стелить",
+    "alternation": "стил/стел"
+  },
+  "обаяние": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "сокращение": {
+    "type": "alternating",
+    "root": "ращ",
+    "verify": "расти",
+    "alternation": "ращ/раст"
+  },
+  "прискакать": {
+    "type": "alternating",
+    "root": "скак",
+    "verify": "скакать",
+    "alternation": "скак/скоч"
+  },
+  "невнимательный": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "тренироваться": {
+    "type": "unverifiable",
+    "root": "тренир",
+    "verify": null
+  },
+  "менталитет": {
+    "type": "unverifiable",
+    "root": "менталитет",
+    "verify": null
+  },
+  "честолюбивый": {
+    "type": "verifiable",
+    "root": "честолюбив",
+    "verify": "честолюбивый"
+  },
+  "выберешь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "почитать": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "запевать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "росистый": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "задержать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "освещение": {
+    "type": "verifiable",
+    "root": "свещени",
+    "verify": "освещение"
+  },
+  "сожаление": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "декларация": {
+    "type": "unverifiable",
+    "root": "декларац",
+    "verify": null
+  },
+  "велосипедный": {
+    "type": "unverifiable",
+    "root": "велосипед",
+    "verify": null
+  },
+  "сжигать": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": "жечь",
+    "alternation": "жиг/жег"
+  },
+  "притереться": {
+    "type": "alternating",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": "тер/тир"
+  },
+  "увлекательный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "беречь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "увлекаться": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "центральный": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "объявление": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "вытесненный": {
+    "type": "verifiable",
+    "root": "ытесненн",
+    "verify": "вытесненный"
+  },
+  "пессимизм": {
+    "type": "unverifiable",
+    "root": "пессимизм",
+    "verify": null
+  },
+  "пленительный": {
+    "type": "verifiable",
+    "root": "пленительн",
+    "verify": "пленительный"
+  },
+  "минералы": {
+    "type": "unverifiable",
+    "root": "минерал",
+    "verify": null
+  },
+  "экзаменатор": {
+    "type": "unverifiable",
+    "root": "экзаменатор",
+    "verify": null
+  },
+  "загадать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "роскошный": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "неукоснительно": {
+    "type": "alternating",
+    "root": "кос",
+    "verify": "касаться",
+    "alternation": "кос/кас"
+  },
+  "колыхать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "деликатес": {
+    "type": "unverifiable",
+    "root": "деликатес",
+    "verify": null
+  },
+  "офицер": {
+    "type": "unverifiable",
+    "root": "офицер",
+    "verify": null
+  },
+  "проклинать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "ровесник": {
+    "type": "verifiable",
+    "root": "ровесник",
+    "verify": "ровесник"
+  },
+  "наваждение": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "аннотация": {
+    "type": "unverifiable",
+    "root": "аннотац",
+    "verify": null
+  },
+  "выглядеть": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "разрядить": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "мятеж": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "университет": {
+    "type": "unverifiable",
+    "root": "универ",
+    "verify": null
+  },
+  "умилительно": {
+    "type": "verifiable",
+    "root": "милительн",
+    "verify": "умилительно"
+  },
+  "запотевать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "коллекция": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "дробить": {
+    "type": "verifiable",
+    "root": "дроб",
+    "verify": "дробить"
+  },
+  "коричневый": {
+    "type": "verifiable",
+    "root": "коричнев",
+    "verify": "коричневый"
+  },
+  "обмокнуть": {
+    "type": "verifiable",
+    "root": "мокн",
+    "verify": "обмокнуть"
+  },
+  "роптать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "пловчиха": {
+    "type": "alternating",
+    "root": "плов",
+    "verify": "плыть",
+    "alternation": "плов/плав"
+  },
+  "утрамбовать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "размешать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "свила": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "прижимать": {
+    "type": "alternating",
+    "root": "им",
+    "verify": "имя",
+    "alternation": "им/а"
+  },
+  "классический": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "воображать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "вакцина": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "героический": {
+    "type": "unverifiable",
+    "root": "героическ",
+    "verify": null
+  },
+  "тревога": {
+    "type": "unverifiable",
+    "root": "тревог",
+    "verify": null
+  },
+  "неувядающая": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "Просвещения": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "колебание": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "продолжение": {
+    "type": "unverifiable",
+    "root": "продолжен",
+    "verify": null
+  },
+  "абонемент": {
+    "type": "unverifiable",
+    "root": "абонемент",
+    "verify": null
+  },
+  "конфорка": {
+    "type": "unverifiable",
+    "root": "конфорк",
+    "verify": null
+  },
+  "предполагать": {
+    "type": "alternating",
+    "root": "лаг",
+    "verify": "ложить",
+    "alternation": "лаг/лож"
+  },
+  "ограждать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "громадный": {
+    "type": "unverifiable",
+    "root": "громад",
+    "verify": null
+  },
+  "трафарет": {
+    "type": "unverifiable",
+    "root": "трафарет",
+    "verify": null
+  },
+  "полемичный": {
+    "type": "unverifiable",
+    "root": "полемичн",
+    "verify": null
+  },
+  "блестеть": {
+    "type": "alternating",
+    "root": "блест",
+    "verify": "блестеть",
+    "alternation": "блест/блист"
+  },
+  "береговой": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "брать",
+    "alternation": "бер/бир"
+  },
+  "мажор": {
+    "type": "unverifiable",
+    "root": "мажор",
+    "verify": null
+  },
+  "спокойный": {
+    "type": "verifiable",
+    "root": "покойн",
+    "verify": "спокойный"
+  },
+  "озерной": {
+    "type": "verifiable",
+    "root": "зерн",
+    "verify": "озерной"
+  },
+  "подметать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "извиниться": {
+    "type": "alternating",
+    "root": "я",
+    "verify": "имя",
+    "alternation": "я/им"
+  },
+  "впечатление": {
+    "type": "unverifiable",
+    "root": "впечатл",
+    "verify": null
+  },
+  "виртуальный": {
+    "type": "unverifiable",
+    "root": "виртуальн",
+    "verify": null
+  },
+  "обжора": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "жонглёр": {
+    "type": "verifiable",
+    "root": "жонглёр",
+    "verify": "жонглёр"
+  },
+  "укрепление": {
+    "type": "unverifiable",
+    "root": "укреплен",
+    "verify": null
+  },
+  "колдун": {
+    "type": "verifiable",
+    "root": "колдун",
+    "verify": "колдун"
+  },
+  "демократ": {
+    "type": "unverifiable",
+    "root": "демократ",
+    "verify": null
+  },
+  "уникальный": {
+    "type": "unverifiable",
+    "root": "уникальн",
+    "verify": null
+  },
+  "намочить": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": "чит/чет"
+  },
+  "насекомые": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "умирать": {
+    "type": "alternating",
+    "root": "мир",
+    "verify": "умирать",
+    "alternation": "мир/мер"
+  },
+  "стилист": {
+    "type": "unverifiable",
+    "root": "стилист",
+    "verify": null
+  },
+  "победить": {
+    "type": "verifiable",
+    "root": "бед",
+    "verify": "победить"
+  },
+  "шеренга": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "престиж": {
+    "type": "unverifiable",
+    "root": "престиж",
+    "verify": null
+  },
+  "ослепительно": {
+    "type": "verifiable",
+    "root": "слепительн",
+    "verify": "ослепительно"
+  },
+  "претворить": {
+    "type": "alternating",
+    "root": "твор",
+    "verify": "творить",
+    "alternation": "твор/твар"
+  },
+  "игнорировать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "ароматный": {
+    "type": "unverifiable",
+    "root": "ароматн",
+    "verify": null
+  },
+  "Ростов": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "полезный": {
+    "type": "alternating",
+    "root": "лез",
+    "verify": "лезть",
+    "alternation": "лез/лаз"
+  },
+  "задрежать": {
+    "type": "alternating",
+    "root": "а",
+    "verify": "имя",
+    "alternation": "а/им"
+  },
+  "Ростислав": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": "расти",
+    "alternation": "раст/рос"
+  },
+  "колоссальный": {
+    "type": "unverifiable",
+    "root": "колоссальн",
+    "verify": null
+  }
+}

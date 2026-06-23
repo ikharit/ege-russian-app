@@ -8,6 +8,7 @@ export interface StudentProfile {
   emoji: string
   createdAt: string
   lastActive: string
+  role?: 'student' | 'teacher' | 'parent'
   progress?: any // snapshot of progressStore data
   history: { date: string; xp: number; level: number; streak: number; lessonsCompleted: number; accuracy: number }[]
 }
