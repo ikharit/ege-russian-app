@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, Lightbulb, ArrowRight, RotateCcw, Zap } from 'lucide-react'
+import { Check, X, Lightbulb, ArrowRight, RotateCcw, Zap, TrendingDown } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
 import { playCorrectSound, playWrongSound } from '../lib/sounds'
@@ -25,16 +25,37 @@ export function DailyQuestionCard() {
   const updateStreak = useProgressStore((s) => s.updateStreak)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
+  const getProblematicQuestions = useProgressStore((s) => s.getProblematicQuestions)
 
   const seed = getDailyQuestionSeed()
 
   const question = useMemo(() => {
+    // 1. Try problematic questions first (most wrong answers across all users)
+    const problematic = getProblematicQuestions(50)
     const allQuestions = course.sections.flatMap(s => s.lessons.flatMap(l => l.questions))
+
+    if (problematic.length > 0) {
+      // Pick from top problematic using seeded random
+      const idx = Math.floor(seededRandom(seed) * Math.min(problematic.length, 10))
+      const problematicQ = problematic[idx]
+      // Find full question object from course
+      const fullQuestion = allQuestions.find(q => q.id === problematicQ.questionId)
+      if (fullQuestion) {
+        return {
+          ...fullQuestion,
+          options: fullQuestion.options ? [...fullQuestion.options].sort(() => seededRandom(seed + fullQuestion.id) - 0.5) : undefined,
+          _isProblematic: true,
+          _wrongCount: problematicQ.wrongCount,
+        }
+      }
+    }
+
+    // 2. Fallback: random question from course
     if (allQuestions.length === 0) return null
     const idx = Math.floor(seededRandom(seed) * allQuestions.length)
     const q = allQuestions[idx]
-    return q ? { ...q, options: q.options ? [...q.options].sort(() => seededRandom(seed + q.id) - 0.5) : undefined } : null
-  }, [seed])
+    return q ? { ...q, options: q.options ? [...q.options].sort(() => seededRandom(seed + q.id) - 0.5) : undefined, _isProblematic: false } : null
+  }, [seed, getProblematicQuestions])
 
   // Load saved state from localStorage for today
   const [savedState, setSavedState] = useState<{ answered: boolean; correct: boolean } | null>(() => {
@@ -60,7 +81,9 @@ export function DailyQuestionCard() {
 
   if (!question) return null
 
-  const taskNumber = question.atoms?.find(a => a.startsWith('task'))?.replace('task', '') || '1'
+  const taskNumber = question.atoms?.find((a: string) => a.startsWith('task'))?.replace('task', '') || '1'
+  const isProblematic = (question as any)._isProblematic
+  const wrongCount = (question as any)._wrongCount
 
   const handleSelect = (option: string) => {
     if (isChecked || savedState?.answered) return
@@ -122,99 +145,102 @@ export function DailyQuestionCard() {
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Zap size={18} className="text-amber-500" />
-          <h3 className="font-bold text-gray-800">Вопрос дня</h3>
-          <span className="text-xs text-amber-600 font-bold bg-amber-100 px-2 py-0.5 rounded-full">+15 XP</span>
+          <Zap size={18} className="text-duo-yellow" fill="currentColor" />
+          <h3 className="font-bold text-sm text-gray-700">
+            {isProblematic ? '🔥 Сложное слово дня' : 'Вопрос дня'}
+          </h3>
+          {isProblematic && wrongCount && (
+            <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold flex items-center gap-0.5">
+              <TrendingDown size={10} />
+              {wrongCount} ошибок
+            </span>
+          )}
         </div>
         {isAnswered && (
-          <button onClick={handleReset} className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1">
-            <RotateCcw size={12} /> Снова
+          <button onClick={handleReset} className="text-gray-400 hover:text-gray-600">
+            <RotateCcw size={16} />
           </button>
         )}
       </div>
 
-      <p className="text-sm text-gray-700 mb-3">{question.text}</p>
+      <p className="text-sm text-gray-800 mb-4 font-medium">{question.text}</p>
 
       {question.options && (
-        <div className="flex flex-col gap-2">
-          {question.options.map((option) => {
+        <div className="flex flex-col gap-2 mb-4">
+          {question.options.map((option: string) => {
             const isSelected = selected.includes(option)
             const isCorrectOption = question.correctAnswer.includes(option)
-            let btnClass = 'border-2 rounded-xl p-3 text-left text-sm font-medium transition-all '
-
-            if (!isAnswered) {
-              btnClass += isSelected ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-gray-200 bg-white hover:bg-gray-50'
-            } else {
-              if (isCorrectOption) btnClass += 'border-green-400 bg-green-50 text-green-700'
-              else if (isSelected && !isCorrectOption) btnClass += 'border-red-400 bg-red-50 text-red-700'
-              else btnClass += 'border-gray-200 bg-white opacity-60'
+            let optionClass = 'bg-white border-gray-200 hover:border-duo-green'
+            if (isAnswered) {
+              if (isCorrectOption) optionClass = 'bg-duo-green border-duo-green text-white'
+              else if (isSelected) optionClass = 'bg-red-100 border-red-300 text-red-700'
+              else optionClass = 'bg-white border-gray-200 opacity-60'
+            } else if (isSelected) {
+              optionClass = 'bg-duo-blue/10 border-duo-blue'
             }
-
             return (
               <button
                 key={option}
                 onClick={() => handleSelect(option)}
-                className={btnClass}
                 disabled={isAnswered}
+                className={`p-3 rounded-xl border-2 text-left text-sm font-medium transition-all ${optionClass}`}
               >
-                <div className="flex items-center justify-between">
-                  <span>{option}</span>
-                  {isAnswered && isCorrectOption && <Check size={16} className="text-green-600" />}
-                  {isAnswered && isSelected && !isCorrectOption && <X size={16} className="text-red-600" />}
-                </div>
+                {option}
               </button>
             )
           })}
         </div>
       )}
 
-      {question.type === 'text' && !question.options && (
-        <div className="flex flex-col gap-2">
-          <input
-            type="text"
-            value={selected[0] || ''}
-            onChange={(e) => {
-              if (!isAnswered) setSelected([e.target.value])
-            }}
-            placeholder="Введите ответ..."
-            className="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-medium focus:border-amber-400 focus:outline-none transition-colors"
-            disabled={isAnswered}
-          />
-        </div>
+      {isAnswered && (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-3"
+          >
+            <div className={`p-3 rounded-xl text-sm ${isCorrect ? 'bg-duo-green/10 text-duo-green-dark' : 'bg-red-50 text-red-700'}`}>
+              <div className="flex items-center gap-2 mb-1">
+                {isCorrect ? <Check size={16} /> : <X size={16} />}
+                <span className="font-bold">{isCorrect ? 'Правильно! +15 XP' : 'Неправильно'}</span>
+              </div>
+              {question.explanation && (
+                <p className="mt-1 text-xs opacity-80">{question.explanation}</p>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       )}
 
       {!isAnswered && (
         <button
           onClick={handleCheck}
           disabled={selected.length === 0}
-          className="btn-primary w-full mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary w-full disabled:opacity-50"
         >
           Проверить
         </button>
       )}
 
-      <AnimatePresence>
-        {isAnswered && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className={`mt-3 p-3 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}
-          >
-            <div className="flex items-center gap-2 mb-1">
-              {isCorrect ? (
-                <><Check size={16} className="text-green-600" /><span className="font-bold text-green-700 text-sm">Правильно!</span></>
-              ) : (
-                <><X size={16} className="text-red-600" /><span className="font-bold text-red-700 text-sm">Неправильно</span></>
-              )}
-            </div>
-            <p className="text-xs text-gray-600">{question.explanation}</p>
-            <p className="text-xs text-gray-500 mt-1">Правильный ответ: {question.correctAnswer.join(', ')}</p>
-            {xpAwarded && (
-              <p className="text-xs text-amber-600 font-bold mt-1">+15 XP получено!</p>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isAnswered && !isCorrect && question.explanation && (
+        <button
+          onClick={() => setShowHint(!showHint)}
+          className="mt-2 text-xs text-duo-blue flex items-center gap-1 mx-auto"
+        >
+          <Lightbulb size={14} />
+          {showHint ? 'Скрыть подсказку' : 'Показать подсказку'}
+        </button>
+      )}
+
+      {showHint && question.explanation && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-2 p-3 bg-blue-50 rounded-xl text-xs text-gray-700"
+        >
+          {question.explanation}
+        </motion.div>
+      )}
     </motion.div>
   )
 }

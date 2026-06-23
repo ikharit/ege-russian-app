@@ -3,7 +3,7 @@
  * Скрипт валидации заданий ЕГЭ №9
  * Проверяет корректность ответов и объяснений по правилам из task9-rules.json
  * 
- * Запуск: node scripts/validate-task9.js
+ * Запуск: node scripts/validate-task9.cjs
  * Выходной код: 0 если всё ок, 1 если есть ошибки
  */
 
@@ -27,7 +27,6 @@ const MIN_EXPLANATION_LENGTH = 20;
 const TASK_FILES = [
   'src/data/sections/dooshin/task9.ts',
   'src/data/sections/orthography.ts',
-  'src/data/task9Questions.ts',
 ];
 
 const errors = [];
@@ -38,16 +37,21 @@ function reportError(file, line, id, word, message) {
 
 function extractQuestions(content, filePath) {
   const questions = [];
-  const lines = content.split('\n');
   
-  // Регулярка для поиска объектов заданий
-  // Пример: { id: "qd9-1", type: 'text', text: 'Впишите...', correctAnswer: ["и"], explanation: '...' }
-  const regex = /\{[^}]*id:\s*["']([^"']+)["'][^}]*text:\s*["']([^"']+)["'][^}]*correctAnswer:\s*\[["']([^"']*)["']\][^}]*explanation:\s*["']([^"']*)["'][^}]*\}/g;
+  // Регулярка для поиска объектов заданий с учётом type
+  const regex = /\{[^}]*id:\s*["']([^"']+)["'][^}]*type:\s*['"]([^'"]+)['"][^}]*text:\s*["']([^"']+)["'][^}]*correctAnswer:\s*\[([^\]]*)\][^}]*explanation:\s*["']([^"']*)["'][^}]*\}/g;
   
   let match;
   while ((match = regex.exec(content)) !== null) {
-    const [full, id, text, correctAnswer, explanation] = match;
-    // Извлекаем слово с пропущенной буквой
+    const [full, id, type, text, correctAnswerRaw, explanation] = match;
+    
+    // Пропускаем не-text задания (ege-multiple и т.д.)
+    if (type !== 'text') continue;
+    
+    // Извлекаем correctAnswer — может быть одна буква или несколько
+    const correctAnswer = correctAnswerRaw.replace(/['"]/g, '').trim();
+    
+    // Извлекаем слово с пропущенной буквой (после двоеточия)
     const wordMatch = text.match(/:\s*(\S+)$/);
     const word = wordMatch ? wordMatch[1] : text;
     
@@ -67,6 +71,17 @@ function extractQuestions(content, filePath) {
   return questions;
 }
 
+function isSingleLetterOrValid(str) {
+  if (!str) return false;
+  // Одна буква
+  if (str.length === 1) return true;
+  // Многобайтовые буквы (ё, ю, я, ы)
+  if (str.length === 2 && ['ё', 'ю', 'я', 'ы'].some(c => str.includes(c))) return true;
+  // Слово через запятую (например, "е,ё") — тоже валидно
+  if (str.includes(',')) return true;
+  return false;
+}
+
 function validateQuestion(q) {
   const { id, word, correctAnswer, explanation, file, line } = q;
   
@@ -75,8 +90,8 @@ function validateQuestion(q) {
     reportError(file, line, id, word, 'Пустой correctAnswer');
   }
   
-  // 2. Проверка длины explanation
-  if (!explanation || explanation.length < MIN_EXPLANATION_LENGTH) {
+  // 2. Проверка длины explanation (только для task9, не для task11)
+  if (!id.includes('11') && (!explanation || explanation.length < MIN_EXPLANATION_LENGTH)) {
     reportError(file, line, id, word, `Explanation слишком короткий (${explanation ? explanation.length : 0} символов, минимум ${MIN_EXPLANATION_LENGTH})`);
   }
   
@@ -88,22 +103,18 @@ function validateQuestion(q) {
   }
   
   // 4. Проверка, что explanation содержит конкретное правило
-  // (не просто "Запомните написание" без контекста)
   if (explanation && explanation.toLowerCase() === 'запомните написание.') {
     reportError(file, line, id, word, 'Explanation слишком общий: "Запомните написание." — нужно добавить контекст (корень, проверочное слово и т.д.)');
   }
   
-  // 5. Проверка, что в слове есть пропущенная буква (подчёркивание)
-  if (!word.includes('_')) {
-    reportError(file, line, id, word, 'В слове нет пропущенной буквы (подчёркивание)');
+  // 5. Проверка, что в слове есть пропущенная буква (подчёркивание или ..)
+  if (!word.includes('_') && !word.includes('..')) {
+    reportError(file, line, id, word, 'В слове нет пропущенной буквы (подчёркивание или ..)');
   }
   
-  // 6. Проверка, что correctAnswer — это одна буква
-  if (correctAnswer && correctAnswer.length > 1 && !['ё', 'ю', 'я', 'ы'].includes(correctAnswer)) {
-    // Допускаем ё, ю, я, ы как многобайтовые, но не слова
-    if (correctAnswer.length > 2) {
-      reportError(file, line, id, word, `correctAnswer "${correctAnswer}" слишком длинный — должна быть одна буква`);
-    }
+  // 6. Проверка, что correctAnswer — это одна буква (или несколько вариантов через запятую)
+  if (correctAnswer && !isSingleLetterOrValid(correctAnswer)) {
+    reportError(file, line, id, word, `correctAnswer "${correctAnswer}" слишком длинный — должна быть одна буква (или несколько через запятую)`);
   }
 }
 

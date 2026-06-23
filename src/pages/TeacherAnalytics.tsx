@@ -182,6 +182,110 @@ export function TeacherAnalytics() {
               </div>
             </div>
 
+            {/* Class Behavior Overview */}
+            {students.some(s => s.progress?.behaviorProfile) && (
+              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                  <Target size={18} className="text-duo-blue" />
+                  Чем занимается класс
+                </h3>
+                
+                {/* Aggregate time by category */}
+                <div className="mb-3">
+                  <p className="text-xs font-bold text-gray-500 mb-2">Время по разделам (суммарно)</p>
+                  <div className="flex flex-wrap gap-1">
+                    {(() => {
+                      const timeByCat: Record<string, number> = {}
+                      students.forEach(s => {
+                        const bp = s.progress?.behaviorProfile?.timeDistribution
+                        if (bp) {
+                          Object.entries(bp).forEach(([cat, seconds]) => {
+                            if (seconds > 0) {
+                              timeByCat[cat] = (timeByCat[cat] || 0) + seconds
+                            }
+                          })
+                        }
+                      })
+                      return Object.entries(timeByCat)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 6)
+                        .map(([cat, seconds]) => {
+                          const mins = Math.round(seconds / 60)
+                          return (
+                            <span key={cat} className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-lg font-bold">
+                              {cat}: {mins}м
+                            </span>
+                          )
+                        })
+                    })()}
+                  </div>
+                </div>
+
+                {/* Aggregate clicks by category */}
+                <div className="mb-3">
+                  <p className="text-xs font-bold text-gray-500 mb-2">Клики по разделам</p>
+                  <div className="flex flex-wrap gap-1">
+                    {(() => {
+                      const clicksByCat: Record<string, number> = {}
+                      students.forEach(s => {
+                        const bp = s.progress?.behaviorProfile?.clickDistribution
+                        if (bp) {
+                          Object.entries(bp).forEach(([cat, count]) => {
+                            if (count > 0) {
+                              clicksByCat[cat] = (clicksByCat[cat] || 0) + count
+                            }
+                          })
+                        }
+                      })
+                      return Object.entries(clicksByCat)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 6)
+                        .map(([cat, count]) => (
+                          <span key={cat} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
+                            {cat}: {count}
+                          </span>
+                        ))
+                    })()}
+                  </div>
+                </div>
+
+                {/* Class motivation signals */}
+                <div>
+                  <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует класс</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(() => {
+                      const signals = { achievementDriven: 0, socialDriven: 0, explorationDriven: 0, competitionDriven: 0 }
+                      let count = 0
+                      students.forEach(s => {
+                        const bp = s.progress?.behaviorProfile?.motivationSignals
+                        if (bp) {
+                          signals.achievementDriven += bp.achievementDriven
+                          signals.socialDriven += bp.socialDriven
+                          signals.explorationDriven += bp.explorationDriven
+                          signals.competitionDriven += bp.competitionDriven
+                          count++
+                        }
+                      })
+                      if (count === 0) return null
+                      const avg = (k: keyof typeof signals) => Math.round(signals[k] / count)
+                      const items = [
+                        { label: 'Достижения', value: avg('achievementDriven'), color: 'bg-amber-50 text-amber-700' },
+                        { label: 'Общение', value: avg('socialDriven'), color: 'bg-blue-50 text-blue-700' },
+                        { label: 'Исследование', value: avg('explorationDriven'), color: 'bg-violet-50 text-violet-700' },
+                        { label: 'Соревнование', value: avg('competitionDriven'), color: 'bg-red-50 text-red-700' },
+                      ]
+                      return items.map(item => (
+                        <div key={item.label} className={`${item.color} rounded-xl p-2 text-center`}>
+                          <p className="text-[10px] font-bold opacity-80">{item.label}</p>
+                          <p className="text-sm font-bold">{item.value}%</p>
+                        </div>
+                      ))
+                    })()}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Insights */}
             {summary.classInsights.length > 0 && (
               <div className="bg-gradient-to-r from-duo-green/5 to-blue-50 rounded-2xl p-4 border border-duo-green/10">
@@ -338,9 +442,79 @@ export function TeacherAnalytics() {
                         </div>
                       )}
 
+                      {/* Behavior Profile */}
+                      {a.behaviorProfile && (
+                        <div className="space-y-3">
+                          {/* Time spent */}
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 mb-2">Где проводит время</p>
+                            <div className="flex flex-wrap gap-1">
+                              {Object.entries(a.behaviorProfile.timeDistribution)
+                                .filter(([, v]) => v > 0)
+                                .sort((a, b) => b[1] - a[1])
+                                .slice(0, 5)
+                                .map(([cat, seconds]) => {
+                                  const mins = Math.round(seconds / 60)
+                                  return (
+                                    <span key={cat} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-lg font-bold">
+                                      {cat}: {mins}м
+                                    </span>
+                                  )
+                                })}
+                            </div>
+                          </div>
+
+                          {/* Clicks */}
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 mb-2">Что больше кликает</p>
+                            <div className="flex flex-wrap gap-1">
+                              {a.behaviorProfile.topClickedElements.slice(0, 5).map((el, i) => (
+                                <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
+                                  {el.element.split('::').pop() || el.element}: {el.count}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Motivation signals */}
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует (сигналы)</p>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="bg-amber-50 rounded-xl p-2">
+                                <p className="text-[10px] text-amber-600 font-bold">Достижения</p>
+                                <p className="text-sm font-bold text-amber-700">{a.behaviorProfile.motivationSignals.achievementDriven}%</p>
+                              </div>
+                              <div className="bg-blue-50 rounded-xl p-2">
+                                <p className="text-[10px] text-blue-600 font-bold">Общение</p>
+                                <p className="text-sm font-bold text-blue-700">{a.behaviorProfile.motivationSignals.socialDriven}%</p>
+                              </div>
+                              <div className="bg-violet-50 rounded-xl p-2">
+                                <p className="text-[10px] text-violet-600 font-bold">Исследование</p>
+                                <p className="text-sm font-bold text-violet-700">{a.behaviorProfile.motivationSignals.explorationDriven}%</p>
+                              </div>
+                              <div className="bg-red-50 rounded-xl p-2">
+                                <p className="text-[10px] text-red-600 font-bold">Соревнование</p>
+                                <p className="text-sm font-bold text-red-700">{a.behaviorProfile.motivationSignals.competitionDriven}%</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 text-center text-xs text-gray-500">
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <p className="font-bold text-gray-700">{a.behaviorProfile.totalClicks}</p>
+                              <p>Кликов</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <p className="font-bold text-gray-700">{Math.round(a.behaviorProfile.avgSessionDuration / 60)}м</p>
+                              <p>Средняя сессия</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Motivation & Recommendation */}
                       <div className="bg-blue-50 rounded-xl p-3">
-                        <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует</p>
+                        <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует (тип)</p>
                         <p className="text-xs text-blue-600">{a.motivation}</p>
                       </div>
                       <div className="bg-duo-green/5 rounded-xl p-3 border border-duo-green/10">

@@ -20,11 +20,35 @@ import { useClassStore, ProgressData } from './stores/classStore'
 import { useNotificationStore } from './stores/notificationStore'
 import { useStudentStore } from './stores/studentStore'
 import { useSettingsStore } from './stores/settingsStore'
+import { useAnalyticsStore } from './stores/analyticsStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
-import { initMobile } from './lib/mobile'
+import { usePageAnalytics } from './hooks/usePageAnalytics'
+import type { EventCategory } from './stores/analyticsStore'
 
 import TheoryPage from './pages/TheoryPage'
+
+// Map routes to analytics categories
+function getPageCategory(path: string): EventCategory {
+  if (path === '/' || path === '/dashboard') return 'dashboard'
+  if (path.startsWith('/lesson')) return 'lesson'
+  if (path.includes('trainer') || path.includes('task') || path.includes('accent')) return 'trainer'
+  if (path.includes('theory')) return 'theory'
+  if (path.includes('exam') || path.includes('variant')) return 'exam'
+  if (path.includes('flashcard')) return 'flashcard'
+  if (path.includes('profile')) return 'profile'
+  if (path.includes('leaderboard')) return 'leaderboard'
+  if (path.includes('shop')) return 'shop'
+  if (path.includes('chat')) return 'chat'
+  if (path.includes('game') || path.includes('mini')) return 'game'
+  if (path.includes('duel')) return 'duel'
+  if (path.includes('marathon')) return 'marathon'
+  if (path.includes('adaptive') || path.includes('practice')) return 'adaptive'
+  if (path.includes('mistake') || path.includes('error') || path.includes('weak')) return 'mistakes'
+  if (path.includes('stats') || path.includes('growth') || path.includes('comparison')) return 'dashboard'
+  if (path.includes('teacher') || path.includes('classroom')) return 'other'
+  return 'other'
+}
 
 // Lazy-loaded pages (rarely used, heavy bundles) — all use named exports, wrap with default
 const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m => ({ default: m.Task3SwipeTrainer })))
@@ -122,8 +146,13 @@ function BottomNav() {
 type SyncStatus = 'idle' | 'syncing' | 'saved' | 'error'
 
 export default function App() {
-  const navigate = useNavigate()
   const location = useLocation()
+  
+  // Track page analytics
+  const pageCategory = getPageCategory(location.pathname)
+  usePageAnalytics(pageCategory)
+  
+  const navigate = useNavigate()
   const isLesson = location.pathname.startsWith('/lesson/') || location.pathname === '/accent-trainer' || location.pathname === '/task10-trainer' || location.pathname === '/task5-trainer' || location.pathname.startsWith('/exam/') || location.pathname.startsWith('/essay/')
   const lastUnlocked = useProgressStore((s) => s.lastUnlockedAchievement)
   const clearLastAchievement = useProgressStore((s) => s.clearLastAchievement)
@@ -334,6 +363,22 @@ export default function App() {
         wrongAnswers: state.wrongAnswers,
         theoryTestsCompleted: state.theoryTestsCompleted,
         dailyQuestProgress: state.dailyQuestProgress,
+        behaviorProfile: (() => {
+          const bp = useAnalyticsStore.getState().getBehaviorProfile()
+          return {
+            mostActiveCategory: bp.mostActiveCategory,
+            leastActiveCategory: bp.leastActiveCategory,
+            preferredLearningTime: bp.preferredLearningTime,
+            sessionFrequency: bp.sessionFrequency,
+            avgSessionDuration: bp.avgSessionDuration,
+            totalClicks: bp.totalClicks,
+            totalSessions: bp.totalSessions,
+            topClickedElements: bp.topClickedElements,
+            timeDistribution: bp.timeDistribution,
+            clickDistribution: bp.clickDistribution,
+            motivationSignals: bp.motivationSignals,
+          }
+        })(),
       }
       classStore.updateStudentProgress(studentClass.id, activeProfileId, progressSnapshot)
     })

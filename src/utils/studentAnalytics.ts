@@ -18,6 +18,24 @@ export interface StudentAnalytics {
   topTask: string
   weakestTask: string
   recommendation: string
+  behaviorProfile?: {
+    mostActiveCategory: string
+    leastActiveCategory: string
+    preferredLearningTime: string
+    sessionFrequency: string
+    avgSessionDuration: number
+    totalClicks: number
+    totalSessions: number
+    topClickedElements: { element: string; count: number }[]
+    timeDistribution: Record<string, number>
+    clickDistribution: Record<string, number>
+    motivationSignals: {
+      achievementDriven: number
+      socialDriven: number
+      explorationDriven: number
+      competitionDriven: number
+    }
+  }
 }
 
 export interface ClassAnalyticsSummary {
@@ -170,6 +188,7 @@ export function analyzeStudent(
     topTask,
     weakestTask,
     recommendation,
+    behaviorProfile: progress?.behaviorProfile,
   }
 }
 
