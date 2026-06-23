@@ -299,6 +299,7 @@ export function Profile() {
   const isOnline = useFirebaseStore((s) => s.isOnline)
   const lastSync = useFirebaseStore((s) => s.lastSync)
   const isTeacher = useProgressStore((s) => s.isTeacher)
+  const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
 
   // Settings
   const soundEnabled = useSettingsStore((s) => s.soundEnabled)
@@ -696,6 +697,29 @@ export function Profile() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Teacher Mode Toggle */}
+      <div className="card flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <GraduationCap size={20} className={isTeacher ? 'text-duo-purple' : 'text-gray-400'} />
+          <div>
+            <p className="font-bold text-sm text-gray-800">Режим учителя</p>
+            <p className="text-xs text-gray-500">{isTeacher ? 'Включён — доступна панель' : 'Отключён'}</p>
+          </div>
+        </div>
+        <button
+          onClick={() => setTeacherMode(!isTeacher)}
+          className={`w-12 h-6 rounded-full transition-colors relative ${
+            isTeacher ? 'bg-duo-purple' : 'bg-gray-300'
+          }`}
+        >
+          <div
+            className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+              isTeacher ? 'translate-x-6' : 'translate-x-0.5'
+            }`}
+          />
+        </button>
       </div>
 
       {/* Progress details */}
