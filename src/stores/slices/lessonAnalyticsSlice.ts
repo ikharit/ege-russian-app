@@ -158,10 +158,22 @@ export function createAnalyticsActions(set: any, get: any) {
 
     getProblematicQuestions: (limit = 10) => {
       const wrong = get().wrongAnswers
-      const map: Record<string, { questionId: string; text: string; taskNumber: string; wrongCount: number; attempts: number }> = {}
+      // Агрегируем по canonicalWordId, если он есть, иначе по questionId
+      const map: Record<string, {
+        canonicalWordId?: string
+        word?: string
+        questionId: string
+        text: string
+        taskNumber: string
+        wrongCount: number
+        attempts: number
+      }> = {}
       for (const w of wrong) {
-        if (!map[w.questionId]) {
-          map[w.questionId] = {
+        const key = w.canonicalWordId || w.questionId
+        if (!map[key]) {
+          map[key] = {
+            canonicalWordId: w.canonicalWordId,
+            word: w.word,
             questionId: w.questionId,
             text: w.text,
             taskNumber: w.taskNumber ?? '—',
@@ -169,27 +181,111 @@ export function createAnalyticsActions(set: any, get: any) {
             attempts: 0,
           }
         }
-        map[w.questionId].wrongCount++
-        map[w.questionId].attempts = w.attempts
+        map[key].wrongCount++
+        map[key].attempts = Math.max(map[key].attempts, w.attempts)
       }
       return Object.values(map)
         .sort((a, b) => b.wrongCount - a.wrongCount)
         .slice(0, limit)
     },
 
+    // === NEW: Unified Analytics by Word ===
+    getProblematicWords: (limit = 10) => {
+      const wrong = get().wrongAnswers
+      const map: Record<string, {
+        canonicalWordId: string
+        word: string
+        ruleId?: string
+        taskNumber?: string
+        wrongCount: number
+        questionIds: Set<string>
+        lastOccurred: string
+      }> = {}
+      for (const w of wrong) {
+        const cid = w.canonicalWordId || w.word || w.questionId
+        if (!map[cid]) {
+          map[cid] = {
+            canonicalWordId: w.canonicalWordId || cid,
+            word: w.word || 'unknown',
+            ruleId: w.ruleId,
+            taskNumber: w.taskNumber,
+            wrongCount: 0,
+            questionIds: new Set(),
+            lastOccurred: w.timestamp,
+          }
+        }
+        map[cid].wrongCount++
+        map[cid].questionIds.add(w.questionId)
+        if (w.timestamp > map[cid].lastOccurred) map[cid].lastOccurred = w.timestamp
+      }
+      return Object.values(map)
+        .sort((a, b) => b.wrongCount - a.wrongCount)
+        .slice(0, limit)
+        .map(m => ({
+          ...m,
+          questionIds: Array.from(m.questionIds),
+        }))
+    },
+
+    // === NEW: Unified Analytics by Rule ===
+    getProblematicRules: (limit = 10) => {
+      const wrong = get().wrongAnswers
+      const map: Record<string, {
+        ruleId: string
+        taskNumber?: string
+        wrongCount: number
+        words: Set<string>
+        lastOccurred: string
+      }> = {}
+      for (const w of wrong) {
+        const rid = w.ruleId || 'unknown'
+        if (!map[rid]) {
+          map[rid] = {
+            ruleId: rid,
+            taskNumber: w.taskNumber,
+            wrongCount: 0,
+            words: new Set(),
+            lastOccurred: w.timestamp,
+          }
+        }
+        map[rid].wrongCount++
+        if (w.word) map[rid].words.add(w.word)
+        if (w.timestamp > map[rid].lastOccurred) map[rid].lastOccurred = w.timestamp
+      }
+      return Object.values(map)
+        .sort((a, b) => b.wrongCount - a.wrongCount)
+        .slice(0, limit)
+        .map(m => ({
+          ...m,
+          words: Array.from(m.words),
+        }))
+    },
+
+    // === NEW: Get error history for a specific word ===
+    getWordErrorHistory: (canonicalWordId: string) => {
+      return get().wrongAnswers.filter(
+        (w: WrongAnswer) => w.canonicalWordId === canonicalWordId || w.word === canonicalWordId
+      )
+    },
+
+    // === NEW: Get error history for a specific rule ===
+    getRuleErrorHistory: (ruleId: string) => {
+      return get().wrongAnswers.filter((w: WrongAnswer) => w.ruleId === ruleId)
+    },
+
     recordWrongAnswer: (question: any, userAnswer: string[], lessonId?: string) => {
       // Reset combo on wrong answer
       get().resetCombo?.()
       
-      // Извлекаем canonicalWordId и ruleId из вопроса
+      // Извлекаем canonicalWordId и ruleId из вопроса (синхронно)
       const canonicalWordId = question.canonicalWordId
-        || (await import('../../data/questionMapping')).getCanonicalWordId(question)
+        || getCanonicalWordId(question)
         || undefined
       const word = question.word
-        || (await import('../../data/questionMapping')).extractWordFromQuestion(question.text)
+        || extractWordFromQuestion(question.text)
         || undefined
       const ruleId = question.ruleId
-        || (await import('../../data/questionMapping')).getRuleId(question.id)
+        || getRuleId(question.id)
         || undefined
       const errorType = question.errorType || question.atoms?.find((a: string) => a.startsWith('error_')) || undefined
       

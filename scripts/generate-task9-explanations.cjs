@@ -993,7 +993,15 @@ const rootDictionary = {
   'косн': { type: 'unverifiable', verify: null },
   'деликатес': { type: 'unverifiable', verify: null },
   'важд': { type: 'unverifiable', verify: null },
-  'университет': { type: 'unverifiable', verify: null }
+  'университет': { type: 'unverifiable', verify: null },
+
+  'поряд/поряж': { type: 'alternating', verify: 'проверьте', alternation: 'а/я' },
+  'бер/бир/бра': { type: 'alternating', verify: 'проверьте', alternation: 'е/и/а' },
+  'рожд/род/рожден': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'жиг/жег': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'мин/мя': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'мер/мир': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'блест/блист': { type: 'alternating', verify: 'проверьте', alternation: 'null' }
 };
 
 // Prefixes to remove

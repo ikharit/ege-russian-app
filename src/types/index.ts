@@ -1,3 +1,9 @@
+export interface Hint {
+  level: 1 | 2 | 3
+  text: string
+  xpPenalty: number
+}
+
 export interface WrongAnswer {
   questionId: string
   canonicalWordId?: string   // ← единый ID слова/корня (word:блестать:task9)
@@ -23,12 +29,24 @@ export interface Question {
   options?: string[]
   correctAnswer: string[]
   explanation: string
+  alwaysShowExplanation?: boolean
   theory?: string
   difficulty?: 'easy' | 'medium' | 'hard'
   xpReward?: number
-  atoms?: string[]        // ← atom IDs this question tests (e.g. ['prefix_pre_pri', 'pre_pri_dictionary'])
-  irtDifficulty?: number  // IRT calibrated difficulty (-3 to +3)
-  errorType?: string        // Error pattern tag for analysis
+  atoms?: string[]
+  irtDifficulty?: number
+  errorType?: string
+  theoryLessonId?: string
+  theoryUrl?: string
+  hints?: Hint[]
+}
+
+export interface QuestionFeedback {
+  questionId: string
+  type: 'wrong_answer' | 'unclear' | 'typo' | 'other'
+  message: string
+  userAnswer?: string
+  timestamp: string
 }
 
 export interface UserAtomProgress {
@@ -223,6 +241,16 @@ export interface PredictiveScore {
   recommendedDaily: number; // минут в день для достижения цели
 }
 
+export interface SavedExplanation {
+  id: string
+  questionId: string
+  text: string
+  explanation: string
+  correctAnswer: string[]
+  taskNumber?: string
+  savedAt: string
+}
+
 export interface WeeklySchedulePreferences {
   availableTimePerDay?: Partial<Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', number>>;
   activeDays?: ('mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun')[];
@@ -240,6 +268,7 @@ export interface AnswerHistory {
   taskNumber: string
   correct: boolean
   errorType?: string
+  hintsUsed?: number
   timestamp: string
   timeSpent: number // milliseconds
 }
@@ -256,6 +285,27 @@ export interface WeakSubskill {
   taskNumber: number
   subskill: string
   accuracy: number
+}
+
+export interface TeacherStudentLink {
+  id: string
+  teacherId: string
+  studentId: string
+  studentName?: string
+  className?: string
+  createdAt: string
+}
+
+export interface TeacherStudentView {
+  studentId: string
+  studentName: string
+  xp: number
+  level: number
+  streak: number
+  lastActive: string
+  topWeakWords: { word: string; wrongCount: number; ruleId?: string }[]
+  topWeakRules: { ruleId: string; wrongCount: number; words: string[] }[]
+  overallAccuracy: number
 }
 
 export interface ErrorAnalysis {

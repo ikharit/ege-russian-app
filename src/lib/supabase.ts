@@ -55,6 +55,8 @@ export type UserProgress = {
   leaderboard_ranks: string[]
   teacher_students: any[]
   is_teacher: boolean
+  exam_results: any[]
+  answer_history: any[]
   updated_at: string
 }
 

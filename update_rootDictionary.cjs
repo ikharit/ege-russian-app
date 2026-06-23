@@ -3,7 +3,7 @@ const classified = JSON.parse(fs.readFileSync('all_classified.json', 'utf-8'));
 
 // Normalize line endings to LF for reliable parsing
 const rawContent = fs.readFileSync('scripts/generate-task9-explanations.cjs', 'utf-8');
-const content = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+let content = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
 // Find rootDictionary boundaries
 const startIdx = content.indexOf('const rootDictionary = {');
@@ -15,7 +15,7 @@ if (startIdx === -1 || endIdx === -1) {
 
 const dictSection = content.slice(startIdx, endIdx + 4);
 const existingKeys = new Set();
-const keyMatches = [...dictSection.matchAll(/^\s+['"]([\w-]+)['"]:/gm)];
+const keyMatches = [...dictSection.matchAll(/^\s+['"]([\wа-яёА-ЯЁ-]+)['"]:/gm)];
 for (const m of keyMatches) existingKeys.add(m[1]);
 
 console.log('Existing keys:', existingKeys.size);
@@ -46,7 +46,16 @@ if (newEntries.length === 0) {
 }
 
 // Insert new entries before the closing };
-const insertPos = endIdx + 1; // after the newline before };
+let insertPos = endIdx + 1; // after the newline before };
+
+// Check if previous line ends with comma; if not, add one
+let pos = insertPos - 1;
+while (pos > 0 && /\s/.test(content[pos])) pos--;
+if (pos > 0 && content[pos] !== ',') {
+  content = content.slice(0, pos + 1) + ',' + content.slice(pos + 1);
+  insertPos++; // adjust for added comma
+}
+
 const newContent = content.slice(0, insertPos) + '\n' + newEntries.join(',\n') + '\n' + content.slice(insertPos);
 
 // Write back with original line endings (CRLF)

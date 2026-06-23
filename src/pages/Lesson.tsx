@@ -13,6 +13,7 @@ import { course } from '../data/courseData'
 import { getTheoryForLesson } from '../lib/theoryMapper'
 import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSound } from '../lib/sounds'
 import { detectErrorType } from '../utils/errorPatternAnalyzer'
+import { getCanonicalWordId, getRuleId, extractWordFromQuestion } from '../data/questionMapping'
 
 export function Lesson() {
   const { lessonId } = useParams()
@@ -38,6 +39,7 @@ export function Lesson() {
   const { showComboToast, ToastOverlay } = useComboToasts()
 
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
+  const [hintsUsedPerQuestion, setHintsUsedPerQuestion] = useState<Record<string, number>>({})
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const courseLesson = section?.lessons.find(l => l.id === lessonId)
@@ -96,8 +98,12 @@ export function Lesson() {
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const updateQuestProgress = useProgressStore((s) => s.updateQuestProgress)
 
-  const handleAnswer = useCallback((isCorrect: boolean, userAnswer?: string[]) => {
+  const handleAnswer = useCallback((isCorrect: boolean, userAnswer?: string[], hintsUsed?: number) => {
     const timeSpent = Date.now() - questionStartTime
+    const hintsCount = hintsUsed || 0
+    if (hintsCount > 0 && currentQuestion) {
+      setHintsUsedPerQuestion(prev => ({ ...prev, [currentQuestion.id]: hintsCount }))
+    }
     recordQuestionAnswered()
     if (isCorrect) {
       setCorrectCount(prev => prev + 1)
@@ -137,9 +143,13 @@ export function Lesson() {
     const errorType = !isCorrect ? detectErrorType(taskNumber, currentQuestion.text, currentQuestion.explanation) : undefined
     recordAnswer({
       questionId: currentQuestion.id,
+      canonicalWordId: getCanonicalWordId(currentQuestion),
+      word: extractWordFromQuestion(currentQuestion.text),
+      ruleId: getRuleId(currentQuestion.id),
       taskNumber,
       correct: isCorrect,
       errorType,
+      hintsUsed: hintsCount,
       timestamp: new Date().toISOString(),
       timeSpent,
     })

@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
   ChevronRight, Check, X, Volume2, VolumeX, BookOpen,
-  ThumbsUp, ThumbsDown, AlertTriangle, Inbox
+  ThumbsUp, ThumbsDown, AlertTriangle, Inbox,
+  Bookmark, BookmarkCheck
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { SavedExplanation } from '../types'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 import { speak, isTTSAvailable } from '../lib/tts'
 import { getGlobalIRT } from '../utils/irtEngine'

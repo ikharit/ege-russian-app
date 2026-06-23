@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer, EmotionalState, AnswerHistory, ErrorAnalysis, ScheduleDay, WeeklySchedulePreferences, PlayerProfile } from '../types'
+import { UserStats, LessonProgress, Achievement, UserAtomProgress, WrongAnswer, EmotionalState, AnswerHistory, ErrorAnalysis, ScheduleDay, WeeklySchedulePreferences, PlayerProfile, SavedExplanation, QuestionFeedback } from '../types'
 import { getPredictiveScore } from '../utils/predictiveScore'
 import { achievements as allAchievements, course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
@@ -41,6 +41,8 @@ export interface ProgressState {
   weeklySchedule: ScheduleDay[] | null
   predictiveScoreHistory: { date: string; score: number }[]
   examDate: string | null
+  savedExplanations: SavedExplanation[]
+  feedback: QuestionFeedback[]
 
   startLesson: (lessonId: string) => void
   completeLesson: (lessonId: string, score: number, xpEarned: number) => void
@@ -107,6 +109,11 @@ export interface ProgressState {
   getDueSRSItems: () => SRSItem[]
   initSRSData: () => void
   reviewLesson: (lessonId: string, score: number) => void
+  saveExplanation: (item: SavedExplanation) => void
+  removeSavedExplanation: (id: string) => void
+  getSavedExplanations: () => SavedExplanation[]
+  submitFeedback: (feedback: QuestionFeedback) => void
+  getFeedbackStats: () => { questionId: string; count: number; types: QuestionFeedback['type'][] }[]
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -137,6 +144,9 @@ export const useProgressStore = create<ProgressState>()(
       weeklySchedule: null,
       predictiveScoreHistory: [],
       examDate: '2027-06-01',
+      savedExplanations: [],
+
+      feedback: [],
 
       checkAchievements: createAchievementChecker(get),
       completeTheoryTest: (taskNumber, score, xpEarned) => {
@@ -321,6 +331,7 @@ export const useProgressStore = create<ProgressState>()(
         () => get().teacherStudents,
         () => get().isTeacher,
         () => get().examResults,
+        () => get().answerHistory,
       ),
       migrateToFirebase: async () => {
         const { useFirebaseStore } = await import('./firebaseStore')
@@ -451,6 +462,34 @@ export const useProgressStore = create<ProgressState>()(
             [lessonId]: newSRS,
           },
         }))
+      },
+      saveExplanation: (item: SavedExplanation) => {
+        set((s: any) => ({
+          savedExplanations: [...s.savedExplanations.filter((e: SavedExplanation) => e.questionId !== item.questionId), item],
+        }))
+      },
+      removeSavedExplanation: (id: string) => {
+        set((s: any) => ({
+          savedExplanations: s.savedExplanations.filter((e: SavedExplanation) => e.id !== id),
+        }))
+      },
+      getSavedExplanations: () => get().savedExplanations,
+      submitFeedback: (feedback: QuestionFeedback) => {
+        set((s: any) => ({
+          feedback: [...s.feedback, feedback],
+        }))
+      },
+      getFeedbackStats: () => {
+        const all = get().feedback
+        const grouped = all.reduce((acc: Record<string, { count: number; types: QuestionFeedback['type'][] }>, f) => {
+          if (!acc[f.questionId]) acc[f.questionId] = { count: 0, types: [] }
+          acc[f.questionId].count += 1
+          acc[f.questionId].types.push(f.type)
+          return acc
+        }, {})
+        return Object.entries(grouped)
+          .map(([questionId, data]) => ({ questionId, count: data.count, types: data.types }))
+          .sort((a, b) => b.count - a.count)
       },
     }),
     {

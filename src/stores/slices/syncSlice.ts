@@ -1,4 +1,4 @@
-import { UserStats, LessonProgress, WrongAnswer, UserAtomProgress } from '../../types'
+import { UserStats, LessonProgress, WrongAnswer, UserAtomProgress, AnswerHistory } from '../../types'
 import { ExamResult } from '../../data/fipiVariants'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 
@@ -33,6 +33,7 @@ export function createSyncActions(
   teacherStudentsRef: () => any[],
   isTeacherRef: () => boolean,
   examResultsRef: () => ExamResult[],
+  answerHistoryRef: () => AnswerHistory[],
 ) {
   return {
     setUserId: (userId: string | null) => set({ userId }),
@@ -54,6 +55,7 @@ export function createSyncActions(
         teacher_students: teacherStudentsRef(),
         is_teacher: isTeacherRef(),
         exam_results: examResultsRef(),
+        answer_history: answerHistoryRef(),
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' })
     },
@@ -76,6 +78,7 @@ export function createSyncActions(
           teacherStudents: data.teacher_students || get().teacherStudents,
           isTeacher: data.is_teacher || false,
           examResults: data.exam_results || get().examResults || [],
+          answerHistory: data.answer_history || get().answerHistory || [],
         })
       }
     },

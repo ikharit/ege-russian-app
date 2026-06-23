@@ -288,375 +288,603 @@ export function TeacherAnalytics() {
               </motion.div>
             </div>
 
-            {/* Type Distribution */}
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-              <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
-                <BrainCircuit size={18} className="text-duo-purple" />
-                Типы мотивации
-              </h3>
-              <div className="flex gap-2">
-                {(Object.entries(summary.typeDistribution) as [PlayerType, number][]).map(([type, count]) => {
-                  if (count === 0) return null
-                  const pct = Math.round((count / summary.totalStudents) * 100)
-                  return (
-                    <div key={type} className="flex-1 text-center">
-                      <div
-                        className="rounded-xl p-2 text-white font-bold text-sm mb-1"
-                        style={{ backgroundColor: getPlayerTypeColor(type) }}
-                      >
-                        {pct}%
-                      </div>
-                      <p className="text-[10px] text-gray-500 font-bold">{typeLabels[type]}</p>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Class Behavior Overview */}
-            {students.some(s => s.progress?.behaviorProfile) && (
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
-                  <Target size={18} className="text-duo-blue" />
-                  Чем занимается класс
-                </h3>
-                
-                {/* Aggregate time by category */}
-                <div className="mb-3">
-                  <p className="text-xs font-bold text-gray-500 mb-2">Время по разделам (суммарно)</p>
-                  <div className="flex flex-wrap gap-1">
-                    {(() => {
-                      const timeByCat: Record<string, number> = {}
-                      students.forEach(s => {
-                        const bp = s.progress?.behaviorProfile?.timeDistribution
-                        if (bp) {
-                          Object.entries(bp).forEach(([cat, seconds]) => {
-                            if (seconds > 0) {
-                              timeByCat[cat] = (timeByCat[cat] || 0) + seconds
-                            }
-                          })
-                        }
-                      })
-                      return Object.entries(timeByCat)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 6)
-                        .map(([cat, seconds]) => {
-                          const mins = Math.round(seconds / 60)
-                          return (
-                            <span key={cat} className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-lg font-bold">
-                              {cat}: {mins}м
-                            </span>
-                          )
-                        })
-                    })()}
-                  </div>
-                </div>
-
-                {/* Aggregate clicks by category */}
-                <div className="mb-3">
-                  <p className="text-xs font-bold text-gray-500 mb-2">Клики по разделам</p>
-                  <div className="flex flex-wrap gap-1">
-                    {(() => {
-                      const clicksByCat: Record<string, number> = {}
-                      students.forEach(s => {
-                        const bp = s.progress?.behaviorProfile?.clickDistribution
-                        if (bp) {
-                          Object.entries(bp).forEach(([cat, count]) => {
-                            if (count > 0) {
-                              clicksByCat[cat] = (clicksByCat[cat] || 0) + count
-                            }
-                          })
-                        }
-                      })
-                      return Object.entries(clicksByCat)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 6)
-                        .map(([cat, count]) => (
-                          <span key={cat} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
-                            {cat}: {count}
-                          </span>
-                        ))
-                    })()}
-                  </div>
-                </div>
-
-                {/* Class motivation signals */}
-                <div>
-                  <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует класс</p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {(() => {
-                      const signals = { achievementDriven: 0, socialDriven: 0, explorationDriven: 0, competitionDriven: 0 }
-                      let count = 0
-                      students.forEach(s => {
-                        const bp = s.progress?.behaviorProfile?.motivationSignals
-                        if (bp) {
-                          signals.achievementDriven += bp.achievementDriven
-                          signals.socialDriven += bp.socialDriven
-                          signals.explorationDriven += bp.explorationDriven
-                          signals.competitionDriven += bp.competitionDriven
-                          count++
-                        }
-                      })
-                      if (count === 0) return null
-                      const avg = (k: keyof typeof signals) => Math.round(signals[k] / count)
-                      const items = [
-                        { label: 'Достижения', value: avg('achievementDriven'), color: 'bg-amber-50 text-amber-700' },
-                        { label: 'Общение', value: avg('socialDriven'), color: 'bg-blue-50 text-blue-700' },
-                        { label: 'Исследование', value: avg('explorationDriven'), color: 'bg-violet-50 text-violet-700' },
-                        { label: 'Соревнование', value: avg('competitionDriven'), color: 'bg-red-50 text-red-700' },
-                      ]
-                      return items.map(item => (
-                        <div key={item.label} className={`${item.color} rounded-xl p-2 text-center`}>
-                          <p className="text-[10px] font-bold opacity-80">{item.label}</p>
-                          <p className="text-sm font-bold">{item.value}%</p>
-                        </div>
-                      ))
-                    })()}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Insights */}
-            {summary.classInsights.length > 0 && (
-              <div className="bg-gradient-to-r from-duo-green/5 to-blue-50 rounded-2xl p-4 border border-duo-green/10">
-                <h3 className="font-bold text-gray-700 mb-2 flex items-center gap-2">
-                  <Activity size={18} className="text-duo-green" />
-                  Инсайты
-                </h3>
-                <ul className="space-y-2">
-                  {summary.classInsights.map((insight, i) => (
-                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                      <span className="text-duo-green mt-0.5">•</span>
-                      {insight}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Filters */}
+            {/* Tab Navigation */}
             <div className="flex gap-2 overflow-x-auto pb-1">
-              <button
-                onClick={() => setRiskFilter('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                  riskFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-200'
-                }`}
-              >
-                Все
-              </button>
-              <button
-                onClick={() => setRiskFilter('high')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                  riskFilter === 'high' ? 'bg-red-500 text-white' : 'bg-white text-red-500 border border-red-200'
-                }`}
-              >
-                Риск отвала
-              </button>
-              <button
-                onClick={() => setRiskFilter('medium')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                  riskFilter === 'medium' ? 'bg-yellow-500 text-white' : 'bg-white text-yellow-600 border border-yellow-200'
-                }`}
-              >
-                Внимание
-              </button>
-              <button
-                onClick={() => setRiskFilter('low')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                  riskFilter === 'low' ? 'bg-green-500 text-white' : 'bg-white text-green-600 border border-green-200'
-                }`}
-              >
-                Всё хорошо
-              </button>
-            </div>
-
-            {/* Students List */}
-            <div className="flex flex-col gap-3">
-              <h3 className="font-bold text-gray-700 text-sm">
-                Ученики ({filtered.length})
-              </h3>
-              {filtered.map((a) => (
-                <motion.div
-                  key={a.profileId}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+              {([
+                { key: 'overview', label: 'Обзор', icon: BarChart3 },
+                { key: 'trends', label: 'Тренды', icon: TrendingUp },
+                { key: 'alerts', label: 'Уведомления', icon: Bell },
+                { key: 'recommendations', label: 'Рекомендации', icon: Lightbulb },
+              ] as const).map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+                    activeTab === tab.key
+                      ? 'bg-duo-green text-white'
+                      : 'bg-white text-gray-600 border border-gray-200'
+                  }`}
                 >
-                  {/* Header row */}
-                  <div
-                    className="p-4 flex items-center gap-3 cursor-pointer"
-                    onClick={() => setExpandedStudent(expandedStudent === a.profileId ? null : a.profileId)}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
-                      style={{ backgroundColor: getPlayerTypeColor(a.playerProfile.type) }}
-                    >
-                      {a.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="font-bold text-gray-800 text-sm">{a.name}</p>
-                        <span
-                          className="text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white"
-                          style={{ backgroundColor: RISK_CONFIG[a.riskLevel].color }}
-                        >
-                          {RISK_CONFIG[a.riskLevel].label}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500">
-                        {getPlayerTypeLabel(a.playerProfile.type)} • Точность {a.accuracy}% • Пройдено {a.completionRate}%
-                      </p>
-                    </div>
-                    <ChevronRight
-                      size={18}
-                      className={`text-gray-400 transition-transform ${
-                        expandedStudent === a.profileId ? 'rotate-90' : ''
-                      }`}
-                    />
-                  </div>
-
-                  {/* Expanded details */}
-                  {expandedStudent === a.profileId && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: 'auto' }}
-                      className="border-t border-gray-100 p-4 space-y-3"
-                    >
-                      {/* Stats row */}
-                      <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-gray-50 rounded-xl p-2">
-                          <Flame size={16} className="text-orange-500 mx-auto mb-1" />
-                          <p className="text-sm font-bold">{a.streak}</p>
-                          <p className="text-[10px] text-gray-400">Стрик</p>
-                        </div>
-                        <div className="bg-gray-50 rounded-xl p-2">
-                          <Zap size={16} className="text-duo-yellow mx-auto mb-1" />
-                          <p className="text-sm font-bold">{a.accuracy}%</p>
-                          <p className="text-[10px] text-gray-400">Точность</p>
-                        </div>
-                        <div className="bg-gray-50 rounded-xl p-2">
-                          <Clock size={16} className="text-duo-blue mx-auto mb-1" />
-                          <p className="text-sm font-bold">{a.lastActivityDays === 999 ? '—' : `${a.lastActivityDays}д`}</p>
-                          <p className="text-[10px] text-gray-400">Активность</p>
-                        </div>
-                        <div className="bg-gray-50 rounded-xl p-2">
-                          <Trophy size={16} className="text-duo-purple mx-auto mb-1" />
-                          <p className="text-sm font-bold">{a.completionRate}%</p>
-                          <p className="text-[10px] text-gray-400">Пройдено</p>
-                        </div>
-                      </div>
-
-                      {/* Strengths / Weaknesses */}
-                      {a.strengths.length > 0 && (
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 mb-1">Сильные стороны</p>
-                          <div className="flex flex-wrap gap-1">
-                            {a.strengths.map((s, i) => (
-                              <span key={i} className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-lg font-bold">
-                                {s}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {a.weaknesses.length > 0 && (
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 mb-1">Что требует внимания</p>
-                          <div className="flex flex-wrap gap-1">
-                            {a.weaknesses.map((w, i) => (
-                              <span key={i} className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded-lg font-bold">
-                                {w}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Behavior Profile */}
-                      {a.behaviorProfile && (
-                        <div className="space-y-3">
-                          {/* Time spent */}
-                          <div>
-                            <p className="text-xs font-bold text-gray-500 mb-2">Где проводит время</p>
-                            <div className="flex flex-wrap gap-1">
-                              {Object.entries(a.behaviorProfile.timeDistribution)
-                                .filter(([, v]) => v > 0)
-                                .sort((a, b) => b[1] - a[1])
-                                .slice(0, 5)
-                                .map(([cat, seconds]) => {
-                                  const mins = Math.round(seconds / 60)
-                                  return (
-                                    <span key={cat} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-lg font-bold">
-                                      {cat}: {mins}м
-                                    </span>
-                                  )
-                                })}
-                            </div>
-                          </div>
-
-                          {/* Clicks */}
-                          <div>
-                            <p className="text-xs font-bold text-gray-500 mb-2">Что больше кликает</p>
-                            <div className="flex flex-wrap gap-1">
-                              {a.behaviorProfile.topClickedElements.slice(0, 5).map((el, i) => (
-                                <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
-                                  {el.element.split('::').pop() || el.element}: {el.count}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Motivation signals */}
-                          <div>
-                            <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует (сигналы)</p>
-                            <div className="grid grid-cols-2 gap-2">
-                              <div className="bg-amber-50 rounded-xl p-2">
-                                <p className="text-[10px] text-amber-600 font-bold">Достижения</p>
-                                <p className="text-sm font-bold text-amber-700">{a.behaviorProfile.motivationSignals.achievementDriven}%</p>
-                              </div>
-                              <div className="bg-blue-50 rounded-xl p-2">
-                                <p className="text-[10px] text-blue-600 font-bold">Общение</p>
-                                <p className="text-sm font-bold text-blue-700">{a.behaviorProfile.motivationSignals.socialDriven}%</p>
-                              </div>
-                              <div className="bg-violet-50 rounded-xl p-2">
-                                <p className="text-[10px] text-violet-600 font-bold">Исследование</p>
-                                <p className="text-sm font-bold text-violet-700">{a.behaviorProfile.motivationSignals.explorationDriven}%</p>
-                              </div>
-                              <div className="bg-red-50 rounded-xl p-2">
-                                <p className="text-[10px] text-red-600 font-bold">Соревнование</p>
-                                <p className="text-sm font-bold text-red-700">{a.behaviorProfile.motivationSignals.competitionDriven}%</p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-2 text-center text-xs text-gray-500">
-                            <div className="bg-gray-50 rounded-xl p-2">
-                              <p className="font-bold text-gray-700">{a.behaviorProfile.totalClicks}</p>
-                              <p>Кликов</p>
-                            </div>
-                            <div className="bg-gray-50 rounded-xl p-2">
-                              <p className="font-bold text-gray-700">{Math.round(a.behaviorProfile.avgSessionDuration / 60)}м</p>
-                              <p>Средняя сессия</p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Motivation & Recommendation */}
-                      <div className="bg-blue-50 rounded-xl p-3">
-                        <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует (тип)</p>
-                        <p className="text-xs text-blue-600">{a.motivation}</p>
-                      </div>
-                      <div className="bg-duo-green/5 rounded-xl p-3 border border-duo-green/10">
-                        <p className="text-xs font-bold text-duo-green-dark mb-1">Рекомендация</p>
-                        <p className="text-xs text-gray-600">{a.recommendation}</p>
-                      </div>
-                    </motion.div>
+                  <tab.icon size={14} />
+                  {tab.label}
+                  {tab.key === 'alerts' && alerts.length > 0 && (
+                    <span className="bg-red-500 text-white text-[10px] px-1.5 rounded-full">{alerts.length}</span>
                   )}
-                </motion.div>
+                  {tab.key === 'recommendations' && recommendations.length > 0 && (
+                    <span className="bg-duo-yellow text-gray-800 text-[10px] px-1.5 rounded-full">{recommendations.length}</span>
+                  )}
+                </button>
               ))}
             </div>
+
+            {activeTab === 'overview' && (
+              <>
+                {/* Type Distribution */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                    <BrainCircuit size={18} className="text-duo-purple" />
+                    Типы мотивации
+                  </h3>
+                  <div className="flex gap-2">
+                    {(Object.entries(summary.typeDistribution) as [PlayerType, number][]).map(([type, count]) => {
+                      if (count === 0) return null
+                      const pct = Math.round((count / summary.totalStudents) * 100)
+                      return (
+                        <div key={type} className="flex-1 text-center">
+                          <div
+                            className="rounded-xl p-2 text-white font-bold text-sm mb-1"
+                            style={{ backgroundColor: getPlayerTypeColor(type) }}
+                          >
+                            {pct}%
+                          </div>
+                          <p className="text-[10px] text-gray-500 font-bold">{typeLabels[type]}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Class Behavior Overview */}
+                {students.some(s => s.progress?.behaviorProfile) && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Target size={18} className="text-duo-blue" />
+                      Чем занимается класс
+                    </h3>
+                    
+                    {/* Aggregate time by category */}
+                    <div className="mb-3">
+                      <p className="text-xs font-bold text-gray-500 mb-2">Время по разделам (суммарно)</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(() => {
+                          const timeByCat: Record<string, number> = {}
+                          students.forEach(s => {
+                            const bp = s.progress?.behaviorProfile?.timeDistribution
+                            if (bp) {
+                              Object.entries(bp).forEach(([cat, seconds]) => {
+                                if (seconds > 0) {
+                                  timeByCat[cat] = (timeByCat[cat] || 0) + seconds
+                                }
+                              })
+                            }
+                          })
+                          return Object.entries(timeByCat)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 6)
+                            .map(([cat, seconds]) => {
+                              const mins = Math.round(seconds / 60)
+                              return (
+                                <span key={cat} className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-lg font-bold">
+                                  {cat}: {mins}м
+                                </span>
+                              )
+                            })
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* Aggregate clicks by category */}
+                    <div className="mb-3">
+                      <p className="text-xs font-bold text-gray-500 mb-2">Клики по разделам</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(() => {
+                          const clicksByCat: Record<string, number> = {}
+                          students.forEach(s => {
+                            const bp = s.progress?.behaviorProfile?.clickDistribution
+                            if (bp) {
+                              Object.entries(bp).forEach(([cat, count]) => {
+                                if (count > 0) {
+                                  clicksByCat[cat] = (clicksByCat[cat] || 0) + count
+                                }
+                              })
+                            }
+                          })
+                          return Object.entries(clicksByCat)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 6)
+                            .map(([cat, count]) => (
+                              <span key={cat} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
+                                {cat}: {count}
+                              </span>
+                            ))
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* Class motivation signals */}
+                    <div>
+                      <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует класс</p>
+                      <div className="grid grid-cols-4 gap-2">
+                        {(() => {
+                          const signals = { achievementDriven: 0, socialDriven: 0, explorationDriven: 0, competitionDriven: 0 }
+                          let count = 0
+                          students.forEach(s => {
+                            const bp = s.progress?.behaviorProfile?.motivationSignals
+                            if (bp) {
+                              signals.achievementDriven += bp.achievementDriven
+                              signals.socialDriven += bp.socialDriven
+                              signals.explorationDriven += bp.explorationDriven
+                              signals.competitionDriven += bp.competitionDriven
+                              count++
+                            }
+                          })
+                          if (count === 0) return null
+                          const avg = (k: keyof typeof signals) => Math.round(signals[k] / count)
+                          const items = [
+                            { label: 'Достижения', value: avg('achievementDriven'), color: 'bg-amber-50 text-amber-700' },
+                            { label: 'Общение', value: avg('socialDriven'), color: 'bg-blue-50 text-blue-700' },
+                            { label: 'Исследование', value: avg('explorationDriven'), color: 'bg-violet-50 text-violet-700' },
+                            { label: 'Соревнование', value: avg('competitionDriven'), color: 'bg-red-50 text-red-700' },
+                          ]
+                          return items.map(item => (
+                            <div key={item.label} className={`${item.color} rounded-xl p-2 text-center`}>
+                              <p className="text-[10px] font-bold opacity-80">{item.label}</p>
+                              <p className="text-sm font-bold">{item.value}%</p>
+                            </div>
+                          ))
+                        })()}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Insights */}
+                {summary.classInsights.length > 0 && (
+                  <div className="bg-gradient-to-r from-duo-green/5 to-blue-50 rounded-2xl p-4 border border-duo-green/10">
+                    <h3 className="font-bold text-gray-700 mb-2 flex items-center gap-2">
+                      <Activity size={18} className="text-duo-green" />
+                      Инсайты
+                    </h3>
+                    <ul className="space-y-2">
+                      {summary.classInsights.map((insight, i) => (
+                        <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                          <span className="text-duo-green mt-0.5">•</span>
+                          {insight}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Filters */}
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  <button
+                    onClick={() => setRiskFilter('all')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                      riskFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-200'
+                    }`}
+                  >
+                    Все
+                  </button>
+                  <button
+                    onClick={() => setRiskFilter('high')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                      riskFilter === 'high' ? 'bg-red-500 text-white' : 'bg-white text-red-500 border border-red-200'
+                    }`}
+                  >
+                    Риск отвала
+                  </button>
+                  <button
+                    onClick={() => setRiskFilter('medium')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                      riskFilter === 'medium' ? 'bg-yellow-500 text-white' : 'bg-white text-yellow-600 border border-yellow-200'
+                    }`}
+                  >
+                    Внимание
+                  </button>
+                  <button
+                    onClick={() => setRiskFilter('low')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                      riskFilter === 'low' ? 'bg-green-500 text-white' : 'bg-white text-green-600 border border-green-200'
+                    }`}
+                  >
+                    Всё хорошо
+                  </button>
+                </div>
+
+                {/* Students List */}
+                <div className="flex flex-col gap-3">
+                  <h3 className="font-bold text-gray-700 text-sm">
+                    Ученики ({filtered.length})
+                  </h3>
+                  {filtered.map((a) => (
+                    <motion.div
+                      key={a.profileId}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+                    >
+                      {/* Header row */}
+                      <div
+                        className="p-4 flex items-center gap-3 cursor-pointer"
+                        onClick={() => setExpandedStudent(expandedStudent === a.profileId ? null : a.profileId)}
+                      >
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
+                          style={{ backgroundColor: getPlayerTypeColor(a.playerProfile.type) }}
+                        >
+                          {a.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-gray-800 text-sm">{a.name}</p>
+                            <span
+                              className="text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white"
+                              style={{ backgroundColor: RISK_CONFIG[a.riskLevel].color }}
+                            >
+                              {RISK_CONFIG[a.riskLevel].label}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-500">
+                            {getPlayerTypeLabel(a.playerProfile.type)} • Точность {a.accuracy}% • Пройдено {a.completionRate}%
+                          </p>
+                        </div>
+                        <ChevronRight
+                          size={18}
+                          className={`text-gray-400 transition-transform ${
+                            expandedStudent === a.profileId ? 'rotate-90' : ''
+                          }`}
+                        />
+                      </div>
+
+                      {/* Expanded details */}
+                      {expandedStudent === a.profileId && (
+                        <motion.div
+                          initial={{ height: 0 }}
+                          animate={{ height: 'auto' }}
+                          className="border-t border-gray-100 p-4 space-y-3"
+                        >
+                          {/* Stats row */}
+                          <div className="grid grid-cols-4 gap-2 text-center">
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <Flame size={16} className="text-orange-500 mx-auto mb-1" />
+                              <p className="text-sm font-bold">{a.streak}</p>
+                              <p className="text-[10px] text-gray-400">Стрик</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <Zap size={16} className="text-duo-yellow mx-auto mb-1" />
+                              <p className="text-sm font-bold">{a.accuracy}%</p>
+                              <p className="text-[10px] text-gray-400">Точность</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <Clock size={16} className="text-duo-blue mx-auto mb-1" />
+                              <p className="text-sm font-bold">{a.lastActivityDays === 999 ? '—' : `${a.lastActivityDays}д`}</p>
+                              <p className="text-[10px] text-gray-400">Активность</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-2">
+                              <Trophy size={16} className="text-duo-purple mx-auto mb-1" />
+                              <p className="text-sm font-bold">{a.completionRate}%</p>
+                              <p className="text-[10px] text-gray-400">Пройдено</p>
+                            </div>
+                          </div>
+
+                          {/* Strengths / Weaknesses */}
+                          {a.strengths.length > 0 && (
+                            <div>
+                              <p className="text-xs font-bold text-gray-500 mb-1">Сильные стороны</p>
+                              <div className="flex flex-wrap gap-1">
+                                {a.strengths.map((s, i) => (
+                                  <span key={i} className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-lg font-bold">
+                                    {s}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {a.weaknesses.length > 0 && (
+                            <div>
+                              <p className="text-xs font-bold text-gray-500 mb-1">Что требует внимания</p>
+                              <div className="flex flex-wrap gap-1">
+                                {a.weaknesses.map((w, i) => (
+                                  <span key={i} className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded-lg font-bold">
+                                    {w}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Behavior Profile */}
+                          {a.behaviorProfile && (
+                            <div className="space-y-3">
+                              {/* Time spent */}
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 mb-2">Где проводит время</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {Object.entries(a.behaviorProfile.timeDistribution)
+                                    .filter(([, v]) => v > 0)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .slice(0, 5)
+                                    .map(([cat, seconds]) => {
+                                      const mins = Math.round(seconds / 60)
+                                      return (
+                                        <span key={cat} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-lg font-bold">
+                                          {cat}: {mins}м
+                                        </span>
+                                      )
+                                    })}
+                                </div>
+                              </div>
+
+                              {/* Clicks */}
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 mb-2">Что больше кликает</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {a.behaviorProfile.topClickedElements.slice(0, 5).map((el, i) => (
+                                    <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-bold">
+                                      {el.element.split('::').pop() || el.element}: {el.count}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Motivation signals */}
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 mb-2">Что мотивирует (сигналы)</p>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div className="bg-amber-50 rounded-xl p-2">
+                                    <p className="text-[10px] text-amber-600 font-bold">Достижения</p>
+                                    <p className="text-sm font-bold text-amber-700">{a.behaviorProfile.motivationSignals.achievementDriven}%</p>
+                                  </div>
+                                  <div className="bg-blue-50 rounded-xl p-2">
+                                    <p className="text-[10px] text-blue-600 font-bold">Общение</p>
+                                    <p className="text-sm font-bold text-blue-700">{a.behaviorProfile.motivationSignals.socialDriven}%</p>
+                                  </div>
+                                  <div className="bg-violet-50 rounded-xl p-2">
+                                    <p className="text-[10px] text-violet-600 font-bold">Исследование</p>
+                                    <p className="text-sm font-bold text-violet-700">{a.behaviorProfile.motivationSignals.explorationDriven}%</p>
+                                  </div>
+                                  <div className="bg-red-50 rounded-xl p-2">
+                                    <p className="text-[10px] text-red-600 font-bold">Соревнование</p>
+                                    <p className="text-sm font-bold text-red-700">{a.behaviorProfile.motivationSignals.competitionDriven}%</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2 text-center text-xs text-gray-500">
+                                <div className="bg-gray-50 rounded-xl p-2">
+                                  <p className="font-bold text-gray-700">{a.behaviorProfile.totalClicks}</p>
+                                  <p>Кликов</p>
+                                </div>
+                                <div className="bg-gray-50 rounded-xl p-2">
+                                  <p className="font-bold text-gray-700">{Math.round(a.behaviorProfile.avgSessionDuration / 60)}м</p>
+                                  <p>Средняя сессия</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Motivation & Recommendation */}
+                          <div className="bg-blue-50 rounded-xl p-3">
+                            <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует (тип)</p>
+                            <p className="text-xs text-blue-600">{a.motivation}</p>
+                          </div>
+                          <div className="bg-duo-green/5 rounded-xl p-3 border border-duo-green/10">
+                            <p className="text-xs font-bold text-duo-green-dark mb-1">Рекомендация</p>
+                            <p className="text-xs text-gray-600">{a.recommendation}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {activeTab === 'trends' && (
+              <>
+                <div className="flex gap-2 justify-end">
+                  {[7, 14, 30].map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => setTrendDays(d as 7 | 14 | 30)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                        trendDays === d ? 'bg-duo-green text-white' : 'bg-white text-gray-600 border border-gray-200'
+                      }`}
+                    >
+                      {d} дней
+                    </button>
+                  ))}
+                </div>
+
+                {/* Activity Trend */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                    <TrendingUp size={18} className="text-duo-blue" />
+                    Активность (сессии)
+                  </h3>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={trendData}>
+                        <defs>
+                          <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#58cc02" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#58cc02" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis dataKey="date" tick={{fontSize: 10}} />
+                        <YAxis tick={{fontSize: 10}} />
+                        <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                        <Area type="monotone" dataKey="sessions" stroke="#58cc02" fillOpacity={1} fill="url(#colorSessions)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Time Trend */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                    <Clock size={18} className="text-duo-yellow" />
+                    Время в приложении (минуты)
+                  </h3>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={trendData}>
+                        <defs>
+                          <linearGradient id="colorTime" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#ffc800" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#ffc800" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis dataKey="date" tick={{fontSize: 10}} />
+                        <YAxis tick={{fontSize: 10}} />
+                        <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                        <Area type="monotone" dataKey="time" stroke="#ffc800" fillOpacity={1} fill="url(#colorTime)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Motivation Trends */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                    <BrainCircuit size={18} className="text-duo-purple" />
+                    Мотивация по дням
+                  </h3>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={trendData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis dataKey="date" tick={{fontSize: 10}} />
+                        <YAxis tick={{fontSize: 10}} domain={[0, 100]} />
+                        <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                        <Line type="monotone" dataKey="achievement" stroke="#F59E0B" strokeWidth={2} dot={false} name="Достижения" />
+                        <Line type="monotone" dataKey="social" stroke="#3B82F6" strokeWidth={2} dot={false} name="Общение" />
+                        <Line type="monotone" dataKey="exploration" stroke="#8B5CF6" strokeWidth={2} dot={false} name="Исследование" />
+                        <Line type="monotone" dataKey="competition" stroke="#EF4444" strokeWidth={2} dot={false} name="Соревнование" />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {activeTab === 'alerts' && (
+              <div className="flex flex-col gap-3">
+                {alerts.length === 0 ? (
+                  <div className="text-center py-12">
+                    <CheckCircle size={48} className="text-duo-green mx-auto mb-3" />
+                    <p className="text-gray-500 font-bold">Всё в порядке!</p>
+                    <p className="text-sm text-gray-400">Нет уведомлений для учителя</p>
+                  </div>
+                ) : (
+                  alerts.map((alert) => (
+                    <motion.div
+                      key={alert.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`bg-white rounded-2xl p-4 shadow-sm border-l-4 ${
+                        alert.severity === 'high' ? 'border-red-500' :
+                        alert.severity === 'medium' ? 'border-yellow-500' : 'border-blue-500'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                          alert.severity === 'high' ? 'bg-red-100' :
+                          alert.severity === 'medium' ? 'bg-yellow-100' : 'bg-blue-100'
+                        }`}>
+                          {alert.severity === 'high' ? <AlertTriangle size={16} className="text-red-500" /> :
+                           alert.severity === 'medium' ? <AlertCircle size={16} className="text-yellow-500" /> :
+                           <Bell size={16} className="text-blue-500" />}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-gray-800 text-sm">{alert.title}</p>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white ${
+                              alert.severity === 'high' ? 'bg-red-500' :
+                              alert.severity === 'medium' ? 'bg-yellow-500' : 'bg-blue-500'
+                            }`}>
+                              {alert.severity === 'high' ? 'Срочно' : alert.severity === 'medium' ? 'Важно' : 'Инфо'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-0.5">{alert.message}</p>
+                          <p className="text-[10px] text-gray-400 mt-1">{alert.studentName}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {activeTab === 'recommendations' && (
+              <div className="flex flex-col gap-3">
+                {recommendations.length === 0 ? (
+                  <div className="text-center py-12">
+                    <CheckCircle size={48} className="text-duo-green mx-auto mb-3" />
+                    <p className="text-gray-500 font-bold">Рекомендаций пока нет</p>
+                    <p className="text-sm text-gray-400">Класс в хорошей форме!</p>
+                  </div>
+                ) : (
+                  recommendations.map((rec) => (
+                    <motion.div
+                      key={rec.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`bg-white rounded-2xl p-4 shadow-sm border-l-4 ${
+                        rec.priority === 'high' ? 'border-red-500' :
+                        rec.priority === 'medium' ? 'border-yellow-500' : 'border-green-500'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                          rec.priority === 'high' ? 'bg-red-100' :
+                          rec.priority === 'medium' ? 'bg-yellow-100' : 'bg-green-100'
+                        }`}>
+                          <Lightbulb size={16} className={
+                            rec.priority === 'high' ? 'text-red-500' :
+                            rec.priority === 'medium' ? 'text-yellow-500' : 'text-green-500'
+                          } />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-gray-800 text-sm">{rec.title}</p>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white ${
+                              rec.priority === 'high' ? 'bg-red-500' :
+                              rec.priority === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                            }`}>
+                              {rec.priority === 'high' ? 'Срочно' : rec.priority === 'medium' ? 'Важно' : 'Идея'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-0.5">{rec.description}</p>
+                          <div className="bg-gray-50 rounded-xl p-2 mt-2">
+                            <p className="text-xs text-gray-600 font-bold">Действие:</p>
+                            <p className="text-xs text-gray-600">{rec.action}</p>
+                          </div>
+                          {rec.targetStudents && rec.targetStudents.length > 0 && (
+                            <p className="text-[10px] text-gray-400 mt-1">
+                              Ученики: {rec.targetStudents.join(', ')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

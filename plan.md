@@ -78,14 +78,29 @@ interface WrongAnswer {
 
 ## Критерий завершения
 
-- [ ] Можно сказать "ученик X ошибся 5 раз в слове блестать" (вне зависимости от questionId)
-- [ ] Можно сказать "ученик X имеет проблему с правилом чередования блист/блест"
-- [ ] Преподаватель видит все ошибки своих учеников в Supabase
-- [ ] `answerHistory` синхронизируется между устройствами
-- [ ] SQL-запросы работают без парсинга JSON
+- [x] Можно сказать "ученик X ошибся 5 раз в слове блестать" (вне зависимости от questionId)
+- [x] Можно сказать "ученик X имеет проблему с правилом чередования блист/блест"
+- [x] Преподаватель видит все ошибки своих учеников в Supabase
+- [x] `answerHistory` синхронизируется между устройствами
+- [x] SQL-запросы работают без парсинга JSON
+
+## Реализованные файлы
+
+| Файл | Назначение |
+|------|------------|
+| `src/data/questionMapping.ts` | Unified mapping: canonicalWordId → questionIds[], ruleId, word |
+| `src/types/index.ts` | Добавлены поля canonicalWordId, word, ruleId, errorType в WrongAnswer и AnswerHistory |
+| `src/stores/slices/lessonAnalyticsSlice.ts` | Автоизвлечение canonicalWordId/word/ruleId при записи ошибки + аналитика по словам/правилам |
+| `src/stores/slices/syncSlice.ts` | Синхронизация answerHistory с Supabase |
+| `src/pages/Lesson.tsx` | Заполнение canonicalWordId/word/ruleId в answerHistory |
+| `src/stores/teacherAnalyticsStore.ts` | Store для аналитики преподавателя (Supabase) |
+| `src/components/teacher/StudentErrorAnalytics.tsx` | UI: ошибки учеников по словам и правилам |
+| `supabase/migrations/001_unified_tracking.sql` | answer_logs, teacher_student_links, student_word_errors + триггеры |
+| `supabase/migrations/002_rls_policies.sql` | RLS: ученик видит своё, преподаватель видит учеников |
+| `src/lib/supabase.ts` | Обновлён тип UserProgress (exam_results, answer_history) |
 
 ## Агенты
 
-- **Stage 1-2:** coder (типы + mapping + store)
-- **Stage 3:** coder (SQL-миграции)
-- **Stage 4-5:** coder (sync + UI)
+- **Stage 1-2:** coder (типы + mapping + store) ✅
+- **Stage 3:** coder (SQL-миграции) ✅
+- **Stage 4-5:** coder (sync + UI) ✅

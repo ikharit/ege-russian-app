@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { Header } from './components/Header'
+import { ClassHeatmapPage } from './pages/ClassHeatmapPage'
+import { AutoHomeworkPage } from './pages/AutoHomeworkPage'
 import { FriendsPage } from './pages/FriendsPage'
 import { FlashcardsPage } from './pages/FlashcardsPage'
 import { TodayPage } from './pages/TodayPage'
@@ -529,6 +531,8 @@ export default function App() {
             <Route path="/lesson/:lessonId" element={<Lesson />} />
             <Route path="/stats" element={<Statistics />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/teacher/heatmap" element={<ClassHeatmapPage />} />
+            <Route path="/teacher/auto-homework" element={<AutoHomeworkPage />} />
             <Route path="/teacher" element={<Teacher />} />
             <Route path="/teacher/classroom" element={<TeacherClassroom />} />
             <Route path="/teacher/analytics" element={<TeacherAnalytics />} />

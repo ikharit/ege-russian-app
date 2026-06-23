@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, ArrowRight, BookOpen, Lightbulb } from 'lucide-react'
-import { Question } from '../types'
+import { Check, X, ArrowRight, BookOpen, Bookmark, BookmarkCheck } from 'lucide-react'
+import { Question, SavedExplanation } from '../types'
 import { getRelevantRules } from '../data/theory'
 import { ragRetriever, generateExplanation } from '../lib/rag'
 import { TheoryQuickReference } from './TheoryQuickReference'
+import { QuestionFeedback } from './QuestionFeedback'
+import { questionTheoryMap } from '../data/questionTheoryMap'
+import { useProgressStore } from '../stores/progressStore'
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
   if (!atoms) return null
@@ -16,17 +20,23 @@ interface QuestionCardProps {
   question: Question
   questionNumber: number
   totalQuestions: number
-  onAnswer: (isCorrect: boolean, userAnswer?: string[]) => void
+  onAnswer: (isCorrect: boolean, userAnswer?: string[], hintsUsed?: number) => void
   onNext: () => void
   heartsLeft: number
+  onHintUsed?: (level: number, penalty: number) => void
 }
 
-export function QuestionCard({ question, questionNumber, totalQuestions, onAnswer, onNext, heartsLeft }: QuestionCardProps) {
+export function QuestionCard({ question, questionNumber, totalQuestions, onAnswer, onNext, heartsLeft, onHintUsed }: QuestionCardProps) {
   const [selected, setSelected] = useState<string[]>([])
   const [textInput, setTextInput] = useState('')
   const [isChecked, setIsChecked] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const [focusedIdx, setFocusedIdx] = useState(0)
+  const [hintsRevealed, setHintsRevealed] = useState(0)
+  
+  const savedExplanations = useProgressStore((s) => s.savedExplanations)
+  const saveExplanation = useProgressStore((s) => s.saveExplanation)
+  const isSaved = savedExplanations.some((e) => e.questionId === question.id)
   
   const inputRef = useRef<HTMLInputElement>(null)
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -38,6 +48,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   // Reset focus on new question
   useEffect(() => {
     setFocusedIdx(0)
+    setHintsRevealed(0)
     if (isTextType && inputRef.current) {
       inputRef.current.focus()
     } else if (!isTextType && optionRefs.current[0]) {
@@ -137,7 +148,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       )
       setIsCorrect(correct)
       setIsChecked(true)
-      onAnswer(correct, [userAnswer])
+      onAnswer(correct, [userAnswer], hintsRevealed)
     } else {
       if (selected.length === 0) return
       const correct = question.type === 'single'
@@ -145,7 +156,17 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
         : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
       setIsCorrect(correct)
       setIsChecked(true)
-      onAnswer(correct, selected)
+      onAnswer(correct, selected, hintsRevealed)
+    }
+  }
+
+  const handleRevealHint = () => {
+    if (!question.hints || hintsRevealed >= question.hints.length) return
+    const nextLevel = hintsRevealed + 1
+    setHintsRevealed(nextLevel)
+    const hint = question.hints[hintsRevealed]
+    if (onHintUsed) {
+      onHintUsed(hint.level, hint.xpPenalty)
     }
   }
 
@@ -154,6 +175,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
     setTextInput('')
     setIsChecked(false)
     setIsCorrect(false)
+    setHintsRevealed(0)
     onNext()
   }
 
@@ -181,6 +203,64 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       {question.theory && (
         <div className="bg-duo-snow p-3 rounded-xl text-sm text-gray-600">
           {question.theory}
+        </div>
+      )}
+
+      {/* Hints UI */}
+      {question.hints && question.hints.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {hintsRevealed === 0 && !isChecked && (
+            <button
+              onClick={handleRevealHint}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-yellow-200 bg-yellow-50 text-yellow-700 font-medium hover:bg-yellow-100 transition-colors w-fit"
+              aria-label="Открыть подсказку"
+            >
+              <Lightbulb size={18} />
+              💡 Подсказка
+            </button>
+          )}
+
+          {hintsRevealed > 0 && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 space-y-3"
+            >
+              {question.hints.slice(0, hintsRevealed).map((hint) => (
+                <motion.div
+                  key={hint.level}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-1"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">
+                      Уровень {hint.level}
+                    </span>
+                    <span className="text-xs text-yellow-600 font-medium">
+                      -{hint.xpPenalty} XP
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700">{hint.text}</p>
+                </motion.div>
+              ))}
+
+              {hintsRevealed < question.hints.length && !isChecked && (
+                <button
+                  onClick={handleRevealHint}
+                  className="text-sm text-yellow-700 underline hover:text-yellow-800 font-medium"
+                >
+                  Ещё подсказку? (-{question.hints[hintsRevealed].xpPenalty} XP)
+                </button>
+              )}
+
+              {hintsRevealed >= question.hints.length && (
+                <p className="text-xs text-yellow-600 italic">
+                  Все подсказки открыты. Ответьте, но XP будет минимальным.
+                </p>
+              )}
+            </motion.div>
+          )}
         </div>
       )}
 
@@ -271,64 +351,130 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
 
       {isChecked && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className={`p-4 rounded-xl ${isCorrect ? 'bg-green-50 border border-duo-green' : 'bg-red-50 border border-duo-red'}`}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          className={`p-5 rounded-2xl border-2 shadow-sm ${
+            isCorrect
+              ? 'bg-green-50 border-duo-green'
+              : 'bg-red-50 border-duo-red'
+          }`}
         >
-          <div className="flex items-center gap-2 mb-2">
+          {/* Header */}
+          <div className="flex items-center gap-2 mb-3">
             {isCorrect ? (
               <>
-                <Check size={20} className="text-duo-green" />
-                <span className="font-bold text-duo-green">Правильно!</span>
+                <div className="w-8 h-8 bg-duo-green rounded-full flex items-center justify-center">
+                  <Check size={18} className="text-white" />
+                </div>
+                <span className="font-bold text-duo-green text-lg">Правильно!</span>
               </>
             ) : (
               <>
-                <X size={20} className="text-duo-red" />
-                <span className="font-bold text-duo-red">Неправильно</span>
+                <div className="w-8 h-8 bg-duo-red rounded-full flex items-center justify-center">
+                  <X size={18} className="text-white" />
+                </div>
+                <span className="font-bold text-duo-red text-lg">Неправильно</span>
               </>
             )}
           </div>
-          <p className="text-sm text-gray-700">{question.explanation}</p>
-          <p className="text-sm text-gray-500 mt-1">
-            Правильный ответ: {question.correctAnswer.join(', ')}
-          </p>
 
-          {/* Show RAG-powered theory explanation on wrong answer */}
+          {/* Explanation */}
+          <div className="mb-3">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {question.explanation}
+            </p>
+          </div>
+
+          {/* Correct answer for wrong answers */}
+          {!isCorrect && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="mb-3 p-3 bg-white/70 rounded-xl border border-red-200"
+            >
+              <p className="text-sm text-gray-600">
+                Правильный ответ:{' '}
+                <span className="font-bold text-duo-green">
+                  {question.correctAnswer.join(', ')}
+                </span>
+              </p>
+            </motion.div>
+          )}
+
+          {/* RAG theory for wrong answers */}
           {!isCorrect && (() => {
             const taskNum = getTaskNumberFromAtoms(question.atoms)
             if (!taskNum) return null
-            
-            // Try RAG first, fallback to theory rules
+
             const ragResults = ragRetriever.retrieve(question.text, taskNum, 3)
-            const ragExplanation = ragResults.length > 0 
+            const ragExplanation = ragResults.length > 0
               ? generateExplanation(question.text, question.correctAnswer, ragResults)
               : null
-            
+
             const rules = getRelevantRules(taskNum, question.atoms)
-            
+
             return (
               <div className="mt-3 pt-3 border-t border-red-200">
                 <div className="flex items-center gap-2 mb-2">
                   <BookOpen size={16} className="text-duo-blue" />
                   <span className="text-sm font-bold text-gray-700">Правило по заданию {taskNum}:</span>
                 </div>
-                
+
                 {ragExplanation && (
                   <p className="text-sm text-gray-700 mb-2 bg-blue-50 p-2 rounded-lg">
                     {ragExplanation}
                   </p>
                 )}
-                
+
                 {rules.length > 0 && (
                   <TheoryQuickReference rules={rules.slice(0, 2)} showExamples={false} />
                 )}
-                
+
                 <p className="text-xs text-gray-400 mt-1 italic">
                   Полная теория в разделе «Учиться» → Задание {taskNum}
                 </p>
               </div>
             )
           })()}
+
+          {/* Save explanation button */}
+          <div className="mt-4 flex justify-end">
+            <button
+              onClick={() => {
+                if (isSaved) return
+                const item: SavedExplanation = {
+                  id: `${question.id}-${Date.now()}`,
+                  questionId: question.id,
+                  text: question.text,
+                  explanation: question.explanation,
+                  correctAnswer: question.correctAnswer,
+                  taskNumber: getTaskNumberFromAtoms(question.atoms) || undefined,
+                  savedAt: new Date().toISOString(),
+                }
+                saveExplanation(item)
+              }}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                isSaved
+                  ? 'bg-yellow-100 text-yellow-700 cursor-default'
+                  : 'bg-white hover:bg-yellow-50 text-gray-600 hover:text-yellow-600 border border-gray-200'
+              }`}
+              aria-label={isSaved ? 'Разбор сохранён' : 'Сохранить разбор'}
+              disabled={isSaved}
+            >
+              {isSaved ? (
+                <>
+                  <BookmarkCheck size={16} />
+                  <span>Сохранено</span>
+                </>
+              ) : (
+                <>
+                  <Bookmark size={16} />
+                  <span>⭐ Сохранить разбор</span>
+                </>
+              )}
+            </button>
+          </div>
         </motion.div>
       )}
 
@@ -341,7 +487,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       >
         {isChecked ? (
           <span className="flex items-center justify-center gap-2">
-            {questionNumber === totalQuestions ? 'Завершить' : 'Далее'}
+            {questionNumber === totalQuestions ? 'Завершить' : 'Понятно, дальше →'}
             <ArrowRight size={18} />
           </span>
         ) : (

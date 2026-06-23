@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Users, UserPlus, Copy, Trophy, BookOpen, Calendar, Trash2, ChevronRight,
-  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText, BrainCircuit
+  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText, BrainCircuit,
+  BarChart3, Bot
 } from 'lucide-react'
 import { useClassStore, ClassRoom, ClassHomework } from '../stores/classStore'
 import { useStudentStore } from '../stores/studentStore'
@@ -44,12 +45,20 @@ export function TeacherClassroom() {
   const classList = Object.values(classes)
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
+  const setActiveClassId = useClassStore((s) => s.setActiveClassId)
+
   const handleCreateClass = () => {
     if (!teacherName.trim() || !className.trim()) return
     const result = createClass(teacherName.trim(), className.trim())
     setShowCreateForm(false)
     setClassName('')
     setSelectedClassId(result.classId)
+    setActiveClassId(result.classId)
+  }
+
+  const handleSelectClass = (classId: string) => {
+    setSelectedClassId(classId)
+    setActiveClassId(classId)
   }
 
   const handleCopyCode = (code: string) => {
@@ -104,7 +113,10 @@ export function TeacherClassroom() {
     return (
       <div className="max-w-md mx-auto px-4 py-6">
         <button
-          onClick={() => setSelectedClassId(null)}
+          onClick={() => {
+            setSelectedClassId(null)
+            setActiveClassId(null)
+          }}
           className="flex items-center gap-2 text-gray-500 mb-4"
         >
           <ArrowLeft size={18} /> Назад к классам
@@ -138,6 +150,20 @@ export function TeacherClassroom() {
               >
                 <BrainCircuit size={16} />
                 Аналитика
+              </button>
+              <button
+                onClick={() => navigate('/teacher/heatmap')}
+                className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-colors shadow-md"
+              >
+                <BarChart3 size={16} />
+                Heatmap
+              </button>
+              <button
+                onClick={() => navigate('/teacher/auto-homework')}
+                className="flex items-center gap-2 px-4 py-2 bg-duo-green text-white rounded-xl font-bold text-sm hover:bg-duo-green-dark transition-colors shadow-md"
+              >
+                <Bot size={16} />
+                Авто-ДЗ
               </button>
             </div>
             <button
@@ -449,7 +475,7 @@ export function TeacherClassroom() {
               key={classRoom.id}
               className="card cursor-pointer hover:shadow-md transition-all"
               whileHover={{ scale: 1.01 }}
-              onClick={() => setSelectedClassId(classRoom.id)}
+              onClick={() => handleSelectClass(classRoom.id)}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
