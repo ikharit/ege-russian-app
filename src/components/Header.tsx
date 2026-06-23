@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react'
-import { Flame, Heart, Zap, User, Megaphone } from 'lucide-react'
+import { Flame, Heart, Zap, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from './Popover'
@@ -10,10 +10,6 @@ import { NotificationCenter } from './NotificationCenter'
 import { LATEST_VERSION } from '../data/releaseNotes'
 import { useShopStore } from '../stores/shopStore'
 
-const RN_STORAGE_KEY = 'ege-release-notes-dismissed'
-function isReleaseUnread(): boolean {
-  try { return localStorage.getItem(RN_STORAGE_KEY) !== LATEST_VERSION } catch { return true }
-}
 
 export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
@@ -120,18 +116,6 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           {/* Notification Center */}
           <NotificationCenter />
 
-          {/* What's New */}
-          <motion.button
-            onClick={() => navigate('/?scroll=news')}
-            className="flex items-center text-gray-500 hover:text-duo-blue transition-colors relative"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Megaphone size={18} />
-            {isReleaseUnread() && (
-              <span className="absolute -top-1.5 -right-1.5 w-2 h-2 bg-duo-red rounded-full" />
-            )}
-          </motion.button>
 
           {/* Profile */}
           <motion.button
