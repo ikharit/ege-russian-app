@@ -18,7 +18,7 @@ export function AutoHomeworkPage() {
   const classes = useClassStore((s) => s.classes)
   const activeClassId = useClassStore((s) => s.activeClassId)
   const assignHomework = useClassStore((s) => s.assignHomework)
-  const activeClass = classes.find((c) => c.id === activeClassId)
+  const activeClass = Object.values(classes).find((c) => c.id === activeClassId)
 
   const [generatedHomework, setGeneratedHomework] = useState<HomeworkItem[] | null>(null)
   const [sent, setSent] = useState(false)
@@ -32,11 +32,12 @@ export function AutoHomeworkPage() {
     for (const student of activeClass.students) {
       if (!student.taskStats) continue
       for (const [task, stats] of Object.entries(student.taskStats)) {
+        const s = stats as { total: number; correct: number }
         if (!taskMap[task]) {
           taskMap[task] = { total: 0, correct: 0, studentCount: 0 }
         }
-        taskMap[task].total += stats.total || 0
-        taskMap[task].correct += stats.correct || 0
+        taskMap[task].total += s.total || 0
+        taskMap[task].correct += s.correct || 0
         taskMap[task].studentCount++
       }
     }
@@ -89,12 +90,15 @@ export function AutoHomeworkPage() {
   const handleSend = () => {
     if (!generatedHomework || !activeClass) return
 
-    const homework = {
+    const homework: any = {
       id: `hw-${Date.now()}`,
+      taskNumber: 'auto',
+      taskTitle: `Авто-ДЗ: ${generatedHomework.length} заданий`,
       title: `Авто-ДЗ: ${generatedHomework.length} заданий по слабым местам`,
       questions: generatedHomework.map(h => h.question.id),
       assignedAt: new Date().toISOString(),
       dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       completedBy: [],
     }
 

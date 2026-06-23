@@ -102,7 +102,7 @@ export function Lesson() {
     const timeSpent = Date.now() - questionStartTime
     const hintsCount = hintsUsed || 0
     if (hintsCount > 0 && currentQuestion) {
-      setHintsUsedPerQuestion(prev => ({ ...prev, [currentQuestion.id]: hintsCount }))
+      setHintsUsedPerQuestion(prev => ({ ...prev, [currentQuestion.id]: Math.max(prev[currentQuestion.id] || 0, hintsCount) }))
     }
     recordQuestionAnswered()
     if (isCorrect) {
@@ -177,7 +177,16 @@ export function Lesson() {
       else if (combo >= 7) multiplier = 2.5
       else if (combo >= 5) multiplier = 2
       else if (combo >= 3) multiplier = 1.5
-      const xpEarned = Math.round(baseXP * multiplier)
+      let totalPenalty = 0
+      for (const q of questions) {
+        const hintsUsed = hintsUsedPerQuestion[q.id] || 0
+        if (q.hints && hintsUsed > 0) {
+          for (let i = 0; i < Math.min(hintsUsed, q.hints.length); i++) {
+            totalPenalty += q.hints[i].xpPenalty
+          }
+        }
+      }
+      const xpEarned = Math.max(1, Math.round(baseXP * multiplier) - totalPenalty)
       playLessonCompleteSound()
       completeLesson(lesson.id, score, xpEarned)
       updateQuestProgress('quest-lessons-1')
@@ -185,7 +194,16 @@ export function Lesson() {
         updateQuestProgress('quest-perfect-1')
       }
     }
-  }, [gameOverReason, hasAutoCompleted, correctCount, questions.length, lesson.id, lesson.xpReward, combo, completeLesson, updateQuestProgress])
+  }, [gameOverReason, hasAutoCompleted, correctCount, questions.length, lesson.id, lesson.xpReward, combo, completeLesson, updateQuestProgress, hintsUsedPerQuestion])
+
+  const handleHintUsed = useCallback((level: number, penalty: number) => {
+    if (currentQuestion) {
+      setHintsUsedPerQuestion(prev => ({
+        ...prev,
+        [currentQuestion.id]: Math.max(prev[currentQuestion.id] || 0, level)
+      }))
+    }
+  }, [currentQuestion])
 
   const handleFinish = useCallback(() => {
     navigate('/')
@@ -198,6 +216,7 @@ export function Lesson() {
     setCombo(0)
     setGameOverReason(null)
     setHasAutoCompleted(false)
+    setHintsUsedPerQuestion({})
     startLesson(lesson.id)
   }, [restoreHearts, startLesson, lesson.id])
 
@@ -251,6 +270,7 @@ export function Lesson() {
                 onAnswer={handleAnswer}
                 onNext={handleNext}
                 heartsLeft={hearts}
+                onHintUsed={handleHintUsed}
               />
             </motion.div>
           ) : gameOverReason === 'hearts' ? (
@@ -281,7 +301,24 @@ export function Lesson() {
               <LessonResult
                 correctCount={correctCount}
                 totalQuestions={questions.length}
-                xpEarned={Math.round((correctCount / questions.length) * lesson.xpReward * (combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1))}
+                xpEarned={(() => {
+                  const baseXP = Math.round((correctCount / questions.length) * lesson.xpReward)
+                  let multiplier = 1
+                  if (combo >= 10) multiplier = 3
+                  else if (combo >= 7) multiplier = 2.5
+                  else if (combo >= 5) multiplier = 2
+                  else if (combo >= 3) multiplier = 1.5
+                  let totalPenalty = 0
+                  for (const q of questions) {
+                    const hintsUsed = hintsUsedPerQuestion[q.id] || 0
+                    if (q.hints && hintsUsed > 0) {
+                      for (let i = 0; i < Math.min(hintsUsed, q.hints.length); i++) {
+                        totalPenalty += q.hints[i].xpPenalty
+                      }
+                    }
+                  }
+                  return Math.max(1, Math.round(baseXP * multiplier) - totalPenalty)
+                })()}
                 comboMultiplier={combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1}
                 isPerfect={correctCount === questions.length}
                 lessonTitle={lesson.title}

@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, ArrowRight, BookOpen, Bookmark, BookmarkCheck } from 'lucide-react'
+import { Check, X, ArrowRight, BookOpen, Bookmark, BookmarkCheck, Lightbulb } from 'lucide-react'
 import { Question, SavedExplanation } from '../types'
 import { getRelevantRules } from '../data/theory'
 import { ragRetriever, generateExplanation } from '../lib/rag'
 import { TheoryQuickReference } from './TheoryQuickReference'
 import { QuestionFeedback } from './QuestionFeedback'
-import { questionTheoryMap } from '../data/questionTheoryMap'
 import { useProgressStore } from '../stores/progressStore'
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
@@ -33,6 +32,8 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   const [isCorrect, setIsCorrect] = useState(false)
   const [focusedIdx, setFocusedIdx] = useState(0)
   const [hintsRevealed, setHintsRevealed] = useState(0)
+  const [lastUserAnswer, setLastUserAnswer] = useState<string | undefined>(undefined)
+  const navigate = useNavigate()
   
   const savedExplanations = useProgressStore((s) => s.savedExplanations)
   const saveExplanation = useProgressStore((s) => s.saveExplanation)
@@ -148,6 +149,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       )
       setIsCorrect(correct)
       setIsChecked(true)
+      setLastUserAnswer(userAnswer)
       onAnswer(correct, [userAnswer], hintsRevealed)
     } else {
       if (selected.length === 0) return
@@ -156,6 +158,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
         : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
       setIsCorrect(correct)
       setIsChecked(true)
+      setLastUserAnswer(selected.join(', '))
       onAnswer(correct, selected, hintsRevealed)
     }
   }
@@ -475,6 +478,31 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
               )}
             </button>
           </div>
+
+          {/* Theory link */}
+          {(() => {
+            const taskNum = getTaskNumberFromAtoms(question.atoms)
+            if (!taskNum && !question.theoryLessonId && !question.theoryUrl) return null
+            const url = question.theoryUrl
+              ? question.theoryUrl
+              : question.theoryLessonId
+              ? `/lesson/${question.theoryLessonId}`
+              : `/theory?task=${taskNum}`
+            return (
+              <div className="mt-3">
+                <button
+                  onClick={() => navigate(url)}
+                  className="text-sm text-duo-blue hover:text-duo-blue/80 font-medium flex items-center gap-1 transition-colors"
+                >
+                  <BookOpen size={14} />
+                  📚 Подробнее в теории →
+                </button>
+              </div>
+            )
+          })()}
+
+          {/* Feedback */}
+          <QuestionFeedback questionId={question.id} userAnswer={lastUserAnswer} />
         </motion.div>
       )}
 

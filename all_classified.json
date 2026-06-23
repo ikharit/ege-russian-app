@@ -54,8 +54,8 @@
     "alternation": null
   },
   "совмещать": {
-    "type": "alternating",
-    "root": "мещ",
+    "type": "verifiable",
+    "root": "мест",
     "verify": "место",
     "alternation": "мест/мещ"
   },
@@ -164,7 +164,7 @@
   "оберегаемый": {
     "type": "verifiable",
     "root": "берег",
-    "verify": "берег",
+    "verify": "беречь",
     "alternation": null
   },
   "анализировать": {
@@ -350,7 +350,7 @@
   "лёг": {
     "type": "alternating",
     "root": "лёг",
-    "verify": null,
+    "verify": "ложить",
     "alternation": "лёг/лож"
   },
   "творение": {
@@ -552,7 +552,7 @@
     "alternation": null
   },
   "озираться": {
-    "type": "alternating",
+    "type": "verifiable",
     "root": "зир",
     "verify": "зреть",
     "alternation": "зр/зир"
@@ -654,8 +654,8 @@
     "alternation": null
   },
   "сбережения": {
-    "type": "alternating",
-    "root": "береж",
+    "type": "verifiable",
+    "root": "берег",
     "verify": "беречь",
     "alternation": "г/ж"
   },
@@ -872,7 +872,7 @@
   "развивать": {
     "type": "verifiable",
     "root": "вив",
-    "verify": "вить (вЁю)",
+    "verify": "вить",
     "alternation": null
   },
   "поласкать": {
@@ -998,7 +998,7 @@
   "пощечина": {
     "type": "verifiable",
     "root": "щеч",
-    "verify": "щЕка",
+    "verify": "щека",
     "alternation": null
   },
   "стипендия": {
@@ -1020,9 +1020,9 @@
     "alternation": null
   },
   "возрождение": {
-    "type": "alternating",
-    "root": "рожд/род/рожден",
-    "verify": null,
+    "type": "verifiable",
+    "root": "род",
+    "verify": "род",
     "alternation": null
   },
   "возразить": {
@@ -1074,9 +1074,9 @@
     "alternation": null
   },
   "разминаться": {
-    "type": "alternating",
-    "root": "мин/мя",
-    "verify": null,
+    "type": "verifiable",
+    "root": "мин",
+    "verify": "мять",
     "alternation": null
   },
   "симптомы": {
@@ -1141,8 +1141,8 @@
   },
   "развивается": {
     "type": "verifiable",
-    "root": "развив",
-    "verify": "развивать",
+    "root": "вив",
+    "verify": "вить",
     "alternation": null
   },
   "щёлкнуть": {
@@ -1207,8 +1207,8 @@
   },
   "развиваются": {
     "type": "verifiable",
-    "root": "развив",
-    "verify": "развивать",
+    "root": "вив",
+    "verify": "вить",
     "alternation": null
   },
   "подростковый": {
@@ -1580,7 +1580,7 @@
   "роптать": {
     "type": "unverifiable",
     "root": "ропт",
-    "verify": "-",
+    "verify": null,
     "alternation": null
   },
   "пловчиха": {
@@ -1603,7 +1603,7 @@
   },
   "свила": {
     "type": "verifiable",
-    "root": "вил",
+    "root": "вив",
     "verify": "вить",
     "alternation": null
   },
@@ -1662,9 +1662,9 @@
     "alternation": null
   },
   "продолжение": {
-    "type": "unverifiable",
-    "root": "продолж",
-    "verify": "-",
+    "type": "verifiable",
+    "root": "долж",
+    "verify": "долгий",
     "alternation": null
   },
   "абонемент": {
@@ -1766,7 +1766,7 @@
   "обжора": {
     "type": "unverifiable",
     "root": "обжор",
-    "verify": "-",
+    "verify": null,
     "alternation": null
   },
   "жонглёр": {
@@ -1982,7 +1982,7 @@
   "сокращение": {
     "type": "verifiable",
     "root": "кращ",
-    "verify": "сократить",
+    "verify": "краткий",
     "alternation": null
   },
   "прискакать": {
@@ -2088,9 +2088,9 @@
     "alternation": null
   },
   "беречь": {
-    "type": "alternating",
-    "root": "бер",
-    "verify": "бер/бир",
+    "type": "verifiable",
+    "root": "берег",
+    "verify": "беречь",
     "alternation": "бер/бир"
   },
   "увлекаться": {
@@ -2178,9 +2178,9 @@
     "alternation": null
   },
   "проклинать": {
-    "type": "alternating",
+    "type": "verifiable",
     "root": "клин",
-    "verify": "клин/кля",
+    "verify": "клясть",
     "alternation": "клин/кля"
   },
   "ровесник": {

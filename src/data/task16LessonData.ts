@@ -1,3 +1,5 @@
+import { hintsByQuestionId } from './hints'
+
 export interface Task16LessonQuestion {
   id: string
   type: 'single'
@@ -8,9 +10,10 @@ export interface Task16LessonQuestion {
   difficulty: 'easy' | 'medium' | 'hard'
   xpReward: number
   atoms: string[]
+  hints?: { level: 1 | 2 | 3; text: string; xpPenalty: number }[]
 }
 
-export const task16LessonQuestions: Task16LessonQuestion[] = [
+const _task16LessonQuestions: Task16LessonQuestion[] = [
   // Урок 1: Однородные члены и сложное предложение
   {
     id: 'q16-1', type: 'single',
@@ -176,3 +179,8 @@ export const task16LessonQuestions: Task16LessonQuestion[] = [
     difficulty: 'medium', xpReward: 12, atoms: ['punctuation']
   },
 ]
+
+export const task16LessonQuestions: Task16LessonQuestion[] = _task16LessonQuestions.map(q => ({
+  ...q,
+  hints: hintsByQuestionId[q.id]
+}))

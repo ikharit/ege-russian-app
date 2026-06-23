@@ -69,6 +69,7 @@ export interface ClassHomework {
 export interface ClassStudent extends StudentProfile {
   joinedAt: string
   progress?: ProgressData
+  taskStats?: Record<string, { total: number; correct: number }>
 }
 
 export interface ClassRoom {

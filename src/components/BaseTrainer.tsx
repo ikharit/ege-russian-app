@@ -94,6 +94,8 @@ export function BaseTrainer<T>({
   const [ragFeedbackGiven, setRagFeedbackGiven] = useState<Record<string, 'up' | 'down'>>({})
   const [sessionErrorPatterns, setSessionErrorPatterns] = useState<Map<string, number>>(new Map())
   const wrongAnswers = useProgressStore((s) => s.wrongAnswers)
+  const savedExplanations = useProgressStore((s) => s.savedExplanations)
+  const saveExplanation = useProgressStore((s) => s.saveExplanation)
 
   const currentQuestion = questions[currentIndex]
   const overall = {
@@ -557,30 +559,55 @@ export function BaseTrainer<T>({
         {/* Answer feedback */}
         {answerState !== 'idle' && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`w-full rounded-2xl p-4 mb-4 ${
-              isCorrect ? 'bg-green-100' : 'bg-red-100'
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className={`w-full rounded-2xl p-5 mb-4 border-2 shadow-sm ${
+              isCorrect ? 'bg-green-50 border-duo-green' : 'bg-red-50 border-duo-red'
             }`}
           >
-            <div className="flex items-center gap-2 mb-2">
+            {/* Header */}
+            <div className="flex items-center gap-2 mb-3">
               {isCorrect ? (
                 <>
-                  <Check size={20} className="text-green-600" />
-                  <span className="font-bold text-green-700">Правильно!</span>
+                  <div className="w-8 h-8 bg-duo-green rounded-full flex items-center justify-center">
+                    <Check size={18} className="text-white" />
+                  </div>
+                  <span className="font-bold text-duo-green text-lg">Правильно!</span>
                 </>
               ) : (
                 <>
-                  <X size={20} className="text-red-600" />
-                  <span className="font-bold text-red-700">Неправильно</span>
+                  <div className="w-8 h-8 bg-duo-red rounded-full flex items-center justify-center">
+                    <X size={18} className="text-white" />
+                  </div>
+                  <span className="font-bold text-duo-red text-lg">Неправильно</span>
                 </>
               )}
             </div>
+
             {settings.showExplanation && (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">
+              <div className="space-y-3">
+                {/* Base explanation */}
+                <p className="text-sm text-gray-700 leading-relaxed">
                   {getExplanation(effectiveQuestion)}
                 </p>
+
+                {/* Correct answer for wrong answers */}
+                {!isCorrect && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="p-3 bg-white/70 rounded-xl border border-red-200"
+                  >
+                    <p className="text-sm text-gray-600">
+                      Правильный ответ:{' '}
+                      <span className="font-bold text-duo-green">
+                        {getCorrectAnswer(effectiveQuestion).join(', ')}
+                      </span>
+                    </p>
+                  </motion.div>
+                )}
+
                 {/* RAG-powered additional explanation for wrong answers */}
                 {!isCorrect && (() => {
                   const atoms = getAtoms?.(effectiveQuestion) || []
@@ -661,6 +688,7 @@ export function BaseTrainer<T>({
                     </div>
                   )
                 })()}
+
                 {/* Error Pattern Detection — show systematic mistakes */}
                 {!isCorrect && (() => {
                   const recurring = Array.from(sessionErrorPatterns.entries())
@@ -683,6 +711,53 @@ export function BaseTrainer<T>({
                 })()}
               </div>
             )}
+
+            {/* Save explanation button */}
+            {settings.showExplanation && (() => {
+              const qid = getQuestionId(effectiveQuestion)
+              const isSaved = savedExplanations.some((e) => e.questionId === qid)
+              return (
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={() => {
+                      if (isSaved) return
+                      const atoms = getAtoms?.(effectiveQuestion) || []
+                      const taskAtom = atoms.find((a: string) => a.startsWith('task'))
+                      const taskNum = taskAtom ? taskAtom.replace('task', '') : taskNumber
+                      const item: SavedExplanation = {
+                        id: `${qid}-${Date.now()}`,
+                        questionId: qid,
+                        text: getQuestionText(effectiveQuestion),
+                        explanation: getExplanation(effectiveQuestion),
+                        correctAnswer: getCorrectAnswer(effectiveQuestion),
+                        taskNumber: taskNum || undefined,
+                        savedAt: new Date().toISOString(),
+                      }
+                      saveExplanation(item)
+                    }}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                      isSaved
+                        ? 'bg-yellow-100 text-yellow-700 cursor-default'
+                        : 'bg-white hover:bg-yellow-50 text-gray-600 hover:text-yellow-600 border border-gray-200'
+                    }`}
+                    aria-label={isSaved ? 'Разбор сохранён' : 'Сохранить разбор'}
+                    disabled={isSaved}
+                  >
+                    {isSaved ? (
+                      <>
+                        <BookmarkCheck size={16} />
+                        <span>Сохранено</span>
+                      </>
+                    ) : (
+                      <>
+                        <Bookmark size={16} />
+                        <span>⭐ Сохранить разбор</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )
+            })()}
           </motion.div>
         )}
 
@@ -703,7 +778,7 @@ export function BaseTrainer<T>({
               className="btn-primary w-full flex items-center justify-center gap-2"
               aria-label="Следующий вопрос"
             >
-              Дальше <ChevronRight size={18} />
+              Понятно, дальше → <ChevronRight size={18} />
             </button>
           )}
         </div>

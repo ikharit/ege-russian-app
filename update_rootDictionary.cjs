@@ -51,15 +51,29 @@ let insertPos = endIdx + 1; // after the newline before };
 // Check if previous line ends with comma; if not, add one
 let pos = insertPos - 1;
 while (pos > 0 && /\s/.test(content[pos])) pos--;
+console.log('Debug: pos=', pos, 'char=', JSON.stringify(content[pos]), 'insertPos=', insertPos);
 if (pos > 0 && content[pos] !== ',') {
   content = content.slice(0, pos + 1) + ',' + content.slice(pos + 1);
   insertPos++; // adjust for added comma
+  console.log('Debug: comma added at pos', pos);
+} else {
+  console.log('Debug: comma NOT added (char=', JSON.stringify(content[pos]), ')');
 }
 
 const newContent = content.slice(0, insertPos) + '\n' + newEntries.join(',\n') + '\n' + content.slice(insertPos);
 
+// Debug: check around the last old entry
+const debugIdx = newContent.indexOf('колоссальн');
+if (debugIdx !== -1) {
+  console.log('Debug newContent around колоссальн:', JSON.stringify(newContent.slice(debugIdx - 5, debugIdx + 50)));
+}
+
 // Write back with original line endings (CRLF)
 const finalContent = newContent.replace(/\n/g, '\r\n');
+const debugIdx2 = finalContent.indexOf('колоссальн');
+if (debugIdx2 !== -1) {
+  console.log('Debug finalContent around колоссальн:', JSON.stringify(finalContent.slice(debugIdx2 - 5, debugIdx2 + 50)));
+}
 fs.writeFileSync('scripts/generate-task9-explanations.cjs', finalContent, 'utf-8');
 console.log('Updated generate-task9-explanations.cjs');
 console.log('Total entries now:', existingKeys.size);

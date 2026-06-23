@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { BookOpen, Search, ArrowLeft, BookOpenText, Edit3, CheckCircle, PlayCircle, AlertCircle, Star, Circle } from 'lucide-react'
 import { theoryLessons, TheoryLesson } from '../data/theoryData'
 import { TheoryViewer } from '../components/TheoryViewer'
@@ -9,6 +10,7 @@ import { useProgressStore } from '../stores/progressStore'
 
 export default function TheoryPage() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<TheoryLesson | null>(null)
@@ -17,7 +19,22 @@ export default function TheoryPage() {
   const completeTheoryTest = useProgressStore((s) => s.completeTheoryTest)
   const theoryTestsCompleted = useProgressStore((s) => s.theoryTestsCompleted)
 
-  const categories = Array.from(new Set(theoryLessons.map(l => l.category)))
+  const [fromQuestion, setFromQuestion] = useState(false)
+
+  // Deep-link from question explanation
+  useEffect(() => {
+    const task = searchParams.get('task')
+    if (task) {
+      const lesson = theoryLessons.find((l) => l.taskNumber === task)
+      if (lesson) {
+        setSelectedLesson(lesson)
+      }
+      setFromQuestion(true)
+      setSearchParams({}, { replace: true })
+    }
+  }, [searchParams, setSearchParams])
+
+  const categories = Array.from(new Set(theoryLessons.map((l) => l.category)))
 
   const filtered = theoryLessons.filter(l => {
     const matchSearch =
@@ -73,6 +90,18 @@ export default function TheoryPage() {
           </button>
         </div>
         <div className="px-4 py-6 max-w-2xl mx-auto">
+          {fromQuestion && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 bg-duo-blue/10 border border-duo-blue/20 rounded-xl p-3 flex items-center gap-2"
+            >
+              <BookOpen size={16} className="text-duo-blue shrink-0" />
+              <p className="text-sm text-gray-700">
+                Вы пришли из разбора вопроса. Вот теория по этой теме.
+              </p>
+            </motion.div>
+          )}
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <TheoryViewer text={selectedLesson.theoryText} />
           </div>

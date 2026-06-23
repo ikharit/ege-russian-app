@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Volume2, ChevronRight, BookOpen } from 'lucide-react'
+import { ArrowLeft, Volume2, ChevronRight, BookOpen, Brain } from 'lucide-react'
 import { AccentTrainerMiniProgress } from '../components/dashboard/AccentTrainerMiniProgress'
 import { Task5MiniProgress } from '../components/dashboard/Task5MiniProgress'
 import { Task10MiniProgress } from '../components/dashboard/Task10MiniProgress'
@@ -265,6 +265,17 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-orange-50 to-amber-50',
     borderColor: 'border-orange-200',
     textColor: 'text-orange-500',
+  },
+  {
+    id: 'adaptive',
+    taskNumber: '🧠',
+    title: 'Адаптивный тренажёр',
+    subtitle: 'BKT + IRT — подбирает сложность под вас',
+    path: '/adaptive-trainer',
+    color: 'bg-duo-purple',
+    bgGradient: 'from-purple-50 to-duo-purple/10',
+    borderColor: 'border-duo-purple/20',
+    textColor: 'text-duo-purple',
   },
 ]
 

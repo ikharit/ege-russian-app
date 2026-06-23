@@ -14,6 +14,7 @@ import { task14Questions } from './task14Questions'
 import { task15Questions } from './task15Questions'
 import { task16Questions } from './task16Questions'
 import { task17Questions } from './task17Questions'
+import { hintsByQuestionId } from './hints'
 
 const dataSourceMap: Record<string, unknown[]> = {
   accent: allAccentWords,
@@ -105,6 +106,7 @@ export function loadQuestionsForTask(
       difficulty: q.difficulty,
       xpReward: 5,
       atoms: [`task${taskNumber}`],
+      hints: hintsByQuestionId[q.id],
     }))
   }
 
@@ -121,6 +123,7 @@ export function loadQuestionsForTask(
         difficulty: 'medium' as const,
         xpReward: 5,
         atoms: ['task5'],
+        hints: hintsByQuestionId[q.id],
       }
     })
   }
@@ -138,6 +141,7 @@ export function loadQuestionsForTask(
         difficulty: 'hard' as const,
         xpReward: 5,
         atoms: ['task10'],
+        hints: hintsByQuestionId[q.id],
       }
     })
   }
@@ -155,6 +159,7 @@ export function loadQuestionsForTask(
         difficulty: 'hard' as const,
         xpReward: 5,
         atoms: ['task16'],
+        hints: hintsByQuestionId[q.id],
       }
     })
   }
@@ -170,5 +175,6 @@ export function loadQuestionsForTask(
     difficulty: 'medium' as const,
     xpReward: 5,
     atoms: [`task${taskNumber}`],
+    hints: hintsByQuestionId[q.id],
   }))
 }

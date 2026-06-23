@@ -7,14 +7,14 @@ import { useClassStore } from '../stores/classStore'
 interface StudentHeatmapData {
   id: string
   name: string
-  taskStats: Record<string, { correct: number; total: number; accuracy: number }>
+  taskStats: Record<string, { correct: number; total: number; accuracy?: number }>
 }
 
 export function ClassHeatmapPage() {
   const navigate = useNavigate()
   const classes = useClassStore((s) => s.classes)
   const activeClassId = useClassStore((s) => s.activeClassId)
-  const activeClass = classes.find((c) => c.id === activeClassId)
+  const activeClass = Object.values(classes).find((c) => c.id === activeClassId)
 
   const [hoveredCell, setHoveredCell] = useState<{ student: string; task: string; accuracy: number } | null>(null)
 

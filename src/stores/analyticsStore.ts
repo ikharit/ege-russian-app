@@ -141,6 +141,7 @@ export interface TeacherRecommendation {
   title: string
   description: string
   action: string
+  date?: string
   targetStudents?: string[]
 }
 

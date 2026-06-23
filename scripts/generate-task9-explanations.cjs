@@ -429,7 +429,7 @@ const rootDictionary = {
   'слепительн': { type: 'verifiable', verify: 'ослепительно' },
   'ароматн': { type: 'unverifiable', verify: null },
   'лез': { type: 'alternating', verify: 'лезть', alternation: 'лез/лаз' },
-  'колоссальн': { type: 'unverifiable', verify: null }
+  'колоссальн': { type: 'unverifiable', verify: null },
 
   'плот': { type: 'verifiable', verify: 'плоть' },
   'крас': { type: 'verifiable', verify: 'красота' },
@@ -711,7 +711,7 @@ const rootDictionary = {
   'косн': { type: 'unverifiable', verify: null },
   'деликатес': { type: 'unverifiable', verify: null },
   'важд': { type: 'unverifiable', verify: null },
-  'университет': { type: 'unverifiable', verify: null }
+  'университет': { type: 'unverifiable', verify: null },
 
   'плот': { type: 'verifiable', verify: 'плоть' },
   'крас': { type: 'verifiable', verify: 'красота' },
@@ -1001,7 +1001,24 @@ const rootDictionary = {
   'жиг/жег': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
   'мин/мя': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
   'мер/мир': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
-  'блест/блист': { type: 'alternating', verify: 'проверьте', alternation: 'null' }
+  'блест/блист': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+
+  'поряд/поряж': { type: 'alternating', verify: 'проверьте', alternation: 'а/я' },
+  'бер/бир/бра': { type: 'alternating', verify: 'проверьте', alternation: 'е/и/а' },
+  'рожд/род/рожден': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'жиг/жег': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'мин/мя': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'мер/мир': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'блест/блист': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+
+  'поряд/поряж': { type: 'alternating', verify: 'проверьте', alternation: 'а/я' },
+  'бер/бир/бра': { type: 'alternating', verify: 'проверьте', alternation: 'е/и/а' },
+  'род': { type: 'verifiable', verify: 'род' },
+  'жиг/жег': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'мин': { type: 'verifiable', verify: 'мять' },
+  'мер/мир': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'блест/блист': { type: 'alternating', verify: 'проверьте', alternation: 'null' },
+  'долж': { type: 'verifiable', verify: 'долгий' }
 };
 
 // Prefixes to remove
@@ -1084,14 +1101,12 @@ for (const match of matches) {
     const ans = answer.replace(/['"]/g, '').trim().toLowerCase();
     const word = wordMatch[1].replace('_', ans);
     
-    if (!allExplanations[word.toLowerCase()]) {
-      const explanation = generateExplanation(word);
-      if (explanation) {
-        allExplanations[word.toLowerCase()] = explanation;
-        generated++;
-      } else {
-        fallback++;
-      }
+    const explanation = generateExplanation(word);
+    if (explanation) {
+      allExplanations[word.toLowerCase()] = explanation;
+      generated++;
+    } else if (!allExplanations[word.toLowerCase()]) {
+      fallback++;
     }
   }
 }

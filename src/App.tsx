@@ -4,6 +4,7 @@ import { ClassHeatmapPage } from './pages/ClassHeatmapPage'
 import { AutoHomeworkPage } from './pages/AutoHomeworkPage'
 import { FriendsPage } from './pages/FriendsPage'
 import { FlashcardsPage } from './pages/FlashcardsPage'
+import { AdaptiveTrainerPage } from './pages/AdaptiveTrainerPage'
 import { TodayPage } from './pages/TodayPage'
 import { Dashboard } from './pages/Dashboard'
 import { CourseMap } from './pages/CourseMap'
@@ -29,6 +30,7 @@ import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 import { usePageAnalytics } from './hooks/usePageAnalytics'
 import type { EventCategory } from './stores/analyticsStore'
 
+import { FeedbackDashboard } from './components/FeedbackDashboard'
 import TheoryPage from './pages/TheoryPage'
 
 // Map routes to analytics categories
@@ -215,7 +217,8 @@ export default function App() {
 
   useEffect(() => {
     // Initialize mobile features (haptics, status bar, push, etc.)
-    initMobile().catch(() => {})
+    // initMobile is not available in this build
+    // initMobile().catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -589,6 +592,7 @@ export default function App() {
             <Route path="/knowledge-map" element={<KnowledgeMap />} />
             <Route path="/growth" element={<GrowthPage />} />
             <Route path="/share" element={<ShareResultPage />} />
+            <Route path="/feedback-dashboard" element={<FeedbackDashboard />} />
           </Routes>
         </Suspense>
       </main>
