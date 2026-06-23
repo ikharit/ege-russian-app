@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Users, UserPlus, Copy, Trophy, BookOpen, Calendar, Trash2, ChevronRight,
-  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText
+  GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText, BrainCircuit
 } from 'lucide-react'
 import { useClassStore, ClassRoom, ClassHomework } from '../stores/classStore'
 import { useStudentStore } from '../stores/studentStore'
@@ -131,6 +131,13 @@ export function TeacherClassroom() {
               >
                 <FileText size={16} />
                 Отчёт PDF
+              </button>
+              <button
+                onClick={() => navigate('/teacher/analytics')}
+                className="flex items-center gap-2 px-4 py-2 bg-duo-purple text-white rounded-xl font-bold text-sm hover:bg-duo-purple/90 transition-colors shadow-md"
+              >
+                <BrainCircuit size={16} />
+                Аналитика
               </button>
             </div>
             <button

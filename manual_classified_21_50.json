@@ -1,0 +1,182 @@
+{
+  "замесить": {
+    "type": "verifiable",
+    "root": "мес",
+    "verify": "месить",
+    "alternation": null
+  },
+  "митинговать": {
+    "type": "foreign",
+    "root": "митинг",
+    "verify": null,
+    "alternation": null
+  },
+  "запрещать": {
+    "type": "verifiable",
+    "root": "прет",
+    "verify": "запрет",
+    "alternation": null
+  },
+  "осведомлённый": {
+    "type": "verifiable",
+    "root": "вед",
+    "verify": "ведать",
+    "alternation": null
+  },
+  "вертикальный": {
+    "type": "foreign",
+    "root": "вертик",
+    "verify": null,
+    "alternation": null
+  },
+  "тенденциозный": {
+    "type": "foreign",
+    "root": "тенденц",
+    "verify": null,
+    "alternation": null
+  },
+  "терпение": {
+    "type": "verifiable",
+    "root": "терп",
+    "verify": "терпеть",
+    "alternation": null
+  },
+  "оберегаемый": {
+    "type": "verifiable",
+    "root": "берег",
+    "verify": "берег",
+    "alternation": null
+  },
+  "анализировать": {
+    "type": "foreign",
+    "root": "анализ",
+    "verify": null,
+    "alternation": null
+  },
+  "конференция": {
+    "type": "foreign",
+    "root": "конференц",
+    "verify": null,
+    "alternation": null
+  },
+  "информировать": {
+    "type": "foreign",
+    "root": "информ",
+    "verify": null,
+    "alternation": null
+  },
+  "упрощённый": {
+    "type": "verifiable",
+    "root": "прост",
+    "verify": "простой",
+    "alternation": null
+  },
+  "заблестеть": {
+    "type": "verifiable",
+    "root": "блест",
+    "verify": "блестеть",
+    "alternation": null
+  },
+  "результативный": {
+    "type": "foreign",
+    "root": "результат",
+    "verify": null,
+    "alternation": null
+  },
+  "конкретизировать": {
+    "type": "foreign",
+    "root": "конкрет",
+    "verify": null,
+    "alternation": null
+  },
+  "примириться": {
+    "type": "verifiable",
+    "root": "мир",
+    "verify": "мир",
+    "alternation": null
+  },
+  "распоряжение": {
+    "type": "alternating",
+    "root": "поряд/поряж",
+    "verify": null,
+    "alternation": "а/я"
+  },
+  "прямолинейный": {
+    "type": "verifiable",
+    "root": "прям",
+    "verify": "прямой",
+    "alternation": null
+  },
+  "заявить": {
+    "type": "verifiable",
+    "root": "яв",
+    "verify": "явка",
+    "alternation": null
+  },
+  "систематизировать": {
+    "type": "foreign",
+    "root": "системат",
+    "verify": null,
+    "alternation": null
+  },
+  "поддержать": {
+    "type": "verifiable",
+    "root": "держ",
+    "verify": "держать",
+    "alternation": null
+  },
+  "характеристика": {
+    "type": "foreign",
+    "root": "характер",
+    "verify": null,
+    "alternation": null
+  },
+  "классицистический": {
+    "type": "foreign",
+    "root": "классиц",
+    "verify": null,
+    "alternation": null
+  },
+  "ориентировочный": {
+    "type": "foreign",
+    "root": "ориентиров",
+    "verify": null,
+    "alternation": null
+  },
+  "лимитированный": {
+    "type": "foreign",
+    "root": "лимит",
+    "verify": null,
+    "alternation": null
+  },
+  "систематизация": {
+    "type": "foreign",
+    "root": "системат",
+    "verify": null,
+    "alternation": null
+  },
+  "выберется": {
+    "type": "alternating",
+    "root": "бер/бир/бра",
+    "verify": null,
+    "alternation": "е/и/а"
+  },
+  "повстречаться": {
+    "type": "verifiable",
+    "root": "встреч",
+    "verify": "встреча",
+    "alternation": null
+  },
+  "театральный": {
+    "type": "foreign",
+    "root": "театр",
+    "verify": null,
+    "alternation": null
+  },
+  "организационный": {
+    "type": "foreign",
+    "root": "организацион",
+    "verify": null,
+    "alternation": null
+  }
+}

@@ -1,0 +1,360 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  ArrowLeft, Users, AlertTriangle, TrendingUp, Target, Award, ChevronRight, Filter, BarChart3, BrainCircuit, Heart, Zap, Clock, CheckCircle, AlertCircle, BookOpen, Trophy, Flame, Activity
+} from 'lucide-react'
+import { useClassStore } from '../stores/classStore'
+import { useProgressStore } from '../stores/progressStore'
+import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
+import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
+import type { PlayerType } from '../utils/personalityEngine'
+
+const RISK_CONFIG = {
+  low: { color: '#58cc02', label: 'Всё хорошо', icon: CheckCircle },
+  medium: { color: '#ffc800', label: 'Требует внимания', icon: AlertCircle },
+  high: { color: '#ff4b4b', label: 'Риск отвала', icon: AlertTriangle },
+}
+
+export function TeacherAnalytics() {
+  const navigate = useNavigate()
+  const classes = useClassStore((s) => s.classes)
+  const classList = Object.values(classes)
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(classList[0]?.id || null)
+  const [riskFilter, setRiskFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
+  const [typeFilter, setTypeFilter] = useState<'all' | PlayerType>('all')
+  const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
+
+  const selectedClass = selectedClassId ? classes[selectedClassId] : null
+
+  const students = selectedClass?.students || []
+  const analytics = students.map(s => 
+    analyzeStudent(s.id, s.name, s.progress)
+  )
+  const summary = analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
+
+  const filtered = analytics.filter(a => {
+    if (riskFilter !== 'all' && a.riskLevel !== riskFilter) return false
+    if (typeFilter !== 'all' && a.playerProfile.type !== typeFilter) return false
+    return true
+  })
+
+  const typeLabels: Record<PlayerType, string> = {
+    achiever: 'Достиженцы',
+    explorer: 'Исследователи',
+    socializer: 'Коммуникаторы',
+    killer: 'Соревнователи',
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-10">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate('/teacher/classroom')} className="p-2 hover:bg-gray-100 rounded-xl">
+            <ArrowLeft size={20} className="text-gray-600" />
+          </button>
+          <div className="flex-1">
+            <h1 className="text-lg font-bold text-gray-800">Аналитика класса</h1>
+            <p className="text-xs text-gray-500">Понимание учеников — ключ к успеху</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 py-4 flex flex-col gap-4">
+        {/* Class selector */}
+        {classList.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {classList.map(c => (
+              <button
+                key={c.id}
+                onClick={() => setSelectedClassId(c.id)}
+                className={`px-3 py-1.5 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${
+                  selectedClassId === c.id
+                    ? 'bg-duo-green text-white'
+                    : 'bg-white text-gray-600 border border-gray-200'
+                }`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {students.length === 0 ? (
+          <div className="text-center py-12">
+            <Users size={48} className="text-gray-300 mx-auto mb-3" />
+            <p className="text-gray-500 font-bold">В классе пока нет учеников</p>
+            <p className="text-sm text-gray-400">Добавьте учеников, чтобы увидеть аналитику</p>
+          </div>
+        ) : (
+          <>
+            {/* Summary Cards */}
+            <div className="grid grid-cols-2 gap-3">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-duo-green/10 flex items-center justify-center">
+                    <Users size={18} className="text-duo-green" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Учеников</span>
+                </div>
+                <p className="text-2xl font-black text-gray-800">{summary.totalStudents}</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-duo-yellow/10 flex items-center justify-center">
+                    <BarChart3 size={18} className="text-duo-yellow" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Точность</span>
+                </div>
+                <p className="text-2xl font-black text-gray-800">{summary.avgAccuracy}%</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-duo-blue/10 flex items-center justify-center">
+                    <BookOpen size={18} className="text-duo-blue" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Пройдено</span>
+                </div>
+                <p className="text-2xl font-black text-gray-800">{summary.avgCompletionRate}%</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className={`bg-white rounded-2xl p-4 shadow-sm border border-gray-100 ${
+                  summary.atRiskCount > 0 ? 'ring-2 ring-red-100' : ''
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                    summary.atRiskCount > 0 ? 'bg-red-100' : 'bg-green-100'
+                  }`}>
+                    <AlertTriangle size={18} className={summary.atRiskCount > 0 ? 'text-red-500' : 'text-green-500'} />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Риск</span>
+                </div>
+                <p className={`text-2xl font-black ${summary.atRiskCount > 0 ? 'text-red-500' : 'text-gray-800'}`}>
+                  {summary.atRiskCount}
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Type Distribution */}
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                <BrainCircuit size={18} className="text-duo-purple" />
+                Типы мотивации
+              </h3>
+              <div className="flex gap-2">
+                {(Object.entries(summary.typeDistribution) as [PlayerType, number][]).map(([type, count]) => {
+                  if (count === 0) return null
+                  const pct = Math.round((count / summary.totalStudents) * 100)
+                  return (
+                    <div key={type} className="flex-1 text-center">
+                      <div
+                        className="rounded-xl p-2 text-white font-bold text-sm mb-1"
+                        style={{ backgroundColor: getPlayerTypeColor(type) }}
+                      >
+                        {pct}%
+                      </div>
+                      <p className="text-[10px] text-gray-500 font-bold">{typeLabels[type]}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Insights */}
+            {summary.classInsights.length > 0 && (
+              <div className="bg-gradient-to-r from-duo-green/5 to-blue-50 rounded-2xl p-4 border border-duo-green/10">
+                <h3 className="font-bold text-gray-700 mb-2 flex items-center gap-2">
+                  <Activity size={18} className="text-duo-green" />
+                  Инсайты
+                </h3>
+                <ul className="space-y-2">
+                  {summary.classInsights.map((insight, i) => (
+                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                      <span className="text-duo-green mt-0.5">•</span>
+                      {insight}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Filters */}
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              <button
+                onClick={() => setRiskFilter('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                  riskFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-200'
+                }`}
+              >
+                Все
+              </button>
+              <button
+                onClick={() => setRiskFilter('high')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                  riskFilter === 'high' ? 'bg-red-500 text-white' : 'bg-white text-red-500 border border-red-200'
+                }`}
+              >
+                Риск отвала
+              </button>
+              <button
+                onClick={() => setRiskFilter('medium')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                  riskFilter === 'medium' ? 'bg-yellow-500 text-white' : 'bg-white text-yellow-600 border border-yellow-200'
+                }`}
+              >
+                Внимание
+              </button>
+              <button
+                onClick={() => setRiskFilter('low')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                  riskFilter === 'low' ? 'bg-green-500 text-white' : 'bg-white text-green-600 border border-green-200'
+                }`}
+              >
+                Всё хорошо
+              </button>
+            </div>
+
+            {/* Students List */}
+            <div className="flex flex-col gap-3">
+              <h3 className="font-bold text-gray-700 text-sm">
+                Ученики ({filtered.length})
+              </h3>
+              {filtered.map((a) => (
+                <motion.div
+                  key={a.profileId}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+                >
+                  {/* Header row */}
+                  <div
+                    className="p-4 flex items-center gap-3 cursor-pointer"
+                    onClick={() => setExpandedStudent(expandedStudent === a.profileId ? null : a.profileId)}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
+                      style={{ backgroundColor: getPlayerTypeColor(a.playerProfile.type) }}
+                    >
+                      {a.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-gray-800 text-sm">{a.name}</p>
+                        <span
+                          className="text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white"
+                          style={{ backgroundColor: RISK_CONFIG[a.riskLevel].color }}
+                        >
+                          {RISK_CONFIG[a.riskLevel].label}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {getPlayerTypeLabel(a.playerProfile.type)} • Точность {a.accuracy}% • Пройдено {a.completionRate}%
+                      </p>
+                    </div>
+                    <ChevronRight
+                      size={18}
+                      className={`text-gray-400 transition-transform ${
+                        expandedStudent === a.profileId ? 'rotate-90' : ''
+                      }`}
+                    />
+                  </div>
+
+                  {/* Expanded details */}
+                  {expandedStudent === a.profileId && (
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: 'auto' }}
+                      className="border-t border-gray-100 p-4 space-y-3"
+                    >
+                      {/* Stats row */}
+                      <div className="grid grid-cols-4 gap-2 text-center">
+                        <div className="bg-gray-50 rounded-xl p-2">
+                          <Flame size={16} className="text-orange-500 mx-auto mb-1" />
+                          <p className="text-sm font-bold">{a.streak}</p>
+                          <p className="text-[10px] text-gray-400">Стрик</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-2">
+                          <Zap size={16} className="text-duo-yellow mx-auto mb-1" />
+                          <p className="text-sm font-bold">{a.accuracy}%</p>
+                          <p className="text-[10px] text-gray-400">Точность</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-2">
+                          <Clock size={16} className="text-duo-blue mx-auto mb-1" />
+                          <p className="text-sm font-bold">{a.lastActivityDays === 999 ? '—' : `${a.lastActivityDays}д`}</p>
+                          <p className="text-[10px] text-gray-400">Активность</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-2">
+                          <Trophy size={16} className="text-duo-purple mx-auto mb-1" />
+                          <p className="text-sm font-bold">{a.completionRate}%</p>
+                          <p className="text-[10px] text-gray-400">Пройдено</p>
+                        </div>
+                      </div>
+
+                      {/* Strengths / Weaknesses */}
+                      {a.strengths.length > 0 && (
+                        <div>
+                          <p className="text-xs font-bold text-gray-500 mb-1">Сильные стороны</p>
+                          <div className="flex flex-wrap gap-1">
+                            {a.strengths.map((s, i) => (
+                              <span key={i} className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-lg font-bold">
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {a.weaknesses.length > 0 && (
+                        <div>
+                          <p className="text-xs font-bold text-gray-500 mb-1">Что требует внимания</p>
+                          <div className="flex flex-wrap gap-1">
+                            {a.weaknesses.map((w, i) => (
+                              <span key={i} className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded-lg font-bold">
+                                {w}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Motivation & Recommendation */}
+                      <div className="bg-blue-50 rounded-xl p-3">
+                        <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует</p>
+                        <p className="text-xs text-blue-600">{a.motivation}</p>
+                      </div>
+                      <div className="bg-duo-green/5 rounded-xl p-3 border border-duo-green/10">
+                        <p className="text-xs font-bold text-duo-green-dark mb-1">Рекомендация</p>
+                        <p className="text-xs text-gray-600">{a.recommendation}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}

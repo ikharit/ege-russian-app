@@ -1,0 +1,182 @@
+{
+  "аналогичный": {
+    "type": "foreign",
+    "root": "аналог",
+    "verify": "analogos",
+    "alternation": null
+  },
+  "конфликтующий": {
+    "type": "foreign",
+    "root": "конфликт",
+    "verify": "conflictus",
+    "alternation": null
+  },
+  "инженер": {
+    "type": "foreign",
+    "root": "инженер",
+    "verify": "ingénieur",
+    "alternation": null
+  },
+  "приласкать": {
+    "type": "unverifiable",
+    "root": "ласк",
+    "verify": "ласка",
+    "alternation": null
+  },
+  "панцирь": {
+    "type": "foreign",
+    "root": "панцир",
+    "verify": "панцирь",
+    "alternation": null
+  },
+  "цыплёнок": {
+    "type": "unverifiable",
+    "root": "цыпл",
+    "verify": "цыплёнок",
+    "alternation": null
+  },
+  "впечатлить": {
+    "type": "unverifiable",
+    "root": "печатл",
+    "verify": "впечатление",
+    "alternation": null
+  },
+  "трущобы": {
+    "type": "foreign",
+    "root": "трущоб",
+    "verify": "trushchoba",
+    "alternation": null
+  },
+  "рассмешить": {
+    "type": "alternating",
+    "root": "смеш",
+    "verify": "смех",
+    "alternation": "ш/х"
+  },
+  "пожимать": {
+    "type": "unverifiable",
+    "root": "жим",
+    "verify": "жать",
+    "alternation": null
+  },
+  "жёлтый": {
+    "type": "alternating",
+    "root": "желт",
+    "verify": "желтеть",
+    "alternation": "ё/е"
+  },
+  "мажорная": {
+    "type": "foreign",
+    "root": "мажор",
+    "verify": "major",
+    "alternation": null
+  },
+  "озираться": {
+    "type": "alternating",
+    "root": "зир",
+    "verify": "зреть",
+    "alternation": "зр/зир"
+  },
+  "трясина": {
+    "type": "unverifiable",
+    "root": "тряс",
+    "verify": "трясти",
+    "alternation": null
+  },
+  "осязание": {
+    "type": "unverifiable",
+    "root": "сяз",
+    "verify": "осязать",
+    "alternation": null
+  },
+  "фантастический": {
+    "type": "foreign",
+    "root": "фантаст",
+    "verify": "phantastikos",
+    "alternation": null
+  },
+  "традиционный": {
+    "type": "foreign",
+    "root": "традиц",
+    "verify": "traditio",
+    "alternation": null
+  },
+  "оснащение": {
+    "type": "alternating",
+    "root": "снащ",
+    "verify": "снасть",
+    "alternation": "т/щ"
+  },
+  "талант": {
+    "type": "foreign",
+    "root": "талант",
+    "verify": "talanton",
+    "alternation": null
+  },
+  "разбогатеть": {
+    "type": "unverifiable",
+    "root": "богат",
+    "verify": "богатый",
+    "alternation": null
+  },
+  "поросль": {
+    "type": "unverifiable",
+    "root": "поросл",
+    "verify": "поросли",
+    "alternation": null
+  },
+  "провозглашать": {
+    "type": "alternating",
+    "root": "глаш",
+    "verify": "гласить",
+    "alternation": "с/ш"
+  },
+  "корифей": {
+    "type": "foreign",
+    "root": "корифей",
+    "verify": "koryphaios",
+    "alternation": null
+  },
+  "цистерна": {
+    "type": "foreign",
+    "root": "цистерн",
+    "verify": "cisterna",
+    "alternation": null
+  },
+  "унитожить": {
+    "type": "unverifiable",
+    "root": "ничтож",
+    "verify": "ничтожный",
+    "alternation": null
+  },
+  "команда": {
+    "type": "foreign",
+    "root": "команд",
+    "verify": "commande",
+    "alternation": null
+  },
+  "поклониться": {
+    "type": "unverifiable",
+    "root": "клон",
+    "verify": "поклон",
+    "alternation": null
+  },
+  "исказить": {
+    "type": "alternating",
+    "root": "каз",
+    "verify": "искажение",
+    "alternation": "з/ж"
+  },
+  "сомневаться": {
+    "type": "unverifiable",
+    "root": "мнев",
+    "verify": "сомнение",
+    "alternation": null
+  },
+  "сбережения": {
+    "type": "alternating",
+    "root": "береж",
+    "verify": "беречь",
+    "alternation": "г/ж"
+  }
+}

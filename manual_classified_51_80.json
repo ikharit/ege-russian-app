@@ -1,0 +1,182 @@
+{
+  "палитра": {
+    "type": "verifiable",
+    "root": "пал",
+    "verify": "палить",
+    "alternation": null
+  },
+  "ответвление": {
+    "type": "verifiable",
+    "root": "ветв",
+    "verify": "ветвь",
+    "alternation": null
+  },
+  "аттракцион": {
+    "type": "foreign",
+    "root": "аттракцион",
+    "verify": null,
+    "alternation": null
+  },
+  "цилиндрический": {
+    "type": "foreign",
+    "root": "цилиндр",
+    "verify": null,
+    "alternation": null
+  },
+  "традиция": {
+    "type": "foreign",
+    "root": "традиц",
+    "verify": null,
+    "alternation": null
+  },
+  "объединение": {
+    "type": "verifiable",
+    "root": "един",
+    "verify": "единый",
+    "alternation": null
+  },
+  "сонеты": {
+    "type": "verifiable",
+    "root": "сон",
+    "verify": "сон",
+    "alternation": null
+  },
+  "жираф": {
+    "type": "foreign",
+    "root": "жираф",
+    "verify": null,
+    "alternation": null
+  },
+  "лёг": {
+    "type": "alternating",
+    "root": "лёг",
+    "verify": null,
+    "alternation": "лёг/лож"
+  },
+  "творение": {
+    "type": "verifiable",
+    "root": "твор",
+    "verify": "творить",
+    "alternation": null
+  },
+  "мажорный": {
+    "type": "foreign",
+    "root": "мажор",
+    "verify": null,
+    "alternation": null
+  },
+  "ухажёр": {
+    "type": "verifiable",
+    "root": "ухаж",
+    "verify": "ухаживать",
+    "alternation": null
+  },
+  "замерло": {
+    "type": "verifiable",
+    "root": "мер",
+    "verify": "мереть",
+    "alternation": null
+  },
+  "протереть": {
+    "type": "verifiable",
+    "root": "тер",
+    "verify": "тереть",
+    "alternation": null
+  },
+  "щепковый": {
+    "type": "verifiable",
+    "root": "щеп",
+    "verify": "щепа",
+    "alternation": null
+  },
+  "ополчение": {
+    "type": "alternating",
+    "root": "полч",
+    "verify": null,
+    "alternation": "полч/полк"
+  },
+  "пловец": {
+    "type": "alternating",
+    "root": "плов",
+    "verify": null,
+    "alternation": "плов/плыв"
+  },
+  "спишите": {
+    "type": "alternating",
+    "root": "пиш",
+    "verify": null,
+    "alternation": "пис/пиш"
+  },
+  "выдарать": {
+    "type": "verifiable",
+    "root": "дар",
+    "verify": "драть",
+    "alternation": null
+  },
+  "мораторий": {
+    "type": "foreign",
+    "root": "моратор",
+    "verify": null,
+    "alternation": null
+  },
+  "почитатель": {
+    "type": "verifiable",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": null
+  },
+  "обжигаться": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": null,
+    "alternation": "жиг/жег"
+  },
+  "проживать": {
+    "type": "verifiable",
+    "root": "жив",
+    "verify": "жить",
+    "alternation": null
+  },
+  "запевала": {
+    "type": "alternating",
+    "root": "пев",
+    "verify": null,
+    "alternation": "пев/пой"
+  },
+  "офицерский": {
+    "type": "foreign",
+    "root": "офицер",
+    "verify": null,
+    "alternation": null
+  },
+  "образность": {
+    "type": "verifiable",
+    "root": "образ",
+    "verify": "образ",
+    "alternation": null
+  },
+  "покарать": {
+    "type": "verifiable",
+    "root": "кар",
+    "verify": "карать",
+    "alternation": null
+  },
+  "привидение": {
+    "type": "verifiable",
+    "root": "вид",
+    "verify": "вид",
+    "alternation": null
+  },
+  "вычитание": {
+    "type": "verifiable",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": null
+  },
+  "аккомпанировать": {
+    "type": "foreign",
+    "root": "аккомпан",
+    "verify": null,
+    "alternation": null
+  }
+}

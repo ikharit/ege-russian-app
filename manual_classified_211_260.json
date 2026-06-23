@@ -1,0 +1,302 @@
+{
+  "211. утешение": {
+    "type": "unverifiable",
+    "root": "утеш",
+    "verify": null,
+    "alternation": null
+  },
+  "212. покаяние": {
+    "type": "unverifiable",
+    "root": "покаян",
+    "verify": null,
+    "alternation": null
+  },
+  "213. виноватый": {
+    "type": "verifiable",
+    "root": "винов",
+    "verify": "вина",
+    "alternation": null
+  },
+  "214. полинявшая": {
+    "type": "unverifiable",
+    "root": "лин",
+    "verify": null,
+    "alternation": null
+  },
+  "215. застилать": {
+    "type": "alternating",
+    "root": "стил",
+    "verify": null,
+    "alternation": "стил/стел"
+  },
+  "216. обаяние": {
+    "type": "unverifiable",
+    "root": "обаян",
+    "verify": null,
+    "alternation": null
+  },
+  "217. сокращение": {
+    "type": "verifiable",
+    "root": "сокращ",
+    "verify": "сократить",
+    "alternation": null
+  },
+  "218. прискакать": {
+    "type": "alternating",
+    "root": "скак",
+    "verify": null,
+    "alternation": "скак/скоч"
+  },
+  "219. невнимательный": {
+    "type": "verifiable",
+    "root": "вним",
+    "verify": "внимание",
+    "alternation": null
+  },
+  "220. тренироваться": {
+    "type": "foreign",
+    "root": "трен",
+    "verify": null,
+    "alternation": null
+  },
+  "221. менталитет": {
+    "type": "foreign",
+    "root": "менталит",
+    "verify": null,
+    "alternation": null
+  },
+  "222. честолюбивый": {
+    "type": "unverifiable",
+    "root": "честолюб",
+    "verify": null,
+    "alternation": null
+  },
+  "223. выберешь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": null,
+    "alternation": "бер/бир"
+  },
+  "224. почитать": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": null,
+    "alternation": "чит/чет"
+  },
+  "225. запевать": {
+    "type": "alternating",
+    "root": "пев",
+    "verify": null,
+    "alternation": "пев/пой"
+  },
+  "226. росистый": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": null,
+    "alternation": "рос/раст/ращ"
+  },
+  "227. задержать": {
+    "type": "verifiable",
+    "root": "держ",
+    "verify": "держать",
+    "alternation": null
+  },
+  "228. освещение": {
+    "type": "verifiable",
+    "root": "свещ",
+    "verify": "осветить",
+    "alternation": null
+  },
+  "229. сожаление": {
+    "type": "unverifiable",
+    "root": "сожал",
+    "verify": null,
+    "alternation": null
+  },
+  "230. декларация": {
+    "type": "foreign",
+    "root": "декларац",
+    "verify": null,
+    "alternation": null
+  },
+  "231. велосипедный": {
+    "type": "foreign",
+    "root": "велосипед",
+    "verify": null,
+    "alternation": null
+  },
+  "232. сжигать": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": null,
+    "alternation": "жиг/жег"
+  },
+  "233. притереться": {
+    "type": "alternating",
+    "root": "тир",
+    "verify": null,
+    "alternation": "тир/тер"
+  },
+  "234. увлекательный": {
+    "type": "unverifiable",
+    "root": "увлек",
+    "verify": null,
+    "alternation": null
+  },
+  "235. беречь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": null,
+    "alternation": "бер/бир"
+  },
+  "236. увлекаться": {
+    "type": "unverifiable",
+    "root": "увлек",
+    "verify": null,
+    "alternation": null
+  },
+  "237. центральный": {
+    "type": "foreign",
+    "root": "централь",
+    "verify": null,
+    "alternation": null
+  },
+  "238. объявление": {
+    "type": "verifiable",
+    "root": "яв",
+    "verify": "явка",
+    "alternation": null
+  },
+  "239. вытесненный": {
+    "type": "verifiable",
+    "root": "тесн",
+    "verify": "теснить",
+    "alternation": null
+  },
+  "240. пессимизм": {
+    "type": "foreign",
+    "root": "пессимиз",
+    "verify": null,
+    "alternation": null
+  },
+  "241. пленительный": {
+    "type": "verifiable",
+    "root": "плен",
+    "verify": "плен",
+    "alternation": null
+  },
+  "242. минералы": {
+    "type": "foreign",
+    "root": "минерал",
+    "verify": null,
+    "alternation": null
+  },
+  "243. экзаменатор": {
+    "type": "foreign",
+    "root": "экзамен",
+    "verify": null,
+    "alternation": null
+  },
+  "244. загадать": {
+    "type": "verifiable",
+    "root": "гад",
+    "verify": "гадать",
+    "alternation": null
+  },
+  "245. роскошный": {
+    "type": "unverifiable",
+    "root": "роскош",
+    "verify": null,
+    "alternation": null
+  },
+  "246. неукоснительно": {
+    "type": "unverifiable",
+    "root": "укосн",
+    "verify": null,
+    "alternation": null
+  },
+  "247. колыхать": {
+    "type": "unverifiable",
+    "root": "колых",
+    "verify": null,
+    "alternation": null
+  },
+  "248. деликатес": {
+    "type": "foreign",
+    "root": "деликат",
+    "verify": null,
+    "alternation": null
+  },
+  "249. офицер": {
+    "type": "foreign",
+    "root": "офицер",
+    "verify": null,
+    "alternation": null
+  },
+  "250. проклинать": {
+    "type": "alternating",
+    "root": "клин",
+    "verify": null,
+    "alternation": "клин/кля"
+  },
+  "251. ровесник": {
+    "type": "unverifiable",
+    "root": "ровес",
+    "verify": null,
+    "alternation": null
+  },
+  "252. наваждение": {
+    "type": "unverifiable",
+    "root": "наважд",
+    "verify": null,
+    "alternation": null
+  },
+  "253. аннотация": {
+    "type": "foreign",
+    "root": "аннотац",
+    "verify": null,
+    "alternation": null
+  },
+  "254. выглядеть": {
+    "type": "verifiable",
+    "root": "гляд",
+    "verify": "глядеть",
+    "alternation": null
+  },
+  "255. разрядить": {
+    "type": "verifiable",
+    "root": "ряд",
+    "verify": "ряд",
+    "alternation": null
+  },
+  "256. мятеж": {
+    "type": "unverifiable",
+    "root": "мятеж",
+    "verify": null,
+    "alternation": null
+  },
+  "257. университет": {
+    "type": "foreign",
+    "root": "университ",
+    "verify": null,
+    "alternation": null
+  },
+  "258. умилительно": {
+    "type": "verifiable",
+    "root": "мил",
+    "verify": "милый",
+    "alternation": null
+  },
+  "259. запотевать": {
+    "type": "verifiable",
+    "root": "пот",
+    "verify": "пот",
+    "alternation": null
+  },
+  "260. коллекция": {
+    "type": "foreign",
+    "root": "коллекц",
+    "verify": null,
+    "alternation": null
+  }
+}

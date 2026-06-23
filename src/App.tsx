@@ -31,6 +31,7 @@ const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m 
 const Task25SwipeTrainer = lazy(() => import('./pages/Task25SwipeTrainer').then(m => ({ default: m.Task25SwipeTrainer })))
 const ShareResultPage = lazy(() => import('./pages/ShareResultPage').then(m => ({ default: m.ShareResultPage })))
 const Leaderboard = lazy(() => import('./pages/Leaderboard').then(m => ({ default: m.Leaderboard })))
+const TeacherAnalytics = lazy(() => import('./pages/TeacherAnalytics').then(m => ({ default: m.TeacherAnalytics })))
 const Teacher = lazy(() => import('./pages/Teacher').then(m => ({ default: m.Teacher })))
 const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })))
 const AdaptivePractice = lazy(() => import('./pages/AdaptivePractice').then(m => ({ default: m.AdaptivePractice })))
@@ -475,6 +476,7 @@ export default function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/teacher" element={<Teacher />} />
             <Route path="/teacher/classroom" element={<TeacherClassroom />} />
+            <Route path="/teacher/analytics" element={<TeacherAnalytics />} />
             <Route path="/teacher/:studentName" element={<StudentHomework />} />
             <Route path="/join-class" element={<JoinClass />} />
             <Route path="/class/:classId" element={<ClassDetail />} />

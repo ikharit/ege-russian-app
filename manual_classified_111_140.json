@@ -1,0 +1,182 @@
+{
+  "блестящий": {
+    "type": "alternating",
+    "root": "блест",
+    "verify": null,
+    "alternation": "блест/блист"
+  },
+  "проглотить": {
+    "type": "verifiable",
+    "root": "глот",
+    "verify": "глотать",
+    "alternation": null
+  },
+  "возложение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": null,
+    "alternation": "лаг/лож"
+  },
+  "акварельные": {
+    "type": "foreign",
+    "root": "акварель",
+    "verify": null,
+    "alternation": null
+  },
+  "вещественные": {
+    "type": "unverifiable",
+    "root": "веществ",
+    "verify": null,
+    "alternation": null
+  },
+  "ослеплённый": {
+    "type": "verifiable",
+    "root": "слеп",
+    "verify": "слепой",
+    "alternation": null
+  },
+  "суверенитет": {
+    "type": "foreign",
+    "root": "суверенит",
+    "verify": null,
+    "alternation": null
+  },
+  "абитуриент": {
+    "type": "foreign",
+    "root": "абитуриент",
+    "verify": null,
+    "alternation": null
+  },
+  "словосочетание": {
+    "type": "unverifiable",
+    "root": "словосочет",
+    "verify": null,
+    "alternation": null
+  },
+  "упрощение": {
+    "type": "verifiable",
+    "root": "прост",
+    "verify": "простой",
+    "alternation": null
+  },
+  "благословение": {
+    "type": "verifiable",
+    "root": "слов",
+    "verify": "слово",
+    "alternation": null
+  },
+  "расположение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": null,
+    "alternation": "лаг/лож"
+  },
+  "держать": {
+    "type": "verifiable",
+    "root": "держ",
+    "verify": "держать",
+    "alternation": null
+  },
+  "терпеть": {
+    "type": "verifiable",
+    "root": "терп",
+    "verify": "терпеть",
+    "alternation": null
+  },
+  "меридиан": {
+    "type": "foreign",
+    "root": "меридиан",
+    "verify": null,
+    "alternation": null
+  },
+  "торжественный": {
+    "type": "unverifiable",
+    "root": "торжеств",
+    "verify": null,
+    "alternation": null
+  },
+  "новелла": {
+    "type": "foreign",
+    "root": "новелл",
+    "verify": null,
+    "alternation": null
+  },
+  "конкурент": {
+    "type": "foreign",
+    "root": "конкур",
+    "verify": null,
+    "alternation": null
+  },
+  "сторониться": {
+    "type": "verifiable",
+    "root": "сторон",
+    "verify": "сторона",
+    "alternation": null
+  },
+  "прочитать": {
+    "type": "verifiable",
+    "root": "чит",
+    "verify": "читать",
+    "alternation": null
+  },
+  "чистота": {
+    "type": "verifiable",
+    "root": "чист",
+    "verify": "чистый",
+    "alternation": null
+  },
+  "сжимать": {
+    "type": "alternating",
+    "root": "жим",
+    "verify": null,
+    "alternation": "жим/жа"
+  },
+  "росли": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": null,
+    "alternation": "рос/раст/ращ"
+  },
+  "укротитель": {
+    "type": "verifiable",
+    "root": "крот",
+    "verify": "кротить",
+    "alternation": null
+  },
+  "канонада": {
+    "type": "foreign",
+    "root": "канонад",
+    "verify": null,
+    "alternation": null
+  },
+  "предложение": {
+    "type": "alternating",
+    "root": "лож",
+    "verify": null,
+    "alternation": "лаг/лож"
+  },
+  "промочить": {
+    "type": "alternating",
+    "root": "моч",
+    "verify": null,
+    "alternation": "мак/моч"
+  },
+  "напоминать": {
+    "type": "alternating",
+    "root": "помин",
+    "verify": null,
+    "alternation": "мин/мя"
+  },
+  "обоняние": {
+    "type": "unverifiable",
+    "root": "обон",
+    "verify": null,
+    "alternation": null
+  },
+  "пловцы": {
+    "type": "alternating",
+    "root": "плов",
+    "verify": null,
+    "alternation": "плав/плов"
+  }
+}

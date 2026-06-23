@@ -1,0 +1,182 @@
+{
+  "вытереть": {
+    "type": "verifiable",
+    "root": "тер",
+    "verify": "тЁреть",
+    "alternation": null
+  },
+  "вывеска": {
+    "type": "verifiable",
+    "root": "вес",
+    "verify": "вЕсить",
+    "alternation": null
+  },
+  "ошеломлённый": {
+    "type": "unverifiable",
+    "root": "шелом",
+    "verify": null,
+    "alternation": null
+  },
+  "энциклопедист": {
+    "type": "foreign",
+    "root": "энциклопед",
+    "verify": null,
+    "alternation": null
+  },
+  "привилегия": {
+    "type": "foreign",
+    "root": "привилег",
+    "verify": null,
+    "alternation": null
+  },
+  "развивать": {
+    "type": "verifiable",
+    "root": "вив",
+    "verify": "вить (вЁю)",
+    "alternation": null
+  },
+  "поласкать": {
+    "type": "verifiable",
+    "root": "ласк",
+    "verify": "лАска",
+    "alternation": null
+  },
+  "гармоничный": {
+    "type": "foreign",
+    "root": "гармон",
+    "verify": null,
+    "alternation": null
+  },
+  "цивилизация": {
+    "type": "foreign",
+    "root": "цивилиз",
+    "verify": null,
+    "alternation": null
+  },
+  "цитата": {
+    "type": "foreign",
+    "root": "цит",
+    "verify": null,
+    "alternation": null
+  },
+  "проредить": {
+    "type": "verifiable",
+    "root": "ред",
+    "verify": "рЕдкий",
+    "alternation": null
+  },
+  "рецензент": {
+    "type": "foreign",
+    "root": "реценз",
+    "verify": null,
+    "alternation": null
+  },
+  "загромождать": {
+    "type": "verifiable",
+    "root": "гром",
+    "verify": "грОм",
+    "alternation": null
+  },
+  "компания": {
+    "type": "foreign",
+    "root": "компан",
+    "verify": null,
+    "alternation": null
+  },
+  "томительный": {
+    "type": "verifiable",
+    "root": "том",
+    "verify": "томИть",
+    "alternation": null
+  },
+  "сотворить": {
+    "type": "alternating",
+    "root": "твор",
+    "verify": null,
+    "alternation": "твор/твар (ударение: тварь)"
+  },
+  "объединяющий": {
+    "type": "verifiable",
+    "root": "един",
+    "verify": "едИный",
+    "alternation": null
+  },
+  "петербургский": {
+    "type": "foreign",
+    "root": "бург",
+    "verify": null,
+    "alternation": null
+  },
+  "благочестивый": {
+    "type": "verifiable",
+    "root": "чест",
+    "verify": "чЕсть",
+    "alternation": null
+  },
+  "велосипед": {
+    "type": "foreign",
+    "root": "велосипед",
+    "verify": null,
+    "alternation": null
+  },
+  "циклический": {
+    "type": "foreign",
+    "root": "цикл",
+    "verify": null,
+    "alternation": null
+  },
+  "цилиндр": {
+    "type": "foreign",
+    "root": "цилиндр",
+    "verify": null,
+    "alternation": null
+  },
+  "недосягаемый": {
+    "type": "unverifiable",
+    "root": "досяг",
+    "verify": null,
+    "alternation": null
+  },
+  "просвещение": {
+    "type": "verifiable",
+    "root": "свет",
+    "verify": "свЕт / просвЕтить",
+    "alternation": null
+  },
+  "сжег": {
+    "type": "alternating",
+    "root": "жег",
+    "verify": null,
+    "alternation": "жег/жиг (сжигать)"
+  },
+  "трущоба": {
+    "type": "unverifiable",
+    "root": "трущоб",
+    "verify": null,
+    "alternation": null
+  },
+  "пощечина": {
+    "type": "verifiable",
+    "root": "щеч",
+    "verify": "щЕка",
+    "alternation": null
+  },
+  "стипендия": {
+    "type": "foreign",
+    "root": "стипенд",
+    "verify": null,
+    "alternation": null
+  },
+  "начинать": {
+    "type": "alternating",
+    "root": "ин",
+    "verify": null,
+    "alternation": "им/ин/а/я (начинать/начать)"
+  },
+  "берёзовый": {
+    "type": "verifiable",
+    "root": "берёз",
+    "verify": "берЁза",
+    "alternation": null
+  }
+}
