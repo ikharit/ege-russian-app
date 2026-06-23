@@ -1,4 +1,5 @@
 import { LessonProgress, WrongAnswer, UserAtomProgress } from '../../types'
+import { getCanonicalWordId, getRuleId, extractWordFromQuestion } from '../../data/questionMapping'
 
 export function createLessonActions(set: any, get: any) {
   return {
@@ -180,6 +181,18 @@ export function createAnalyticsActions(set: any, get: any) {
       // Reset combo on wrong answer
       get().resetCombo?.()
       
+      // Извлекаем canonicalWordId и ruleId из вопроса
+      const canonicalWordId = question.canonicalWordId
+        || (await import('../../data/questionMapping')).getCanonicalWordId(question)
+        || undefined
+      const word = question.word
+        || (await import('../../data/questionMapping')).extractWordFromQuestion(question.text)
+        || undefined
+      const ruleId = question.ruleId
+        || (await import('../../data/questionMapping')).getRuleId(question.id)
+        || undefined
+      const errorType = question.errorType || question.atoms?.find((a: string) => a.startsWith('error_')) || undefined
+      
       set((s: any) => {
         const existing = s.wrongAnswers.find((w: WrongAnswer) => w.questionId === question.id)
         if (existing) {
@@ -193,6 +206,10 @@ export function createAnalyticsActions(set: any, get: any) {
         }
         const newWrong: WrongAnswer = {
           questionId: question.id,
+          canonicalWordId,
+          word,
+          ruleId,
+          errorType,
           text: question.text,
           options: question.options,
           correctAnswer: question.correctAnswer,

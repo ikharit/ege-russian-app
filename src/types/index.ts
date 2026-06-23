@@ -1,5 +1,9 @@
 export interface WrongAnswer {
   questionId: string
+  canonicalWordId?: string   // ← единый ID слова/корня (word:блестать:task9)
+  word?: string              // ← нормализованное слово (блестать)
+  ruleId?: string            // ← ID правила из task9-rules.json (alternation_blist_blest)
+  errorType?: string         // ← тип ошибки (alternating_root, prefix_pri_pre, ...)
   text: string
   options?: string[]
   correctAnswer: string[]
@@ -230,6 +234,9 @@ export interface WeeklySchedulePreferences {
 
 export interface AnswerHistory {
   questionId: string
+  canonicalWordId?: string  // ← единый ID слова
+  word?: string             // ← нормализованное слово
+  ruleId?: string           // ← ID правила
   taskNumber: string
   correct: boolean
   errorType?: string

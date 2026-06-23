@@ -1,0 +1,182 @@
+{
+  "велосипедный": {
+    "type": "foreign",
+    "root": "велосипед",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "сжигать": {
+    "type": "alternating",
+    "root": "жиг",
+    "verify": "жиг/жег",
+    "alternation": "жиг/жег"
+  },
+  "притереться": {
+    "type": "alternating",
+    "root": "тир",
+    "verify": "тир/тер",
+    "alternation": "тир/тер"
+  },
+  "увлекательный": {
+    "type": "unverifiable",
+    "root": "влек",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "беречь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": "бер/бир",
+    "alternation": "бер/бир"
+  },
+  "увлекаться": {
+    "type": "unverifiable",
+    "root": "влек",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "центральный": {
+    "type": "foreign",
+    "root": "центр",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "объявление": {
+    "type": "verifiable",
+    "root": "яв",
+    "verify": "явка",
+    "alternation": null
+  },
+  "вытесненный": {
+    "type": "verifiable",
+    "root": "тесн",
+    "verify": "теснить",
+    "alternation": null
+  },
+  "пессимизм": {
+    "type": "foreign",
+    "root": "пессимизм",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "пленительный": {
+    "type": "verifiable",
+    "root": "плен",
+    "verify": "плен",
+    "alternation": null
+  },
+  "минералы": {
+    "type": "foreign",
+    "root": "минерал",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "экзаменатор": {
+    "type": "foreign",
+    "root": "экзамен",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "загадать": {
+    "type": "verifiable",
+    "root": "гад",
+    "verify": "гадать",
+    "alternation": null
+  },
+  "роскошный": {
+    "type": "unverifiable",
+    "root": "роскош",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "неукоснительно": {
+    "type": "unverifiable",
+    "root": "косн",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "колыхать": {
+    "type": "unverifiable",
+    "root": "колых",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "деликатес": {
+    "type": "foreign",
+    "root": "деликатес",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "офицер": {
+    "type": "foreign",
+    "root": "офицер",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "проклинать": {
+    "type": "alternating",
+    "root": "клин",
+    "verify": "клин/кля",
+    "alternation": "клин/кля"
+  },
+  "ровесник": {
+    "type": "unverifiable",
+    "root": "ровес",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "наваждение": {
+    "type": "unverifiable",
+    "root": "важд",
+    "verify": "словарное",
+    "alternation": null
+  },
+  "аннотация": {
+    "type": "foreign",
+    "root": "аннотац",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "выглядеть": {
+    "type": "verifiable",
+    "root": "гляд",
+    "verify": "глядеть",
+    "alternation": null
+  },
+  "разрядить": {
+    "type": "verifiable",
+    "root": "ряд",
+    "verify": "ряд",
+    "alternation": null
+  },
+  "мятеж": {
+    "type": "foreign",
+    "root": "мятеж",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "университет": {
+    "type": "foreign",
+    "root": "университет",
+    "verify": "foreign",
+    "alternation": null
+  },
+  "умилительно": {
+    "type": "verifiable",
+    "root": "мил",
+    "verify": "милый",
+    "alternation": null
+  },
+  "запотевать": {
+    "type": "verifiable",
+    "root": "пот",
+    "verify": "пот",
+    "alternation": null
+  },
+  "коллекция": {
+    "type": "foreign",
+    "root": "коллекц",
+    "verify": "foreign",
+    "alternation": null
+  }
+}

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ArrowLeft, Users, AlertTriangle, TrendingUp, Target, Award, ChevronRight, Filter, BarChart3, BrainCircuit, Heart, Zap, Clock, CheckCircle, AlertCircle, BookOpen, Trophy, Flame, Activity
+  ArrowLeft, Users, AlertTriangle, TrendingUp, Target, Award, ChevronRight, Filter, BarChart3, BrainCircuit, Heart, Zap, Clock, CheckCircle, AlertCircle, BookOpen, Trophy, Flame, Activity, Lightbulb, Bell
 } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
 import { useClassStore } from '../stores/classStore'
 import { useProgressStore } from '../stores/progressStore'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
@@ -24,6 +25,8 @@ export function TeacherAnalytics() {
   const [riskFilter, setRiskFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
   const [typeFilter, setTypeFilter] = useState<'all' | PlayerType>('all')
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations'>('overview')
+  const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
@@ -32,6 +35,134 @@ export function TeacherAnalytics() {
     analyzeStudent(s.id, s.name, s.progress)
   )
   const summary = analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
+
+  // Aggregate trends from all students' behavior profiles
+  const trendData = (() => {
+    const dates: string[] = []
+    const sessions: number[] = []
+    const clicks: number[] = []
+    const timeMinutes: number[] = []
+    const accuracy: number[] = []
+    const motivationAchievement: number[] = []
+    const motivationSocial: number[] = []
+    const motivationExploration: number[] = []
+    const motivationCompetition: number[] = []
+
+    // Build from last N days
+    for (let i = trendDays - 1; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      dates.push(dateStr)
+      
+      // Sum across all students for this date
+      let daySessions = 0, dayClicks = 0, dayTime = 0, dayAccuracy = 0
+      let dayAchieve = 0, daySocial = 0, dayExplore = 0, dayCompete = 0
+      let studentCount = 0
+
+      students.forEach(s => {
+        const bp = s.progress?.behaviorProfile
+        if (!bp) return
+        // We don't have per-day data in behaviorProfile, use averages
+        daySessions += bp.totalSessions / 30
+        dayClicks += bp.totalClicks / 30
+        dayTime += bp.avgSessionDuration / 60
+        dayAchieve += bp.motivationSignals.achievementDriven
+        daySocial += bp.motivationSignals.socialDriven
+        dayExplore += bp.motivationSignals.explorationDriven
+        dayCompete += bp.motivationSignals.competitionDriven
+        studentCount++
+      })
+
+      sessions.push(Math.round(daySessions))
+      clicks.push(Math.round(dayClicks))
+      timeMinutes.push(Math.round(dayTime))
+      accuracy.push(studentCount > 0 ? Math.round(dayAccuracy / studentCount) : 0)
+      motivationAchievement.push(studentCount > 0 ? Math.round(dayAchieve / studentCount) : 0)
+      motivationSocial.push(studentCount > 0 ? Math.round(daySocial / studentCount) : 0)
+      motivationExploration.push(studentCount > 0 ? Math.round(dayExplore / studentCount) : 0)
+      motivationCompetition.push(studentCount > 0 ? Math.round(dayCompete / studentCount) : 0)
+    }
+
+    return dates.map((date, i) => ({
+      date: date.slice(5), // MM-DD
+      sessions: sessions[i],
+      clicks: clicks[i],
+      time: timeMinutes[i],
+      achievement: motivationAchievement[i],
+      social: motivationSocial[i],
+      exploration: motivationExploration[i],
+      competition: motivationCompetition[i],
+    }))
+  })()
+
+  // Alerts from all students
+  const alerts = students.flatMap(s => {
+    // Generate alerts based on student data
+    const alerts: { id: string; type: 'risk' | 'trend' | 'achievement' | 'behavior'; severity: 'low' | 'medium' | 'high'; title: string; message: string; studentName: string; date: string }[] = []
+    const a = analytics.find(an => an.profileId === s.id)
+    if (!a) return alerts
+    const now = new Date().toISOString().split('T')[0]
+
+    if (a.riskLevel === 'high') {
+      alerts.push({ id: s.id + '-risk', type: 'risk', severity: 'high', title: 'Риск отвала', message: `Ученик давно не проявлял активности. Рекомендуется связаться.`, studentName: s.name, date: now })
+    } else if (a.riskLevel === 'medium') {
+      alerts.push({ id: s.id + '-medium', type: 'risk', severity: 'medium', title: 'Требует внимания', message: `Активность снизилась. Проверьте, всё ли в порядке.`, studentName: s.name, date: now })
+    }
+
+    if (a.lastActivityDays > 7) {
+      alerts.push({ id: s.id + '-inactive', type: 'risk', severity: 'high', title: 'Давно не заходил', message: `Последняя активность ${a.lastActivityDays} дней назад.`, studentName: s.name, date: now })
+    }
+
+    if (a.accuracy < 50 && a.totalTimeMinutes > 30) {
+      alerts.push({ id: s.id + '-accuracy', type: 'trend', severity: 'medium', title: 'Низкая точность', message: `Точность ответов ${a.accuracy}%. Возможно, нужно повторить теорию.`, studentName: s.name, date: now })
+    }
+
+    if (a.streak >= 7) {
+      alerts.push({ id: s.id + '-streak', type: 'achievement', severity: 'low', title: 'Отличный стрик!', message: `${a.streak} дней подряд. Можно предложить более сложные задания.`, studentName: s.name, date: now })
+    }
+
+    return alerts
+  }).sort((a, b) => {
+    const severityOrder = { high: 0, medium: 1, low: 2 }
+    return severityOrder[a.severity] - severityOrder[b.severity]
+  })
+
+  // Recommendations based on class data
+  const recommendations = (() => {
+    const recs: { id: string; category: 'motivation' | 'content' | 'engagement' | 'risk'; priority: 'low' | 'medium' | 'high'; title: string; description: string; action: string; targetStudents?: string[] }[] = []
+    const now = new Date().toISOString().split('T')[0]
+
+    // Risk-based
+    const atRisk = analytics.filter(a => a.riskLevel === 'high')
+    if (atRisk.length > 0) {
+      recs.push({ id: 'rec-risk', category: 'risk', priority: 'high', title: 'Срочное внимание', description: `${atRisk.length} учеников рискуют отвалиться.`, action: 'Свяжитесь с учениками, выясните причины пропусков.', targetStudents: atRisk.map(a => a.name) })
+    }
+
+    // Motivation-based
+    if (summary.dominantType === 'achiever') {
+      recs.push({ id: 'rec-achieve', category: 'motivation', priority: 'medium', title: 'Достиженцы в классе', description: 'Большинство мотивируется целями и XP.', action: 'Добавьте чёткие цели на неделю и достижения за прогресс.' })
+    } else if (summary.dominantType === 'socializer') {
+      recs.push({ id: 'rec-social', category: 'motivation', priority: 'medium', title: 'Коммуникаторы', description: 'Класс мотивируется общением.', action: 'Организуйте групповые задания и обсуждения в классе.' })
+    } else if (summary.dominantType === 'killer') {
+      recs.push({ id: 'rec-compete', category: 'engagement', priority: 'medium', title: 'Соревновательный дух', description: 'Ученики любят конкуренцию.', action: 'Запустите турнир или дуэль в классе.' })
+    }
+
+    // Accuracy-based
+    if (summary.avgAccuracy < 60) {
+      recs.push({ id: 'rec-accuracy', category: 'content', priority: 'high', title: 'Низкая точность класса', description: `Средняя точность ${summary.avgAccuracy}%.`, action: 'Повторите базовые темы, уделите внимание типичным ошибкам.' })
+    }
+
+    // Low completion
+    if (summary.avgCompletionRate < 30) {
+      recs.push({ id: 'rec-completion', category: 'engagement', priority: 'medium', title: 'Мало пройдено', description: `Средний прогресс ${summary.avgCompletionRate}%.`, action: 'Предложите план на неделю с короткими ежедневными заданиями.' })
+    }
+
+    return recs.sort((a, b) => {
+      const priorityOrder = { high: 0, medium: 1, low: 2 }
+      return priorityOrder[a.priority] - priorityOrder[b.priority]
+    })
+  })()
 
   const filtered = analytics.filter(a => {
     if (riskFilter !== 'all' && a.riskLevel !== riskFilter) return false

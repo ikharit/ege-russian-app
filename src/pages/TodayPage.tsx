@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy, Medal, Brain, GraduationCap } from 'lucide-react'
+import { Flame, Zap, Heart, Star, ChevronRight, BookOpen, Target, Route, Swords, PenTool, Trophy, Medal, Brain, GraduationCap, Users } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -331,6 +331,22 @@ export function TodayPage() {
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm text-gray-800 truncate">Карточки</p>
                 <p className="text-[11px] text-gray-400 truncate">Anki SRS</p>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div
+            className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/friends')}
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-lg bg-duo-blue flex items-center justify-center text-white">
+                <Users size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm text-gray-800 truncate">Друзья</p>
+                <p className="text-[11px] text-gray-400 truncate">Сравнивай прогресс</p>
               </div>
             </div>
           </motion.div>

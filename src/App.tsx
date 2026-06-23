@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Header } from './components/Header'
+import { FriendsPage } from './pages/FriendsPage'
 import { FlashcardsPage } from './pages/FlashcardsPage'
 import { TodayPage } from './pages/TodayPage'
 import { Dashboard } from './pages/Dashboard'
@@ -385,6 +386,15 @@ export default function App() {
     return () => unsubscribe()
   }, [])
 
+  // Take daily analytics snapshot
+  useEffect(() => {
+    const takeSnapshot = useAnalyticsStore.getState().takeSnapshot
+    const interval = setInterval(() => {
+      takeSnapshot()
+    }, 5 * 60 * 1000) // every 5 minutes
+    return () => clearInterval(interval)
+  }, [])
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
@@ -536,6 +546,7 @@ export default function App() {
             <Route path="/trainers" element={<TrainersPage />} />
             <Route path="/study-plan" element={<StudyPlanPage />} />
             <Route path="/flashcards" element={<FlashcardsPage />} />
+            <Route path="/friends" element={<FriendsPage />} />
             <Route path="/games" element={<MiniGames />} />
             <Route path="/exam" element={<ExamVariantsList />} />
             <Route path="/exam/:variantId" element={<ExamVariantPage />} />

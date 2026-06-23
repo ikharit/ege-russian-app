@@ -72,6 +72,38 @@ interface AnalyticsState {
   pageSessions: PageSession[]
   clickEvents: ClickEvent[]
   lastEventTrim: string
+  dailySnapshots: DailySnapshot[]
+}
+
+export interface DailySnapshot {
+  date: string // YYYY-MM-DD
+  totalSessions: number
+  totalClicks: number
+  totalTimeSeconds: number
+  accuracy?: number
+  lessonsCompleted: number
+  xpEarned: number
+  timeDistribution: Record<string, number>
+  clickDistribution: Record<string, number>
+  motivationSignals: {
+    achievementDriven: number
+    socialDriven: number
+    explorationDriven: number
+    competitionDriven: number
+  }
+}
+
+export interface TrendData {
+  dates: string[]
+  sessions: number[]
+  clicks: number[]
+  timeMinutes: number[]
+  accuracy: number[]
+  xp: number[]
+  motivationAchievement: number[]
+  motivationSocial: number[]
+  motivationExploration: number[]
+  motivationCompetition: number[]
 }
 
 interface AnalyticsActions {
@@ -83,8 +115,33 @@ interface AnalyticsActions {
   getTimeByCategory: () => TimeSpentByCategory[]
   getClicksByCategory: () => ClickStatsByCategory[]
   getEventsForPeriod: (days: number) => AnalyticsEvent[]
+  getDailySnapshot: (date: string) => DailySnapshot | undefined
+  getTrends: (days: number) => TrendData
+  takeSnapshot: () => void
+  getAlerts: () => TeacherAlert[]
+  getRecommendations: () => TeacherRecommendation[]
   trimOldEvents: (keepDays?: number) => void
   clearAnalytics: () => void
+}
+
+export interface TeacherAlert {
+  id: string
+  type: 'risk' | 'trend' | 'achievement' | 'behavior'
+  severity: 'low' | 'medium' | 'high'
+  title: string
+  message: string
+  studentName?: string
+  date: string
+}
+
+export interface TeacherRecommendation {
+  id: string
+  category: 'motivation' | 'content' | 'engagement' | 'risk'
+  priority: 'low' | 'medium' | 'high'
+  title: string
+  description: string
+  action: string
+  targetStudents?: string[]
 }
 
 function generateId(): string {
@@ -109,6 +166,7 @@ export const useAnalyticsStore = create<AnalyticsState & AnalyticsActions>()(
       pageSessions: [],
       clickEvents: [],
       lastEventTrim: new Date().toISOString(),
+      dailySnapshots: [],
 
       trackEvent(category, action, label, value, metadata) {
         const event: AnalyticsEvent = {
@@ -375,6 +433,260 @@ export const useAnalyticsStore = create<AnalyticsState & AnalyticsActions>()(
         })
       },
 
+      getDailySnapshot(date) {
+        const { dailySnapshots } = get()
+        return dailySnapshots.find(s => s.date === date)
+      },
+
+      takeSnapshot() {
+        const today = new Date().toISOString().split('T')[0]
+        const bp = get().getBehaviorProfile()
+        const timeByCat = get().getTimeByCategory()
+        const clicksByCat = get().getClicksByCategory()
+        const events = get().getEventsForPeriod(1)
+        
+        const totalTime = timeByCat.reduce((sum, t) => sum + t.totalSeconds, 0)
+        const totalClicks = clicksByCat.reduce((sum, c) => sum + c.clickCount, 0)
+        const totalSessions = timeByCat.reduce((sum, t) => sum + t.sessionCount, 0)
+        
+        const timeDistribution: Record<string, number> = {}
+        timeByCat.forEach(t => { timeDistribution[t.category] = t.totalSeconds })
+        
+        const clickDistribution: Record<string, number> = {}
+        clicksByCat.forEach(c => { clickDistribution[c.category] = c.clickCount })
+        
+        const lessonsCompleted = events.filter(e => e.category === 'lesson' && e.action === 'complete').length
+        const xpEarned = events.filter(e => e.category === 'lesson').reduce((sum, e) => sum + (e.value || 0), 0)
+
+        const snapshot: DailySnapshot = {
+          date: today,
+          totalSessions,
+          totalClicks,
+          totalTimeSeconds: totalTime,
+          lessonsCompleted,
+          xpEarned,
+          timeDistribution,
+          clickDistribution,
+          motivationSignals: bp.motivationSignals,
+        }
+
+        set((state) => {
+          const existing = state.dailySnapshots.findIndex(s => s.date === today)
+          const snapshots = [...state.dailySnapshots]
+          if (existing >= 0) {
+            snapshots[existing] = snapshot
+          } else {
+            snapshots.push(snapshot)
+          }
+          return { dailySnapshots: snapshots.slice(-90) } // keep 90 days
+        })
+      },
+
+      getTrends(days) {
+        const { dailySnapshots } = get()
+        const now = new Date()
+        const dates: string[] = []
+        const sessions: number[] = []
+        const clicks: number[] = []
+        const timeMinutes: number[] = []
+        const accuracy: number[] = []
+        const xp: number[] = []
+        const motivationAchievement: number[] = []
+        const motivationSocial: number[] = []
+        const motivationExploration: number[] = []
+        const motivationCompetition: number[] = []
+
+        for (let i = days - 1; i >= 0; i--) {
+          const d = new Date(now)
+          d.setDate(d.getDate() - i)
+          const dateStr = d.toISOString().split('T')[0]
+          dates.push(dateStr)
+          
+          const snap = dailySnapshots.find(s => s.date === dateStr)
+          if (snap) {
+            sessions.push(snap.totalSessions)
+            clicks.push(snap.totalClicks)
+            timeMinutes.push(Math.round(snap.totalTimeSeconds / 60))
+            accuracy.push(snap.accuracy || 0)
+            xp.push(snap.xpEarned)
+            motivationAchievement.push(snap.motivationSignals.achievementDriven)
+            motivationSocial.push(snap.motivationSignals.socialDriven)
+            motivationExploration.push(snap.motivationSignals.explorationDriven)
+            motivationCompetition.push(snap.motivationSignals.competitionDriven)
+          } else {
+            sessions.push(0)
+            clicks.push(0)
+            timeMinutes.push(0)
+            accuracy.push(0)
+            xp.push(0)
+            motivationAchievement.push(0)
+            motivationSocial.push(0)
+            motivationExploration.push(0)
+            motivationCompetition.push(0)
+          }
+        }
+
+        return { dates, sessions, clicks, timeMinutes, accuracy, xp, motivationAchievement, motivationSocial, motivationExploration, motivationCompetition }
+      },
+
+      getAlerts() {
+        const { pageSessions, clickEvents, dailySnapshots } = get()
+        const alerts: TeacherAlert[] = []
+        const now = new Date().toISOString().split('T')[0]
+
+        // Check last activity
+        const lastSession = pageSessions[pageSessions.length - 1]
+        if (lastSession) {
+          const daysSince = (Date.now() - new Date(lastSession.enteredAt).getTime()) / (1000 * 60 * 60 * 24)
+          if (daysSince > 3) {
+            alerts.push({
+              id: generateId(),
+              type: 'risk',
+              severity: daysSince > 7 ? 'high' : 'medium',
+              title: daysSince > 7 ? 'Давно не заходил' : 'Несколько дней без занятий',
+              message: `Последняя активность ${Math.round(daysSince)} дней назад.`,
+              date: now,
+            })
+          }
+        }
+
+        // Check motivation shift
+        if (dailySnapshots.length >= 2) {
+          const latest = dailySnapshots[dailySnapshots.length - 1]
+          const prev = dailySnapshots[dailySnapshots.length - 2]
+          const totalLatest = Object.values(latest.motivationSignals).reduce((a, b) => a + b, 0)
+          const totalPrev = Object.values(prev.motivationSignals).reduce((a, b) => a + b, 0)
+          
+          if (totalLatest > 0 && totalPrev > 0) {
+            const diff = Math.abs(totalLatest - totalPrev) / Math.max(totalLatest, totalPrev)
+            if (diff > 0.3) {
+              alerts.push({
+                id: generateId(),
+                type: 'behavior',
+                severity: 'low',
+                title: 'Изменение мотивации',
+                message: 'Заметен сдвиг в мотивационном профиле.',
+                date: now,
+              })
+            }
+          }
+        }
+
+        // Check drop in activity
+        if (dailySnapshots.length >= 7) {
+          const lastWeek = dailySnapshots.slice(-7)
+          const avgSessions = lastWeek.reduce((sum, s) => sum + s.totalSessions, 0) / 7
+          const prevWeek = dailySnapshots.slice(-14, -7)
+          const avgPrev = prevWeek.length > 0 ? prevWeek.reduce((sum, s) => sum + s.totalSessions, 0) / prevWeek.length : 0
+          
+          if (avgPrev > 0 && avgSessions < avgPrev * 0.5) {
+            alerts.push({
+              id: generateId(),
+              type: 'trend',
+              severity: 'medium',
+              title: 'Падение активности',
+              message: `Активность упала на ${Math.round((1 - avgSessions / avgPrev) * 100)}% по сравнению с прошлой неделей.`,
+              date: now,
+            })
+          }
+        }
+
+        return alerts.sort((a, b) => {
+          const severityOrder = { high: 0, medium: 1, low: 2 }
+          return severityOrder[a.severity] - severityOrder[b.severity]
+        })
+      },
+
+      getRecommendations() {
+        const bp = get().getBehaviorProfile()
+        const alerts = get().getAlerts()
+        const recs: TeacherRecommendation[] = []
+        const now = new Date().toISOString().split('T')[0]
+
+        // Motivation-based recommendations
+        const maxSignal = Math.max(
+          bp.motivationSignals.achievementDriven,
+          bp.motivationSignals.socialDriven,
+          bp.motivationSignals.explorationDriven,
+          bp.motivationSignals.competitionDriven
+        )
+        const dominant = Object.entries(bp.motivationSignals).find(([, v]) => v === maxSignal)?.[0]
+
+        if (dominant === 'achievementDriven') {
+          recs.push({
+            id: generateId(),
+            category: 'motivation',
+            priority: 'medium',
+            title: 'Фокус на достижениях',
+            description: 'Ученик мотивируется XP и наградами.',
+            action: 'Добавьте больше достижений и чётких целей.',
+            date: now,
+          })
+        } else if (dominant === 'socialDriven') {
+          recs.push({
+            id: generateId(),
+            category: 'motivation',
+            priority: 'medium',
+            title: 'Социальное обучение',
+            description: 'Ученик мотивируется общением.',
+            action: 'Вовлеките в групповые задания и классный чат.',
+            date: now,
+          })
+        } else if (dominant === 'explorationDriven') {
+          recs.push({
+            id: generateId(),
+            category: 'content',
+            priority: 'medium',
+            title: 'Новые темы',
+            description: 'Ученик любит исследовать.',
+            action: 'Предложите бонусные материалы и карту курса.',
+            date: now,
+          })
+        } else if (dominant === 'competitionDriven') {
+          recs.push({
+            id: generateId(),
+            category: 'engagement',
+            priority: 'medium',
+            title: 'Соревнования',
+            description: 'Ученик любит конкуренцию.',
+            action: 'Организуйте дуэли и турниры в классе.',
+            date: now,
+          })
+        }
+
+        // Risk-based recommendations
+        const riskAlerts = alerts.filter(a => a.type === 'risk')
+        if (riskAlerts.length > 0) {
+          recs.push({
+            id: generateId(),
+            category: 'risk',
+            priority: 'high',
+            title: 'Требуется внимание',
+            description: 'Ученик давно не проявлял активности.',
+            action: 'Свяжитесь с учеником, выясните причины пропусков.',
+            date: now,
+          })
+        }
+
+        // Low engagement recommendations
+        if (bp.totalSessions < 5) {
+          recs.push({
+            id: generateId(),
+            category: 'engagement',
+            priority: 'high',
+            title: 'Низкая вовлечённость',
+            description: 'Мало сессий за последние 30 дней.',
+            action: 'Предложите короткие ежедневные задания для формирования привычки.',
+            date: now,
+          })
+        }
+
+        return recs.sort((a, b) => {
+          const priorityOrder = { high: 0, medium: 1, low: 2 }
+          return priorityOrder[a.priority] - priorityOrder[b.priority]
+        })
+      },
+
       trimOldEvents(keepDays = 30) {
         const cutoff = Date.now() - keepDays * 24 * 60 * 60 * 1000
         set((state) => ({
@@ -386,7 +698,7 @@ export const useAnalyticsStore = create<AnalyticsState & AnalyticsActions>()(
       },
 
       clearAnalytics() {
-        set({ events: [], pageSessions: [], clickEvents: [], lastEventTrim: new Date().toISOString() })
+        set({ events: [], pageSessions: [], clickEvents: [], dailySnapshots: [], lastEventTrim: new Date().toISOString() })
       },
     }),
     {

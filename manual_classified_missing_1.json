@@ -1,0 +1,182 @@
+{
+  "территория": {
+    "type": "foreign",
+    "root": "территор",
+    "verify": null,
+    "alternation": null
+  },
+  "уровень": {
+    "type": "unverifiable",
+    "root": "уров",
+    "verify": null,
+    "alternation": null
+  },
+  "корректный": {
+    "type": "foreign",
+    "root": "коррект",
+    "verify": null,
+    "alternation": null
+  },
+  "монолог": {
+    "type": "foreign",
+    "root": "монолог",
+    "verify": null,
+    "alternation": null
+  },
+  "вазелин": {
+    "type": "foreign",
+    "root": "вазелин",
+    "verify": null,
+    "alternation": null
+  },
+  "навигация": {
+    "type": "foreign",
+    "root": "навигац",
+    "verify": null,
+    "alternation": null
+  },
+  "утопический": {
+    "type": "foreign",
+    "root": "утоп",
+    "verify": null,
+    "alternation": null
+  },
+  "пейзажист": {
+    "type": "foreign",
+    "root": "пейзаж",
+    "verify": null,
+    "alternation": null
+  },
+  "аналогичный": {
+    "type": "foreign",
+    "root": "аналог",
+    "verify": null,
+    "alternation": null
+  },
+  "энциклопедист": {
+    "type": "foreign",
+    "root": "энциклопед",
+    "verify": null,
+    "alternation": null
+  },
+  "утешение": {
+    "type": "verifiable",
+    "root": "теш",
+    "verify": "тешить",
+    "alternation": null
+  },
+  "покаяние": {
+    "type": "unverifiable",
+    "root": "ка",
+    "verify": null,
+    "alternation": null
+  },
+  "виноватый": {
+    "type": "verifiable",
+    "root": "вин",
+    "verify": "вина",
+    "alternation": null
+  },
+  "полинявшая": {
+    "type": "verifiable",
+    "root": "лин",
+    "verify": "линять",
+    "alternation": null
+  },
+  "застилать": {
+    "type": "alternating",
+    "root": "стил",
+    "verify": null,
+    "alternation": "стил/стел"
+  },
+  "обаяние": {
+    "type": "unverifiable",
+    "root": "оба",
+    "verify": null,
+    "alternation": null
+  },
+  "сокращение": {
+    "type": "verifiable",
+    "root": "кращ",
+    "verify": "сократить",
+    "alternation": null
+  },
+  "прискакать": {
+    "type": "alternating",
+    "root": "скак",
+    "verify": null,
+    "alternation": "скак/скоч"
+  },
+  "невнимательный": {
+    "type": "verifiable",
+    "root": "вним",
+    "verify": "внимание",
+    "alternation": null
+  },
+  "тренироваться": {
+    "type": "foreign",
+    "root": "трениров",
+    "verify": null,
+    "alternation": null
+  },
+  "менталитет": {
+    "type": "foreign",
+    "root": "менталит",
+    "verify": null,
+    "alternation": null
+  },
+  "честолюбивый": {
+    "type": "unverifiable",
+    "root": "честолюб",
+    "verify": null,
+    "alternation": null
+  },
+  "выберешь": {
+    "type": "alternating",
+    "root": "бер",
+    "verify": null,
+    "alternation": "бер/бир"
+  },
+  "почитать": {
+    "type": "alternating",
+    "root": "чит",
+    "verify": null,
+    "alternation": "чит/чет"
+  },
+  "запевать": {
+    "type": "alternating",
+    "root": "пев",
+    "verify": null,
+    "alternation": "пев/пой"
+  },
+  "росистый": {
+    "type": "alternating",
+    "root": "рос",
+    "verify": null,
+    "alternation": "рос/раст/ращ"
+  },
+  "задержать": {
+    "type": "verifiable",
+    "root": "держ",
+    "verify": "держать",
+    "alternation": null
+  },
+  "освещение": {
+    "type": "alternating",
+    "root": "свещ",
+    "verify": null,
+    "alternation": "свет/свещ"
+  },
+  "сожаление": {
+    "type": "unverifiable",
+    "root": "жал",
+    "verify": null,
+    "alternation": null
+  },
+  "декларация": {
+    "type": "foreign",
+    "root": "декларац",
+    "verify": null,
+    "alternation": null
+  }
+}
