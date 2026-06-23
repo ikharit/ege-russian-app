@@ -4,11 +4,14 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/ege-russian-app/' : './',
+  base: process.env.GITHUB_PAGES ? '/ege-russian-app/' : '/',
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Для локальной сборки (vite preview) SW самоуничтожается, чтобы не было проблем с устаревшим кэшем.
+      // Для GitHub Pages работает нормально.
+      selfDestroying: !process.env.GITHUB_PAGES,
       manifest: {
         name: 'ЕГЭ Русский',
         short_name: 'ЕГЭ Русский',

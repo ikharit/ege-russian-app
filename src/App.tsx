@@ -73,6 +73,16 @@ const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.S
 const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then(m => ({ default: m.ComparisonPage })))
 const KnowledgeMap = lazy(() => import('./pages/KnowledgeMap').then(m => ({ default: m.KnowledgeMap })))
 const GrowthPage = lazy(() => import('./pages/GrowthPage').then(m => ({ default: m.GrowthPage })))
+const Task1Trainer = lazy(() => import('./pages/Task1Trainer').then(m => ({ default: m.Task1Trainer })))
+const Task2Trainer = lazy(() => import('./pages/Task2Trainer').then(m => ({ default: m.Task2Trainer })))
+const Task3Trainer = lazy(() => import('./pages/Task3Trainer').then(m => ({ default: m.Task3Trainer })))
+const Task18Trainer = lazy(() => import('./pages/Task18Trainer').then(m => ({ default: m.Task18Trainer })))
+const Task22Trainer = lazy(() => import('./pages/Task22Trainer').then(m => ({ default: m.Task22Trainer })))
+const Task24Trainer = lazy(() => import('./pages/Task24Trainer').then(m => ({ default: m.Task24Trainer })))
+const Task25Trainer = lazy(() => import('./pages/Task25Trainer').then(m => ({ default: m.Task25Trainer })))
+const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m => ({ default: m.Task3SwipeTrainer })))
+const Task25SwipeTrainer = lazy(() => import('./pages/Task25SwipeTrainer').then(m => ({ default: m.Task25SwipeTrainer })))
+const ShareResultPage = lazy(() => import('./pages/ShareResultPage').then(m => ({ default: m.ShareResultPage })))
 
 function BottomNav() {
   const navigate = useNavigate()
@@ -498,16 +508,15 @@ export default function App() {
             <Route path="/task13-trainer" element={<Task13Trainer />} />
             <Route path="/task14-trainer" element={<Task14Trainer />} />
             <Route path="/task15-trainer" element={<Task15Trainer />} />
-            {/* Legacy trainers - not available */}
-            {/* <Route path="/task1-trainer" element={<Task1Trainer />} /> */}
-            {/* <Route path="/task2-trainer" element={<Task2Trainer />} /> */}
-            {/* <Route path="/task3-trainer" element={<Task3Trainer />} /> */}
-            {/* <Route path="/task18-trainer" element={<Task18Trainer />} /> */}
-            {/* <Route path="/task22-trainer" element={<Task22Trainer />} /> */}
-            {/* <Route path="/task24-trainer" element={<Task24Trainer />} /> */}
-            {/* <Route path="/task25-trainer" element={<Task25Trainer />} /> */}
-            {/* <Route path="/task3-swipe" element={<Task3SwipeTrainer />} /> */}
-            {/* <Route path="/task25-swipe" element={<Task25SwipeTrainer />} /> */}
+            <Route path="/task1-trainer" element={<Task1Trainer />} />
+            <Route path="/task2-trainer" element={<Task2Trainer />} />
+            <Route path="/task3-trainer" element={<Task3Trainer />} />
+            <Route path="/task18-trainer" element={<Task18Trainer />} />
+            <Route path="/task22-trainer" element={<Task22Trainer />} />
+            <Route path="/task24-trainer" element={<Task24Trainer />} />
+            <Route path="/task25-trainer" element={<Task25Trainer />} />
+            <Route path="/task3-swipe" element={<Task3SwipeTrainer />} />
+            <Route path="/task25-swipe" element={<Task25SwipeTrainer />} />
             <Route path="/task16-trainer" element={<Task16Trainer />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/duel" element={<DuelPage />} />
@@ -519,6 +528,7 @@ export default function App() {
             <Route path="/comparison" element={<ComparisonPage />} />
             <Route path="/knowledge-map" element={<KnowledgeMap />} />
             <Route path="/growth" element={<GrowthPage />} />
+            <Route path="/share" element={<ShareResultPage />} />
           </Routes>
         </Suspense>
       </main>
