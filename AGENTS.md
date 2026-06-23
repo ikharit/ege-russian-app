@@ -116,6 +116,32 @@ Every change that affects students MUST be reflected in release notes. This is n
 | Internal tooling | New validator, new script, CI/CD | **NO** |
 | Documentation only | AGENTS.md update, comments | **NO** |
 
+#### Structure (3 levels, strictly in this order)
+
+| Level | Count | Audience | Font size | Language | What goes here |
+|---|---|---|---|---|---|
+| **Main** | **3 items max** | Students | Largest | Simple, everyday | The biggest changes that affect their life. Exam content, major features, platform shifts. |
+| **Detailed** | **5–7 items** | Students | Medium | Clear but specific | Smaller features, bug fixes, quality-of-life improvements. Still student-relevant. |
+| **Under the hood** | **9–20 items** | Power users / curious | Smallest | Technical terms allowed | Engineering details: lazy-loading, RAG, BKT, IRT, Capacitor, etc. These show the scale of work. |
+
+**Rules for each level:**
+- **Main**: No jargon. Impact field is mandatory — explain WHY it matters.
+- **Detailed**: Can mention specific task numbers (e.g., "Задание 17"), but still explain the benefit.
+- **Under the hood**: Technical terms are fine here (BKT, IRT, TF-IDF, Capacitor, IndexedDB). This is where you show the depth of engineering work. Never put internal-only items here (like AGENTS.md updates, CI fixes, refactors with no student impact).
+
+**Never do:**
+- ❌ Repeat an item from a previous version unless it genuinely improved (e.g., "адаптивный тренажёр" in 1.7.0 → «стал точнее — BKT + IRT» in 1.8.0)
+- ❌ Put internal-only changes (AGENTS.md, CI, refactor) in any level
+- ❌ Use vague titles like "bug fixes and improvements"
+- ❌ Skip the `impact` field in Main/Detailed levels
+- ❌ Add more than 3 items to Main level
+
+**Example of good progression across versions:**
+```
+1.7.0: "Адаптивный тренажёр — автоматически подбирает задания по слабым местам"
+1.8.0: "Адаптивный тренажёр стал точнее — BKT + IRT движки анализируют каждый ответ"
+```
+
 #### Version bump rules
 
 - **Patch (1.x.Y)** — bug fixes, small tweaks, no new student-facing features
