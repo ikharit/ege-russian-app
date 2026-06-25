@@ -172,6 +172,20 @@ export default function App() {
   const loadProgress = useProgressStore((s) => s.loadProgress)
   const setUserName = useProgressStore((s) => s.setUserName)
   const syncProgress = useProgressStore((s) => s.syncProgress)
+  const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
+
+  // Activate teacher mode from URL param (supports both ?teacher=true and #/path?teacher=true)
+  useEffect(() => {
+    const search = window.location.search
+    const hash = window.location.hash
+    // Parse query params from both search and hash (hash-router edge case)
+    const urlParams = new URLSearchParams(search)
+    const hashParams = new URLSearchParams(hash.split('?')[1] || '')
+    const isTeacherParam = urlParams.get('teacher') === 'true' || hashParams.get('teacher') === 'true'
+    if (isTeacherParam) {
+      setTeacherMode(true)
+    }
+  }, [setTeacherMode])
 
   // Handle OAuth callback (Google auth redirect)
   useEffect(() => {
