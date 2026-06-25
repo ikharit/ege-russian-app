@@ -11,7 +11,6 @@ import { Lesson } from './pages/Lesson'
 import { Statistics } from './pages/Statistics'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
-import { SyncStatus } from './components/SyncStatus'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, GraduationCap, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
@@ -474,7 +473,6 @@ export default function App() {
 
   const syncIndicator = isSupabaseConfigured ? (
     <div className="flex items-center gap-1.5">
-      <SyncStatus />
       {userId ? (
         <button
           onClick={handleLogout}
