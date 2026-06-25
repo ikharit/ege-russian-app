@@ -263,6 +263,7 @@ After EVERY session that changes code or data files, the agent MUST update these
 1. `AGENTS.md` — append to the changelog at the bottom (what changed, why, relevant file paths)
 2. `AGENT_TASKS.md` — mark completed tasks with ✅, update status, add new tasks if discovered
 3. `memory/YYYY-MM-DD.md` — create if not exists, record what was done
+4. **Read `AGENT_REMINDER.md` before every session** — self-check trigger
 
 ### What to record
 - Feature/bug name
