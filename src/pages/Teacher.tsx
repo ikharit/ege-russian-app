@@ -6,8 +6,6 @@ import { useStudentStore } from '../stores/studentStore'
 import { course } from '../data/courseData'
 import { useNavigate } from 'react-router-dom'
 import { allHomework, nonstandardStudents } from '../data/gsheets/homeworkData'
-import { StudentRegistrationModal } from '../components/StudentRegistrationModal'
-
 export function Teacher() {
   const navigate = useNavigate()
   const mockStudents = useProgressStore((s) => s.teacherStudents)
@@ -15,7 +13,6 @@ export function Teacher() {
   const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'assign' | 'analytics'>('overview')
-  const [showRegModal, setShowRegModal] = useState(false)
 
   const profiles = useStudentStore((s) => s.profiles)
   const getProfileStats = useStudentStore((s) => s.getProfileStats)
@@ -529,17 +526,6 @@ export function Teacher() {
           <AnalyticsTab />
         </div>
       )}
-
-      {/* Add student button */}
-      <button
-        onClick={() => setShowRegModal(true)}
-        className="btn-primary flex items-center justify-center gap-2 mt-2"
-      >
-        <UserPlus size={16} />
-        Добавить ученика
-      </button>
-
-      <StudentRegistrationModal isOpen={showRegModal} onClose={() => setShowRegModal(false)} />
     </div>
   )
 }

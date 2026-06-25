@@ -285,6 +285,8 @@ export function Lesson() {
                 totalQuestions={questions.length}
                 onAnswer={handleAnswer}
                 onNext={handleNext}
+                onPrev={handlePrev}
+                previousAnswer={answers[currentQuestionIdx]}
                 heartsLeft={hearts}
                 onHintUsed={handleHintUsed}
               />

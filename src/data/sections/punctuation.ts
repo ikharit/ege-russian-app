@@ -14,7 +14,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-1',
         sectionId: 'section-punct-1',
-        title: 'Задание 16. Придаточные и однородные',
+        title: 'Задание 17. Придаточные и однородные',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 60,
@@ -24,7 +24,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-2',
         sectionId: 'section-punct-1',
-        title: 'Задание 16. Придаточные и вводные',
+        title: 'Задание 17. Придаточные и вводные',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,
@@ -34,7 +34,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-3',
         sectionId: 'section-punct-1',
-        title: 'Задание 16. Вводные слова',
+        title: 'Задание 17. Вводные слова',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,
@@ -44,7 +44,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-4',
         sectionId: 'section-punct-1',
-        title: 'Задание 16. Сложные случаи',
+        title: 'Задание 17. Сложные случаи',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,

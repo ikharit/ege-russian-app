@@ -538,6 +538,38 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ---
 
+### ✅ ЗАДАЧА-А7: CourseMap — исправление анимации сворачивания
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/pages/CourseMap.tsx`
+
+**Проблема**: При сворачивании секции контент "подпрыгивал" в размере — странная анимация
+
+**Решение**:
+1. `layout` → `layout="position"` (анимирует только позицию, не размер)
+2. Обёртка в `<AnimatePresence initial={false}>` для exit-анимации
+3. `transition={{ duration: 0.2 }}` + `className="overflow-hidden"`
+
+---
+
+### ✅ ЗАДАЧА-А7.5: Убрана система локальных профилей
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/App.tsx`, `src/components/Header.tsx`, `src/pages/Teacher.tsx`, `src/components/StudentRegistrationModal.tsx`, `src/components/ProfileSwitcher.tsx`
+
+**Решение**:
+1. Убран `StudentRegistrationModal` из `App.tsx`, `Header.tsx`, `Teacher.tsx`
+2. Убран `ProfileSwitcher` из `Header.tsx`
+3. Убрана кнопка "Добавить ученика" из Teacher panel
+4. Убран `useStudentStore` импорт и вызовы из `App.tsx` (auto-save useEffect)
+5. Оставлена только email-авторизация через Supabase (`AuthModal`)
+
+**Критерий завершения**: Нет модалки "Новый ученик", нет переключателя профилей, сборка проходит чисто
+
+---
+
 ### 📝 ЗАДАЧА-А8: Ревизия объяснений — стандартизация по ФИПИ
 
 **Статус:** 🔄 В процессе
