@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Heart, BookOpen } from 'lucide-react'
+import { ArrowLeft, Heart, BookOpen, Pencil } from 'lucide-react'
 import { QuestionCard } from '../components/QuestionCard'
 import { LessonResult } from '../components/LessonResult'
 import { Hearts } from '../components/Hearts'
@@ -9,6 +9,8 @@ import { ComboDisplay } from '../components/ComboDisplay'
 import { TheoryModal } from '../components/TheoryModal'
 import { useComboToasts } from '../components/ComboToast'
 import { useProgressStore } from '../stores/progressStore'
+import { useTeacherMode } from '../hooks/useTeacherMode'
+import { InlineQuestionEditor, applyQuestionEdits } from '../components/InlineQuestionEditor'
 import { course } from '../data/courseData'
 import { getTheoryForLesson } from '../lib/theoryMapper'
 import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSound } from '../lib/sounds'
@@ -41,6 +43,10 @@ export function Lesson() {
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
   const [hintsUsedPerQuestion, setHintsUsedPerQuestion] = useState<Record<string, number>>({})
   const [answers, setAnswers] = useState<Record<number, { isCorrect: boolean; userAnswer?: string[] }>>({})
+
+  const [showEditor, setShowEditor] = useState(false)
+  const [editorKey, setEditorKey] = useState(0)
+  const isTeacherMode = useTeacherMode()
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const courseLesson = section?.lessons.find(l => l.id === lessonId)
@@ -82,7 +88,8 @@ export function Lesson() {
     })
   }, [lesson.id])
 
-  const currentQuestion = questions[currentQuestionIdx]
+  const rawQuestion = questions[currentQuestionIdx]
+  const currentQuestion = rawQuestion ? applyQuestionEdits(rawQuestion as any) as typeof rawQuestion : rawQuestion
 
   useEffect(() => {
     startLesson(lesson.id)
@@ -258,6 +265,16 @@ export function Lesson() {
             <BookOpen size={20} className="text-duo-blue" />
           </button>
         )}
+        {isTeacherMode && currentQuestion && (
+          <button
+            onClick={() => setShowEditor(true)}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Редактировать задание"
+            title="Редактировать задание"
+          >
+            <Pencil size={20} className="text-duo-blue" />
+          </button>
+        )}
         <ComboDisplay combo={combo} multiplier={combo >= 10 ? 3 : combo >= 7 ? 2.5 : combo >= 5 ? 2 : combo >= 3 ? 1.5 : 1} />
         <Hearts />
       </div>
@@ -358,6 +375,17 @@ export function Lesson() {
             onClose={() => setShowTheory(false)}
             onStart={() => setShowTheory(false)}
             actionLabel="Понятно, начать!"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Inline Question Editor (teacher only) */}
+      <AnimatePresence>
+        {showEditor && currentQuestion && (
+          <InlineQuestionEditor
+            question={currentQuestion as any}
+            onClose={() => setShowEditor(false)}
+            onSaved={() => setEditorKey(k => k + 1)}
           />
         )}
       </AnimatePresence>
