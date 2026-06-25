@@ -546,6 +546,7 @@ export default function App() {
         achievement={unlockedAchievement || null}
         onClose={clearLastAchievement}
       />
+      <PWAUpdateToast />
       <main className="flex-1 overflow-auto">
         <Suspense fallback={
           <div className="flex items-center justify-center h-full">
