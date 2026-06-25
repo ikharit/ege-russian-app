@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, FileText, GraduationCap } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, FileText, GraduationCap, Copy } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -14,7 +14,6 @@ import { getUnlockedStatuses, getStatusById } from '../data/statuses'
 import { Popover } from '../components/Popover'
 import { useNotificationStore } from '../stores/notificationStore'
 import { useStudentStore } from '../stores/studentStore'
-import { useClassStore } from '../stores/classStore'
 import { useClassStore } from '../stores/classStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 
@@ -225,6 +224,7 @@ export function Profile() {
   const lastSync = useFirebaseStore((s) => s.lastSync)
   const isTeacher = useProgressStore((s) => s.isTeacher)
   const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
+  const myUserId = useProgressStore((s) => s.userId)
 
   // Settings
   const soundEnabled = useSettingsStore((s) => s.soundEnabled)
@@ -235,6 +235,7 @@ export function Profile() {
   const [isEditing, setIsEditing] = useState(false)
   const [showStatusPicker, setShowStatusPicker] = useState(false)
   const [showNotificationSettings, setShowNotificationSettings] = useState(false)
+  const [copiedId, setCopiedId] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
 
   // Notification settings
@@ -259,6 +260,24 @@ export function Profile() {
       setUserName(newName)
     }
     setIsEditing(false)
+  }
+
+  const handleCopyId = async () => {
+    if (!myUserId) return
+    try {
+      await navigator.clipboard.writeText(myUserId)
+      setCopiedId(true)
+      setTimeout(() => setCopiedId(false), 2000)
+    } catch {
+      const textArea = document.createElement('textarea')
+      textArea.value = myUserId
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopiedId(true)
+      setTimeout(() => setCopiedId(false), 2000)
+    }
   }
 
   const handleReset = () => {
@@ -436,6 +455,21 @@ export function Profile() {
           </div>
         )}
         <p className="text-gray-500 text-sm">Уровень {stats.level}</p>
+        
+        {/* User ID */}
+        {myUserId && (
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <span className="text-xs text-gray-400">ID:</span>
+            <span className="font-mono text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded">{myUserId}</span>
+            <button
+              onClick={handleCopyId}
+              className={`p-1 rounded transition-colors ${copiedId ? 'text-duo-green' : 'text-gray-400 hover:text-gray-600'}`}
+              title="Скопировать ID"
+            >
+              {copiedId ? <CheckCircle size={14} /> : <Copy size={14} />}
+            </button>
+          </div>
+        )}
         
         {/* Active Status */}
         <motion.button

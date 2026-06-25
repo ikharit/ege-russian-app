@@ -92,7 +92,7 @@ export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi',
     // Progress tracking
     addXP(isCorrect ? 5 : 0)
     updateTaskStats(taskNumber, isCorrect)
-    recordQuestionAnswered(taskNumber, isCorrect)
+    recordQuestionAnswered()
     if (isCorrect) {
       updateStreak()
     } else {
@@ -105,7 +105,7 @@ export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi',
           explanation: currentQuestion.explanation,
           atoms,
         },
-        typeof dir === 'string' ? dir : ''
+        typeof dir === 'string' ? [dir] : []
       )
     }
 

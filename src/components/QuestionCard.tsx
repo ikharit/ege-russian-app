@@ -21,7 +21,6 @@ function useQuestionValidation(question: Question) {
     correctAnswer: question.correctAnswer?.[0],
     explanation: question.explanation,
     options: question.options,
-    rule: question.rule,
     taskType: question.type,
     word: question.text,
   })
@@ -277,7 +276,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       <h2 className="text-xl font-bold text-gray-800">
         {question.text}
         {validationIssues && (
-          <span className="ml-2 text-sm font-normal text-orange-500" title={validationIssues.map(i => i.details).join('\n')}>
+          <span className="ml-2 text-sm font-normal text-orange-500" title={validationIssues.join('\n')}>
             ⚠️ ({validationIssues.length})
           </span>
         )}

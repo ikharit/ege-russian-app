@@ -81,7 +81,7 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
           <AlertTriangle size={16} className="text-amber-500" />
           <span className="font-bold text-sm">Редактировать задание</span>
           <span className="text-xs text-gray-400 font-mono">{question.id}</span>
-          {pending && <Cloud size={14} className="text-duo-blue animate-pulse" title="Синхронизация..." />}
+          {pending && <Cloud size={14} className="text-duo-blue animate-pulse" />}
         </div>
         <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
           <X size={20} />

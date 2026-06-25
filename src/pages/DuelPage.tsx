@@ -52,7 +52,8 @@ export function DuelPage() {
   const [elapsedMs, setElapsedMs] = useState(0)
 
   const { observeAnswer } = useAdaptiveEngine(
-    (activeDuel?.questions || []).map(q => ({ id: q.id, atoms: q.atoms || [] }))
+    (activeDuel?.questions || []).map(q => ({ id: q.id, atoms: q.atoms || [] })),
+    'duel'
   )
 
   useEffect(() => {

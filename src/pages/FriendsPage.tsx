@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, UserPlus, Search, Heart, Trophy, Flame, Zap, X, Check, Users, Activity, Gift } from 'lucide-react'
+import { ArrowLeft, UserPlus, Search, Heart, Trophy, Flame, Zap, X, Check, Users, Activity, Gift, Copy } from 'lucide-react'
 import { useFriendStore } from '../stores/friendStore'
 import { useProgressStore } from '../stores/progressStore'
 
@@ -19,13 +19,34 @@ export function FriendsPage() {
 
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<'friends' | 'requests' | 'activity'>('friends')
+  const [copied, setCopied] = useState(false)
 
   const stats = useProgressStore((s) => s.userStats)
+  const myUserId = useProgressStore((s) => s.userId)
   const myProgress = {
     level: stats.level,
     xp: stats.xp,
     streak: stats.streak,
     completedLessons: Object.values(useProgressStore.getState().lessonProgress).filter((l: any) => l.status === 'completed').length,
+  }
+
+  const handleCopyId = async () => {
+    if (!myUserId) return
+    try {
+      await navigator.clipboard.writeText(myUserId)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = myUserId
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
   }
 
   const filteredFriends = friends.filter(f => 
@@ -77,6 +98,28 @@ export function FriendsPage() {
             <span className="flex items-center gap-1 text-orange-500"><Flame size={14} /> {myProgress.streak}</span>
             <span className="flex items-center gap-1 text-duo-yellow"><Zap size={14} /> {myProgress.xp}</span>
           </div>
+        </div>
+      </div>
+
+      {/* My ID card */}
+      <div className="bg-white rounded-2xl p-3 mb-4 border border-gray-100 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs text-gray-500 mb-0.5">Твой ID (поделись с другом):</p>
+            <p className="font-mono font-bold text-sm text-gray-800 tracking-wider">{myUserId || '—'}</p>
+          </div>
+          <button
+            onClick={handleCopyId}
+            disabled={!myUserId}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              copied
+                ? 'bg-duo-green text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? 'Скопировано!' : 'Копировать'}
+          </button>
         </div>
       </div>
 
