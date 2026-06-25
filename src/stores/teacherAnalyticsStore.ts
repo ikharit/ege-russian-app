@@ -53,7 +53,7 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
       // 2. Получаем прогресс учеников (user_progress) + analytics
       const { data: progressData, error: progressError } = await supabase
         .from('user_progress')
-        .select('user_id, user_stats, wrong_answers, task_stats, behavior_profile')
+        .select('user_id, user_stats, wrong_answers, task_stats, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress')
         .in('user_id', studentIds)
 
       if (progressError) throw progressError
@@ -132,6 +132,15 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
           topWeakWords,
           topWeakRules,
           overallAccuracy,
+          totalQuestionsAnswered: stats.totalQuestionsAnswered || 0,
+          totalLessonTimeMinutes: stats.totalLessonTimeMinutes || 0,
+          maxCombo: stats.maxCombo || 0,
+          hearts: stats.hearts || 0,
+          maxHearts: stats.maxHearts || 5,
+          examResults: progress?.exam_results || [],
+          theoryTestsCompleted: progress?.theory_tests_completed || {},
+          answerHistory: progress?.answer_history || [],
+          dailyQuestProgress: progress?.daily_quest_progress || {},
           behaviorProfile: progress?.behavior_profile || undefined,
           dailySnapshots: analytics?.daily_snapshots || undefined,
           rawProgressData: {
@@ -140,6 +149,12 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
             taskStats: progress?.task_stats || {},
             achievements: progress?.achievements || [],
             behaviorProfile: progress?.behavior_profile || undefined,
+            examResults: progress?.exam_results || [],
+            theoryTestsCompleted: progress?.theory_tests_completed || {},
+            answerHistory: progress?.answer_history || [],
+            atomProgress: progress?.atom_progress || {},
+            dailyQuestProgress: progress?.daily_quest_progress || {},
+            wrongAnswers: progress?.wrong_answers || [],
           },
         }
       })
@@ -169,7 +184,7 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
       const [analyticsResult, progressResult] = await Promise.race([
         Promise.all([
           supabase.from('admin_user_analytics').select('user_id, behavior_profile, daily_snapshots').limit(500),
-          supabase.from('user_progress').select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile').limit(500),
+          supabase.from('user_progress').select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers').limit(500),
         ]),
         timeout,
       ]) as any
@@ -217,6 +232,15 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
           topWeakWords: [],
           topWeakRules: [],
           overallAccuracy,
+          totalQuestionsAnswered: stats.totalQuestionsAnswered || 0,
+          totalLessonTimeMinutes: stats.totalLessonTimeMinutes || 0,
+          maxCombo: stats.maxCombo || 0,
+          hearts: stats.hearts || 0,
+          maxHearts: stats.maxHearts || 5,
+          examResults: progress?.exam_results || [],
+          theoryTestsCompleted: progress?.theory_tests_completed || {},
+          answerHistory: progress?.answer_history || [],
+          dailyQuestProgress: progress?.daily_quest_progress || {},
           behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
           dailySnapshots: analytics?.daily_snapshots || undefined,
           rawProgressData: {
@@ -225,6 +249,12 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
             taskStats: progress?.task_stats || {},
             achievements: progress?.achievements || [],
             behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
+            examResults: progress?.exam_results || [],
+            theoryTestsCompleted: progress?.theory_tests_completed || {},
+            answerHistory: progress?.answer_history || [],
+            atomProgress: progress?.atom_progress || {},
+            dailyQuestProgress: progress?.daily_quest_progress || {},
+            wrongAnswers: progress?.wrong_answers || [],
           },
         }
       })

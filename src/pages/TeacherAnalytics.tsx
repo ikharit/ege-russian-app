@@ -61,6 +61,102 @@ export function TeacherAnalytics() {
   )
   const summary = analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
 
+  // Extended metrics
+  const avgExamScore = (() => {
+    let totalScore = 0, count = 0
+    realStudents.forEach(s => {
+      if (s.examResults && s.examResults.length > 0) {
+        const best = Math.max(...s.examResults.map((r: any) => r.secondaryScore || r.primaryScore || 0))
+        totalScore += best
+        count++
+      }
+    })
+    return count > 0 ? Math.round(totalScore / count) : 0
+  })()
+
+  const avgTimeMinutes = realStudents.length > 0
+    ? Math.round(realStudents.reduce((sum, s) => sum + (s.totalLessonTimeMinutes || 0), 0) / realStudents.length)
+    : 0
+
+  const avgMaxCombo = realStudents.length > 0
+    ? Math.round(realStudents.reduce((sum, s) => sum + (s.maxCombo || 0), 0) / realStudents.length)
+    : 0
+
+  const levelDistribution = (() => {
+    const dist: Record<number, number> = {}
+    realStudents.forEach(s => {
+      dist[s.level] = (dist[s.level] || 0) + 1
+    })
+    return Object.entries(dist)
+      .map(([level, count]) => ({ level: Number(level), count }))
+      .sort((a, b) => a.level - b.level)
+  })()
+
+  const taskHeatmap = (() => {
+    const tasks: Record<string, { total: number; correct: number; students: number }> = {}
+    realStudents.forEach(s => {
+      const taskStats = s.rawProgressData?.taskStats || {}
+      Object.entries(taskStats).forEach(([taskNum, stats]: [string, any]) => {
+        if (!tasks[taskNum]) tasks[taskNum] = { total: 0, correct: 0, students: 0 }
+        tasks[taskNum].total += stats.total || 0
+        tasks[taskNum].correct += stats.correct || 0
+        tasks[taskNum].students++
+      })
+    })
+    return Object.entries(tasks)
+      .map(([taskNum, data]) => ({
+        taskNum,
+        accuracy: data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
+        total: data.total,
+        students: data.students,
+      }))
+      .sort((a, b) => Number(a.taskNum) - Number(b.taskNum))
+  })()
+
+  const topWeakTasks = (() => {
+    return taskHeatmap
+      .filter(t => t.total >= 3)
+      .sort((a, b) => a.accuracy - b.accuracy)
+      .slice(0, 5)
+  })()
+
+  const hourlyActivity = (() => {
+    const hours: Record<number, number> = {}
+    realStudents.forEach(s => {
+      const bp = s.behaviorProfile
+      if (bp?.preferredLearningTime) {
+        const match = bp.preferredLearningTime.match(/(\d{1,2}):/)
+        if (match) {
+          const hour = parseInt(match[1])
+          hours[hour] = (hours[hour] || 0) + 1
+        }
+      }
+    })
+    return Array.from({ length: 24 }, (_, i) => ({
+      hour: i,
+      count: hours[i] || 0,
+      label: `${i}:00`,
+    }))
+  })()
+
+  const userCountTrend = (() => {
+    const dates: string[] = []
+    const activeUsers: number[] = []
+    for (let i = trendDays - 1; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      dates.push(dateStr)
+      let count = 0
+      realStudents.forEach(s => {
+        const lastActive = s.lastActive && s.lastActive !== '—' ? new Date(s.lastActive).toISOString().split('T')[0] : null
+        if (lastActive && lastActive <= dateStr) count++
+      })
+      activeUsers.push(count)
+    }
+    return dates.map((date, i) => ({ date: date.slice(5), users: activeUsers[i] }))
+  })()
+
   // Aggregate trends from all students' behavior profiles or real dailySnapshots
   const trendData = (() => {
     const dates: string[] = []
@@ -279,7 +375,7 @@ export function TeacherAnalytics() {
         ) : (
           <>
             {/* Summary Cards */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -343,6 +439,36 @@ export function TeacherAnalytics() {
                 <p className={`text-2xl font-black ${summary.atRiskCount > 0 ? 'text-red-500' : 'text-gray-800'}`}>
                   {summary.atRiskCount}
                 </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <Trophy size={18} className="text-purple-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Балл ЕГЭ</span>
+                </div>
+                <p className="text-2xl font-black text-gray-800">{avgExamScore}</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
+                    <Zap size={18} className="text-pink-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Комбо</span>
+                </div>
+                <p className="text-2xl font-black text-gray-800">{avgMaxCombo}</p>
               </motion.div>
             </div>
 
@@ -521,6 +647,101 @@ export function TeacherAnalytics() {
                         </li>
                       ))}
                     </ul>
+                  </div>
+                )}
+
+                {/* Level Distribution */}
+                {levelDistribution.length > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <BarChart3 size={18} className="text-duo-blue" />
+                      Распределение по уровням
+                    </h3>
+                    <div className="h-40">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={levelDistribution}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                          <XAxis dataKey="level" tick={{fontSize: 10}} />
+                          <YAxis tick={{fontSize: 10}} />
+                          <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                          <Bar dataKey="count" fill="#58cc02" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+
+                {/* Task Progress Heatmap */}
+                {taskHeatmap.length > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Target size={18} className="text-duo-yellow" />
+                      Прогресс по заданиям
+                    </h3>
+                    <div className="grid grid-cols-5 gap-2">
+                      {taskHeatmap.map(t => (
+                        <div key={t.taskNum} className="text-center">
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm mx-auto mb-1"
+                            style={{
+                              backgroundColor: t.accuracy >= 80 ? '#58cc02' : t.accuracy >= 50 ? '#ffc800' : '#ef4444',
+                              opacity: t.total > 0 ? 1 : 0.3,
+                            }}
+                          >
+                            {t.taskNum}
+                          </div>
+                          <p className="text-[10px] text-gray-500">{t.accuracy}%</p>
+                          <p className="text-[10px] text-gray-400">{t.total} отв.</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Top Weak Tasks */}
+                {topWeakTasks.length > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <AlertTriangle size={18} className="text-red-500" />
+                      Слабые задания
+                    </h3>
+                    <div className="space-y-2">
+                      {topWeakTasks.map(t => (
+                        <div key={t.taskNum} className="flex items-center justify-between bg-gray-50 rounded-xl p-3">
+                          <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-red-100 text-red-600 font-bold text-sm flex items-center justify-center">
+                              {t.taskNum}
+                            </span>
+                            <div>
+                              <p className="text-sm font-bold text-gray-700">Задание {t.taskNum}</p>
+                              <p className="text-[10px] text-gray-400">{t.total} ответов, {t.students} учеников</p>
+                            </div>
+                          </div>
+                          <span className="text-sm font-bold text-red-500">{t.accuracy}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Hourly Activity */}
+                {hourlyActivity.some(h => h.count > 0) && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Clock size={18} className="text-duo-purple" />
+                      Активность по часам
+                    </h3>
+                    <div className="h-40">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={hourlyActivity}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                          <XAxis dataKey="label" tick={{fontSize: 9}} interval={3} />
+                          <YAxis tick={{fontSize: 10}} />
+                          <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                          <Bar dataKey="count" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
                 )}
 
@@ -833,6 +1054,30 @@ export function TeacherAnalytics() {
                         <Line type="monotone" dataKey="exploration" stroke="#8B5CF6" strokeWidth={2} dot={false} name="Исследование" />
                         <Line type="monotone" dataKey="competition" stroke="#EF4444" strokeWidth={2} dot={false} name="Соревнование" />
                       </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+                {/* User Count Trend */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                    <Users size={18} className="text-duo-green" />
+                    Пользователей (активных)
+                  </h3>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={userCountTrend}>
+                        <defs>
+                          <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis dataKey="date" tick={{fontSize: 10}} />
+                        <YAxis tick={{fontSize: 10}} />
+                        <Tooltip contentStyle={{fontSize: 12, borderRadius: 12}} />
+                        <Area type="monotone" dataKey="users" stroke="#3B82F6" fillOpacity={1} fill="url(#colorUsers)" />
+                      </AreaChart>
                     </ResponsiveContainer>
                   </div>
                 </div>

@@ -13,7 +13,7 @@ export const dooshinSection: Section = {
   color: '#58cc02',
   lessons: allDooshinLessons,
   groups: dooshinSections.map(s => ({
-    id: s.id,
+    id: 'group-task' + s.id.replace('section-dooshin-', ''),
     title: s.title,
     subtitle: s.subtitle,
     lessons: s.lessons.map(l => ({ ...l, sectionId: 'section-dooshin-all' }))

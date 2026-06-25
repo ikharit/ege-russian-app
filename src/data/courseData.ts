@@ -4,11 +4,11 @@ import { orthoepyLexicographySections } from './sections/orthoepyLexicography'
 import { grammarSections } from './sections/grammarMorphologySyntax'
 import { orthographyAllSections } from './sections/orthographyAll'
 import { punctuationAllSections } from './sections/punctuationAll'
-import { dooshinMetaSection } from './sections/dooshinMeta'
+import { dooshinSection } from './sections/dooshinUnified'
 import { task22_27Sections } from './sections/task22_27'
 
 // Встраиваем отработки Дощинского в конец соответствующих секций
-const dooshinGroups = dooshinMetaSection.groups || []
+const dooshinGroups = dooshinSection.groups || []
 
 const embedDooshin = (sections: Section[], taskNumbers: string[]) => {
   return sections.map((s) => ({

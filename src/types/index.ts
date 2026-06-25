@@ -307,6 +307,16 @@ export interface TeacherStudentView {
   topWeakWords: { word: string; wrongCount: number; ruleId?: string }[]
   topWeakRules: { ruleId: string; wrongCount: number; words: string[] }[]
   overallAccuracy: number
+  // Extended metrics
+  totalQuestionsAnswered: number
+  totalLessonTimeMinutes: number
+  maxCombo: number
+  hearts: number
+  maxHearts: number
+  examResults: any[]
+  theoryTestsCompleted: Record<string, any>
+  answerHistory: any[]
+  dailyQuestProgress?: Record<string, any>
   behaviorProfile?: {
     mostActiveCategory: string
     leastActiveCategory: string
@@ -333,6 +343,12 @@ export interface TeacherStudentView {
     taskStats: any
     achievements: any[]
     behaviorProfile?: any
+    examResults?: any[]
+    theoryTestsCompleted?: Record<string, any>
+    answerHistory?: any[]
+    atomProgress?: any
+    dailyQuestProgress?: Record<string, any>
+    wrongAnswers?: any[]
   }
 }
 
