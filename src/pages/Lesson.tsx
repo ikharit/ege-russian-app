@@ -84,7 +84,10 @@ export function Lesson() {
 
   const questions = useMemo(() => {
     return lesson.questions.map(q => {
-      const shuffledOptions = q.options ? [...q.options].sort(() => Math.random() - 0.5) : q.options
+      // Не перемешиваем options для ege-multiple, т.к. correctAnswer — номера вариантов
+      const shuffledOptions = (q.options && q.type !== 'ege-multiple')
+        ? [...q.options].sort(() => Math.random() - 0.5)
+        : q.options
       return { ...q, options: shuffledOptions }
     })
   }, [lesson])

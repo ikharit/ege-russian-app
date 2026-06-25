@@ -361,9 +361,4 @@ export const task10Questions: Question[] = [
     correctAnswer: ['е'],
     explanation: 'ПРЕ- (заранее, вперёд).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
-    {
-    id: 'q10-atom-70', type: 'text', text: 'Впишите пропущенную букву: пр_студия',
-    correctAnswer: ['е'],
-    explanation: 'ПРЕ- (престудия, прессалон).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
-  },
 ]
