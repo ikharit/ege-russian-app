@@ -6,7 +6,6 @@ import {
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
 import { useClassStore } from '../stores/classStore'
-import { useProgressStore } from '../stores/progressStore'
 import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
 import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
@@ -49,31 +48,12 @@ export function TeacherAnalytics() {
 
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
-  // Global analytics: all users from Supabase, fallback to current user
+  // Global analytics: all users from Supabase
   const hasRealStudents = realStudents.length > 0
 
   const students = hasRealStudents
     ? realStudents.map(s => ({ id: s.studentId, name: s.studentName, progress: rawToProgressData(s.rawProgressData) }))
-    : (() => {
-        // Fallback: current user's own data from localStorage
-        const currentUserName = useProgressStore.getState().userName || 'Вы'
-        const currentUserId = useProgressStore.getState().userId || 'current'
-        const currentUserStats = useProgressStore.getState().taskStats
-        const currentUserAchievements = useProgressStore.getState().achievements
-        const currentUserBehaviorProfile = useProgressStore.getState().behaviorProfile
-        const currentUserLessons = useProgressStore.getState().lessonProgress
-        return [{
-          id: currentUserId,
-          name: currentUserName,
-          progress: {
-            userStats: {},
-            lessonProgress: currentUserLessons,
-            taskStats: currentUserStats,
-            achievements: currentUserAchievements,
-            behaviorProfile: currentUserBehaviorProfile,
-          } as ProgressData
-        }]
-      })()
+    : []
 
 
   const analytics = students.map(s => 
