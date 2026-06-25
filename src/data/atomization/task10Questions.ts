@@ -16,7 +16,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-3', type: 'text', text: 'Впишите пропущенную букву: пр_следование (врага)',
     correctAnswer: ['е'],
-    explanation: 'ПРЕ- — словарное слово.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+    explanation: 'ПРЕ- = перед (идти вперёд, быть впереди). Словарное слово, нельзя проверить по корню. Запомнить: преследование, президент, пребывать.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
     {
     id: 'q10-atom-4', type: 'text', text: 'Впишите пропущенную букву: пр_мадонна',
@@ -26,7 +26,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-5', type: 'text', text: 'Впишите пропущенную букву: пр_града',
     correctAnswer: ['е'],
-    explanation: 'ПРЕ- — словарное слово (преграда, препятствие).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+    explanation: 'ПРЕ- = ПЕРЕ- (как перегородить, перекрыть путь). Преграда — препятствие, заграждение. Словарное слово, нельзя проверить по корню.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   // === ПРЕ- / ПРИ- (проверяемые) ===
     {
@@ -359,6 +359,6 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-69', type: 'text', text: 'Впишите пропущенную букву: пр_европейские (интересы)',
     correctAnswer: ['е'],
-    explanation: 'ПРЕ- (заранее, вперёд).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+    explanation: 'ПРЕ- = перед (раньше, впереди чего-либо). Преевропейские — существовавшие до/впереди Европы. Словарное слово, нельзя проверить по корню.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
 ]
