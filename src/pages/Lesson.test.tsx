@@ -103,6 +103,7 @@ const mockStoreState = {
   updateTaskStats: vi.fn(),
   recordQuestionAnswered: vi.fn(),
   updateQuestProgress: vi.fn(),
+  recordAnswer: vi.fn(),
   currentLessonHeartsLost: 0,
   currentLessonStartTime: null,
 }

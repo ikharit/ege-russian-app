@@ -1,106 +1,42 @@
-# Plan: Unified Error Tracking & Analytics Engine
+# SpellEngine Development Plan
 
-## Проблемы (найдено в аудите)
+## Stage 1: Foundation — Types & Dictionary
+- Create `src/types/spellEngine.ts` — interfaces for SpellCheckResult, SpellRule, SpellEngine
+- Create `src/data/spellDictionary.ts` — build dictionary from existing data files
+  - Extract all answer words from task9-16 questions, accentWords, task5, examTasks
+  - Add top-200 frequent Russian words
+  - Add exception map (пловец, etc.)
+  - Export `spellDictionary` Set + `isInDictionary(word)` + `getWordForms(base)`
 
-1. **Дублирующиеся слова с разными ID** — `q9-1` и `qd9-401` — одно слово "стеречь", но система не знает об этом. Нет `canonical_word_id`.
-2. **Нет `word`/`lemma`/`ruleId` в `WrongAnswer`** — нельзя агрегировать по слову или правилу.
-3. **`answerHistory` не синхронизируется с Supabase** — детальная история каждого ответа остаётся только на устройстве.
-4. **Supabase = JSON-blob** — одна строка `user_progress` с JSON-полями. Нельзя делать SQL-агрегации.
-5. **Преподаватель не видит ошибки учеников** — нет таблицы `teacher_student_links` и RLS.
+## Stage 2: Rules Engine
+- Create `src/data/spellRules.ts` — 50+ SpellRule objects
+  - 10 alternating roots (плав/плов, блист/блест, мир/мер, etc.)
+  - 20 prefix rules (без/бес, раз/рас, пре/при, etc.)
+  - 10 silent consonants (солнце, чувство, etc.)
+  - 10 punctuation rules (introductory words, subordinate clauses, etc.)
+  - 10 paronym rules (эффективный/эффектный, etc.)
+  - 10 grammar rules (связанный с, etc.)
+  - 10 borrowed-word spelling rules (директорский, etc.)
+- Create `src/utils/spellEngine.ts` — implementation
+  - `checkText(text)` — run all rules, return SpellCheckResult[]
+  - `checkWord(word)` — dictionary + rule check
+  - `isInDictionary(word)` — O(1) Set lookup
+  - `getWordForms(baseWord)` — basic Russian morphology (simple suffixes)
 
-## Архитектура решения
+## Stage 3: Question Validator & Audit
+- Create `src/utils/questionValidator.ts` — validateAllQuestions()
+  - Load all question sources
+  - Check: missing explanation, duplicate options, double spaces, cyclic explanation, rule conflicts
+- Create `src/utils/auditRunner.ts` — runFullAudit()
+  - Calls validator, outputs JSON stats + markdown report
 
-### Stage 1: Unified Question Mapping
-**Цель:** связать все дублирующиеся вопросы через `canonical_word_id`.
+## Stage 4: Integration
+- Modify `src/components/QuestionCard.tsx`
+  - Add useEffect to run spellEngine.checkText(question.text) on mount
+  - Show dev-only warning badge if potential issue detected
+- Verify no existing functionality broken
 
-**Файлы:**
-- `src/data/questionMapping.ts` — маппинг `word → { canonicalId, questionIds[], ruleId, atomIds[] }`
-- `src/data/rules/task9-rules.json` — уже есть, дополнить `questionIds`
-
-**Подход:**
-1. Извлечь нормализованное слово из `text` вопроса (убрать "Впишите пропущенную букву:" и т.д.)
-2. Группировать по `word` + `taskNumber`
-3. Каждой группе назначить `canonicalId` (например, `word:блестать:task9`)
-4. Добавить `canonicalId` в каждый вопрос (или в runtime mapping)
-
-### Stage 2: Нормализация типов и store
-**Цель:** добавить `word`, `ruleId`, `errorType` в `WrongAnswer` и `AnswerHistory`.
-
-**Файлы:**
-- `src/types/index.ts` — дополнить интерфейсы
-- `src/stores/slices/lessonAnalyticsSlice.ts` — записывать новые поля
-- `src/stores/slices/syncSlice.ts` — синхронизировать `answerHistory`
-
-**Изменения:**
-```ts
-interface WrongAnswer {
-  questionId: string
-  canonicalWordId?: string  // ← новое
-  word?: string            // ← нормализованное слово
-  ruleId?: string          // ← ID правила из task9-rules.json
-  errorType?: string       // ← уже есть в AnswerHistory, добавить сюда
-  // ... остальное
-}
-```
-
-### Stage 3: SQL-миграции Supabase
-**Цель:** нормализовать схему для агрегации и аналитики.
-
-**Файлы:**
-- `supabase/migrations/001_unified_tracking.sql`
-
-**Таблицы:**
-1. `answer_logs` — каждый ответ (PK: id, user_id, question_id, canonical_word_id, is_correct, user_answer, error_type, time_spent_ms, created_at)
-2. `wrong_answer_logs` — ошибки (PK: id, user_id, question_id, canonical_word_id, rule_id, error_type, user_answer, attempt_number, created_at)
-3. `teacher_student_links` — связь преподавателя и учеников (teacher_id, student_id, class_name, created_at)
-4. `word_question_map` — маппинг `canonical_word_id → question_ids[]`
-
-### Stage 4: Синхронизация и RLS
-**Цель:** сохранять все данные в Supabase и дать преподавателю доступ к ошибкам учеников.
-
-**Файлы:**
-- `src/stores/slices/syncSlice.ts` — добавить `answerHistory` в sync
-- `supabase/migrations/002_rls_policies.sql` — RLS-политики
-
-### Stage 5: Аналитика (frontend)
-**Цель:** показать преподавателю агрегированные ошибки учеников.
-
-**Файлы:**
-- `src/stores/slices/teacherAnalyticsSlice.ts` — новый slice
-- `src/components/teacher/StudentErrorAnalytics.tsx` — UI компонент
-
-## Порядок выполнения
-
-1. **Stage 1** + **Stage 2** (параллельно) — типы и mapping
-2. **Stage 3** — SQL-миграции
-3. **Stage 4** — синхронизация + RLS
-4. **Stage 5** — UI аналитики
-
-## Критерий завершения
-
-- [x] Можно сказать "ученик X ошибся 5 раз в слове блестать" (вне зависимости от questionId)
-- [x] Можно сказать "ученик X имеет проблему с правилом чередования блист/блест"
-- [x] Преподаватель видит все ошибки своих учеников в Supabase
-- [x] `answerHistory` синхронизируется между устройствами
-- [x] SQL-запросы работают без парсинга JSON
-
-## Реализованные файлы
-
-| Файл | Назначение |
-|------|------------|
-| `src/data/questionMapping.ts` | Unified mapping: canonicalWordId → questionIds[], ruleId, word |
-| `src/types/index.ts` | Добавлены поля canonicalWordId, word, ruleId, errorType в WrongAnswer и AnswerHistory |
-| `src/stores/slices/lessonAnalyticsSlice.ts` | Автоизвлечение canonicalWordId/word/ruleId при записи ошибки + аналитика по словам/правилам |
-| `src/stores/slices/syncSlice.ts` | Синхронизация answerHistory с Supabase |
-| `src/pages/Lesson.tsx` | Заполнение canonicalWordId/word/ruleId в answerHistory |
-| `src/stores/teacherAnalyticsStore.ts` | Store для аналитики преподавателя (Supabase) |
-| `src/components/teacher/StudentErrorAnalytics.tsx` | UI: ошибки учеников по словам и правилам |
-| `supabase/migrations/001_unified_tracking.sql` | answer_logs, teacher_student_links, student_word_errors + триггеры |
-| `supabase/migrations/002_rls_policies.sql` | RLS: ученик видит своё, преподаватель видит учеников |
-| `src/lib/supabase.ts` | Обновлён тип UserProgress (exam_results, answer_history) |
-
-## Агенты
-
-- **Stage 1-2:** coder (типы + mapping + store) ✅
-- **Stage 3:** coder (SQL-миграции) ✅
-- **Stage 4-5:** coder (sync + UI) ✅
+## Stage 5: Build Verification
+- Run `cmd //c "npm run build"`
+- Fix any TS errors
+- Deliver final report

@@ -250,3 +250,5 @@ export const allAccentWords: AccentWord[] = [
 export const accentWordsById = Object.fromEntries(
   allAccentWords.map(w => [w.id, w])
 )
+
+export const accentWords = allAccentWords

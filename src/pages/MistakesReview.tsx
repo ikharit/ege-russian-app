@@ -5,6 +5,7 @@ import { ArrowLeft, Check, X, RotateCcw, BookOpen, AlertCircle, ChevronRight, Tr
 import { useProgressStore } from '../stores/progressStore'
 import type { WrongAnswer } from '../types'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
+import { useAdaptiveEngine } from '../hooks/useAdaptiveEngine'
 
 export function MistakesReview() {
   const navigate = useNavigate()
@@ -47,6 +48,15 @@ export function MistakesReview() {
 
   const current = practiceQuestions[currentIdx]
 
+  const adaptiveQuestions = useMemo(() => 
+    practiceQuestions.map(q => ({ 
+      id: q.questionId, 
+      atoms: q.errorType ? [q.errorType] : undefined 
+    })), 
+    [practiceQuestions]
+  )
+  const { observeAnswer } = useAdaptiveEngine(adaptiveQuestions, 'mistakes')
+
   const handleSelect = (option: string) => {
     if (isChecked) return
     setSelected([option])
@@ -57,6 +67,7 @@ export function MistakesReview() {
     const correct =
       current.correctAnswer.length === selected.length &&
       selected.every(s => current.correctAnswer.includes(s))
+    observeAnswer(current.questionId, correct, current.errorType ? [current.errorType] : undefined)
     setIsCorrect(correct)
     setIsChecked(true)
     if (correct) {
@@ -65,7 +76,7 @@ export function MistakesReview() {
     } else {
       incrementWrongAnswerAttempt(current.questionId, selected)
     }
-  }, [selected, current, removeWrongAnswer, incrementWrongAnswerAttempt])
+  }, [selected, current, removeWrongAnswer, incrementWrongAnswerAttempt, observeAnswer])
 
   const handleNext = useCallback(() => {
     setSelected([])

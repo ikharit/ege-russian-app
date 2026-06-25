@@ -9,6 +9,7 @@ import { useDuelStore, DuelQuestion } from '../stores/duelStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useProgressStore } from '../stores/progressStore'
 import { course } from '../data/courseData'
+import { useAdaptiveEngine } from '../hooks/useAdaptiveEngine'
 
 function generateDuelQuestions(count = 5): DuelQuestion[] {
   const allQuestions = course.sections.flatMap(s => s.lessons.flatMap(l => l.questions))
@@ -20,6 +21,7 @@ function generateDuelQuestions(count = 5): DuelQuestion[] {
     correctAnswer: q.correctAnswer,
     explanation: q.explanation,
     taskNumber: q.atoms?.find(a => a.startsWith('task'))?.replace('task', '') || '1',
+    atoms: q.atoms,
   }))
 }
 
@@ -48,6 +50,10 @@ export function DuelPage() {
   const [startTime, setStartTime] = useState<number>(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [elapsedMs, setElapsedMs] = useState(0)
+
+  const { observeAnswer } = useAdaptiveEngine(
+    (activeDuel?.questions || []).map(q => ({ id: q.id, atoms: q.atoms || [] }))
+  )
 
   useEffect(() => {
     cleanupExpired()
@@ -112,11 +118,12 @@ export function DuelPage() {
 
   const handleCheck = () => {
     if (!currentQuestion || selected.length === 0) return
-    const qStart = startTime || Date.now()
-    const timeMs = Date.now() - qStart
     const correct = currentQuestion.correctAnswer.length === 1
       ? selected[0] === currentQuestion.correctAnswer[0]
       : selected.length === currentQuestion.correctAnswer.length && selected.every(s => currentQuestion.correctAnswer.includes(s))
+    observeAnswer(currentQuestion.id, correct, currentQuestion.atoms || [])
+    const qStart = startTime || Date.now()
+    const timeMs = Date.now() - qStart
     setIsCorrect(correct)
     setIsChecked(true)
     setAnswers(prev => [...prev, { questionId: currentQuestion.id, correct, timeMs }])

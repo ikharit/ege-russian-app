@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Check, X, Zap, Clock, Trophy, RotateCcw, Pause, Play } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useAdaptiveEngine } from '../hooks/useAdaptiveEngine'
 import { course } from '../data/courseData'
 import { playCorrectSound, playWrongSound, playLessonCompleteSound } from '../lib/sounds'
 
@@ -25,6 +26,12 @@ export function MarathonPage() {
       options: q.options ? [...q.options].sort(() => Math.random() - 0.5) : undefined,
     }))
   }, [])
+
+  // Adaptive engine (invisible to user)
+  const { observeAnswer } = useAdaptiveEngine(
+    questions.map(q => ({ id: q.id, atoms: q.atoms })),
+    'mixed'
+  )
 
   const [currentIdx, setCurrentIdx] = useState(0)
   const [selected, setSelected] = useState<string[]>([])
@@ -68,6 +75,9 @@ export function MarathonPage() {
     setIsChecked(true)
     recordQuestionAnswered()
 
+    // Adaptive: IRT + BKT (invisible engine)
+    observeAnswer(current.id, correct, current.atoms)
+
     if (correct) {
       setCorrectCount(prev => prev + 1)
       playCorrectSound()
@@ -87,7 +97,7 @@ export function MarathonPage() {
       }, selected)
     }
     setAnswers(prev => [...prev, { correct, timeMs }])
-  }, [selected, isChecked, current, startTime, recordQuestionAnswered, updateTaskStats, recordWrongAnswer])
+  }, [selected, isChecked, current, startTime, recordQuestionAnswered, updateTaskStats, recordWrongAnswer, observeAnswer])
 
   const handleNext = useCallback(() => {
     if (currentIdx >= questions.length - 1) {

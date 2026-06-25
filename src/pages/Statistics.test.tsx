@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { Statistics } from './Statistics'
 import { useProgressStore } from '../stores/progressStore'
 
@@ -38,6 +39,11 @@ vi.mock('../stores/progressStore', () => ({
         'lesson-dooshin-16-1': { status: 'completed', bestScore: 90 },
       },
       userStats: { xp: 100, streak: 5, level: 2, maxStreak: 5, lastActivityDate: '', hearts: 5, maxHearts: 5, achievements: [], name: 'test', lastHeartRestore: '', infiniteHearts: false, totalLessonTimeMinutes: 0, totalQuestionsAnswered: 0, totalHeartsLost: 0, mistakesFixed: 0 },
+      taskStats: {},
+      examResults: [],
+      wrongAnswers: [],
+      examDate: null,
+      predictiveScoreHistory: [],
     }
     return selector(state)
   }),
@@ -45,12 +51,12 @@ vi.mock('../stores/progressStore', () => ({
 
 describe('Statistics', () => {
   it('renders without crashing', () => {
-    render(<Statistics />)
+    render(<MemoryRouter><Statistics /></MemoryRouter>)
     expect(screen.getByText('Статистика')).toBeTruthy()
   })
 
   it('shows dooshin progress merged into base sections', () => {
-    render(<Statistics />)
+    render(<MemoryRouter><Statistics /></MemoryRouter>)
     // Dooshin lessons should not appear as a separate section bar
     expect(screen.queryByText('Дощинский')).toBeNull()
     // Should show chart containers

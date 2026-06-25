@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, Lightbulb, ArrowRight, RotateCcw, Zap, TrendingDown } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useAdaptiveEngine } from '../hooks/useAdaptiveEngine'
 import { course } from '../data/courseData'
 import { playCorrectSound, playWrongSound } from '../lib/sounds'
 
@@ -66,6 +67,7 @@ export function DailyQuestionCard() {
   })
 
   const [selected, setSelected] = useState<string[]>([])
+  const [textAnswer, setTextAnswer] = useState('')
   const [isChecked, setIsChecked] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const [showHint, setShowHint] = useState(false)
@@ -84,6 +86,13 @@ export function DailyQuestionCard() {
   const taskNumber = question.atoms?.find((a: string) => a.startsWith('task'))?.replace('task', '') || '1'
   const isProblematic = (question as any)._isProblematic
   const wrongCount = (question as any)._wrongCount
+  const hasOptions = question.options && question.options.length > 0
+
+  // Adaptive engine for daily question (invisible to user)
+  const { observeAnswer } = useAdaptiveEngine(
+    [{ id: question.id, atoms: question.atoms }],
+    taskNumber
+  )
 
   const handleSelect = (option: string) => {
     if (isChecked || savedState?.answered) return
@@ -95,12 +104,23 @@ export function DailyQuestionCard() {
   }
 
   const handleCheck = () => {
-    if (selected.length === 0 || isChecked) return
-    const correct = question.type === 'single'
-      ? selected[0] === question.correctAnswer[0]
-      : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
+    if (isChecked) return
+    let correct = false
+    if (hasOptions) {
+      if (selected.length === 0) return
+      correct = question.type === 'single'
+        ? selected[0] === question.correctAnswer[0]
+        : selected.length === question.correctAnswer.length && selected.every(s => question.correctAnswer.includes(s))
+    } else {
+      if (!textAnswer.trim()) return
+      const normalized = textAnswer.trim().toLowerCase()
+      correct = question.correctAnswer.some((a: string) => a.toLowerCase() === normalized)
+    }
     setIsCorrect(correct)
     setIsChecked(true)
+
+    // Adaptive: IRT + BKT (invisible engine)
+    observeAnswer(question.id, correct, question.atoms)
 
     // Save state
     localStorage.setItem(`daily-question-${seed}`, JSON.stringify({ answered: true, correct }))
@@ -121,7 +141,7 @@ export function DailyQuestionCard() {
         correctAnswer: question.correctAnswer,
         explanation: question.explanation,
         atoms: question.atoms,
-      }, selected)
+      }, hasOptions ? selected : [textAnswer.trim()])
     }
   }
 
@@ -129,6 +149,7 @@ export function DailyQuestionCard() {
     localStorage.removeItem(`daily-question-${seed}`)
     setSavedState(null)
     setSelected([])
+    setTextAnswer('')
     setIsChecked(false)
     setIsCorrect(false)
     setShowHint(false)
@@ -165,7 +186,7 @@ export function DailyQuestionCard() {
 
       <p className="text-sm text-gray-800 mb-4 font-medium">{question.text}</p>
 
-      {question.options && (
+      {hasOptions ? (
         <div className="flex flex-col gap-2 mb-4">
           {question.options.map((option: string) => {
             const isSelected = selected.includes(option)
@@ -190,6 +211,27 @@ export function DailyQuestionCard() {
             )
           })}
         </div>
+      ) : (
+        <div className="mb-4">
+          <input
+            type="text"
+            value={textAnswer}
+            onChange={(e) => {
+              if (!isAnswered) setTextAnswer(e.target.value)
+            }}
+            disabled={isAnswered}
+            maxLength={10}
+            className={`w-full p-3 rounded-xl border-2 text-center text-lg font-bold tracking-widest transition-all ${
+              isAnswered
+                ? isCorrect
+                  ? 'bg-duo-green/10 border-duo-green text-duo-green-dark'
+                  : 'bg-red-50 border-red-300 text-red-700'
+                : 'bg-white border-gray-200 focus:border-duo-green focus:outline-none'
+            }`}
+            placeholder="Введите ответ"
+            autoFocus
+          />
+        </div>
       )}
 
       {isAnswered && (
@@ -204,6 +246,11 @@ export function DailyQuestionCard() {
                 {isCorrect ? <Check size={16} /> : <X size={16} />}
                 <span className="font-bold">{isCorrect ? 'Правильно! +15 XP' : 'Неправильно'}</span>
               </div>
+              {!isCorrect && question.correctAnswer && (
+                <p className="text-xs mt-1">
+                  Правильный ответ: <strong className="text-green-700">{question.correctAnswer.join(', ')}</strong>
+                </p>
+              )}
               {question.explanation && (
                 <p className="mt-1 text-xs opacity-80">{question.explanation}</p>
               )}
@@ -215,7 +262,7 @@ export function DailyQuestionCard() {
       {!isAnswered && (
         <button
           onClick={handleCheck}
-          disabled={selected.length === 0}
+          disabled={hasOptions ? selected.length === 0 : !textAnswer.trim()}
           className="btn-primary w-full disabled:opacity-50"
         >
           Проверить

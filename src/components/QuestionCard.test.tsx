@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { QuestionCard } from './QuestionCard'
 import { Question } from '../types'
 
@@ -23,9 +24,12 @@ const baseQuestion = (overrides: Partial<Question>): Question => ({
   ...overrides,
 })
 
+const renderWithRouter = (ui: React.ReactElement) =>
+  render(<MemoryRouter>{ui}</MemoryRouter>)
+
 describe('QuestionCard', () => {
   it('renders question text and options', () => {
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={1}
@@ -42,7 +46,7 @@ describe('QuestionCard', () => {
 
   it('allows selecting an option and checking answer', () => {
     const onAnswer = vi.fn()
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={1}
@@ -54,11 +58,11 @@ describe('QuestionCard', () => {
     )
     fireEvent.click(screen.getByText('правильно'))
     fireEvent.click(screen.getByText('Проверить'))
-    expect(onAnswer).toHaveBeenCalledWith(true, ['правильно'])
+    expect(onAnswer).toHaveBeenCalledWith(true, ['правильно'], 0)
   })
 
   it('shows correct answer styling after check', () => {
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={1}
@@ -76,7 +80,7 @@ describe('QuestionCard', () => {
 
   it('handles text input type', () => {
     const onAnswer = vi.fn()
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({
           type: 'text',
@@ -93,12 +97,12 @@ describe('QuestionCard', () => {
     const input = screen.getByPlaceholderText('Впишите ответ...')
     fireEvent.change(input, { target: { value: 'ответ' } })
     fireEvent.click(screen.getByText('Проверить'))
-    expect(onAnswer).toHaveBeenCalledWith(true, ['ответ'])
+    expect(onAnswer).toHaveBeenCalledWith(true, ['ответ'], 0)
   })
 
   it('handles multiple correct answers (multiple type)', () => {
     const onAnswer = vi.fn()
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({
           type: 'multiple',
@@ -115,11 +119,11 @@ describe('QuestionCard', () => {
     fireEvent.click(screen.getByText('а'))
     fireEvent.click(screen.getByText('б'))
     fireEvent.click(screen.getByText('Проверить'))
-    expect(onAnswer).toHaveBeenCalledWith(true, ['а', 'б'])
+    expect(onAnswer).toHaveBeenCalledWith(true, ['а', 'б'], 0)
   })
 
   it('disables options after check', () => {
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={1}
@@ -131,12 +135,12 @@ describe('QuestionCard', () => {
     )
     fireEvent.click(screen.getByText('правильно'))
     fireEvent.click(screen.getByText('Проверить'))
-    expect(screen.getByText('Далее')).toBeDefined()
+    expect(screen.getByText('Понятно, дальше →')).toBeDefined()
   })
 
   it('calls onNext when clicking Далее', () => {
     const onNext = vi.fn()
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={1}
@@ -148,12 +152,12 @@ describe('QuestionCard', () => {
     )
     fireEvent.click(screen.getByText('правильно'))
     fireEvent.click(screen.getByText('Проверить'))
-    fireEvent.click(screen.getByText('Далее'))
+    fireEvent.click(screen.getByText('Понятно, дальше →'))
     expect(onNext).toHaveBeenCalled()
   })
 
   it('shows Завершить on last question', () => {
-    render(
+    renderWithRouter(
       <QuestionCard
         question={baseQuestion({})}
         questionNumber={5}

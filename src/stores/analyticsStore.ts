@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { syncUserAnalytics, loadUserAnalytics } from '../lib/supabase'
 
 export type EventCategory =
   | 'lesson' | 'trainer' | 'theory' | 'exam' | 'flashcard'
@@ -73,6 +74,7 @@ interface AnalyticsState {
   clickEvents: ClickEvent[]
   lastEventTrim: string
   dailySnapshots: DailySnapshot[]
+  userId: string | null
 }
 
 export interface DailySnapshot {
@@ -122,6 +124,9 @@ interface AnalyticsActions {
   getRecommendations: () => TeacherRecommendation[]
   trimOldEvents: (keepDays?: number) => void
   clearAnalytics: () => void
+  syncAnalytics: () => Promise<void>
+  loadAnalytics: () => Promise<void>
+  setUserId: (userId: string | null) => void
 }
 
 export interface TeacherAlert {
@@ -168,6 +173,7 @@ export const useAnalyticsStore = create<AnalyticsState & AnalyticsActions>()(
       clickEvents: [],
       lastEventTrim: new Date().toISOString(),
       dailySnapshots: [],
+      userId: null,
 
       trackEvent(category, action, label, value, metadata) {
         const event: AnalyticsEvent = {
@@ -700,6 +706,31 @@ export const useAnalyticsStore = create<AnalyticsState & AnalyticsActions>()(
 
       clearAnalytics() {
         set({ events: [], pageSessions: [], clickEvents: [], dailySnapshots: [], lastEventTrim: new Date().toISOString() })
+      },
+
+      setUserId(userId: string | null) {
+        set({ userId })
+      },
+
+      async syncAnalytics() {
+        const userId = get().userId
+        if (!userId) return
+        const bp = get().getBehaviorProfile()
+        const { error } = await syncUserAnalytics(userId, bp as any, get().dailySnapshots)
+        if (error) console.error('syncAnalytics error:', error)
+      },
+
+      async loadAnalytics() {
+        const userId = get().userId
+        if (!userId) return
+        const { data, error } = await loadUserAnalytics(userId)
+        if (error) {
+          console.error('loadAnalytics error:', error)
+          return
+        }
+        if (data?.daily_snapshots) {
+          set({ dailySnapshots: data.daily_snapshots as any })
+        }
       },
     }),
     {

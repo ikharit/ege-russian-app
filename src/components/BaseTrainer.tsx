@@ -8,12 +8,12 @@ import {
   Bookmark, BookmarkCheck
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
+import { useAdaptiveStore } from '../stores/adaptiveStore'
 import { SavedExplanation } from '../types'
 import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 import { speak, isTTSAvailable } from '../lib/tts'
-import { getGlobalIRT } from '../utils/irtEngine'
-import { getGlobalBKT } from '../utils/bktEngine'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
+import { useSettingsStore } from '../stores/settingsStore'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -97,6 +97,8 @@ export function BaseTrainer<T>({
   const savedExplanations = useProgressStore((s) => s.savedExplanations)
   const saveExplanation = useProgressStore((s) => s.saveExplanation)
 
+  // Adaptive (IRT + BKT) — invisible engine, no UI
+
   const currentQuestion = questions[currentIndex]
   const overall = {
     passed: Math.min(currentIndex, questions.length),
@@ -126,20 +128,20 @@ export function BaseTrainer<T>({
     setTouchStart(null)
   }, [touchStart, currentIndex, questions.length])
 
-  // IRT-based adaptive question ordering
-  const irt = useState(() => getGlobalIRT())[0]
-  const bkt = useState(() => getGlobalBKT())[0]
+  // Adaptive store (IRT + BKT) — invisible engine, no UI
+  const observeIRT = useAdaptiveStore((s) => s.observeIRT)
+  const observeBKT = useAdaptiveStore((s) => s.observeBKT)
+  const selectNextQuestion = useAdaptiveStore((s) => s.selectNextQuestion)
 
-  // Register all questions with IRT
+  // Register all questions with adaptive store
   useEffect(() => {
     for (const q of questions) {
       const qid = getQuestionId(q)
-      const diff = (q as any).irtDifficulty ?? 0 // default average difficulty
-      if (!irt.items[qid]) {
-        irt.calibrateDifficulty(qid, 0.5) // placeholder, will refine with data
-      }
+      const diff = (q as any).irtDifficulty ?? 0
+      const correctRate = diff !== 0 ? (1 - diff / 3) * 0.5 + 0.5 : 0.5
+      useAdaptiveStore.getState().calibrateItem(qid, correctRate)
     }
-  }, [questions, irt])
+  }, [questions])
 
   // Adaptive question ordering via IRT
   const [questionOrder, setQuestionOrder] = useState<number[]>(() => {
@@ -147,7 +149,7 @@ export function BaseTrainer<T>({
     const ordered: number[] = []
     const pool = new Set(ids)
     while (pool.size > 0) {
-      const next = irt.selectNextQuestion(Array.from(pool), 0.7)
+      const next = useAdaptiveStore.getState().selectNextQuestion(Array.from(pool), 0.7)
       if (!next) break
       const idx = Number(next)
       ordered.push(idx)
@@ -173,14 +175,13 @@ export function BaseTrainer<T>({
     setAnswerState(isRight ? 'correct' : 'wrong')
     recordQuestionAnswered()
 
-    // Update IRT ability
+    // Update adaptive store (IRT + BKT)
     const qid = getQuestionId(effectiveQuestion)
-    irt.updateAbility([{ questionId: qid, correct: isRight }])
+    observeIRT(qid, isRight)
 
-    // Update BKT for each atom
     const atoms = getAtoms?.(effectiveQuestion) || []
     for (const atom of atoms) {
-      bkt.observe(atom, isRight)
+      observeBKT(atom, isRight)
     }
 
     if (isRight) {

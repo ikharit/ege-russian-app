@@ -306,6 +306,33 @@ export interface TeacherStudentView {
   topWeakWords: { word: string; wrongCount: number; ruleId?: string }[]
   topWeakRules: { ruleId: string; wrongCount: number; words: string[] }[]
   overallAccuracy: number
+  behaviorProfile?: {
+    mostActiveCategory: string
+    leastActiveCategory: string
+    preferredLearningTime: string
+    sessionFrequency: string
+    avgSessionDuration: number
+    totalClicks: number
+    totalSessions: number
+    topClickedElements: { element: string; count: number }[]
+    timeDistribution: Record<string, number>
+    clickDistribution: Record<string, number>
+    motivationSignals: {
+      achievementDriven: number
+      socialDriven: number
+      explorationDriven: number
+      competitionDriven: number
+    }
+  }
+  dailySnapshots?: any[]
+  // Raw progress data for full analysis
+  rawProgressData?: {
+    userStats: any
+    lessonProgress: any
+    taskStats: any
+    achievements: any[]
+    behaviorProfile?: any
+  }
 }
 
 export interface ErrorAnalysis {

@@ -1,8 +1,10 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
 import { ArrowLeft, X, Check, Volume2 } from 'lucide-react'
 import { speak, isTTSAvailable } from '../lib/tts'
+import { useAdaptiveStore } from '../stores/adaptiveStore'
+import { useProgressStore } from '../stores/progressStore'
 
 export interface SwipeQuestion {
   id: string
@@ -11,17 +13,43 @@ export interface SwipeQuestion {
   options: string[]
   correctAnswer: string[]
   explanation: string
+  atoms?: string[]
 }
 
 interface SwipeTrainerPageProps {
   title: string
   taskNumber: string
   questions: SwipeQuestion[]
-  mode?: 'binary' | 'multi' // binary = swipe left/right, multi = tap option
+  mode?: 'binary' | 'multi'
+  getAtoms?: (q: SwipeQuestion) => string[]
 }
 
-export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi' }: SwipeTrainerPageProps) {
+export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi', getAtoms }: SwipeTrainerPageProps) {
   const navigate = useNavigate()
+
+  // Adaptive (IRT + BKT) — invisible engine
+  const observeIRT = useAdaptiveStore((s) => s.observeIRT)
+  const observeBKT = useAdaptiveStore((s) => s.observeBKT)
+  const selectNextQuestion = useAdaptiveStore((s) => s.selectNextQuestion)
+
+  const addXP = useProgressStore((s) => s.addXP)
+  const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
+  const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
+  const updateStreak = useProgressStore((s) => s.updateStreak)
+  const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
+
+  const [questionOrder] = useState(() => {
+    const pool = new Set(questions.map((q) => q.id))
+    const ordered: string[] = []
+    while (pool.size > 0) {
+      const next = selectNextQuestion(Array.from(pool), 0.7)
+      if (!next) break
+      ordered.push(next)
+      pool.delete(next)
+    }
+    return ordered
+  })
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
   const [flash, setFlash] = useState<'green' | 'red' | null>(null)
@@ -29,29 +57,20 @@ export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi' 
   const [stats, setStats] = useState({ correct: 0, wrong: 0 })
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
-  const currentQuestion = questions[currentIndex]
+  const currentQuestion = questions.find(q => q.id === questionOrder[currentIndex]) ?? questions[0]
+
+  // Register all questions with adaptive store
+  useEffect(() => {
+    for (const q of questions) {
+      useAdaptiveStore.getState().calibrateItem(q.id, 0.5)
+    }
+  }, [questions])
 
   const x = useMotionValue(0)
   const rotate = useTransform(x, [-200, 200], [-15, 15])
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0])
 
-  const handleDragEnd = useCallback(
-    (_event: any, info: { offset: { x: number }; velocity: { x: number } }) => {
-      if (mode !== 'binary') return
-      const threshold = 80
-      const velocity = info.velocity.x
-      const offset = info.offset.x
-
-      if (offset > threshold || velocity > 500) {
-        handleAnswer('right')
-      } else if (offset < -threshold || velocity < -500) {
-        handleAnswer('left')
-      }
-    },
-    [currentQuestion, mode]
-  )
-
-  const handleAnswer = (dir: 'left' | 'right' | string) => {
+  const handleAnswer = useCallback((dir: 'left' | 'right' | string) => {
     if (!currentQuestion) return
 
     let isCorrect = false
@@ -61,6 +80,33 @@ export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi' 
     } else {
       // For multi mode: dir is the selected option
       isCorrect = currentQuestion.correctAnswer.includes(dir)
+    }
+
+    // Adaptive: IRT + BKT
+    observeIRT(currentQuestion.id, isCorrect)
+    const atoms = getAtoms?.(currentQuestion) || currentQuestion.atoms || [`task${taskNumber}`]
+    for (const atom of atoms) {
+      observeBKT(atom, isCorrect)
+    }
+
+    // Progress tracking
+    addXP(isCorrect ? 5 : 0)
+    updateTaskStats(taskNumber, isCorrect)
+    recordQuestionAnswered(taskNumber, isCorrect)
+    if (isCorrect) {
+      updateStreak()
+    } else {
+      recordWrongAnswer(
+        {
+          id: currentQuestion.id,
+          text: currentQuestion.text,
+          options: currentQuestion.options,
+          correctAnswer: currentQuestion.correctAnswer,
+          explanation: currentQuestion.explanation,
+          atoms,
+        },
+        typeof dir === 'string' ? dir : ''
+      )
     }
 
     setDirection(dir as 'left' | 'right')
@@ -87,7 +133,23 @@ export function SwipeTrainerPage({ title, taskNumber, questions, mode = 'multi' 
         // Finished - could navigate to results
       }
     }, 2000)
-  }
+  }, [currentQuestion, mode, taskNumber, observeIRT, observeBKT, addXP, updateTaskStats, recordQuestionAnswered, updateStreak, recordWrongAnswer, getAtoms, currentIndex, questions.length])
+
+  const handleDragEnd = useCallback(
+    (_event: any, info: { offset: { x: number }; velocity: { x: number } }) => {
+      if (mode !== 'binary') return
+      const threshold = 80
+      const velocity = info.velocity.x
+      const offset = info.offset.x
+
+      if (offset > threshold || velocity > 500) {
+        handleAnswer('right')
+      } else if (offset < -threshold || velocity < -500) {
+        handleAnswer('left')
+      }
+    },
+    [currentQuestion, mode, handleAnswer]
+  )
 
   const handleOptionTap = (option: string) => {
     if (showExplanation) return

@@ -28,10 +28,18 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
     set({ loading: true, error: null })
 
     try {
-      // 1. Получаем связи учитель-ученик
+      // 1. Получаем текущего пользователя
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        set({ students: [], loading: false })
+        return
+      }
+
+      // 2. Получаем связи учитель-ученик для текущего учителя
       const { data: links, error: linksError } = await supabase
         .from('teacher_student_links')
         .select('student_id, class_name')
+        .eq('teacher_id', user.id)
 
       if (linksError) throw linksError
       if (!links || links.length === 0) {
@@ -41,10 +49,10 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
       const studentIds = links.map((l: any) => l.student_id)
 
-      // 2. Получаем прогресс учеников (user_progress)
+      // 2. Получаем прогресс учеников (user_progress) + analytics
       const { data: progressData, error: progressError } = await supabase
         .from('user_progress')
-        .select('user_id, user_stats, wrong_answers, task_stats')
+        .select('user_id, user_stats, wrong_answers, task_stats, behavior_profile')
         .in('user_id', studentIds)
 
       if (progressError) throw progressError
@@ -57,12 +65,23 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
       if (wordErrorsError) throw wordErrorsError
 
+      // 4. Получаем daily snapshots (user_analytics)
+      const { data: analyticsData, error: analyticsError } = await supabase
+        .from('user_analytics')
+        .select('user_id, daily_snapshots')
+        .in('user_id', studentIds)
+
+      if (analyticsError && import.meta.env.DEV) {
+        console.warn('user_analytics fetch:', analyticsError)
+      }
+
       // 4. Собираем TeacherStudentView
       const students: TeacherStudentView[] = studentIds.map((studentId: string) => {
         const progress = progressData?.find((p: any) => p.user_id === studentId)
         const stats = progress?.user_stats || {}
         const wrongAnswers = progress?.wrong_answers || []
         const studentWordErrors = (wordErrors || []).filter((e: any) => e.user_id === studentId)
+        const analytics = analyticsData?.find((a: any) => a.user_id === studentId)
 
         // Агрегируем по словам
         const topWeakWords = studentWordErrors
@@ -112,6 +131,15 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
           topWeakWords,
           topWeakRules,
           overallAccuracy,
+          behaviorProfile: progress?.behavior_profile || undefined,
+          dailySnapshots: analytics?.daily_snapshots || undefined,
+          rawProgressData: {
+            userStats: stats,
+            lessonProgress: progress?.lesson_progress || {},
+            taskStats: progress?.task_stats || {},
+            achievements: progress?.achievements || [],
+            behaviorProfile: progress?.behavior_profile || undefined,
+          },
         }
       })
 

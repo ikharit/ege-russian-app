@@ -8,6 +8,7 @@ export interface DuelQuestion {
   correctAnswer: string[]
   explanation: string
   taskNumber: string
+  atoms?: string[]
 }
 
 export interface DuelPlayer {

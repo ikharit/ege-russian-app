@@ -7,6 +7,7 @@ import { loadQuestionsForTask } from '../data/examQuestionLoader'
 import { useProgressStore } from '../stores/progressStore'
 import { Question } from '../types'
 import { QuestionCard } from '../components/QuestionCard'
+import { useAdaptiveEngine } from '../hooks/useAdaptiveEngine'
 
 export function ExamVariantPage() {
   const { variantId } = useParams<{ variantId: string }>()
@@ -22,6 +23,7 @@ export function ExamVariantPage() {
   const taskScoresRef = useRef(taskScores)
   useEffect(() => { taskScoresRef.current = taskScores }, [taskScores])
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
+  const [questions, setQuestions] = useState<Question[]>([])
   const [isStarted, setIsStarted] = useState(false)
 
   const saveExamResult = useProgressStore((s) => s.saveExamResult)
@@ -89,18 +91,25 @@ export function ExamVariantPage() {
       task.questionCount
     )
     setCurrentQuestion(loaded[0] || null)
+    setQuestions(loaded)
   }, [variant, currentTaskIndex, isStarted])
+
+  const { observeAnswer } = useAdaptiveEngine(
+    questions,
+    String(variant?.tasks[currentTaskIndex]?.taskNumber || '')
+  )
 
   const handleAnswer = useCallback(
     (correct: boolean) => {
       const task = variant?.tasks[currentTaskIndex]
       if (!task) return
+      observeAnswer(currentQuestion?.id || '', correct, currentQuestion?.atoms)
       setTaskScores((prev) => ({
         ...prev,
         [task.taskNumber]: correct ? task.maxScore : 0,
       }))
     },
-    [variant, currentTaskIndex]
+    [variant, currentTaskIndex, observeAnswer, currentQuestion]
   )
 
   const handleNext = useCallback(() => {

@@ -70,6 +70,30 @@ export type LeaderboardEntry = {
   updated_at: string
 }
 
+export type UserAnalytics = {
+  user_id: string
+  behavior_profile: Record<string, any> | null
+  daily_snapshots: Record<string, any>[] | null
+  updated_at: string
+}
+
+export async function syncUserAnalytics(userId: string, behaviorProfile: Record<string, any>, dailySnapshots: Record<string, any>[]) {
+  if (!isSupabaseConfigured) return { error: null }
+  const { error } = await supabase.from('user_analytics').upsert({
+    user_id: userId,
+    behavior_profile: behaviorProfile,
+    daily_snapshots: dailySnapshots.slice(-90),
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'user_id' })
+  return { error }
+}
+
+export async function loadUserAnalytics(userId: string) {
+  if (!isSupabaseConfigured) return { data: null, error: null }
+  const { data, error } = await supabase.from('user_analytics').select('*').eq('user_id', userId).single()
+  return { data, error }
+}
+
 export async function getCurrentUser() {
   if (!isSupabaseConfigured) return null
   const { data, error } = await supabase.auth.getUser()

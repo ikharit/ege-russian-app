@@ -4,7 +4,6 @@ import { ClassHeatmapPage } from './pages/ClassHeatmapPage'
 import { AutoHomeworkPage } from './pages/AutoHomeworkPage'
 import { FriendsPage } from './pages/FriendsPage'
 import { FlashcardsPage } from './pages/FlashcardsPage'
-import { AdaptiveTrainerPage } from './pages/AdaptiveTrainerPage'
 import { TodayPage } from './pages/TodayPage'
 import { Dashboard } from './pages/Dashboard'
 import { CourseMap } from './pages/CourseMap'
@@ -182,6 +181,7 @@ export default function App() {
         const { data, error } = await supabase.auth.getSession()
         if (data?.session?.user) {
           setUserId(data.session.user.id)
+          useAnalyticsStore.getState().setUserId(data.session.user.id)
           setUserEmail(data.session.user.email || null)
           if (data.session.user.user_metadata?.name) {
             setUserName(data.session.user.user_metadata.name)
@@ -189,6 +189,7 @@ export default function App() {
             setUserName(data.session.user.email.split('@')[0])
           }
           await loadProgress()
+          await useAnalyticsStore.getState().loadAnalytics()
           // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname)
         }
@@ -260,6 +261,7 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
       if (event === 'SIGNED_IN' && session?.user) {
         setUserId(session.user.id)
+        useAnalyticsStore.getState().setUserId(session.user.id)
         setUserEmail(session.user.email || null)
         if (session.user.user_metadata?.name) {
           setUserName(session.user.user_metadata.name)
@@ -267,9 +269,11 @@ export default function App() {
           setUserName(session.user.email.split('@')[0])
         }
         await loadProgress()
+        await useAnalyticsStore.getState().loadAnalytics()
       }
       if (event === 'SIGNED_OUT') {
         setUserId(null)
+        useAnalyticsStore.getState().setUserId(null)
         setUserEmail(null)
       }
     })
@@ -391,11 +395,13 @@ export default function App() {
     return () => unsubscribe()
   }, [])
 
-  // Take daily analytics snapshot
+  // Take daily analytics snapshot + sync
   useEffect(() => {
     const takeSnapshot = useAnalyticsStore.getState().takeSnapshot
+    const syncAnalytics = useAnalyticsStore.getState().syncAnalytics
     const interval = setInterval(() => {
       takeSnapshot()
+      syncAnalytics().catch(() => {})
     }, 5 * 60 * 1000) // every 5 minutes
     return () => clearInterval(interval)
   }, [])

@@ -8,6 +8,14 @@ import { ragRetriever, generateExplanation } from '../lib/rag'
 import { TheoryQuickReference } from './TheoryQuickReference'
 import { QuestionFeedback } from './QuestionFeedback'
 import { useProgressStore } from '../stores/progressStore'
+import { validateQuestion } from '../utils/questionValidator'
+
+// Dev-mode validation check for question quality
+function useQuestionValidation(question: Question) {
+  if (!import.meta.env.DEV) return null
+  const issues = validateQuestion(question, 'QuestionCard.tsx', question.id)
+  return issues.length > 0 ? issues : null
+}
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
   if (!atoms) return null
@@ -45,6 +53,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
 
   const isTextType = question.type === 'text'
   const options = question.options || []
+  const validationIssues = useQuestionValidation(question)
 
   // Reset focus on new question
   useEffect(() => {
@@ -201,7 +210,14 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
         <span>❤️ {heartsLeft}</span>
       </div>
 
-      <h2 className="text-xl font-bold text-gray-800">{question.text}</h2>
+      <h2 className="text-xl font-bold text-gray-800">
+        {question.text}
+        {validationIssues && (
+          <span className="ml-2 text-sm font-normal text-orange-500" title={validationIssues.map(i => i.details).join('\n')}>
+            ⚠️ ({validationIssues.length})
+          </span>
+        )}
+      </h2>
 
       {question.theory && (
         <div className="bg-duo-snow p-3 rounded-xl text-sm text-gray-600">

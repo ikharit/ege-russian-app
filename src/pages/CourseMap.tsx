@@ -264,7 +264,7 @@ export function CourseMap() {
               className={`flex flex-col gap-4 transition-all duration-300 ${
                 isOtherFocused ? 'opacity-15 pointer-events-none' : ''
               } ${isFocused ? 'scale-[1.02]' : ''}`}
-              layout
+              layout="position"
             >
               {/* Section Header */}
               <div className="flex items-center gap-3">
@@ -322,12 +322,15 @@ export function CourseMap() {
               </div>
 
               {/* Content */}
-              {!isCollapsed && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
+              <AnimatePresence initial={false}>
+                {!isCollapsed && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
                   {section.groups && section.groups.length > 0 ? (
                     <div className="flex flex-col gap-2">
                       {section.groups.map((group) => {
@@ -417,6 +420,7 @@ export function CourseMap() {
                   )}
                 </motion.div>
               )}
+            </AnimatePresence>
             </motion.div>
           )
         })}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -6,15 +6,27 @@ import {
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
 import { useClassStore } from '../stores/classStore'
-import { useProgressStore } from '../stores/progressStore'
+import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
 import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
 import type { PlayerType } from '../utils/personalityEngine'
+import type { ProgressData } from '../stores/classStore'
 
 const RISK_CONFIG = {
   low: { color: '#58cc02', label: 'Всё хорошо', icon: CheckCircle },
   medium: { color: '#ffc800', label: 'Требует внимания', icon: AlertCircle },
   high: { color: '#ff4b4b', label: 'Риск отвала', icon: AlertTriangle },
+}
+
+function rawToProgressData(raw: any): ProgressData | undefined {
+  if (!raw) return undefined
+  return {
+    userStats: raw.userStats || {},
+    lessonProgress: raw.lessonProgress || {},
+    taskStats: raw.taskStats || {},
+    achievements: raw.achievements || [],
+    behaviorProfile: raw.behaviorProfile,
+  }
 }
 
 export function TeacherAnalytics() {
@@ -28,15 +40,26 @@ export function TeacherAnalytics() {
   const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
+  // Real data from Supabase
+  const { students: realStudents, loading: realLoading, error: realError } = useTeacherAnalyticsStore()
+  useEffect(() => {
+    useTeacherAnalyticsStore.getState().fetchStudents()
+  }, [])
+
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
-  const students = selectedClass?.students || []
+  // Prefer real students from Supabase; fallback to classStore demo data
+  const hasRealStudents = realStudents.length > 0
+  const students = hasRealStudents
+    ? realStudents.map(s => ({ id: s.studentId, name: s.studentName, progress: rawToProgressData(s.rawProgressData) }))
+    : (selectedClass?.students || [])
+
   const analytics = students.map(s => 
     analyzeStudent(s.id, s.name, s.progress)
   )
   const summary = analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
 
-  // Aggregate trends from all students' behavior profiles
+  // Aggregate trends from all students' behavior profiles or real dailySnapshots
   const trendData = (() => {
     const dates: string[] = []
     const sessions: number[] = []
@@ -60,19 +83,36 @@ export function TeacherAnalytics() {
       let dayAchieve = 0, daySocial = 0, dayExplore = 0, dayCompete = 0
       let studentCount = 0
 
-      students.forEach(s => {
-        const bp = s.progress?.behaviorProfile
-        if (!bp) return
-        // We don't have per-day data in behaviorProfile, use averages
-        daySessions += bp.totalSessions / 30
-        dayClicks += bp.totalClicks / 30
-        dayTime += bp.avgSessionDuration / 60
-        dayAchieve += bp.motivationSignals.achievementDriven
-        daySocial += bp.motivationSignals.socialDriven
-        dayExplore += bp.motivationSignals.explorationDriven
-        dayCompete += bp.motivationSignals.competitionDriven
-        studentCount++
-      })
+      if (hasRealStudents) {
+        // Use real dailySnapshots from Supabase
+        realStudents.forEach(s => {
+          const snap = s.dailySnapshots?.find((ds: any) => ds.date === dateStr)
+          if (snap) {
+            daySessions += snap.totalSessions || 0
+            dayClicks += snap.totalClicks || 0
+            dayTime += (snap.totalTimeSeconds || 0) / 60
+            dayAchieve += snap.motivationSignals?.achievementDriven || 0
+            daySocial += snap.motivationSignals?.socialDriven || 0
+            dayExplore += snap.motivationSignals?.explorationDriven || 0
+            dayCompete += snap.motivationSignals?.competitionDriven || 0
+            studentCount++
+          }
+        })
+      } else {
+        // Fallback: use averages from behaviorProfile
+        students.forEach(s => {
+          const bp = s.progress?.behaviorProfile
+          if (!bp) return
+          daySessions += bp.totalSessions / 30
+          dayClicks += bp.totalClicks / 30
+          dayTime += bp.avgSessionDuration / 60
+          dayAchieve += bp.motivationSignals.achievementDriven
+          daySocial += bp.motivationSignals.socialDriven
+          dayExplore += bp.motivationSignals.explorationDriven
+          dayCompete += bp.motivationSignals.competitionDriven
+          studentCount++
+        })
+      }
 
       sessions.push(Math.round(daySessions))
       clicks.push(Math.round(dayClicks))
@@ -212,11 +252,17 @@ export function TeacherAnalytics() {
           </div>
         )}
 
-        {students.length === 0 ? (
+        {realLoading ? (
+          <div className="text-center py-12">
+            <div className="w-8 h-8 border-2 border-duo-green border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-gray-500 font-bold">Загружаем аналитику...</p>
+          </div>
+        ) : students.length === 0 ? (
           <div className="text-center py-12">
             <Users size={48} className="text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500 font-bold">В классе пока нет учеников</p>
             <p className="text-sm text-gray-400">Добавьте учеников, чтобы увидеть аналитику</p>
+            {realError && <p className="text-xs text-red-400 mt-2">{realError}</p>}
           </div>
         ) : (
           <>
@@ -361,9 +407,9 @@ export function TeacherAnalytics() {
                           students.forEach(s => {
                             const bp = s.progress?.behaviorProfile?.timeDistribution
                             if (bp) {
-                              Object.entries(bp).forEach(([cat, seconds]) => {
+                              Object.entries(bp as Record<string, number>).forEach(([cat, seconds]) => {
                                 if (seconds > 0) {
-                                  timeByCat[cat] = (timeByCat[cat] || 0) + seconds
+                                  timeByCat[cat] = (timeByCat[cat] || 0) + (seconds as number)
                                 }
                               })
                             }
@@ -392,9 +438,9 @@ export function TeacherAnalytics() {
                           students.forEach(s => {
                             const bp = s.progress?.behaviorProfile?.clickDistribution
                             if (bp) {
-                              Object.entries(bp).forEach(([cat, count]) => {
+                              Object.entries(bp as Record<string, number>).forEach(([cat, count]) => {
                                 if (count > 0) {
-                                  clicksByCat[cat] = (clicksByCat[cat] || 0) + count
+                                  clicksByCat[cat] = (clicksByCat[cat] || 0) + (count as number)
                                 }
                               })
                             }
