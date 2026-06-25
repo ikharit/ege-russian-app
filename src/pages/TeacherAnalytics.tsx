@@ -284,7 +284,17 @@ export function TeacherAnalytics() {
             <Users size={48} className="text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500 font-bold">Пока нет данных пользователей</p>
             <p className="text-sm text-gray-400">Аналитика появится, когда пользователи синхронизируют свои данные</p>
-            {realError && <p className="text-xs text-red-400 mt-2">{realError}</p>}
+            {realError && (
+              <div className="mt-3">
+                <p className="text-xs text-red-400 mb-2">{realError}</p>
+                <button
+                  onClick={() => useTeacherAnalyticsStore.getState().fetchAllUsers()}
+                  className="px-4 py-2 bg-duo-green text-white text-sm font-bold rounded-xl hover:bg-duo-green/90 transition-colors"
+                >
+                  Повторить
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp, Play, RotateCcw } from 'lucide-react'
+import { Lock, Check, Star, BookOpen, Pencil, Trophy, Zap, TrendingUp, ChevronDown, ChevronUp, Play, RotateCcw, Wrench } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   BookOpen, Pencil, Trophy, Zap,
@@ -37,6 +37,7 @@ function LessonCard({
   const prog = lessonProgress[lesson.id]
 
   const status = (() => {
+    if (lesson.isComingSoon) return 'coming_soon'
     if (prog?.status === 'completed') return 'completed'
     if (prog?.status === 'started') return 'current'
     if (isLessonAvailable(lesson.id, lesson.prerequisites)) return 'available'
@@ -90,6 +91,17 @@ function LessonCard({
       action: '',
       ActionIcon: Lock,
     },
+    coming_soon: {
+      bg: 'bg-gray-50',
+      border: 'border-dashed border-gray-300',
+      iconBg: 'bg-gray-300',
+      icon: <Wrench size={18} />,
+      text: 'text-gray-400',
+      sub: 'text-gray-400',
+      subText: 'В разработке',
+      action: '',
+      ActionIcon: Lock,
+    },
   }
 
   const cfg = statusConfig[status]
@@ -109,9 +121,9 @@ function LessonCard({
 
       <motion.div
         className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border}`}
-        whileHover={status !== 'locked' ? { scale: 1.01, x: 4 } : {}}
-        whileTap={status !== 'locked' ? { scale: 0.99 } : {}}
-        onClick={onClick}
+        whileHover={status !== 'locked' && status !== 'coming_soon' ? { scale: 1.01, x: 4 } : {}}
+        whileTap={status !== 'locked' && status !== 'coming_soon' ? { scale: 0.99 } : {}}
+        onClick={status !== 'coming_soon' ? onClick : undefined}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.05 }}
@@ -154,7 +166,7 @@ function LessonCard({
         </div>
 
         {/* Action arrow */}
-        {status !== 'locked' && (
+        {status !== 'locked' && status !== 'coming_soon' && (
           <div className="flex items-center gap-1 shrink-0 self-center">
             <span className="text-xs font-bold text-gray-400 hidden sm:inline">{cfg.action}</span>
             <cfg.ActionIcon size={16} className="text-gray-400" />
@@ -376,16 +388,17 @@ export function CourseMap() {
                                         total={group.lessons.length}
                                         sectionColor={section.color}
                                         onClick={() => {
-                                          const status = (() => {
-                                            const p = lessonProgress[lesson.id]
-                                            if (p?.status === 'completed') return 'completed'
-                                            if (p?.status === 'started') return 'current'
-                                            const available = useProgressStore.getState().isLessonAvailable(lesson.id, lesson.prerequisites)
-                                            if (available) return 'available'
-                                            return 'locked'
-                                          })()
-                                          if (status !== 'locked') navigate(`/lesson/${lesson.id}`)
-                                        }}
+                                        if (lesson.isComingSoon) return
+                                        const status = (() => {
+                                          const p = lessonProgress[lesson.id]
+                                          if (p?.status === 'completed') return 'completed'
+                                          if (p?.status === 'started') return 'current'
+                                          const available = useProgressStore.getState().isLessonAvailable(lesson.id, lesson.prerequisites)
+                                          if (available) return 'available'
+                                          return 'locked'
+                                        })()
+                                        if (status !== 'locked') navigate(`/lesson/${lesson.id}`)
+                                      }}
                                       />
                                     ))}
                                   </div>
@@ -406,6 +419,7 @@ export function CourseMap() {
                           total={section.lessons.length}
                           sectionColor={section.color}
                           onClick={() => {
+                            if (lesson.isComingSoon) return
                             const status = (() => {
                               const p = lessonProgress[lesson.id]
                               if (p?.status === 'completed') return 'completed'

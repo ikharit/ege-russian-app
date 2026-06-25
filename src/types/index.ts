@@ -68,6 +68,7 @@ export interface Lesson {
   questions: Question[]
   xpReward: number
   prerequisites: string[]
+  isComingSoon?: boolean
 }
 
 export interface LessonGroup {

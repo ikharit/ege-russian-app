@@ -17,6 +17,7 @@ interface TrainerItem {
   textColor: string
   icon?: React.ReactNode
   miniProgress?: React.ReactNode
+  comingSoon?: boolean
 }
 
 const trainers: TrainerItem[] = [
@@ -55,6 +56,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-cyan-50 to-sky-50',
     borderColor: 'border-cyan-200',
     textColor: 'text-cyan-500',
+    comingSoon: true,
   },
   {
     id: 'task7',
@@ -66,6 +68,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-violet-50 to-purple-50',
     borderColor: 'border-violet-200',
     textColor: 'text-violet-500',
+    comingSoon: true,
   },
   {
     id: 'task8',
@@ -77,6 +80,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-amber-50 to-yellow-50',
     borderColor: 'border-amber-200',
     textColor: 'text-amber-500',
+    comingSoon: true,
   },
   {
     id: 'task9',
@@ -188,6 +192,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-orange-50 to-amber-50',
     borderColor: 'border-orange-200',
     textColor: 'text-orange-500',
+    comingSoon: true,
   },
   {
     id: 'task2',
@@ -199,6 +204,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-amber-50 to-yellow-50',
     borderColor: 'border-amber-200',
     textColor: 'text-amber-500',
+    comingSoon: true,
   },
   {
     id: 'task3',
@@ -210,6 +216,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-yellow-50 to-lime-50',
     borderColor: 'border-yellow-200',
     textColor: 'text-yellow-600',
+    comingSoon: true,
   },
   {
     id: 'task18',
@@ -232,6 +239,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-violet-50 to-purple-50',
     borderColor: 'border-violet-200',
     textColor: 'text-violet-500',
+    comingSoon: true,
   },
   {
     id: 'task24',
@@ -243,6 +251,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-purple-50 to-fuchsia-50',
     borderColor: 'border-purple-200',
     textColor: 'text-purple-500',
+    comingSoon: true,
   },
   {
     id: 'task25',
@@ -254,6 +263,7 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-red-50 to-rose-50',
     borderColor: 'border-red-200',
     textColor: 'text-red-500',
+    comingSoon: true,
   },
   {
     id: 'task16',
@@ -265,6 +275,90 @@ const trainers: TrainerItem[] = [
     bgGradient: 'from-orange-50 to-amber-50',
     borderColor: 'border-orange-200',
     textColor: 'text-orange-500',
+  },
+  {
+    id: 'task17',
+    taskNumber: '№17',
+    title: 'Обособленные члены',
+    subtitle: 'Причастный и деепричастный обороты',
+    path: '/task17-trainer',
+    color: 'bg-teal-500',
+    bgGradient: 'from-teal-50 to-cyan-50',
+    borderColor: 'border-teal-200',
+    textColor: 'text-teal-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task19',
+    taskNumber: '№19',
+    title: 'Сложное предложение',
+    subtitle: 'Запятые в ССП, СПП, бессоюзных',
+    path: '/task19-trainer',
+    color: 'bg-indigo-500',
+    bgGradient: 'from-indigo-50 to-blue-50',
+    borderColor: 'border-indigo-200',
+    textColor: 'text-indigo-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task20',
+    taskNumber: '№20',
+    title: 'Паронимы (усложнённые)',
+    subtitle: 'Трудные случаи паронимов',
+    path: '/task20-trainer',
+    color: 'bg-emerald-500',
+    bgGradient: 'from-emerald-50 to-teal-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task21',
+    taskNumber: '№21',
+    title: 'Лексические нормы',
+    subtitle: 'Пунктуационный анализ (повышенный)',
+    path: '/task21-trainer',
+    color: 'bg-slate-500',
+    bgGradient: 'from-slate-50 to-gray-50',
+    borderColor: 'border-slate-200',
+    textColor: 'text-slate-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task23',
+    taskNumber: '№23',
+    title: 'Понимание текста',
+    subtitle: 'Информационно-смысловая переработка',
+    path: '/task23-trainer',
+    color: 'bg-lime-500',
+    bgGradient: 'from-lime-50 to-green-50',
+    borderColor: 'border-lime-200',
+    textColor: 'text-lime-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task26',
+    taskNumber: '№26',
+    title: 'Логико-смысловые связи',
+    subtitle: 'Связи между предложениями в тексте',
+    path: '/task26-trainer',
+    color: 'bg-amber-500',
+    bgGradient: 'from-amber-50 to-yellow-50',
+    borderColor: 'border-amber-200',
+    textColor: 'text-amber-500',
+    comingSoon: true,
+  },
+  {
+    id: 'task27',
+    taskNumber: '№27',
+    title: 'Сочинение',
+    subtitle: 'Отзыв / рецензия (22 балла)',
+    path: '/essay-list',
+    color: 'bg-red-500',
+    bgGradient: 'from-red-50 to-rose-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-500',
+    comingSoon: true,
   },
   {
     id: 'adaptive',
@@ -312,32 +406,34 @@ export function TrainersPage() {
           {trainers.map((trainer) => (
             <motion.div
               key={trainer.id}
-              className={`card bg-gradient-to-br ${trainer.bgGradient} ${trainer.borderColor} cursor-pointer`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => navigate(trainer.path)}
-              onKeyDown={(e) => handleKeyNav(e, () => navigate(trainer.path))}
+              className={`card bg-gradient-to-br ${trainer.bgGradient} ${trainer.borderColor} ${trainer.comingSoon ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+              whileHover={trainer.comingSoon ? {} : { scale: 1.02 }}
+              whileTap={trainer.comingSoon ? {} : { scale: 0.98 }}
+              onClick={trainer.comingSoon ? undefined : () => navigate(trainer.path)}
+              onKeyDown={trainer.comingSoon ? undefined : (e) => handleKeyNav(e, () => navigate(trainer.path))}
               role="button"
-              tabIndex={0}
-              aria-label={`Тренажёр ${trainer.title}, ${trainer.taskNumber}`}
+              tabIndex={trainer.comingSoon ? -1 : 0}
+              aria-label={`Тренажёр ${trainer.title}, ${trainer.taskNumber}${trainer.comingSoon ? ' — в разработке' : ''}`}
             >
               <div className="flex items-center gap-2 mb-2">
-                <div className={`w-8 h-8 rounded-lg ${trainer.color} flex items-center justify-center text-white text-sm font-bold`}>
+                <div className={`w-8 h-8 rounded-lg ${trainer.color} flex items-center justify-center text-white text-sm font-bold ${trainer.comingSoon ? 'grayscale' : ''}`}>
                   {trainer.icon || trainer.taskNumber}
                 </div>
-                <span className={`text-xs font-bold uppercase tracking-wide ${trainer.textColor}`}>
+                <span className={`text-xs font-bold uppercase tracking-wide ${trainer.comingSoon ? 'text-gray-400' : trainer.textColor}`}>
                   {trainer.taskNumber}
                 </span>
               </div>
-              <p className="font-bold text-gray-800 text-sm leading-tight">{trainer.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{trainer.subtitle}</p>
-              {trainer.miniProgress && (
+              <p className={`font-bold text-sm leading-tight ${trainer.comingSoon ? 'text-gray-400' : 'text-gray-800'}`}>{trainer.title}</p>
+              <p className={`text-xs mt-1 ${trainer.comingSoon ? 'text-gray-400' : 'text-gray-500'}`}>
+                {trainer.comingSoon ? 'В разработке' : trainer.subtitle}
+              </p>
+              {trainer.miniProgress && !trainer.comingSoon && (
                 <div className="mt-2">
                   {trainer.miniProgress}
                 </div>
               )}
               <div className="flex justify-end mt-1">
-                <ChevronRight size={16} className="text-gray-300" />
+                <ChevronRight size={16} className={trainer.comingSoon ? 'text-gray-200' : 'text-gray-300'} />
               </div>
             </motion.div>
           ))}

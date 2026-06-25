@@ -19,6 +19,7 @@ export const examTasksSections: Section[] = [
         description: 'Выберите правильное слово для вставки',
         xpReward: 60,
         prerequisites: [],
+        isComingSoon: true,
         questions: [
           {
             id: 'q20-1-1', type: 'single',
@@ -240,6 +241,7 @@ export const examTasksSections: Section[] = [
         description: 'Найдите лексическую ошибку в тексте',
         xpReward: 60,
         prerequisites: [],
+        isComingSoon: true,
         questions: [
           {
             id: 'q21-1-1', type: 'ege-multiple',

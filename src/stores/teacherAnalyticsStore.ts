@@ -158,26 +158,32 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
     set({ loading: true, error: null })
 
+    // Timeout wrapper: if Supabase is slow, abort and show local data
+    const TIMEOUT_MS = 4000
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS)
+    )
+
     try {
-      // 1. Get all user analytics via admin view (bypasses RLS)
-      const { data: analyticsData, error: analyticsError } = await supabase
-        .from('admin_user_analytics')
-        .select('user_id, behavior_profile, daily_snapshots')
+      // Parallel queries + timeout
+      const [analyticsResult, progressResult] = await Promise.race([
+        Promise.all([
+          supabase.from('admin_user_analytics').select('user_id, behavior_profile, daily_snapshots').limit(500),
+          supabase.from('user_progress').select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile').limit(500),
+        ]),
+        timeout,
+      ]) as any
+
+      const { data: analyticsData, error: analyticsError } = analyticsResult
+      const { data: progressData, error: progressError } = progressResult
 
       if (analyticsError && import.meta.env.DEV) {
         console.warn('admin_user_analytics fetch:', analyticsError)
       }
-
-      // 2. Get all user progress
-      const { data: progressData, error: progressError } = await supabase
-        .from('user_progress')
-        .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile')
-
       if (progressError && import.meta.env.DEV) {
         console.warn('user_progress fetch:', progressError)
       }
 
-      // 3. Build global user list from all sources
       const allUserIds = new Set([
         ...(analyticsData || []).map((a: any) => a.user_id),
         ...(progressData || []).map((p: any) => p.user_id),
@@ -188,7 +194,6 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
         return
       }
 
-      // 4. Aggregate into TeacherStudentView
       const students: TeacherStudentView[] = Array.from(allUserIds).map((userId: string) => {
         const analytics = analyticsData?.find((a: any) => a.user_id === userId)
         const progress = progressData?.find((p: any) => p.user_id === userId)
@@ -226,7 +231,12 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
       set({ students, loading: false })
     } catch (err: any) {
-      set({ error: err.message || 'Ошибка загрузки', loading: false })
+      const msg = err.message || ''
+      if (msg.includes('timeout')) {
+        set({ error: 'Сервер долго отвечает. Проверьте, запущена ли SQL-миграция.', loading: false })
+      } else {
+        set({ error: msg || 'Ошибка загрузки', loading: false })
+      }
     }
   },
 

@@ -23,6 +23,7 @@ export const task6_8Sections: Section[] = [
         description: 'Выявление тавтологии и плеоназма',
         xpReward: 30,
         prerequisites: [],
+        isComingSoon: true,
         questions: [
           { id: 'q6-1', type: 'single', text: 'Какая ошибка в предложении: «Бесплатный подарок»?', options: ['плеоназм', 'тавтология', 'лексическая сочетаемость', 'нет ошибки'], correctAnswer: ['плеоназм'], explanation: '«Бесплатный подарок» — плеоназм (подарок и так бесплатный).', difficulty: 'easy', xpReward: 10 , atoms: ['task6', 'pleonasm']},
         ]
@@ -46,6 +47,7 @@ export const task6_8Sections: Section[] = [
         description: 'Правильное управление глаголов и прилагательных',
         xpReward: 30,
         prerequisites: [],
+        isComingSoon: true,
         questions: [
           { id: 'q7-1', type: 'single', text: 'Как правильно?', options: ['гордиться чем', 'гордиться чем-то'], correctAnswer: ['гордиться чем'], explanation: 'Гордиться управляет творительным падежом: гордиться чем.', difficulty: 'easy', xpReward: 10, atoms: ['task7'] },
         ]
@@ -69,6 +71,7 @@ export const task6_8Sections: Section[] = [
         description: 'Нарушение связи в группе однородных членов',
         xpReward: 40,
         prerequisites: [],
+        isComingSoon: true,
         questions: [
           { id: 'q8-1', type: 'single', text: 'Какая ошибка в предложении: «Он купил яблоки, груши и хлеб.»?', options: ['нарушение однородности', 'нет ошибки', 'плеоназм', 'тавтология'], correctAnswer: ['нет ошибки'], explanation: 'Яблоки, груши и хлеб — однородные существительные.', difficulty: 'easy', xpReward: 10, atoms: ['task8'] },
         ]
