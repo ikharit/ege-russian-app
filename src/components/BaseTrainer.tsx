@@ -5,7 +5,7 @@ import {
   Trophy, Zap, ArrowLeft, RotateCcw, Settings,
   ChevronRight, Check, X, Volume2, VolumeX, BookOpen,
   ThumbsUp, ThumbsDown, AlertTriangle, Inbox,
-  Bookmark, BookmarkCheck
+  Bookmark, BookmarkCheck, Pencil
 } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useAdaptiveStore } from '../stores/adaptiveStore'
@@ -14,6 +14,7 @@ import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 import { speak, isTTSAvailable } from '../lib/tts'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
 import { useSettingsStore } from '../stores/settingsStore'
+import { InlineQuestionEditor, applyQuestionEdits } from './InlineQuestionEditor'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -80,6 +81,8 @@ export function BaseTrainer<T>({
   const [isCorrect, setIsCorrect] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
+  const [showEditor, setShowEditor] = useState(false)
+  const [editorKey, setEditorKey] = useState(0) // force re-render after edit
   const [settings, setSettings] = useState<TrainerSettings>({ sound: true, showExplanation: true })
   const [stats, setStats] = useState<TrainerStats>({ totalCorrect: 0, totalWrong: 0, streak: 0, bestStreak: 0 })
 
@@ -88,6 +91,7 @@ export function BaseTrainer<T>({
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
+  const isTeacher = useProgressStore((s) => s.isTeacher)
 
   const [combo, setCombo] = useState(0) // session combo streak
   const [maxCombo, setMaxCombo] = useState(0)
@@ -158,7 +162,16 @@ export function BaseTrainer<T>({
     return ordered.length > 0 ? ordered : questions.map((_, i) => i)
   })
 
-  const effectiveQuestion = questions[questionOrder[currentIndex]] ?? currentQuestion
+  const rawQuestion = questions[questionOrder[currentIndex]] ?? currentQuestion
+  
+  // Apply teacher edits to current question
+  const effectiveQuestion = (() => {
+    const q = rawQuestion as any
+    if (q && q.id && q.text) {
+      return applyQuestionEdits(q) as T
+    }
+    return rawQuestion
+  })()
 
   const handleSelect = useCallback((answer: string[]) => {
     if (answerState !== 'idle') return
@@ -437,6 +450,16 @@ export function BaseTrainer<T>({
             >
               <Settings size={18} className="text-gray-400" />
             </button>
+            {isTeacher && (
+              <button
+                onClick={() => setShowEditor(true)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Редактировать задание"
+                title="Редактировать задание"
+              >
+                <Pencil size={18} className="text-duo-blue" />
+              </button>
+            )}
             {isTTSAvailable() && getQuestionText(effectiveQuestion) && (
               <button
                 onClick={() => speak(getQuestionText(effectiveQuestion))}
@@ -802,6 +825,18 @@ export function BaseTrainer<T>({
           </div>
         </div>
       </div>
+      {/* Inline Question Editor (teacher only) */}
+      <AnimatePresence>
+        {showEditor && effectiveQuestion && (
+          <InlineQuestionEditor
+            question={effectiveQuestion as any}
+            onClose={() => setShowEditor(false)}
+            onSaved={() => {
+              setEditorKey(k => k + 1) // force re-render to apply edits
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

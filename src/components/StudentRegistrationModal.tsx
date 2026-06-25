@@ -78,30 +78,34 @@ export function StudentRegistrationModal({ isOpen, onClose }: StudentRegistratio
     // Switch to new profile (saves current progress to old profile, loads new empty)
     switchProfile(id, progressSnapshot)
 
-    // Reset progress store for new student
-    useProgressStore.setState({
-      userStats: {
-        xp: 0, level: 1, streak: 0, maxStreak: 0, lastActivityDate: '',
-        hearts: 5, maxHearts: 5, achievements: [], name: name.trim(),
-        lastHeartRestore: '', infiniteHearts: false,
-        totalLessonTimeMinutes: 0, totalQuestionsAnswered: 0,
-        totalHeartsLost: 0, mistakesFixed: 0,
-      },
-      lessonProgress: {},
-      atomProgress: {},
-      wrongAnswers: [],
-      taskStats: {},
-      achievements: [],
-      lastUnlockedAchievement: null,
-      currentLessonId: null,
-      currentLessonStartTime: null,
-      currentLessonHeartsLost: 0,
-      heartRestoreCount: 0,
-      exportCount: 0,
-      dailyQuestProgress: {},
-      leaderboardRanks: [],
-      theoryTestsCompleted: {},
-    })
+    // Only reset progress store if no progress exists yet (first-time user)
+    const hasProgress = Object.keys(progressSnapshot.lessonProgress || {}).length > 0
+    if (!hasProgress) {
+      // Reset progress store for new student
+      useProgressStore.setState({
+        userStats: {
+          xp: 0, level: 1, streak: 0, maxStreak: 0, lastActivityDate: '',
+          hearts: 5, maxHearts: 5, achievements: [], name: name.trim(),
+          lastHeartRestore: '', infiniteHearts: false,
+          totalLessonTimeMinutes: 0, totalQuestionsAnswered: 0,
+          totalHeartsLost: 0, mistakesFixed: 0,
+        },
+        lessonProgress: {},
+        atomProgress: {},
+        wrongAnswers: [],
+        taskStats: {},
+        achievements: [],
+        lastUnlockedAchievement: null,
+        currentLessonId: null,
+        currentLessonStartTime: null,
+        currentLessonHeartsLost: 0,
+        heartRestoreCount: 0,
+        exportCount: 0,
+        dailyQuestProgress: {},
+        leaderboardRanks: [],
+        theoryTestsCompleted: {},
+      })
+    }
 
     setLoading(false)
     setSuccess(true)

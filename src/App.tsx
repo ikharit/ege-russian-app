@@ -13,11 +13,12 @@ import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
 import { achievements } from './data/achievements'
-import { BookOpen, Map, BarChart3, GraduationCap, Gamepad2, BookOpenText, LayoutGrid } from 'lucide-react'
+import { BookOpen, Map, BarChart3, GraduationCap, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
+import { useStudentStore } from './stores/studentStore'
 import { useClassStore, ProgressData } from './stores/classStore'
 import { useNotificationStore } from './stores/notificationStore'
 import { useSettingsStore } from './stores/settingsStore'
@@ -112,6 +113,7 @@ const Task25Trainer = lazy(() => import('./pages/Task25Trainer').then(m => ({ de
 function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
+  const isTeacher = useProgressStore((s) => s.isTeacher)
 
   const tabs = [
     { path: '/', icon: BookOpen, label: 'Сегодня' },
@@ -119,6 +121,7 @@ function BottomNav() {
     { path: '/theory', icon: BookOpenText, label: 'Теория' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
     { path: '/dashboard', icon: LayoutGrid, label: 'Обзор' },
+    ...(isTeacher ? [{ path: '/teacher/classroom', icon: GraduationCap, label: 'Учитель' }] : []),
   ]
 
   return (
@@ -320,6 +323,38 @@ export default function App() {
   useEffect(() => {
     const checkNotifications = useNotificationStore.getState().checkAndNotify
     checkNotifications()
+  }, [])
+
+  // Auto-save progress to student store (sync progressStore -> studentStore)
+  useEffect(() => {
+    const unsubscribe = useProgressStore.subscribe((state) => {
+      const activeProfileId = useStudentStore.getState().activeProfileId
+      if (!activeProfileId) return
+      const progressSnapshot = {
+        userStats: state.userStats,
+        lessonProgress: state.lessonProgress,
+        atomProgress: state.atomProgress,
+        wrongAnswers: state.wrongAnswers,
+        taskStats: state.taskStats,
+        achievements: state.achievements,
+        lastUnlockedAchievement: state.lastUnlockedAchievement,
+        currentLessonId: state.currentLessonId,
+        currentLessonStartTime: state.currentLessonStartTime,
+        currentLessonHeartsLost: state.currentLessonHeartsLost,
+        heartRestoreCount: state.heartRestoreCount,
+        exportCount: state.exportCount,
+        dailyQuestProgress: state.dailyQuestProgress,
+        leaderboardRanks: state.leaderboardRanks,
+        theoryTestsCompleted: state.theoryTestsCompleted,
+        isTeacher: state.isTeacher,
+        userId: state.userId,
+      }
+      useStudentStore.getState().updateActiveProfile(progressSnapshot)
+      useStudentStore.getState().addHistoryPoint(progressSnapshot)
+      // Cache in IndexedDB for offline access
+      syncProgressIfOnline(progressSnapshot).catch(() => {})
+    })
+    return () => unsubscribe()
   }, [])
 
   // Auto-sync progress to class store (for class leaderboard)
