@@ -249,7 +249,7 @@ export const useFriendStore = create<FriendStore>()(
 
               if (updateError) throw updateError
 
-              // Insert bidirectional friends
+              // Insert bidirectional friends (ignore duplicates)
               const { error: f1 } = await supabase.from('friends').insert({
                 user_id: user.id,
                 friend_id: request.fromId,
@@ -263,6 +263,9 @@ export const useFriendStore = create<FriendStore>()(
                 friend_name: 'Я',
                 friend_emoji: '😊',
               })
+
+              if (f1 && !f1.message?.includes('duplicate')) throw f1
+              if (f2 && !f2.message?.includes('duplicate')) throw f2
             }
 
             const newFriend: FriendProfile = {
@@ -404,6 +407,9 @@ export const useFriendStore = create<FriendStore>()(
           }
         }
 
+        set({ friends: friends.filter(f => f.id !== friendId) })
+        return true
+      },
 
       updateFriendProgress: (friendId: string, data: Partial<FriendProfile>) => {
         const { friends } = get()
