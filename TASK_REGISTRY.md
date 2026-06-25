@@ -215,3 +215,25 @@ print(q['correctAnswer'])  # ['построен']
 ---
 
 *Последнее обновление: 2026-06-20 17:30*
+
+
+---
+
+## Обновления 2026-06-25
+
+### Локальный движок проверки орфографии (spellEngine)
+- Добавлена валидация ответов через правила и словарь исключений
+- Интегрирован в `QuestionCard.tsx` для проверки текстовых ответов
+- Dev-аудит всех вопросов при старте приложения
+- Файлы: `src/data/spellDictionary.ts`, `src/data/spellRules.ts`, `src/utils/spellEngine.ts`, `src/utils/questionValidator.ts`, `src/utils/auditRunner.ts`
+
+### Фикс авторизации для новых пользователей
+- Исправлена видимость кнопки "Войти" в Header (`syncIndicator` теперь рендерится)
+- Добавлена auto-show модалки регистрации (`StudentRegistrationModal`) для новых пользователей
+- Profile page показывает корректный статус: "Войти через Google" (если Supabase настроен) или "Работает в локальном режиме" (если нет)
+- Файлы: `src/components/Header.tsx`, `src/pages/Profile.tsx`, `src/App.tsx`
+
+### Важное замечание для агентов
+- **Авторизация через почту/Google работает только если на Vercel добавлены env-переменные `VITE_SUPABASE_URL` и `VITE_SUPABASE_ANON_KEY`**
+- Без этих переменных приложение работает в локальном режиме (localStorage only)
+- Новые пользователи должны создать профиль через `StudentRegistrationModal` перед использованием
