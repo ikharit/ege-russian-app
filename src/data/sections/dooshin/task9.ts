@@ -703,7 +703,7 @@ const _dooshinTask9: Section = {
           { id: "qd9-506", type: 'text', text: 'Впишите пропущенную букву: проч_тать', correctAnswer: ["и"], explanation: 'Корень -чит- (чередующийся). Чередование: чит/чет (проверьте через: читать/сочетать).', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] },
           { id: "qd9-507", type: 'text', text: 'Впишите пропущенную букву: ч_стота', correctAnswer: ["и"], explanation: 'Корень -чист- (проверяемый). Проверьте через однокоренное: чистый.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] },
           { id: "qd9-508", type: 'text', text: 'Впишите пропущенную букву: сж_мать', correctAnswer: ["и"], explanation: 'Корень -жим- (непроверяемый). Запомните написание: сжимать. Приставка: с-.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] },
-          { id: "qd9-509", type: 'text', text: 'Впишите пропущенную букву: упл_тнять', correctAnswer: ["о"], explanation: 'Корень -плот- (проверяемый). Проверьте через однокоренное: плоть. Приставка: у-.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] },
+          { id: "qd9-509", type: 'text', text: 'Впишите пропущенную букву: упл_тнять', correctAnswer: ["о"], explanation: 'Корень -плот- (проверяемый). Проверьте через однокоренное: плотный. Приставка: у-.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] },
           { id: "qd9-510", type: 'text', text: 'Впишите пропущенную букву: р_сли', correctAnswer: ["о"], explanation: 'Корень -рос- (чередующийся). Чередование: рос/раст (проверьте через: вырос/расти).', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'roots'] }
   ]
       },

@@ -9,6 +9,7 @@ interface TeacherAnalyticsState {
 
   // Actions
   fetchStudents: () => Promise<void>
+  fetchAllUsers: () => Promise<void>
   fetchStudentErrors: (studentId: string) => Promise<any[]>
   addStudentLink: (studentId: string, className?: string) => Promise<void>
   removeStudentLink: (studentId: string) => Promise<void>
@@ -139,6 +140,86 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
             taskStats: progress?.task_stats || {},
             achievements: progress?.achievements || [],
             behaviorProfile: progress?.behavior_profile || undefined,
+          },
+        }
+      })
+
+      set({ students, loading: false })
+    } catch (err: any) {
+      set({ error: err.message || 'Ошибка загрузки', loading: false })
+    }
+  },
+
+  fetchAllUsers: async () => {
+    if (!isSupabaseConfigured) {
+      set({ error: 'Supabase не настроен' })
+      return
+    }
+
+    set({ loading: true, error: null })
+
+    try {
+      // 1. Get all user analytics via admin view (bypasses RLS)
+      const { data: analyticsData, error: analyticsError } = await supabase
+        .from('admin_user_analytics')
+        .select('user_id, behavior_profile, daily_snapshots')
+
+      if (analyticsError && import.meta.env.DEV) {
+        console.warn('admin_user_analytics fetch:', analyticsError)
+      }
+
+      // 2. Get all user progress
+      const { data: progressData, error: progressError } = await supabase
+        .from('user_progress')
+        .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile')
+
+      if (progressError && import.meta.env.DEV) {
+        console.warn('user_progress fetch:', progressError)
+      }
+
+      // 3. Build global user list from all sources
+      const allUserIds = new Set([
+        ...(analyticsData || []).map((a: any) => a.user_id),
+        ...(progressData || []).map((p: any) => p.user_id),
+      ])
+
+      if (allUserIds.size === 0) {
+        set({ students: [], loading: false })
+        return
+      }
+
+      // 4. Aggregate into TeacherStudentView
+      const students: TeacherStudentView[] = Array.from(allUserIds).map((userId: string) => {
+        const analytics = analyticsData?.find((a: any) => a.user_id === userId)
+        const progress = progressData?.find((p: any) => p.user_id === userId)
+        const stats = progress?.user_stats || {}
+
+        const taskStats = progress?.task_stats || {}
+        let total = 0, correct = 0
+        for (const t of Object.values(taskStats)) {
+          total += (t as any).total || 0
+          correct += (t as any).correct || 0
+        }
+        const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0
+
+        return {
+          studentId: userId,
+          studentName: stats.name || 'Пользователь',
+          xp: stats.xp || 0,
+          level: stats.level || 1,
+          streak: stats.streak || 0,
+          lastActive: stats.lastActivityDate || '—',
+          topWeakWords: [],
+          topWeakRules: [],
+          overallAccuracy,
+          behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
+          dailySnapshots: analytics?.daily_snapshots || undefined,
+          rawProgressData: {
+            userStats: stats,
+            lessonProgress: progress?.lesson_progress || {},
+            taskStats: progress?.task_stats || {},
+            achievements: progress?.achievements || [],
+            behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
           },
         }
       })
