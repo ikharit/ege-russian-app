@@ -6,12 +6,12 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-1', type: 'text', text: 'Впишите пропущенную букву: пр_исполнен (отваги)',
     correctAnswer: ['е'],
-    explanation: 'ПРЕ- (заранее, вперёд) — словарное слово. Проверить нельзя, запомнить: преисполнен, премудрый, преследование.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+    explanation: 'ПРЕ- = очень (очень исполнен отвагой). Словарное слово, нельзя проверить по корню. Запомнить: преисполнен, премудрый, преследование.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
     {
     id: 'q10-atom-2', type: 'text', text: 'Впишите пропущенную букву: пр_мудрый',
     correctAnswer: ['е'],
-    explanation: 'ПРЕ- — словарное слово, нельзя проверить.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+    explanation: 'ПРЕ- = очень (как в прекрасный, превысокий). Пре- = очень + мудрый. Нельзя проверить по однокоренному слову — это словарное слово.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
     {
     id: 'q10-atom-3', type: 'text', text: 'Впишите пропущенную букву: пр_следование (врага)',

@@ -34,6 +34,29 @@ export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseKey)
   : mockSupabase
 
+export type FriendRequestDB = {
+  id: string
+  from_user_id: string
+  to_user_id: string
+  from_name: string
+  from_emoji: string
+  status: 'pending' | 'accepted' | 'rejected'
+  created_at: string
+  updated_at: string
+}
+
+export type FriendDB = {
+  id: string
+  user_id: string
+  friend_id: string
+  friend_name: string
+  friend_emoji: string
+  friend_level: number
+  friend_xp: number
+  friend_streak: number
+  created_at: string
+}
+
 export type Profile = {
   id: string
   username: string
