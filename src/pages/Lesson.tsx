@@ -222,7 +222,7 @@ export function Lesson() {
   }, [currentQuestion])
 
   const handleFinish = useCallback(() => {
-    navigate('/')
+    navigate('/course')
   }, [navigate])
 
   const handleRetry = useCallback(() => {
@@ -306,7 +306,7 @@ export function Lesson() {
               <p className="text-gray-600 mb-8">У вас закончились жизни. Попробуйте пройти урок ещё раз.</p>
               <div className="flex flex-col gap-3 max-w-xs mx-auto">
                 <button onClick={handleRetry} className="btn-primary w-full">Повторить</button>
-                <button onClick={() => navigate('/')} className="btn-secondary w-full">Вернуться к курсу</button>
+                <button onClick={() => navigate('/course')} className="btn-secondary w-full">Вернуться к курсу</button>
               </div>
             </motion.div>
           ) : (
