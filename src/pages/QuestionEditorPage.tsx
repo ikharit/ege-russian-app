@@ -27,7 +27,6 @@ export function QuestionEditorPage() {
   const [edits, setEdits] = useState<Record<string, QuestionEdit>>(loadLocalEdits)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [showOnlyEdited, setShowOnlyEdited] = useState(false)
-  const [syncing, setSyncing] = useState(false)
 
   // Merge original questions with edits
   const questions = useMemo(() => {
@@ -63,14 +62,12 @@ export function QuestionEditorPage() {
     return result
   }, [questions, query, filterTask, filterType, showOnlyEdited, edits])
 
-  const handleSave = useCallback(async (id: string, changes: Partial<Question>) => {
+  const handleSave = useCallback((id: string, changes: Partial<Question>) => {
     const original = QUESTIONS_BY_ID.get(id)
     if (!original) return
 
-    setSyncing(true)
-    await saveQuestionEdit(id, original._sourceLessonId || '', changes)
-    setSyncing(false)
-
+    // Save instantly — Supabase sync happens in background
+    saveQuestionEdit(id, original._sourceLessonId || '', changes)
     setEdits(loadLocalEdits())
     setSavedIds(prev => new Set(prev).add(id))
     setTimeout(() => {
@@ -82,8 +79,8 @@ export function QuestionEditorPage() {
     }, 2000)
   }, [])
 
-  const handleRevert = useCallback(async (id: string) => {
-    await deleteQuestionEdit(id)
+  const handleRevert = useCallback((id: string) => {
+    deleteQuestionEdit(id)
     setEdits(loadLocalEdits())
   }, [])
 

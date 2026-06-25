@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Save, RotateCcw, AlertTriangle, Cloud } from 'lucide-react'
 import { Question } from '../types'
-import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits } from '../lib/questionEdits'
+import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits, isPendingSync } from '../lib/questionEdits'
 
 interface InlineQuestionEditorProps {
   question: Question
@@ -18,10 +18,9 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
   const [options, setOptions] = useState(question.options?.join(', ') || '')
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>(question.difficulty || 'medium')
   const [saved, setSaved] = useState(false)
-  const [syncing, setSyncing] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setError('')
     const changes: Partial<Question> = {}
 
@@ -47,23 +46,16 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
       return
     }
 
-    setSyncing(true)
-    const result = await saveQuestionEdit(question.id, lessonId, changes)
-    setSyncing(false)
+    // Save instantly — Supabase sync happens in background
+    saveQuestionEdit(question.id, lessonId, changes)
 
-    if (result.success) {
-      setSaved(true)
-      onSaved?.()
-      setTimeout(() => setSaved(false), 2000)
-    } else {
-      setError('Ошибка сохранения: ' + (result.error || 'unknown'))
-    }
+    setSaved(true)
+    onSaved?.()
+    setTimeout(() => setSaved(false), 2000)
   }
 
-  const handleRevert = async () => {
-    setSyncing(true)
-    await deleteQuestionEdit(question.id)
-    setSyncing(false)
+  const handleRevert = () => {
+    deleteQuestionEdit(question.id)
     setText(question.text)
     setExplanation(question.explanation)
     setCorrectAnswer(question.correctAnswer.join(', '))
@@ -73,6 +65,7 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
   }
 
   const hasEdit = question.id in loadLocalEdits()
+  const pending = isPendingSync(question.id)
 
   return (
     <motion.div
@@ -88,7 +81,7 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
           <AlertTriangle size={16} className="text-amber-500" />
           <span className="font-bold text-sm">Редактировать задание</span>
           <span className="text-xs text-gray-400 font-mono">{question.id}</span>
-          {syncing && <Cloud size={14} className="text-duo-blue animate-pulse" />}
+          {pending && <Cloud size={14} className="text-duo-blue animate-pulse" title="Синхронизация..." />}
         </div>
         <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
           <X size={20} />
@@ -156,24 +149,22 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
         </div>
 
         {error && <p className="text-xs text-amber-600 font-bold">{error}</p>}
-        {saved && <p className="text-xs text-duo-green font-bold">✓ Сохранено и синхронизировано!</p>}
+        {saved && <p className="text-xs text-duo-green font-bold">✓ Сохранено!</p>}
       </div>
 
       {/* Footer actions */}
       <div className="px-4 py-3 border-t border-gray-100 flex gap-2">
         <button
           onClick={handleSave}
-          disabled={syncing}
-          className="flex-1 py-3 bg-duo-green text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-duo-green-dark transition-colors disabled:opacity-50"
+          className="flex-1 py-3 bg-duo-green text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-duo-green-dark transition-colors"
         >
           <Save size={16} />
-          {syncing ? 'Синхронизация...' : saved ? 'Сохранено!' : 'Сохранить правку'}
+          {saved ? 'Сохранено!' : 'Сохранить правку'}
         </button>
         {hasEdit && (
           <button
             onClick={handleRevert}
-            disabled={syncing}
-            className="px-4 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50"
+            className="px-4 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-200 transition-colors"
           >
             <RotateCcw size={16} />
             Отменить
