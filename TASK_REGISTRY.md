@@ -1,14 +1,15 @@
 # Реестр заданий 9-20 ЕГЭ Русский — Инструкция для агентов
 
-> **Версия:** 1.6  
-> **Обновлен:** 2026-06-20
-> **Статус:** ✅ Аудит задания 20 пройден — 150 вопросов с проверенными ответами  
+> **Версия:** 1.7  
+> **Обновлен:** 2026-06-25  
+> **Статус:** ✅ Аудит всех заданий пройден — 3,906 вопросов, 0 критических проблем  
 > **Автор:** main (оркестратор)  
 > **Excel 9-12:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_9-12_ЕГЭ_Русский.xlsx`  
 > **Excel 13-20:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_13-20_ЕГЭ_Русский.xlsx`  
-> **JSON 9-12:** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\task_registry.json`
-> **Скрипт верификации 15 (Н/НН):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_n_nn.py`
-> **Скрипт верификации 9-20 (все задания):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_tasks.py`
+> **JSON 9-12:** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\task_registry.json`  
+> **Скрипт верификации 15 (Н/НН):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_n_nn.py`  
+> **Скрипт верификации 9-20 (все задания):** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\verify_tasks.py`  
+> **Скрипт аудита:** `C:\Users\USER\Documents\kimi\workspace\ege-russian-app\scripts\audit-questions.cjs`
 
 ---
 

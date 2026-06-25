@@ -12,7 +12,7 @@ import { Statistics } from './pages/Statistics'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
-import { AIChat } from './components/AIChat'
+import { StudentRegistrationModal } from './components/StudentRegistrationModal'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, GraduationCap, Gamepad2, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
@@ -163,6 +163,16 @@ export default function App() {
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
 
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [regModalOpen, setRegModalOpen] = useState(false)
+  const profiles = useStudentStore((s) => s.profiles)
+
+  // Auto-show registration modal for new users
+  useEffect(() => {
+    if (profiles.length === 0 && location.pathname !== '/profile') {
+      setRegModalOpen(true)
+    }
+  }, [profiles.length, location.pathname])
+
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
@@ -486,6 +496,7 @@ export default function App() {
     <div className="min-h-screen bg-duo-snow dark:bg-gray-900 flex flex-col">
       {!isLesson && <Header syncIndicator={syncIndicator} />}
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      <StudentRegistrationModal isOpen={regModalOpen} onClose={() => setRegModalOpen(false)} />
       {/* FCM Foreground Toast */}
       <AnimatePresence>
         {fcmToast && (

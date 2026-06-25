@@ -36,49 +36,15 @@
 
 ---
 
-### БАГ-3: Supabase падает тихо, если `.env` не настроен
+### ✅ БАГ-3: Supabase падает тихо, если `.env` не настроен
 
-**Где**: `src/stores/progressStore.ts` — методы `syncProgress()` и `loadProgress()`
+**Статус:** ✅ Исправлено (2026-06-20)
 
-**Проблема**: Если переменные `VITE_SUPABASE_URL` и `VITE_SUPABASE_ANON_KEY` пустые (по умолчанию так), `supabase.from(...)` делает запрос к пустому URL. Ошибка есть в консоли, но пользователь ничего не видит. Прогресс не сохраняется.
+**Где**: `src/stores/progressStore.ts`, `src/lib/supabase.ts`
 
-**Текущий код** `syncProgress()` (строки ~68-79):
+**Решение**: Добавлен флаг `isSupabaseConfigured` в `supabase.ts` (проверяет `supabaseUrl && supabaseKey`). В `syncProgress()` и `loadProgress()` добавлена проверка `if (!isSupabaseConfigured) return`. Если Supabase не настроен — прогресс сохраняется только в `localStorage`, без ошибок в консоли.
 
-```tsx
-syncProgress: async () => {
-  const { userId, userStats, lessonProgress, achievements } = get()
-  if (!userId) return
-  await supabase.from('user_progress').upsert(...)
-},
-```
-
-**Что нужно сделать**:
-
-1. В `src/lib/supabase.ts` экспортировать флаг, настроен ли Supabase:
-
-```tsx
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseKey)
-```
-
-2. В `syncProgress` и `loadProgress` добавить проверку:
-
-```tsx
-import { isSupabaseConfigured } from '../lib/supabase'
-
-syncProgress: async () => {
-  const { userId, userStats, lessonProgress, achievements } = get()
-  if (!userId || !isSupabaseConfigured) return
-  // ... остальной код
-},
-
-loadProgress: async () => {
-  const { userId } = get()
-  if (!userId || !isSupabaseConfigured) return
-  // ... остальной код
-},
-```
-
-**Как проверить**: Убрать `.env` файл → открыть приложение → пройти урок → в консоли не должно быть ошибок Supabase. Прогресс должен сохраняться в `localStorage`.
+**Код фикса**: `src/lib/supabase.ts` — `export const isSupabaseConfigured`. `src/stores/progressStore.ts` — проверка в `syncProgress()` и `loadProgress()`.
 
 ---
 
@@ -519,3 +485,119 @@ import { getAtomById } from '../data/atomization/atoms'
 4. На устройстве: запуск → splash screen → звук + haptics при ответах
 
 **Для iOS**: требуется Mac с Xcode. `npm run mobile:ios` → открывает Xcode → Build & Run на симуляторе/устройстве.
+
+---
+
+## 🔄 АКТУАЛЬНЫЕ ЗАДАЧИ (обновлено 2026-06-25)
+
+### ✅ ЗАДАЧА-А5: Unified Adaptive Engine — `useAdaptiveEngine` hook
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/hooks/useAdaptiveEngine.ts`, `src/components/BaseTrainer.tsx`, `src/pages/SwipeTrainerPage.tsx`, `src/components/DailyQuestionCard.tsx`, `src/pages/MarathonPage.tsx`, `src/pages/ExamVariantPage.tsx`, `src/pages/MistakesReview.tsx`, `src/pages/DuelPage.tsx`
+
+**Решение**:
+1. Создан единый hook `useAdaptiveEngine(questions, taskNumber, enabled)` — обёртка для IRT+BKT
+2. Автоматическая регистрация вопросов в adaptive store (`calibrateItem`)
+3. Возвращает `questionOrder` (IRT-отсортированный) + `observeAnswer(questionId, correct, atoms)`
+4. Интегрирован во ВСЕ компоненты с ответами на вопросы
+5. Убрана видимая adaptive-панель из BaseTrainer UI — движок невидим для пользователя
+6. **Deprecated**: `getGlobalBKT()` / `getGlobalIRT()` — удалены, использовать `useAdaptiveStore`
+
+**Как проверить**: Решить вопрос в любом тренажёре → `localStorage['ege-adaptive-storage']` должен обновиться
+
+---
+
+### ✅ ЗАДАЧА-А6: Daily Question — поддержка text-ввода
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/components/DailyQuestionCard.tsx`
+
+**Решение**:
+1. Добавлен `textAnswer` state + `<input>` для вопросов без `options`
+2. Кнопка "Проверить" активируется при вводе текста (не только при выборе option)
+3. Нормализация ответа: `trim().toLowerCase()` + сравнение с `correctAnswer`
+4. Правильный ответ отображается при ошибке
+5. Adaptive engine работает и для text-вопросов
+
+---
+
+### ✅ ЗАДАЧА-А7: CourseMap — исправление анимации сворачивания
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/pages/CourseMap.tsx`
+
+**Проблема**: При сворачивании секции контент "подпрыгивал" в размере — странная анимация
+
+**Решение**:
+1. `layout` → `layout="position"` (анимирует только позицию, не размер)
+2. Обёртка в `<AnimatePresence initial={false}>` для exit-анимации
+3. `transition={{ duration: 0.2 }}` + `className="overflow-hidden"`
+
+---
+
+### 📝 ЗАДАЧА-А8: Ревизия объяснений — стандартизация по ФИПИ
+
+**Статус:** 🔄 В процессе
+
+**Где**: `src/data/sections/dooshin/task9.ts`, `src/data/explanation-rules.md`, `src/data/theory/task9.ts`
+
+**Проблема**: В объяснениях встречаются слова, не входящие в стандартные списки ФИПИ (например, "ростовщина" как пример к "ростовщик"). Агенты могут галлюцинировать правила, если не апеллируют к проверенному своду.
+
+**Что нужно сделать**:
+1. Создать `src/data/theory/FIPI_STANDARDS.md` — свод правил ЕГЭ по русскому языку, структурированный по заданиям, с официальными списками исключений
+2. Проверить все объяснения в `task9.ts` / `dooshin/task9.ts` на соответствие ФИПИ
+3. Убрать примеры, которых нет в стандартных справочниках (Русских, Сенина, ФИПИ Навигатор)
+4. Обновить `explanation-rules.md` — привести шаблоны в соответствие с ФИПИ
+
+**Критерий завершения**: Все объяснения в задании 9 ссылаются на проверяемые правила, а не на "запомните это слово"
+
+---
+
+### 📝 ЗАДАЧА-А9: Полнота теоретических данных
+
+**Статус:** 🔄 В процессе
+
+**Где**: `src/data/theory/`
+
+**Проблема**: Теория есть для task4-16, 17-21, 22-26. Нет теории для task1, 2, 3, 18, 19, 20 (по отдельности), 25, 27.
+
+**Что нужно сделать**:
+1. Создать `src/data/theory/task1.ts` — типы связи (сочинительная, подчинительная, присоединительная)
+2. Создать `src/data/theory/task2.ts` — лексические нормы (устаревшие, диалектизмы, жаргон)
+3. Создать `src/data/theory/task3.ts` — речевые ошибки (тавтология, плеоназм, лексические/грамматические)
+4. Разделить `task17-21.ts` на отдельные файлы (task17, task18, task19, task20, task21)
+5. Создать `src/data/theory/task25.ts` — пунктуация в сложных предложениях (без союзов)
+6. Создать `src/data/theory/task27.ts` — средства выразительности (эпитеты, сравнения, метафоры, олицетворения)
+
+**Критерий завершения**: Для каждого из 27 заданий есть файл `src/data/theory/task{N}.ts` с правилами
+
+---
+
+### 📝 ЗАДАЧА-А10: Agent Update Protocol — автоматизация
+
+**Статус:** 🔄 В процессе
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`
+
+**Проблема**: Агенты не обновляют документацию после изменений. Следующий агент не знает, что уже сделано, и может сломать или дублировать работу.
+
+**Что нужно сделать**:
+1. В `AGENTS.md` добавлен раздел "Agent Update Protocol" (уже сделано 2026-06-25)
+2. Создать cron-напоминание: после каждой сессии с изменениями — проверить, обновлены ли AGENTS.md и AGENT_TASKS.md
+3. В `AGENT_TASKS.md` добавить чек-лист: "Перед сдачей задачи — обновить документацию"
+
+---
+
+## 📌 Чек-лист для самопроверки агента (обновлённый)
+
+Перед сдачей каждой задачи:
+
+- [ ] Код TypeScript компилируется без ошибок (`npm run build`)
+- [ ] Нет ошибок в консоли браузера (F12 → Console)
+- [ ] Изменения не сломали существующий функционал (проверить: Dashboard, CourseMap, Lesson, Statistics)
+- [ ] **AGENTS.md обновлён** — новый раздел в changelog с описанием изменений
+- [ ] **AGENT_TASKS.md обновлён** — статусы задач актуальны, новые задачи добавлены
+- [ ] Git commit сделан с понятным сообщением
