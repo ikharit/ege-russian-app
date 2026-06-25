@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
 import { useClassStore } from '../stores/classStore'
+import { useProgressStore } from '../stores/progressStore'
 import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
 import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
@@ -48,11 +49,34 @@ export function TeacherAnalytics() {
 
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
-  // Prefer real students from Supabase; fallback to classStore demo data
+  // Prefer real students from Supabase; fallback to classStore demo data; fallback to current user
   const hasRealStudents = realStudents.length > 0
-  const students = hasRealStudents
+  const classStudents = hasRealStudents
     ? realStudents.map(s => ({ id: s.studentId, name: s.studentName, progress: rawToProgressData(s.rawProgressData) }))
     : (selectedClass?.students || [])
+
+  // Fallback: if no class students, use current user's own data
+  const currentUserName = useProgressStore((s) => s.userName) || 'Вы'
+  const currentUserId = useProgressStore((s) => s.userId) || 'current'
+  const currentUserStats = useProgressStore((s) => s.taskStats)
+  const currentUserAchievements = useProgressStore((s) => s.achievements)
+  const currentUserBehaviorProfile = useProgressStore((s) => s.behaviorProfile)
+  const currentUserLessons = useProgressStore((s) => s.lessonProgress)
+
+  const students = classStudents.length > 0
+    ? classStudents
+    : [{
+        id: currentUserId,
+        name: currentUserName,
+        progress: {
+          userStats: {},
+          lessonProgress: currentUserLessons,
+          taskStats: currentUserStats,
+          achievements: currentUserAchievements,
+          behaviorProfile: currentUserBehaviorProfile,
+        } as ProgressData
+      }]
+
 
   const analytics = students.map(s => 
     analyzeStudent(s.id, s.name, s.progress)
@@ -257,11 +281,11 @@ export function TeacherAnalytics() {
             <div className="w-8 h-8 border-2 border-duo-green border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             <p className="text-gray-500 font-bold">Загружаем аналитику...</p>
           </div>
-        ) : students.length === 0 ? (
+        ) : classStudents.length === 0 && !hasRealStudents ? (
           <div className="text-center py-12">
             <Users size={48} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 font-bold">В классе пока нет учеников</p>
-            <p className="text-sm text-gray-400">Добавьте учеников, чтобы увидеть аналитику</p>
+            <p className="text-gray-500 font-bold">Личная аналитика</p>
+            <p className="text-sm text-gray-400">Показаны ваши данные — добавьте учеников, чтобы увидеть аналитику класса</p>
             {realError && <p className="text-xs text-red-400 mt-2">{realError}</p>}
           </div>
         ) : (
