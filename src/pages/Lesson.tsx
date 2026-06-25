@@ -106,23 +106,30 @@ export function Lesson() {
       setHintsUsedPerQuestion(prev => ({ ...prev, [currentQuestion.id]: Math.max(prev[currentQuestion.id] || 0, hintsCount) }))
     }
     recordQuestionAnswered()
-    if (isCorrect) {
-      setCorrectCount(prev => prev + 1)
-      setCombo(prev => prev + 1)
-      playCorrectSound()
-      updateQuestProgress('quest-questions-5')
-    } else {
-      setCombo(0)
-      playWrongSound()
-      if (currentQuestion && userAnswer) {
-        recordWrongAnswer(currentQuestion, userAnswer, lesson.id)
-      }
-      if (!infiniteHearts) {
-        const hasHeart = loseHeart()
-        if (!hasHeart) {
-          setGameOverReason('hearts')
+    const wasAnswered = currentQuestionIdx in answers
+    setAnswers(prev => ({ ...prev, [currentQuestionIdx]: { isCorrect, userAnswer } }))
+    if (!wasAnswered) {
+      if (isCorrect) {
+        setCorrectCount(prev => prev + 1)
+        setCombo(prev => prev + 1)
+        playCorrectSound()
+        updateQuestProgress('quest-questions-5')
+      } else {
+        setCombo(0)
+        playWrongSound()
+        if (currentQuestion && userAnswer) {
+          recordWrongAnswer(currentQuestion, userAnswer, lesson.id)
+        }
+        if (!infiniteHearts) {
+          const hasHeart = loseHeart()
+          if (!hasHeart) {
+            setGameOverReason('hearts')
+          }
         }
       }
+    } else {
+      // Re-answering: just play sound
+      isCorrect ? playCorrectSound() : playWrongSound()
     }
     // Track atom progress for diagnostic stats
     if (currentQuestion.atoms) {
@@ -154,7 +161,7 @@ export function Lesson() {
       timestamp: new Date().toISOString(),
       timeSpent,
     })
-  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id, updateTaskStats, questionStartTime, recordAnswer])
+  }, [loseHeart, currentQuestion, recordAtomAttempt, infiniteHearts, recordWrongAnswer, lesson.id, updateTaskStats, questionStartTime, recordAnswer, currentQuestionIdx, answers])
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx < questions.length - 1) {
@@ -165,6 +172,14 @@ export function Lesson() {
       setGameOverReason('completed')
     }
   }, [currentQuestionIdx, questions.length])
+
+  const handlePrev = useCallback(() => {
+    if (currentQuestionIdx > 0) {
+      setDirection(-1)
+      setCurrentQuestionIdx(prev => prev - 1)
+      setQuestionStartTime(Date.now())
+    }
+  }, [currentQuestionIdx])
 
   // Auto-complete lesson when finished — fixes bug where closing page loses progress
   const [hasAutoCompleted, setHasAutoCompleted] = useState(false)

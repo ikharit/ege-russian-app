@@ -130,7 +130,6 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           </motion.button>
         </div>
       </div>
-      <StudentRegistrationModal isOpen={showRegModal} onClose={() => setShowRegModal(false)} />
     </header>
   )
 }
