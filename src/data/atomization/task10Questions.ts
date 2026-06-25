@@ -4,366 +4,296 @@ import { Question } from '../../types'
 export const task10Questions: Question[] = [
   // === ПРЕ- / ПРИ- (словарные) ===
   {
-    id: 'q10-atom-1', type: 'single', text: 'Как правильно написать слово: пр.исполнен (отваги)',
-    options: ['преисполнен', 'приисполнен'], correctAnswer: ['преисполнен'],
+    id: 'q10-atom-1', type: 'text', text: 'Впишите пропущенную букву: пр_исполнен(отваги)',
     explanation: 'ПРЕ- (заранее, вперёд) — словарное слово. Проверить нельзя, запомнить: преисполнен, премудрый, преследование.', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   {
-    id: 'q10-atom-2', type: 'single', text: 'Как правильно написать слово: пр.мудрый',
-    options: ['премудрый', 'примудрый'], correctAnswer: ['премудрый'],
+    id: 'q10-atom-2', type: 'text', text: 'Впишите пропущенную букву: пр_мудрый',
     explanation: 'ПРЕ- — словарное слово, нельзя проверить.', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   {
-    id: 'q10-atom-3', type: 'single', text: 'Как правильно написать слово: пр.следование (врага)',
-    options: ['преследование', 'приследование'], correctAnswer: ['преследование'],
+    id: 'q10-atom-3', type: 'text', text: 'Впишите пропущенную букву: пр_следование(врага)',
     explanation: 'ПРЕ- — словарное слово.', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   {
-    id: 'q10-atom-4', type: 'single', text: 'Как правильно написать слово: пр.мадонна',
-    options: ['премадонна', 'примадонна'], correctAnswer: ['премадонна'],
+    id: 'q10-atom-4', type: 'text', text: 'Впишите пропущенную букву: пр_мадонна',
     explanation: 'ПРЕ- — словарное слово (от итальянской Примадонны, но в русском устоялось с ПРЕ-).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   {
-    id: 'q10-atom-5', type: 'single', text: 'Как правильно написать слово: пр.града',
-    options: ['преграда', 'приграда'], correctAnswer: ['преграда'],
+    id: 'q10-atom-5', type: 'text', text: 'Впишите пропущенную букву: пр_града',
     explanation: 'ПРЕ- — словарное слово (преграда, препятствие).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   // === ПРЕ- / ПРИ- (проверяемые) ===
   {
-    id: 'q10-atom-6', type: 'single', text: 'Как правильно написать слово: пр.обрёл',
-    options: ['приобрёл', 'преобрёл'], correctAnswer: ['приобрёл'],
+    id: 'q10-atom-6', type: 'text', text: 'Впишите пропущенную букву: пр_обрёл',
     explanation: 'ПРИ- — приближение. Проверочное: обрести.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   {
-    id: 'q10-atom-7', type: 'single', text: 'Как правильно написать слово: пр.открыть',
-    options: ['приоткрыть', 'преоткрыть'], correctAnswer: ['приоткрыть'],
+    id: 'q10-atom-7', type: 'text', text: 'Впишите пропущенную букву: пр_открыть',
     explanation: 'ПРИ- — приближение, неполнота. Проверочное: открыть.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   {
-    id: 'q10-atom-8', type: 'single', text: 'Как правильно написать слово: пр.вязанный (к дереву)',
-    options: ['привязанный', 'превязанный'], correctAnswer: ['привязанный'],
+    id: 'q10-atom-8', type: 'text', text: 'Впишите пропущенную букву: пр_вязанный(к дереву)',
     explanation: 'ПРИ- — приближение. Проверочное: вязать.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   {
-    id: 'q10-atom-9', type: 'single', text: 'Как правильно написать слово: пр.клеить (к картону)',
-    options: ['приклеить', 'преклеить'], correctAnswer: ['приклеить'],
+    id: 'q10-atom-9', type: 'text', text: 'Впишите пропущенную букву: пр_клеить(к картону)',
     explanation: 'ПРИ- — приближение. Проверочное: клеить.', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   {
-    id: 'q10-atom-10', type: 'single', text: 'Как правильно написать слово: пр.смотреться',
-    options: ['присмотреться', 'пресмотреться'], correctAnswer: ['присмотреться'],
+    id: 'q10-atom-10', type: 'text', text: 'Впишите пропущенную букву: пр_смотреться',
     explanation: 'ПРИ- — приближение. Проверочное: смотреть.', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   // === ПРЕД- / ПОД- ===
   {
-    id: 'q10-atom-11', type: 'single', text: 'Как правильно написать слово: пр.дзащита',
-    options: ['предзащита', 'придзащита'], correctAnswer: ['предзащита'],
+    id: 'q10-atom-11', type: 'text', text: 'Впишите пропущенную букву: пр_дзащита',
     explanation: 'ПРЕД- — заранее. Проверочное: защита.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred']
   },
   {
-    id: 'q10-atom-12', type: 'single', text: 'Как правильно написать слово: пр.дъюбилейный',
-    options: ['предъюбилейный', 'придъюбилейный'], correctAnswer: ['предъюбилейный'],
+    id: 'q10-atom-12', type: 'text', text: 'Впишите пропущенную букву: пр_дъюбилейный',
     explanation: 'ПРЕД- — заранее. Разделительный Ъ перед ю, я, е, ё, у.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred', 'hard_sign']
   },
   {
-    id: 'q10-atom-13', type: 'single', text: 'Как правильно написать слово: п.дкараулить',
-    options: ['подкараулить', 'поткараулить'], correctAnswer: ['подкараулить'],
+    id: 'q10-atom-13', type: 'text', text: 'Впишите пропущенную букву: п_дкараулить',
     explanation: 'ПОД- — снизу, тайно. Проверочное: караул.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred']
   },
   {
-    id: 'q10-atom-14', type: 'single', text: 'Как правильно написать слово: п.дножие (горы)',
-    options: ['подножие', 'потножие'], correctAnswer: ['подножие'],
+    id: 'q10-atom-14', type: 'text', text: 'Впишите пропущенную букву: п_дножие(горы)',
     explanation: 'ПОД- — снизу. Проверочное: нога.', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred']
   },
   {
-    id: 'q10-atom-15', type: 'single', text: 'Как правильно написать слово: п.дправить',
-    options: ['подправить', 'потправить'], correctAnswer: ['подправить'],
+    id: 'q10-atom-15', type: 'text', text: 'Впишите пропущенную букву: п_дправить',
     explanation: 'ПОД- — немного, слегка. Проверочное: править.', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred']
   },
   // === ВС- / ВЗ- / ВЪ- ===
   {
-    id: 'q10-atom-16', type: 'single', text: 'Как правильно написать слово: (рожь) в.колосилась',
-    options: ['всколосилась', 'взколосилась'], correctAnswer: ['всколосилась'],
+    id: 'q10-atom-16', type: 'text', text: 'Впишите пропущенную букву: (рожь)',
     explanation: 'ВС- перед глухими к, х, п, с, т, ф, ц, ш, щ (всколоситься, вспыхнуть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
   {
-    id: 'q10-atom-17', type: 'single', text: 'Как правильно написать слово: вз.браться (на гору)',
-    options: ['взобраться', 'всобраться'], correctAnswer: ['взобраться'],
+    id: 'q10-atom-17', type: 'text', text: 'Впишите пропущенную букву: вз_браться(на гору)',
     explanation: 'ВЗ- перед звонкими б, д, з, г, ж, в (взобраться, вздремнуть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
   {
-    id: 'q10-atom-18', type: 'single', text: 'Как правильно написать слово: в.пыхнуть',
-    options: ['вспыхнуть', 'взпыхнуть'], correctAnswer: ['вспыхнуть'],
+    id: 'q10-atom-18', type: 'text', text: 'Впишите пропущенную букву: в_пыхнуть',
     explanation: 'ВС- перед глухими (вспыхнуть, вскипеть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
   {
-    id: 'q10-atom-19', type: 'single', text: 'Как правильно написать слово: в.езд',
-    options: ['въезд', 'вьезд'], correctAnswer: ['въезд'],
+    id: 'q10-atom-19', type: 'text', text: 'Впишите пропущенную букву: в_езд',
     explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед ю, я, е, ё, у.', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   {
-    id: 'q10-atom-20', type: 'single', text: 'Как правильно написать слово: в.езжать',
-    options: ['въезжать', 'вьезжать'], correctAnswer: ['въезжать'],
+    id: 'q10-atom-20', type: 'text', text: 'Впишите пропущенную букву: в_езжать',
     explanation: 'Разделительный Ъ (въезжать, съезд).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   // === РАС- / РАЗ- / РОС- / РОЗ- ===
   {
-    id: 'q10-atom-21', type: 'single', text: 'Как правильно написать слово: ра.каяние',
-    options: ['раскаяние', 'разкаяние'], correctAnswer: ['раскаяние'],
+    id: 'q10-atom-21', type: 'text', text: 'Впишите пропущенную букву: ра_каяние',
     explanation: 'РАС- перед глухими к, ч, п, с, т, ф, ц, ш, щ (раскаяние, расширить).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
   {
-    id: 'q10-atom-22', type: 'single', text: 'Как правильно написать слово: раз.брать',
-    options: ['разобрать', 'расобрать'], correctAnswer: ['разобрать'],
+    id: 'q10-atom-22', type: 'text', text: 'Впишите пропущенную букву: раз_брать',
     explanation: 'РАЗ- перед звонкими и гласными (разобрать, разъехаться).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
   {
-    id: 'q10-atom-23', type: 'single', text: 'Как правильно написать слово: ро.черк',
-    options: ['росчерк', 'розчерк'], correctAnswer: ['росчерк'],
+    id: 'q10-atom-23', type: 'text', text: 'Впишите пропущенную букву: ро_черк',
     explanation: 'РОС- перед ч, ш, щ (росчерк, россыпь).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
   {
-    id: 'q10-atom-24', type: 'single', text: 'Как правильно написать слово: роз.ск (преступника)',
-    options: ['розыск', 'росыск'], correctAnswer: ['розыск'],
+    id: 'q10-atom-24', type: 'text', text: 'Впишите пропущенную букву: роз_ск(преступника)',
     explanation: 'РОЗ- перед з, с (розыск, рознь).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
   {
-    id: 'q10-atom-25', type: 'single', text: 'Как правильно написать слово: ра.ширяться',
-    options: ['расширяться', 'разширяться'], correctAnswer: ['расширяться'],
+    id: 'q10-atom-25', type: 'text', text: 'Впишите пропущенную букву: ра_ширяться',
     explanation: 'РАС- перед глухими (расширяться, раскаляться).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
   // === БЕЗ- / БЕС- ===
   {
-    id: 'q10-atom-26', type: 'single', text: 'Как правильно написать слово: без.скусный',
-    options: ['безыскусный', 'бесыскусный'], correctAnswer: ['безыскусный'],
+    id: 'q10-atom-26', type: 'text', text: 'Впишите пропущенную букву: без_скусный',
     explanation: 'БЕЗ- перед звонкими б, в, г, д, з, ж (безыскусный, безграничный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-27', type: 'single', text: 'Как правильно написать слово: бес.правный',
-    options: ['бесправный', 'безправный'], correctAnswer: ['бесправный'],
+    id: 'q10-atom-27', type: 'text', text: 'Впишите пропущенную букву: бес_правный',
     explanation: 'БЕС- перед глухими п, с, т, к, ф, х, ц, ч, ш, щ (бесправный, бесконечный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-28', type: 'single', text: 'Как правильно написать слово: бе.вкусный',
-    options: ['безвкусный', 'бесвкусный'], correctAnswer: ['безвкусный'],
+    id: 'q10-atom-28', type: 'text', text: 'Впишите пропущенную букву: бе_вкусный',
     explanation: 'БЕЗ- перед звонкими (безвкусный, безбрежный).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-29', type: 'single', text: 'Как правильно написать слово: бе.конечный',
-    options: ['бесконечный', 'безконечный'], correctAnswer: ['бесконечный'],
+    id: 'q10-atom-29', type: 'text', text: 'Впишите пропущенную букву: бе_конечный',
     explanation: 'БЕС- перед глухими (бесконечный, бесчестный).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-30', type: 'single', text: 'Как правильно написать слово: бе.звёздный',
-    options: ['беззвёздный', 'бесзвёздный'], correctAnswer: ['беззвёздный'],
+    id: 'q10-atom-30', type: 'text', text: 'Впишите пропущенную букву: бе_звёздный',
     explanation: 'БЕЗ- перед звонкими (беззвёздный, безбожный).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   // === ИЗ- / ИС- / ИСПО- ===
   {
-    id: 'q10-atom-31', type: 'single', text: 'Как правильно написать слово: изра.ходовать',
-    options: ['израсходовать', 'исрасходовать'], correctAnswer: ['израсходовать'],
+    id: 'q10-atom-31', type: 'text', text: 'Впишите пропущенную букву: изра_ходовать',
     explanation: 'ИЗ- перед р (израсходовать, изредка).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_iz_is']
   },
   {
-    id: 'q10-atom-32', type: 'single', text: 'Как правильно написать слово: и.подтишка',
-    options: ['исподтишка', 'изподтишка'], correctAnswer: ['исподтишка'],
+    id: 'q10-atom-32', type: 'text', text: 'Впишите пропущенную букву: и_подтишка',
     explanation: 'ИС- перед п (исподтишка, исподлобья).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_iz_is']
   },
   {
-    id: 'q10-atom-33', type: 'single', text: 'Как правильно написать слово: и.следовать',
-    options: ['исследовать', 'изследовать'], correctAnswer: ['исследовать'],
+    id: 'q10-atom-33', type: 'text', text: 'Впишите пропущенную букву: и_следовать',
     explanation: 'ИС- перед с (исследовать, исчезнуть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_iz_is']
   },
   {
-    id: 'q10-atom-34', type: 'single', text: 'Как правильно написать слово: и.подлобья',
-    options: ['исподлобья', 'изподлобья'], correctAnswer: ['исподлобья'],
+    id: 'q10-atom-34', type: 'text', text: 'Впишите пропущенную букву: и_подлобья',
     explanation: 'ИС- перед п (исподлобья, исподволь).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_iz_is']
   },
   {
-    id: 'q10-atom-35', type: 'single', text: 'Как правильно написать слово: и.мельчить',
-    options: ['измельчить', 'исмельчить'], correctAnswer: ['измельчить'],
+    id: 'q10-atom-35', type: 'text', text: 'Впишите пропущенную букву: и_мельчить',
     explanation: 'ИЗ- перед м (измельчить, измучить).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_z_s', 'z_s_iz_is']
   },
   // === С- / СЫ- / СУБ- ===
   {
-    id: 'q10-atom-36', type: 'single', text: 'Как правильно написать слово: с.знова',
-    options: ['сызнова', 'сизнова'], correctAnswer: ['сызнова'],
+    id: 'q10-atom-36', type: 'text', text: 'Впишите пропущенную букву: с_знова',
     explanation: 'СЫ- после приставки с перед з, с, г, д, в, б (сызнова, сыграть, съесть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_y_i']
   },
   {
-    id: 'q10-atom-37', type: 'single', text: 'Как правильно написать слово: с.грать',
-    options: ['сыграть', 'сиграть'], correctAnswer: ['сыграть'],
+    id: 'q10-atom-37', type: 'text', text: 'Впишите пропущенную букву: с_грать',
     explanation: 'СЫ- после приставки с перед г (сыграть, съесть).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_y_i']
   },
   {
-    id: 'q10-atom-38', type: 'single', text: 'Как правильно написать слово: с.едобный',
-    options: ['съедобный', 'седобный'], correctAnswer: ['съедобный'],
+    id: 'q10-atom-38', type: 'text', text: 'Впишите пропущенную букву: с_едобный',
     explanation: 'СЪ- с разделительным Ъ (съедобный, съесть).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   {
-    id: 'q10-atom-39', type: 'single', text: 'Как правильно написать слово: суб.ективный',
-    options: ['субъективный', 'субективный'], correctAnswer: ['субъективный'],
+    id: 'q10-atom-39', type: 'text', text: 'Впишите пропущенную букву: суб_ективный',
     explanation: 'Разделительный Ъ перед е (субъективный, объективный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   {
-    id: 'q10-atom-40', type: 'single', text: 'Как правильно написать слово: с.ёжиться',
-    options: ['съёжиться', 'сёжиться'], correctAnswer: ['съёжиться'],
+    id: 'q10-atom-40', type: 'text', text: 'Впишите пропущенную букву: с_ёжиться',
     explanation: 'СЪ- с разделительным Ъ (съёжиться, съесть).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   // === ОБ- / ОБЕЗ- / ОБЕС- / ОБЪ- ===
   {
-    id: 'q10-atom-41', type: 'single', text: 'Как правильно написать слово: обез.яний',
-    options: ['обезьяний', 'обезяний'], correctAnswer: ['обезьяний'],
+    id: 'q10-atom-41', type: 'text', text: 'Впишите пропущенную букву: обез_яний',
     explanation: 'Ь в корне (обезьяний, обезьяна).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_hard_soft', 'soft_sign']
   },
   {
-    id: 'q10-atom-42', type: 'single', text: 'Как правильно написать слово: об.ективный',
-    options: ['объективный', 'обективный'], correctAnswer: ['объективный'],
+    id: 'q10-atom-42', type: 'text', text: 'Впишите пропущенную букву: об_ективный',
     explanation: 'Разделительный Ъ (объективный, объявить).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   {
-    id: 'q10-atom-43', type: 'single', text: 'Как правильно написать слово: об.явить',
-    options: ['объявить', 'обявить'], correctAnswer: ['объявить'],
+    id: 'q10-atom-43', type: 'text', text: 'Впишите пропущенную букву: об_явить',
     explanation: 'Разделительный Ъ (объявить, объезд).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   {
-    id: 'q10-atom-44', type: 'single', text: 'Как правильно написать слово: обе.цветить',
-    options: ['обесцветить', 'обезцветить'], correctAnswer: ['обесцветить'],
+    id: 'q10-atom-44', type: 'text', text: 'Впишите пропущенную букву: обе_цветить',
     explanation: 'ОБЕС- перед глухими ц, п, с, т, к (обесцветить, обеспечить).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-45', type: 'single', text: 'Как правильно написать слово: об.ятия',
-    options: ['объятия', 'обятия'], correctAnswer: ['объятия'],
+    id: 'q10-atom-45', type: 'text', text: 'Впишите пропущенную букву: об_ятия',
     explanation: 'Разделительный Ъ (объятия, объединить).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
   // === НЕ- / НИ- / НЕДО- ===
   {
-    id: 'q10-atom-46', type: 'single', text: 'Как правильно написать слово: не.гибаемый',
-    options: ['негибаемый', 'нигибаемый'], correctAnswer: ['негибаемый'],
+    id: 'q10-atom-46', type: 'text', text: 'Впишите пропущенную букву: не_гибаемый',
     explanation: 'НЕ- — отрицание (негибаемый, несокрушимый).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-47', type: 'single', text: 'Как правильно написать слово: ни.ходить',
-    options: ['нисходить', 'несходить'], correctAnswer: ['нисходить'],
+    id: 'q10-atom-47', type: 'text', text: 'Впишите пропущенную букву: ни_ходить',
     explanation: 'НИ- — нисходить (сверху вниз).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-48', type: 'single', text: 'Как правильно написать слово: нед.считаться',
-    options: ['недосчитаться', 'недосчётаться'], correctAnswer: ['недосчитаться'],
+    id: 'q10-atom-48', type: 'text', text: 'Впишите пропущенную букву: нед_считаться',
     explanation: 'НЕДО- — недостаток (недосчитаться, недооценить).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-49', type: 'single', text: 'Как правильно написать слово: непр.глядный',
-    options: ['неприглядный', 'непроглядный'], correctAnswer: ['неприглядный'],
+    id: 'q10-atom-49', type: 'text', text: 'Впишите пропущенную букву: непр_глядный',
     explanation: 'НЕПРИ- — неприглядный (непривлекательный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   {
-    id: 'q10-atom-50', type: 'single', text: 'Как правильно написать слово: непр.емлемый',
-    options: ['неприемлемый', 'непреемлемый'], correctAnswer: ['неприемлемый'],
+    id: 'q10-atom-50', type: 'text', text: 'Впишите пропущенную букву: непр_емлемый',
     explanation: 'НЕПРИ- — неприемлемый (недопустимый).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   // === ЧЕРЕС- / ЧРЕЗ- ===
   {
-    id: 'q10-atom-51', type: 'single', text: 'Как правильно написать слово: чере.чур',
-    options: ['чересчур', 'чресчур'], correctAnswer: ['чересчур'],
+    id: 'q10-atom-51', type: 'text', text: 'Впишите пропущенную букву: чере_чур',
     explanation: 'ЧЕРЕС- (чересчур, чересполосица).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-52', type: 'single', text: 'Как правильно написать слово: чере.полосица',
-    options: ['чересполосица', 'чресполосица'], correctAnswer: ['чересполосица'],
+    id: 'q10-atom-52', type: 'text', text: 'Впишите пропущенную букву: чере_полосица',
     explanation: 'ЧЕРЕС- (чересполосица).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-53', type: 'single', text: 'Как правильно написать слово: чре.вычайное',
-    options: ['чрезвычайное', 'черезвычайное'], correctAnswer: ['чрезвычайное'],
+    id: 'q10-atom-53', type: 'text', text: 'Впишите пропущенную букву: чре_вычайное',
     explanation: 'ЧРЕЗ- (чрезвычайный, чрезмерный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   // === ПРА- / ПРО- ===
   {
-    id: 'q10-atom-54', type: 'single', text: 'Как правильно написать слово: пр.дедушка',
-    options: ['прадедушка', 'продедушка'], correctAnswer: ['прадедушка'],
+    id: 'q10-atom-54', type: 'text', text: 'Впишите пропущенную букву: пр_дедушка',
     explanation: 'ПРА- — родство (прадед, прабабка).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pra_pro']
   },
   {
-    id: 'q10-atom-55', type: 'single', text: 'Как правильно написать слово: прот.тип',
-    options: ['прототип', 'пратотип'], correctAnswer: ['прототип'],
+    id: 'q10-atom-55', type: 'text', text: 'Впишите пропущенную букву: прот_тип',
     explanation: 'ПРО- — прототип, промежуток.', difficulty: 'easy', xpReward: 10, atoms: ['prefix_pra_pro']
   },
   // === Сложные приставки ===
   {
-    id: 'q10-atom-56', type: 'single', text: 'Как правильно написать слово: сверх.зысканный',
-    options: ['сверхъзысканный', 'сверхзысканный'], correctAnswer: ['сверхъзысканный'],
+    id: 'q10-atom-56', type: 'text', text: 'Впишите пропущенную букву: сверх_зысканный',
     explanation: 'Разделительный Ъ (сверхъестественный, трёхъядерный).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
   {
-    id: 'q10-atom-57', type: 'single', text: 'Как правильно написать слово: трёх.ядерный',
-    options: ['трёхъядерный', 'трёхядерный'], correctAnswer: ['трёхъядерный'],
+    id: 'q10-atom-57', type: 'text', text: 'Впишите пропущенную букву: трёх_ядерный',
     explanation: 'Разделительный Ъ (трёхъядерный, двухъязычный).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
   {
-    id: 'q10-atom-58', type: 'single', text: 'Как правильно написать слово: двух.язычный',
-    options: ['двухъязычный', 'двухязычный'], correctAnswer: ['двухъязычный'],
+    id: 'q10-atom-58', type: 'text', text: 'Впишите пропущенную букву: двух_язычный',
     explanation: 'Разделительный Ъ (двухъязычный, двухъярусный).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
   {
-    id: 'q10-atom-59', type: 'single', text: 'Как правильно написать слово: фотооб.ектив',
-    options: ['фотообъектив', 'фотообектив'], correctAnswer: ['фотообъектив'],
+    id: 'q10-atom-59', type: 'text', text: 'Впишите пропущенную букву: фотооб_ектив',
     explanation: 'Разделительный Ъ (фотообъектив, аудиообъектив).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
   {
-    id: 'q10-atom-60', type: 'single', text: 'Как правильно написать слово: контр.гра',
-    options: ['контргра', 'контръгра'], correctAnswer: ['контргра'],
+    id: 'q10-atom-60', type: 'text', text: 'Впишите пропущенную букву: контр_гра',
     explanation: 'КОНТР- (контргра, контрбуция).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable', 'unch_compound']
   },
   // === Десять дополнительных смешанных ===
   {
-    id: 'q10-atom-61', type: 'single', text: 'Как правильно написать слово: пред.стория',
-    options: ['предистория', 'предыстория'], correctAnswer: ['предыстория'],
+    id: 'q10-atom-61', type: 'text', text: 'Впишите пропущенную букву: пред_стория',
     explanation: 'ПРЕДЫ- (предыстория, предупреждение).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-62', type: 'single', text: 'Как правильно написать слово: меж.языковой',
-    options: ['межъязыковой', 'межязыковой'], correctAnswer: ['межъязыковой'],
+    id: 'q10-atom-62', type: 'text', text: 'Впишите пропущенную букву: меж_языковой',
     explanation: 'МЕЖЪ- с разделительным Ъ (межъязыковой, межинститутский).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
   {
-    id: 'q10-atom-63', type: 'single', text: 'Как правильно написать слово: зас.лонить',
-    options: ['заслонить', 'зазлонить'], correctAnswer: ['заслонить'],
+    id: 'q10-atom-63', type: 'text', text: 'Впишите пропущенную букву: зас_лонить',
     explanation: 'ЗАС- перед глухими л (заслонить, заскорузлый).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   {
-    id: 'q10-atom-64', type: 'single', text: 'Как правильно написать слово: во.пламениться',
-    options: ['воспламениться', 'возпламениться'], correctAnswer: ['воспламениться'],
+    id: 'q10-atom-64', type: 'text', text: 'Впишите пропущенную букву: во_пламениться',
     explanation: 'ВОС- перед глухими п (воспламениться, воспитать).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
   {
-    id: 'q10-atom-65', type: 'single', text: 'Как правильно написать слово: от.граться',
-    options: ['отыграться', 'отиграться'], correctAnswer: ['отыграться'],
+    id: 'q10-atom-65', type: 'text', text: 'Впишите пропущенную букву: от_граться',
     explanation: 'ОТ- (отыграться, отомстить).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-66', type: 'single', text: 'Как правильно написать слово: на.конец',
-    options: ['наконец', 'ноконец'], correctAnswer: ['наконец'],
+    id: 'q10-atom-66', type: 'text', text: 'Впишите пропущенную букву: на_конец',
     explanation: 'НА- (наконец, насчёт).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-67', type: 'single', text: 'Как правильно написать слово: за.интересованный',
-    options: ['заинтересованный', 'засинтересованный'], correctAnswer: ['заинтересованный'],
+    id: 'q10-atom-67', type: 'text', text: 'Впишите пропущенную букву: за_интересованный',
     explanation: 'ЗА- (заинтересованный, закаляющийся).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-68', type: 'single', text: 'Как правильно написать слово: до.бела',
-    options: ['добела', 'добьела'], correctAnswer: ['добела'],
+    id: 'q10-atom-68', type: 'text', text: 'Впишите пропущенную букву: до_бела',
     explanation: 'ДО- (добела, дословно, досыта).', difficulty: 'easy', xpReward: 10, atoms: ['prefix_unchangeable']
   },
   {
-    id: 'q10-atom-69', type: 'single', text: 'Как правильно написать слово: пр.европейские (интересы)',
-    options: ['преевропейские', 'приевропейские'], correctAnswer: ['преевропейские'],
+    id: 'q10-atom-69', type: 'text', text: 'Впишите пропущенную букву: пр_европейские(интересы)',
     explanation: 'ПРЕ- (заранее, вперёд).', difficulty: 'medium', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
   {
-    id: 'q10-atom-70', type: 'single', text: 'Как правильно написать слово: пр.студия',
-    options: ['пристудия', 'престудия'], correctAnswer: ['престудия'],
+    id: 'q10-atom-70', type: 'text', text: 'Впишите пропущенную букву: пр_студия',
     explanation: 'ПРЕ- (престудия, прессалон).', difficulty: 'hard', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
   },
 ]

@@ -21,7 +21,7 @@
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
-| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder) |
+| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2025-02-23)** — исправлены ошибочные классификации корней, placeholder'ы, самопроверки. |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Тесты, рендерер, XP. Ждёт скрапинга оставшихся заданий |
