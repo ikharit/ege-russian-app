@@ -88,6 +88,7 @@ const MistakesReview = lazy(() => import('./pages/MistakesReview').then(m => ({ 
 const ErrorAnalysisPage = lazy(() => import('./pages/ErrorAnalysisPage').then(m => ({ default: m.ErrorAnalysisPage })))
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })))
 const TeacherClassroom = lazy(() => import('./pages/TeacherClassroom').then(m => ({ default: m.TeacherClassroom })))
+const QuestionEditorPage = lazy(() => import('./pages/QuestionEditorPage').then(m => ({ default: m.QuestionEditorPage })))
 const StudyPlanPage = lazy(() => import('./pages/StudyPlanPage').then(m => ({ default: m.StudyPlanPage })))
 const AdaptiveTrainerPage = lazy(() => import('./pages/AdaptiveTrainerPage').then(m => ({ default: m.AdaptiveTrainerPage })))
 const ExamVariantPage = lazy(() => import('./pages/ExamVariantPage').then(m => ({ default: m.ExamVariantPage })))
@@ -355,7 +356,7 @@ export default function App() {
           }
         })(),
       }
-      classStore.updateStudentProgress(studentClass.id, activeProfileId, progressSnapshot)
+      classStore.updateStudentProgress(studentClass.id, userId, progressSnapshot)
     })
     return () => unsubscribe()
   }, [])
@@ -510,6 +511,7 @@ export default function App() {
             <Route path="/teacher" element={<Teacher />} />
             <Route path="/teacher/classroom" element={<TeacherClassroom />} />
             <Route path="/teacher/analytics" element={<TeacherAnalytics />} />
+            <Route path="/teacher/editor" element={<QuestionEditorPage />} />
             <Route path="/teacher/:studentName" element={<StudentHomework />} />
             <Route path="/join-class" element={<JoinClass />} />
             <Route path="/class/:classId" element={<ClassDetail />} />

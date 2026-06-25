@@ -27,6 +27,8 @@ export function Leaderboard() {
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
   const taskStats = useProgressStore((s) => s.taskStats)
+  const achievements = useProgressStore((s) => s.achievements)
+  const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
   const [mode, setMode] = useState<'xp' | 'streak' | 'homework' | 'accuracy'>('xp')
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
@@ -46,10 +48,13 @@ export function Leaderboard() {
     level: userStats.level,
     streak: userStats.streak,
     lessonsCompleted: completedCount,
-    achievements: useProgressStore((s) => s.achievements),
-    accuracy: taskStats ?
-      (Object.values(taskStats).reduce((sum, s) => sum + (s.correct || 0), 0) /
-        Object.values(taskStats).reduce((sum, s) => sum + (s.total || 0), 0) * 100)
+    achievements: achievements,
+    accuracy: taskStats && Object.keys(taskStats).length > 0 ?
+      (() => {
+        const total = Object.values(taskStats).reduce((sum, s) => sum + (s.total || 0), 0)
+        const correct = Object.values(taskStats).reduce((sum, s) => sum + (s.correct || 0), 0)
+        return total > 0 ? Math.round((correct / total) * 100) : undefined
+      })()
       : undefined,
     updatedAt: userStats.lastActivityDate || new Date().toISOString()
   }

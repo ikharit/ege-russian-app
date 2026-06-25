@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Users, UserPlus, Copy, Trophy, BookOpen, Calendar, Trash2, ChevronRight,
   GraduationCap, X, CheckCircle, AlertCircle, ArrowLeft, School, FileText, BrainCircuit,
-  BarChart3, Bot
+  BarChart3, Bot, Edit3
 } from 'lucide-react'
 import { useClassStore, ClassRoom, ClassHomework } from '../stores/classStore'
 import { useStudentStore } from '../stores/studentStore'
@@ -150,6 +150,13 @@ export function TeacherClassroom() {
               >
                 <BrainCircuit size={16} />
                 Аналитика
+              </button>
+              <button
+                onClick={() => navigate('/teacher/editor')}
+                className="flex items-center gap-2 px-4 py-2 bg-duo-blue text-white rounded-xl font-bold text-sm hover:bg-duo-blue/90 transition-colors shadow-md"
+              >
+                <Edit3 size={16} />
+                Редактор
               </button>
               <button
                 onClick={() => navigate('/teacher/heatmap')}
