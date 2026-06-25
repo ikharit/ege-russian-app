@@ -16,7 +16,7 @@ const embedDooshin = (sections: Section[], taskNumbers: string[]) => {
     groups: [
       ...(s.groups || []),
       ...dooshinGroups
-        .filter((g) => taskNumbers.includes(g.id.replace('group-dooshin-', '')))
+        .filter((g) => taskNumbers.includes(g.id.replace('group-task', '')))
         .map((g) => ({
           ...g,
           id: `${g.id}-embedded`,
