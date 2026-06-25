@@ -248,3 +248,14 @@ print(q['correctAnswer'])  # ['построен']
 - Убраны мини-карточки Достижения и Рейтинг с главной
 - Добавлена секция "Социальное" в Dashboard с 4 карточками: Друзья, Достижения, Рейтинг, Карточки
 - Файлы: `src/pages/TodayPage.tsx`, `src/pages/Dashboard.tsx`
+
+
+---
+
+## Обновления 2026-06-25 (продолжение)
+
+### Исправить сохранение прогресса (localStorage persistence)
+- Восстановлен `useEffect` для auto-save из `progressStore` в `studentStore` (`App.tsx`)
+- `StudentRegistrationModal` теперь проверяет `hasProgress` перед сбросом — не сбрасывает, если уроки уже пройдены
+- Добавлено `onRehydrateStorage` в `progressStore` и `studentStore` для диагностики загрузки из `localStorage`
+- Файлы: `src/App.tsx`, `src/components/StudentRegistrationModal.tsx`, `src/stores/progressStore.ts`, `src/stores/studentStore.ts`

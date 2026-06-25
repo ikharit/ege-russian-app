@@ -742,3 +742,26 @@ import { getAtomById } from '../data/atomization/atoms'
 5. Убран `ShoppingBag` из импортов `lucide-react` в `Profile.tsx` и `Dashboard.tsx`
 
 **Критерий завершения**: Нет магазина, нет покупных аватарок/тем, сборка проходит чисто
+
+
+---
+
+### ✅ ЗАДАЧА-А14: Исправить сохранение прогресса (localStorage persistence)
+
+**Статус:** ✅ Завершено (2026-06-25)
+
+**Где**: `src/App.tsx`, `src/components/StudentRegistrationModal.tsx`, `src/stores/progressStore.ts`, `src/stores/studentStore.ts`
+
+**Проблема**: Пользователь проходил задания, но после перезагрузки прогресс показывался как непройденный.
+
+**Причина**: 
+1. В `App.tsx` был удалён `useEffect` для auto-save прогресса из `progressStore` в `studentStore`
+2. `StudentRegistrationModal` при создании профиля всегда сбрасывал `progressStore` в пустое состояние, даже если пользователь уже прошёл уроки
+3. Отсутствовало логирование `onRehydrateStorage` для диагностики загрузки из `localStorage`
+
+**Решение**:
+1. Восстановлен `useEffect` в `App.tsx` для auto-save: `progressStore.subscribe` → `updateActiveProfile()` + `addHistoryPoint()`
+2. `StudentRegistrationModal` теперь проверяет `hasProgress` перед сбросом — если уроки уже пройдены, `progressStore` не сбрасывается
+3. Добавлено `onRehydrateStorage` в `progressStore` и `studentStore` для логирования в консоль браузера
+
+**Файлы**: `src/App.tsx` (auto-save useEffect), `src/components/StudentRegistrationModal.tsx` (hasProgress check), `src/stores/progressStore.ts` (onRehydrateStorage), `src/stores/studentStore.ts` (onRehydrateStorage)
