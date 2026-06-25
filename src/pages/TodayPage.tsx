@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Flame, Zap, Heart, ChevronRight, BookOpen, Target, Route, Swords, PenTool, GraduationCap } from 'lucide-react'
+import { Flame, Zap, Heart, ChevronRight, BookOpen, Target, Route, Swords, PenTool, GraduationCap, Trophy } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp, Smile } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, Map, TrendingUp, Smile } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -519,14 +519,6 @@ export function Dashboard() {
             title="Игры"
             subtitle="Отдохни 🎮"
             onClick={() => navigate('/games')}
-          />
-          <CompactCard
-            icon={ShoppingBag}
-            iconColor="#fff"
-            iconBg="#8b5cf6"
-            title="Магазин"
-            subtitle="Аватарки и темы"
-            onClick={() => navigate('/shop')}
           />
         </div>
       </div>

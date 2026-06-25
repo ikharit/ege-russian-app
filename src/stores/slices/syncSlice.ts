@@ -103,14 +103,18 @@ export function createSyncActions(
       if (!isSupabaseConfigured) return
       const { data, error } = await supabase
         .from('user_progress')
-        .select('user_id, user_stats, lesson_progress, updated_at')
+        .select('user_id, user_stats, lesson_progress, task_stats, updated_at')
         .order('updated_at', { ascending: false })
-        .limit(50)
       if (error || !data) return
       const entries: LeaderboardEntry[] = data.map((row: any) => {
         const stats = row.user_stats || {}
         const lessons = row.lesson_progress || {}
+        const taskStats = row.task_stats || {}
         const completedCount = Object.values(lessons).filter((l: any) => l.status === 'completed').length
+        const taskStatArr = Object.values(taskStats) as { total: number; correct: number; wrong: number }[]
+        const totalAttempts = taskStatArr.reduce((sum, s) => sum + (s.total || 0), 0)
+        const correctAnswers = taskStatArr.reduce((sum, s) => sum + (s.correct || 0), 0)
+        const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0
         return {
           id: row.user_id,
           name: stats.name || 'Ученик',
@@ -121,6 +125,8 @@ export function createSyncActions(
           lessonsCompleted: completedCount,
           updatedAt: row.updated_at || stats.lastActivityDate || new Date().toISOString(),
           achievements: stats.achievements || [],
+          accuracy,
+          totalAttempts,
         }
       })
       set({ leaderboard: entries })

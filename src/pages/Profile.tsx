@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, ShoppingBag, FileText, GraduationCap } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, FileText, GraduationCap } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -15,7 +15,7 @@ import { Popover } from '../components/Popover'
 import { useNotificationStore } from '../stores/notificationStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
-import { useShopStore } from '../stores/shopStore'
+import { useClassStore } from '../stores/classStore'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 
 function AIAssistantSection() {
@@ -204,82 +204,6 @@ function AIAssistantSection() {
           ? 'AI работает локально на вашем устройстве. Данные не уходят на сервер. Если хотите подключить внешний AI (Kimi, OpenAI) — введите ключ ниже.'
           : 'Введите свой API ключ. Данные не передаются третьим лицам. Ключ хранится только на вашем устройстве.'}
       </p>
-    </div>
-  )
-}
-
-function ShopInventorySection() {
-  const navigate = useNavigate()
-  const purchasedItems = useShopStore((s) => s.getPurchasedItems())
-  const equipped = useShopStore((s) => s.equipped)
-  const equip = useShopStore((s) => s.equip)
-  const unequip = useShopStore((s) => s.unequip)
-
-  const categoryLabels: Record<string, string> = {
-    avatar: 'Аватарки',
-    theme: 'Темы',
-    badge: 'Бейджи',
-    sound: 'Звуки',
-    frame: 'Рамки',
-  }
-
-  const itemsByCategory = purchasedItems.reduce((acc, item) => {
-    if (!acc[item.category]) acc[item.category] = []
-    acc[item.category].push(item)
-    return acc
-  }, {} as Record<string, typeof purchasedItems>)
-
-  return (
-    <div className="card">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="font-bold text-gray-700">Мои предметы</h3>
-        <button
-          onClick={() => navigate('/shop')}
-          className="text-xs text-duo-purple font-bold hover:underline flex items-center gap-1"
-        >
-          <ShoppingBag size={14} />
-          В магазин →
-        </button>
-      </div>
-      {purchasedItems.length === 0 ? (
-        <p className="text-sm text-gray-400">Пока нет купленных предметов</p>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {Object.entries(itemsByCategory).map(([category, items]) => (
-            <div key={category}>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">
-                {categoryLabels[category] || category}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {items.map((item) => {
-                  const isEquipped = equipped[category as keyof typeof equipped] === item.id
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        if (isEquipped) {
-                          unequip(item.category)
-                        } else {
-                          equip(item.id, item.category)
-                        }
-                      }}
-                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        isEquipped
-                          ? 'bg-duo-green text-white shadow-sm'
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
-                      }`}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                      {isEquipped && <CheckCircle size={12} />}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -732,9 +656,6 @@ export function Profile() {
           <div className="flex justify-between"><span className="text-gray-500">Лучший результат</span><span className="font-bold">{bestScore}%</span></div>
         </div>
       </div>
-
-      {/* My Items */}
-      <ShopInventorySection />
 
       {/* Cloud sync section */}
       <div className="card">

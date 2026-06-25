@@ -26,7 +26,7 @@ export function Leaderboard() {
   const leaderboard = useProgressStore((s) => s.leaderboard)
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
-  const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
+  const taskStats = useProgressStore((s) => s.taskStats)
   const [mode, setMode] = useState<'xp' | 'streak' | 'homework' | 'accuracy'>('xp')
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
@@ -47,6 +47,10 @@ export function Leaderboard() {
     streak: userStats.streak,
     lessonsCompleted: completedCount,
     achievements: useProgressStore((s) => s.achievements),
+    accuracy: taskStats ?
+      (Object.values(taskStats).reduce((sum, s) => sum + (s.correct || 0), 0) /
+        Object.values(taskStats).reduce((sum, s) => sum + (s.total || 0), 0) * 100)
+      : undefined,
     updatedAt: userStats.lastActivityDate || new Date().toISOString()
   }
 
@@ -68,12 +72,8 @@ export function Leaderboard() {
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
   const sortedByAccuracy = [...filtered]
-    .filter(e => e.lessonsCompleted > 0)
-    .map(e => ({ 
-      ...e, 
-      accuracy: e.lessonsCompleted > 0 ? Math.round((e.xp / (e.lessonsCompleted * 20)) * 100) : 0 
-    }))
-    .sort((a, b) => (b as any).accuracy - (a as any).accuracy)
+    .filter(e => (e.accuracy !== undefined && e.accuracy > 0) || e.lessonsCompleted > 0)
+    .sort((a, b) => (b.accuracy || 0) - (a.accuracy || 0))
     .map((entry, idx) => ({ ...entry, rank: idx + 1 }))
 
   // Homework champions — real students only

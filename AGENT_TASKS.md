@@ -693,3 +693,52 @@ import { getAtomById } from '../data/atomization/atoms'
    - Друзья, Достижения, Рейтинг, Карточки
 
 **Файлы**: `src/pages/TodayPage.tsx` (строки 248-354), `src/pages/Dashboard.tsx` (строки 534-565)
+
+---
+
+### ✅ ЗАДАЧА-А14: Агентский state-sync — синхронизация документации (2026-06-25)
+
+**Статус:** ✅ Завершено (2026-06-25)
+
+**Где**: `AGENTS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-25.md`, `AGENT_TASKS.md`
+
+**Проблема**: В working tree остались незакоммиченные изменения, не отражённые в агентской документации. Дата в `AGENTS.md` откатилась на `2025-02-23`. Следующие агенты могли бы не знать о текущем состоянии.
+
+**Решение**:
+1. **AGENTS.md** — исправлена дата на `2026-06-25`, добавлены 4 новых пункта в changelog:
+   - Leaderboard accuracy (syncSlice + gamificationSlice)
+   - Shop removed (Header.tsx + Profile.tsx)
+   - DailyQuestionCard fallback
+   - Vercel PWA cache headers
+2. **memory/AGENTS-HISTORY.md** — добавлена архивная запись сессии с подробным описанием
+3. **memory/2026-06-25.md** — обновлён/дополнен результатами сборки и валидации
+4. **AGENT_TASKS.md** — добавлена эта задача (А14)
+
+**Файлы**: `AGENTS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-25.md`
+
+**Сборка**: `npm run build` ✅ (17.62s, 0 ошибок), `npm run validate:rag` ✅ (1379 entries, 0 errors, 268 warnings)
+
+**Незакоммиченные изменения в коде (сохранены в working tree)**:
+- `src/components/DailyQuestionCard.tsx` — fallback UI при отсутствии вопроса
+- `src/components/Header.tsx` — убран `useShopStore`, аватар → `User` иконка
+- `src/pages/Profile.tsx` — удалена `ShopInventorySection`, убраны импорты `ShoppingBag`/`useShopStore`
+- `src/stores/slices/gamificationSlice.ts` — добавлены `accuracy`/`totalAttempts` в `LeaderboardEntry`
+- `src/stores/slices/syncSlice.ts` — `loadLeaderboard()` считает accuracy/totalAttempts, убран `limit(50)`
+- `vercel.json` — no-cache headers для `index.html`, `sw.js`, `manifest.webmanifest`
+
+**⚠️ Важно для следующих агентов**: Магазин (`shopStore`) не удалён из codebase, но убран из UI. При необходимости — вернуть импорты и секцию.
+
+### ✅ ЗАДАЧА-А7.6: Убран магазин и покупные аватарки/темы
+
+**Статус:** ✅ Выполнено (2026-06-25)
+
+**Где**: `src/pages/ShopPage.tsx`, `src/App.tsx`, `src/components/Header.tsx`, `src/pages/Profile.tsx`, `src/pages/Dashboard.tsx`
+
+**Решение**:
+1. Убран `ShopPage` из lazy imports и роутов в `App.tsx`
+2. Убран `useShopStore` и `getEquippedAvatar` из `Header.tsx` — аватарка заменена на `User` иконку
+3. Убран компонент `ShopInventorySection` и `useShopStore` импорт из `Profile.tsx`
+4. Убрана карточка "Магазин" из `Dashboard.tsx`
+5. Убран `ShoppingBag` из импортов `lucide-react` в `Profile.tsx` и `Dashboard.tsx`
+
+**Критерий завершения**: Нет магазина, нет покупных аватарок/тем, сборка проходит чисто

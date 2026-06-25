@@ -6,13 +6,11 @@ import { Popover } from './Popover'
 import { motion } from 'framer-motion'
 import { NotificationCenter } from './NotificationCenter'
 import { LATEST_VERSION } from '../data/releaseNotes'
-import { useShopStore } from '../stores/shopStore'
 
 
 export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
-  const avatar = useShopStore((s) => s.getEquippedAvatar())
 
   const streakStart = stats.lastActivityDate
     ? new Date(new Date(stats.lastActivityDate).getTime() - (stats.streak - 1) * 86400000).toLocaleDateString('ru-RU')
@@ -126,7 +124,7 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
           >
-            <span className="text-lg">{avatar}</span>
+            <User size={20} />
           </motion.button>
         </div>
       </div>

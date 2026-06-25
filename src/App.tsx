@@ -40,7 +40,6 @@ function getPageCategory(path: string): EventCategory {
   if (path.includes('flashcard')) return 'flashcard'
   if (path.includes('profile')) return 'profile'
   if (path.includes('leaderboard')) return 'leaderboard'
-  if (path.includes('shop')) return 'shop'
   if (path.includes('chat')) return 'chat'
   if (path.includes('game') || path.includes('mini')) return 'game'
   if (path.includes('duel')) return 'duel'
@@ -98,7 +97,6 @@ const DuelPage = lazy(() => import('./pages/DuelPage').then(m => ({ default: m.D
 const MarathonPage = lazy(() => import('./pages/MarathonPage').then(m => ({ default: m.MarathonPage })))
 const WeeklySchedulePage = lazy(() => import('./pages/WeeklySchedulePage').then(m => ({ default: m.WeeklySchedulePage })))
 const ChatPage = lazy(() => import('./pages/ChatPage').then(m => ({ default: m.ChatPage })))
-const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.ShopPage })))
 const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then(m => ({ default: m.ComparisonPage })))
 const KnowledgeMap = lazy(() => import('./pages/KnowledgeMap').then(m => ({ default: m.KnowledgeMap })))
 const GrowthPage = lazy(() => import('./pages/GrowthPage').then(m => ({ default: m.GrowthPage })))
@@ -560,7 +558,6 @@ export default function App() {
             <Route path="/marathon" element={<MarathonPage />} />
             <Route path="/weekly-schedule" element={<WeeklySchedulePage />} />
             <Route path="/chat" element={<ChatPage />} />
-            <Route path="/shop" element={<ShopPage />} />
             <Route path="/comparison" element={<ComparisonPage />} />
             <Route path="/knowledge-map" element={<KnowledgeMap />} />
             <Route path="/growth" element={<GrowthPage />} />

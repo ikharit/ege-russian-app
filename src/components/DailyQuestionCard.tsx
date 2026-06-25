@@ -81,7 +81,18 @@ export function DailyQuestionCard() {
     }
   }, [savedState])
 
-  if (!question) return null
+  if (!question) {
+    return (
+      <motion.div
+        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h3 className="font-bold text-gray-800">Вопрос дня</h3>
+        <p className="text-sm text-gray-500 mt-1">Пока нет данных для персонального вопроса. Решите несколько заданий — и мы подберём вопрос по вашим слабым местам!</p>
+      </motion.div>
+    )
+  }
 
   const taskNumber = question.atoms?.find((a: string) => a.startsWith('task'))?.replace('task', '') || '1'
   const isProblematic = (question as any)._isProblematic

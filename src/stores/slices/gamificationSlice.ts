@@ -12,6 +12,8 @@ export interface LeaderboardEntry {
   lessonsCompleted: number
   updatedAt: string
   achievements?: string[]
+  accuracy?: number
+  totalAttempts?: number
 }
 
 export interface TeacherStudent {
