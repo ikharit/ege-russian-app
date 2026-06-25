@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp, Smile } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, ShoppingBag, Map, TrendingUp, Smile } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -533,6 +533,45 @@ export function Dashboard() {
 
       {/* Comparison Stats */}
       <ComparisonStats />
+
+      {/* Social — 2-column grid */}
+      <div className="flex flex-col gap-2">
+        <SectionTitle title="Социальное" />
+        <div className="grid grid-cols-2 gap-2">
+          <CompactCard
+            icon={Users}
+            iconColor="#fff"
+            iconBg="#3b82f6"
+            title="Друзья"
+            subtitle="Сравнивай прогресс"
+            onClick={() => navigate('/friends')}
+          />
+          <CompactCard
+            icon={Star}
+            iconColor="#fff"
+            iconBg="#8b5cf6"
+            title="Достижения"
+            subtitle={`${achievements.length} / ${allAchievements.length}`}
+            onClick={() => navigate('/dashboard')}
+          />
+          <CompactCard
+            icon={Medal}
+            iconColor="#fff"
+            iconBg="#eab308"
+            title="Рейтинг"
+            subtitle={myClassRank > 0 ? `Место #${myClassRank}` : 'Глобальный'}
+            onClick={() => navigate(myClassRank > 0 ? '/class/' + studentClass?.id : '/leaderboard')}
+          />
+          <CompactCard
+            icon={Brain}
+            iconColor="#fff"
+            iconBg="#a855f7"
+            title="Карточки"
+            subtitle="Anki SRS"
+            onClick={() => navigate('/flashcards')}
+          />
+        </div>
+      </div>
 
       {/* Weak topics */}
       {problematicTasks.length > 0 ? (

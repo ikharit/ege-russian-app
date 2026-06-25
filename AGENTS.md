@@ -291,7 +291,11 @@ Multiple agents work on this codebase. Without updated docs, the next agent will
 
 ---
 
-Last updated: 2025-02-23 by agent
+Last updated: 2026-06-25 by agent
+- **TodayPage cleanup**: Убраны лишние карточки из быстрого старта (оставлены 4: Все задания, Марафон, Дуэль, Сочинения). Убраны мини-карточки "Достижения" и "Рейтинг" — они доступны в Обзоре. Упрощены импорты. `src/pages/TodayPage.tsx`.
+- **QuestionCard navigation**: Добавлена кнопка "Назад" (ArrowLeft) для просмотра предыдущего вопроса. Props `onPrev` и `previousAnswer` для передачи состояния. `src/components/QuestionCard.tsx`.
+- **Leaderboard Supabase sync**: Добавлен `loadLeaderboard()` в `syncSlice.ts` — читает 50 записей из `user_progress` (Supabase), маппит `user_stats` и `lesson_progress` в `LeaderboardEntry`. `Leaderboard.tsx` вызывает при монтировании. `src/stores/slices/syncSlice.ts`, `src/pages/Leaderboard.tsx`.
+- **App.tsx simplification**: Убраны `StudentRegistrationModal`, `useStudentStore`, `useEffect` с auto-save progress в IndexedDB. Auto-sync progress теперь через `userId` из `progressStore` вместо `activeProfileId`. `src/App.tsx`.
 - **AccentTrainer UI fix**: Убран перенос букв на вторую строку в тренажёре ударений. `flex-wrap` → `flex-nowrap` + `overflow-x-auto pb-2`. Gap уменьшен с `gap-2` до `gap-1`. Длинные слова теперь остаются на одной строке, скроллятся горизонтально при необходимости. `src/pages/AccentTrainer.tsx`. Git: `b666b81`.
 - **Task 9 Mass Fix**: Исправлены 127 explanation в dooshin/task9.ts (769 заданий) — ошибочные классификации корней (чередующиеся помечены как проверяемые, самопроверки). Исправлены 39 placeholder'ов "проверьте через: проверьте". Убраны все "проверочное слово" из чередующихся корней (заменены на "проверьте через"). Ключевые исправления: qd9-403 (ополчение → проверяемый через полк), qd9-224/405 (ростовщик → непроверяемый + исключения), qd9-406 (пловец → Запомните, не проверяй через плавать), qd9-408 (спишите → Корень -пис-, не -пишит-), qd9-409 (выдирать → дир/дра/дер с зависимостью от суффикса), qd9-475 (исказить → проверочное показать). orthography.ts: q9-2, q9-3, q9-5, q9-6, q9-8, q9-9 исправлены. n_nn.ts: q15-1, q15-23 (ветреный → одно Н). Валидация проходит: 804 задания, 0 ошибок. Git: `68f4cfe`, `cac9296`.
 - **ML Pipeline**: Linear Regression Predictive Score, TF-IDF Semantic RAG, BKT Engine, IRT Engine, Error Pattern Analyzer — все интегрированы в BaseTrainer.tsx. Подробности в разделе «ML/Adaptive Pipeline» выше.

@@ -71,19 +71,11 @@ export function TodayPage() {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
-  const achievements = useProgressStore((s) => s.achievements)
   const checkHeartRestore = useProgressStore((s) => s.checkHeartRestore)
   const activeProfile = useStudentStore((s) => s.getActiveProfile())
   const displayName = activeProfile?.name || stats.name || 'ученик'
   const examDate = useStudyPlanStore((s) => s.examDate)
   const plan = useStudyPlanStore((s) => s.plan)
-  const getStudentClass = useClassStore((s) => s.getStudentClass)
-  const getLeaderboard = useClassStore((s) => s.getLeaderboard)
-  const studentClass = activeProfile ? getStudentClass(activeProfile.id) : null
-  const classLeaderboard = studentClass ? getLeaderboard(studentClass.id) : []
-  const myClassRank = activeProfile && studentClass
-    ? classLeaderboard.findIndex(e => e.profileId === activeProfile.id) + 1
-    : -1
 
   const isTeacher = activeProfile?.role === 'teacher' || false
 

@@ -88,6 +88,26 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
     }
   }, [isChecked])
 
+  // Restore previous answer state when navigating back
+  useEffect(() => {
+    if (previousAnswer) {
+      setIsChecked(true)
+      setIsCorrect(previousAnswer.isCorrect)
+      if (previousAnswer.userAnswer) {
+        if (isTextType) {
+          setTextInput(previousAnswer.userAnswer[0] || '')
+        } else {
+          setSelected(previousAnswer.userAnswer)
+        }
+      }
+    } else {
+      setIsChecked(false)
+      setIsCorrect(false)
+      setSelected([])
+      setTextInput('')
+    }
+  }, [previousAnswer, isTextType, question.id])
+
   // Global keyboard handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -172,7 +192,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       // Use spellEngine for enhanced answer validation
       const taskAtom = question.atoms?.find(a => a.startsWith('task'))
       const taskNumber = taskAtom ? taskAtom.replace('task', '') : ''
-      const taskType = taskNumber === '9' ? 'insert-letter' : taskNumber === '4' ? 'accent' : 'text'
+      const taskType = taskNumber === '9' ? 'insert-letter' : taskNumber === '4' ? 'accent' : taskNumber === '10' ? 'insert-letter' : 'text'
       
       let correct = false
       if (question.correctAnswer && question.correctAnswer.length > 0) {
@@ -239,7 +259,18 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       </div>
 
       <div className="flex justify-between items-center text-sm text-gray-500">
-        <span>Вопрос {questionNumber} из {totalQuestions}</span>
+        <div className="flex items-center gap-2">
+          {onPrev && questionNumber > 1 && (
+            <button
+              onClick={onPrev}
+              className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Предыдущий вопрос"
+            >
+              <ArrowLeft size={16} className="text-gray-400" />
+            </button>
+          )}
+          <span>Вопрос {questionNumber} из {totalQuestions}</span>
+        </div>
         <span>❤️ {heartsLeft}</span>
       </div>
 

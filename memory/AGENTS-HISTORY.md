@@ -55,6 +55,16 @@
 - **Git commit:** `b666b81`
 - **⚠️ Важно:** Теперь длинные слова остаются на одной строке, скроллятся горизонтально при необходимости. На мобильных — touch-scroll.
 
+### [2026-06-25] Агент: main (TodayPage cleanup + QuestionCard prev + Leaderboard Supabase + App simplification)
+- **Что:** Четыре улучшения в одной сессии:
+  1. **TodayPage cleanup**: Убраны лишние карточки из быстрого старта — оставлены 4 основных (Все задания, Марафон, Дуэль, Сочинения). Убраны мини-карточки "Достижения" и "Рейтинг" (доступны в Обзоре). Упрощены импорты (убраны `useClassStore`, `allAchievements`, `getAchievementIcon`, `Star`, `Medal`, `Brain`, `Users`, `Trophy`).
+  2. **QuestionCard prev**: Добавлена навигация "Назад" — props `onPrev` и `previousAnswer`, кнопка `ArrowLeft` при наличии `onPrev`. Позволяет вернуться к предыдущему вопросу в тренажёре.
+  3. **Leaderboard Supabase sync**: Добавлен `loadLeaderboard()` в `syncSlice.ts` — читает 50 записей из `user_progress` (Supabase), маппит `user_stats` и `lesson_progress` в `LeaderboardEntry`. `Leaderboard.tsx` вызывает при монтировании. Заменяет локальный leaderboard на глобальный из базы.
+  4. **App.tsx simplification**: Убраны `StudentRegistrationModal`, `useStudentStore`, `useEffect` с auto-save progress в IndexedDB. Auto-sync progress теперь через `userId` из `progressStore` вместо `activeProfileId`. Упрощена логика авторизации.
+- **Где:** `src/pages/TodayPage.tsx`, `src/components/QuestionCard.tsx`, `src/stores/slices/syncSlice.ts`, `src/pages/Leaderboard.tsx`, `src/App.tsx`
+- **Git commit:** `18572b4`
+- **⚠️ Важно:** TodayPage стал ещё более минималистичным — фокус на главном действии. Leaderboard теперь показывает реальные данные из Supabase (если настроен). App.tsx легче на ~50 строк.
+
 ### [2025-02-23] Агент: main (Task 9 Mass Fix — explanation correctness)
 - **Что:** Исправлены 127 explanation в dooshin/task9.ts (769 заданий) с ошибочной классификацией корней. Исправлены 39 placeholder'ов "проверьте через: проверьте". Убраны все "проверочное слово" из чередующихся корней.
 - **Ключевые исправления:**

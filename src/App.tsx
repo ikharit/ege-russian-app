@@ -20,7 +20,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useProgressStore } from './stores/progressStore'
 import { useClassStore, ProgressData } from './stores/classStore'
 import { useNotificationStore } from './stores/notificationStore'
-import { useStudentStore } from './stores/studentStore'
 import { useSettingsStore } from './stores/settingsStore'
 import { useAnalyticsStore } from './stores/analyticsStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
@@ -324,45 +323,13 @@ export default function App() {
     checkNotifications()
   }, [])
 
-  // Auto-save progress to student store + IndexedDB
-  useEffect(() => {
-    const unsubscribe = useProgressStore.subscribe((state) => {
-      const activeProfileId = useStudentStore.getState().activeProfileId
-      if (!activeProfileId) return
-      const progressSnapshot = {
-        userStats: state.userStats,
-        lessonProgress: state.lessonProgress,
-        atomProgress: state.atomProgress,
-        wrongAnswers: state.wrongAnswers,
-        taskStats: state.taskStats,
-        achievements: state.achievements,
-        lastUnlockedAchievement: state.lastUnlockedAchievement,
-        currentLessonId: state.currentLessonId,
-        currentLessonStartTime: state.currentLessonStartTime,
-        currentLessonHeartsLost: state.currentLessonHeartsLost,
-        heartRestoreCount: state.heartRestoreCount,
-        exportCount: state.exportCount,
-        dailyQuestProgress: state.dailyQuestProgress,
-        leaderboardRanks: state.leaderboardRanks,
-        theoryTestsCompleted: state.theoryTestsCompleted,
-        isTeacher: state.isTeacher,
-        userId: state.userId,
-      }
-      useStudentStore.getState().updateActiveProfile(progressSnapshot)
-      useStudentStore.getState().addHistoryPoint(progressSnapshot)
-      // Cache in IndexedDB for offline access
-      syncProgressIfOnline(progressSnapshot).catch(() => {})
-    })
-    return () => unsubscribe()
-  }, [])
-
   // Auto-sync progress to class store (for class leaderboard)
   useEffect(() => {
     const unsubscribe = useProgressStore.subscribe((state) => {
-      const activeProfileId = useStudentStore.getState().activeProfileId
-      if (!activeProfileId) return
+      const userId = state.userId
+      if (!userId) return
       const classStore = useClassStore.getState()
-      const studentClass = classStore.getStudentClass(activeProfileId)
+      const studentClass = classStore.getStudentClass(userId)
       if (!studentClass) return
       const progressSnapshot: ProgressData = {
         userStats: state.userStats,

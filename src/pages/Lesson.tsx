@@ -40,6 +40,7 @@ export function Lesson() {
 
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
   const [hintsUsedPerQuestion, setHintsUsedPerQuestion] = useState<Record<string, number>>({})
+  const [answers, setAnswers] = useState<Record<number, { isCorrect: boolean; userAnswer?: string[] }>>({})
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const courseLesson = section?.lessons.find(l => l.id === lessonId)

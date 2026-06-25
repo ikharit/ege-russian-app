@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { Popover } from './Popover'
 import { motion } from 'framer-motion'
-import { ProfileSwitcher } from './ProfileSwitcher'
-import { StudentRegistrationModal } from './StudentRegistrationModal'
 import { NotificationCenter } from './NotificationCenter'
 import { LATEST_VERSION } from '../data/releaseNotes'
 import { useShopStore } from '../stores/shopStore'
@@ -14,7 +12,6 @@ import { useShopStore } from '../stores/shopStore'
 export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
   const navigate = useNavigate()
   const stats = useProgressStore((s) => s.userStats)
-  const [showRegModal, setShowRegModal] = useState(false)
   const avatar = useShopStore((s) => s.getEquippedAvatar())
 
   const streakStart = stats.lastActivityDate
@@ -37,7 +34,6 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
             <span className="font-bold text-duo-green text-lg">ЕГЭ Русский</span>
             <span className="hidden sm:inline text-[10px] bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded font-bold ml-1">v{LATEST_VERSION}</span>
           </div>
-          <ProfileSwitcher onAddStudent={() => setShowRegModal(true)} />
         </div>
 
         {/* Right: stats only */}
