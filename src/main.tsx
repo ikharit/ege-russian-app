@@ -26,3 +26,18 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </HashRouter>
   </React.StrictMode>,
 )
+
+// Dev-mode audit: validate all questions on startup
+if (import.meta.env.DEV) {
+  import('./utils/auditRunner').then(({ runAudit, printAuditReport }) => {
+    import('./data/sections/dooshinUnified').then(({ dooshinSection }) => {
+      import('./data/accentWords').then(({ accentWords }) => {
+        const report = runAudit([
+          { name: 'dooshin', questions: dooshinSection.lessons.flatMap(l => l.questions) },
+          { name: 'accent', questions: accentWords },
+        ])
+        printAuditReport(report)
+      })
+    })
+  })
+}

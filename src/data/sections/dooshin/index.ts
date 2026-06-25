@@ -10,6 +10,8 @@ import { dooshinTask15 } from './task15'
 import { dooshinTask16 } from './task16'
 import { dooshinTask17 } from './task17'
 import { dooshinTask18 } from './task18'
+import { dooshinTask19 } from './task19'
+import { dooshin20Sections } from '../dooshin20'
 
 export const dooshinSections: Section[] = [
   dooshinTask9,
@@ -22,4 +24,6 @@ export const dooshinSections: Section[] = [
   dooshinTask16,
   dooshinTask17,
   dooshinTask18,
+  dooshinTask19,
+  ...dooshin20Sections,
 ]

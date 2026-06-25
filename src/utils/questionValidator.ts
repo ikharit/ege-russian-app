@@ -43,18 +43,20 @@ export function validateQuestion(question: {
   const word = question.word || question.question || ''
 
   // 1. Проверка: есть ли ответ
-  if (!answer || answer.trim() === '') {
+  const answerValue = Array.isArray(answer) ? answer.join(', ') : answer
+  if (!answerValue || (typeof answerValue === 'string' && answerValue.trim() === '')) {
     errors.push({ field: 'answer', message: 'Ответ не указан', severity: 'error' })
   }
 
   // 2. Проверка ответа через движок
-  if (answer) {
-    const result = checkAnswer(answer, answer, taskType)
+  const answerStr = Array.isArray(answer) ? answer[0] : answer
+  if (answerStr) {
+    const result = checkAnswer(answerStr, answerStr, taskType)
     if (!result.isCorrect) {
       // Это странно — ответ должен быть верным сам по себе
       errors.push({
         field: 'answer',
-        message: `Ответ «${answer}» не проходит валидацию движка: ${result.explanation}`,
+        message: `Ответ «${answerStr}» не проходит валидацию движка: ${result.explanation}`,
         severity: 'error',
         suggestion: 'Проверьте правильность ответа',
       })

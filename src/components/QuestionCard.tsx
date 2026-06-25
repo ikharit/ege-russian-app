@@ -9,12 +9,25 @@ import { TheoryQuickReference } from './TheoryQuickReference'
 import { QuestionFeedback } from './QuestionFeedback'
 import { useProgressStore } from '../stores/progressStore'
 import { validateQuestion } from '../utils/questionValidator'
+import { checkAnswer as spellCheckAnswer } from '../utils/spellEngine'
 
 // Dev-mode validation check for question quality
 function useQuestionValidation(question: Question) {
   if (!import.meta.env.DEV) return null
-  const issues = validateQuestion(question, 'QuestionCard.tsx', question.id)
-  return issues.length > 0 ? issues : null
+  const result = validateQuestion({
+    id: question.id,
+    question: question.text,
+    answer: question.correctAnswer?.[0],
+    correctAnswer: question.correctAnswer?.[0],
+    explanation: question.explanation,
+    options: question.options,
+    rule: question.rule,
+    taskType: question.type,
+    word: question.text,
+  })
+  return result.errors.length > 0 || result.warnings.length > 0
+    ? [...result.errors.map(e => e.message), ...result.warnings.map(w => w.message)]
+    : null
 }
 
 function getTaskNumberFromAtoms(atoms: string[] | undefined): string | null {
@@ -153,9 +166,27 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
     if (isTextType) {
       if (textInput.trim() === '') return
       const userAnswer = textInput.trim()
-      const correct = question.correctAnswer.some(
-        ans => ans.toLowerCase() === userAnswer.toLowerCase()
-      )
+      
+      // Use spellEngine for enhanced answer validation
+      const taskAtom = question.atoms?.find(a => a.startsWith('task'))
+      const taskNumber = taskAtom ? taskAtom.replace('task', '') : ''
+      const taskType = taskNumber === '9' ? 'insert-letter' : taskNumber === '4' ? 'accent' : 'text'
+      
+      let correct = false
+      if (question.correctAnswer && question.correctAnswer.length > 0) {
+        // First try exact match
+        const exactMatch = question.correctAnswer.some(
+          ans => ans.toLowerCase() === userAnswer.toLowerCase()
+        )
+        if (exactMatch) {
+          correct = true
+        } else {
+          // Fallback to spellEngine for fuzzy validation
+          const spellResult = spellCheckAnswer(userAnswer, question.correctAnswer[0], taskType)
+          correct = spellResult.isCorrect
+        }
+      }
+      
       setIsCorrect(correct)
       setIsChecked(true)
       setLastUserAnswer(userAnswer)
