@@ -239,6 +239,14 @@ export function CourseMap() {
     return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
+  const isSectionAllComingSoon = (section: any) => {
+    const allLessons = [
+      ...(section.lessons || []),
+      ...(section.groups?.flatMap((g: any) => g.lessons) || [])
+    ]
+    return allLessons.length > 0 && allLessons.every((l: any) => l.isComingSoon)
+  }
+
   return (
     <div className="max-w-md mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Карта курса</h1>
@@ -301,24 +309,34 @@ export function CourseMap() {
                   }
                 >
                   <div
-                    className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity flex-1"
+                    className={`flex items-center gap-3 flex-1 ${isSectionAllComingSoon(section) ? '' : 'cursor-pointer hover:opacity-80 transition-opacity'}`}
                     onClick={() => {
+                      if (isSectionAllComingSoon(section)) return
                       if (isOtherFocused) setFocusedSection(null)
                       else setFocusedSection(isFocused ? null : section.id)
                     }}
                   >
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
-                      style={{ backgroundColor: section.color }}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${isSectionAllComingSoon(section) ? 'grayscale opacity-50' : ''}`}
+                      style={{ backgroundColor: isSectionAllComingSoon(section) ? '#9ca3af' : section.color }}
                     >
                       <SectionIcon icon={section.icon} size={20} />
                     </div>
                     <div className="flex-1">
-                      <h2 className="font-bold text-gray-800">{section.title}</h2>
-                      <p className="text-xs text-gray-500">{section.subtitle}</p>
+                      <div className="flex items-center gap-2">
+                        <h2 className={`font-bold ${isSectionAllComingSoon(section) ? 'text-gray-400' : 'text-gray-800'}`}>{section.title}</h2>
+                        {isSectionAllComingSoon(section) && (
+                          <span className="text-[10px] font-bold uppercase tracking-wide bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded">В разработке</span>
+                        )}
+                      </div>
+                      <p className={`text-xs ${isSectionAllComingSoon(section) ? 'text-gray-400' : 'text-gray-500'}`}>{section.subtitle}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-xs font-bold text-duo-green">{prog.pct}%</span>
+                      {isSectionAllComingSoon(section) ? (
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">🔒</span>
+                      ) : (
+                        <span className="text-xs font-bold text-duo-green">{prog.pct}%</span>
+                      )}
                     </div>
                   </div>
                 </Popover>

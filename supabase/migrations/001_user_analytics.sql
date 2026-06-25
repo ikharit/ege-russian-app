@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS public.user_analytics (
 ALTER TABLE public.user_analytics ENABLE ROW LEVEL SECURITY;
 
 -- 3. Policy: users can only modify their own data
-CREATE POLICY IF NOT EXISTS "Users can manage own analytics"
+DROP POLICY IF EXISTS "Users can manage own analytics" ON public.user_analytics;
+CREATE POLICY "Users can manage own analytics"
   ON public.user_analytics
   FOR ALL
   USING (auth.uid() = user_id);
