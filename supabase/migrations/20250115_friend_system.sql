@@ -180,8 +180,5 @@ grant execute on function reject_friend_request(uuid) to authenticated;
 -- ============================================
 grant select, insert, update, delete on friend_requests to authenticated;
 grant select, insert, delete on friends to authenticated;
-grant usage on sequence friend_requests_id_seq to authenticated;
-grant usage on sequence friends_id_seq to authenticated;
-
--- Note: If using gen_random_uuid() instead of serial, sequence grants may not be needed.
--- But keeping them for safety.
+-- Note: Sequences are not used because tables use gen_random_uuid() as default.
+-- No sequence grants needed.

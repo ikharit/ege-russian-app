@@ -380,14 +380,7 @@ export const useFriendStore = create<FriendStore>()(
             const user = await getCurrentUser()
             if (!user) return false
 
-            // Delete both directions
-            const { error } = await supabase
-              .from('friends')
-              .delete()
-              .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`)
-              .or(`user_id.eq.${friendId},friend_id.eq.${friendId}`)
-
-            // Actually the above OR is wrong, let's do it properly
+            // Delete both directions of the friendship
             const { error: e1 } = await supabase
               .from('friends')
               .delete()
@@ -400,6 +393,9 @@ export const useFriendStore = create<FriendStore>()(
               .eq('user_id', friendId)
               .eq('friend_id', user.id)
 
+            if (e1 && !e1.message?.includes('0 rows')) throw e1
+            if (e2 && !e2.message?.includes('0 rows')) throw e2
+
             set({ friends: friends.filter(f => f.id !== friendId) })
             return true
           } catch (err: any) {
@@ -408,9 +404,6 @@ export const useFriendStore = create<FriendStore>()(
           }
         }
 
-        set({ friends: friends.filter(f => f.id !== friendId) })
-        return true
-      },
 
       updateFriendProgress: (friendId: string, data: Partial<FriendProfile>) => {
         const { friends } = get()
