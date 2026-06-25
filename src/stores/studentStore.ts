@@ -202,6 +202,13 @@ export const useStudentStore = create<StudentStore>()(
     }),
     {
       name: 'ege-student-storage',
+      onRehydrateStorage: (state) => {
+        console.log('[StudentStore] Rehydrated from localStorage', {
+          hasState: !!state,
+          profileCount: state ? state.profiles?.length ?? 0 : 0,
+          activeProfileId: state?.activeProfileId ?? null,
+        })
+      },
     }
   )
 )

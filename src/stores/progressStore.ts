@@ -494,6 +494,13 @@ export const useProgressStore = create<ProgressState>()(
     }),
     {
       name: 'ege-progress-storage',
+      onRehydrateStorage: (state) => {
+        console.log('[ProgressStore] Rehydrated from localStorage', {
+          hasState: !!state,
+          lessonCount: state ? Object.keys(state.lessonProgress || {}).length : 0,
+          xp: state?.userStats?.xp ?? 0,
+        })
+      },
     }
   )
 )
