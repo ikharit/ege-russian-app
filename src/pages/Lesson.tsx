@@ -86,7 +86,7 @@ export function Lesson() {
       const shuffledOptions = q.options ? [...q.options].sort(() => Math.random() - 0.5) : q.options
       return { ...q, options: shuffledOptions }
     })
-  }, [lesson.id])
+  }, [lesson])
 
   const rawQuestion = questions[currentQuestionIdx]
   const currentQuestion = rawQuestion ? applyQuestionEdits(rawQuestion as any) as typeof rawQuestion : rawQuestion
@@ -296,17 +296,24 @@ export function Lesson() {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
             >
-              <QuestionCard
-                question={currentQuestion}
-                questionNumber={currentQuestionIdx + 1}
-                totalQuestions={questions.length}
-                onAnswer={handleAnswer}
-                onNext={handleNext}
-                onPrev={handlePrev}
-                previousAnswer={answers[currentQuestionIdx]}
-                heartsLeft={hearts}
-                onHintUsed={handleHintUsed}
-              />
+              {currentQuestion ? (
+                <QuestionCard
+                  question={currentQuestion}
+                  questionNumber={currentQuestionIdx + 1}
+                  totalQuestions={questions.length}
+                  onAnswer={handleAnswer}
+                  onNext={handleNext}
+                  onPrev={handlePrev}
+                  previousAnswer={answers[currentQuestionIdx]}
+                  heartsLeft={hearts}
+                  onHintUsed={handleHintUsed}
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-duo-green" />
+                  <span className="ml-3 text-sm text-gray-500">Загрузка вопроса...</span>
+                </div>
+              )}
             </motion.div>
           ) : gameOverReason === 'hearts' ? (
             <motion.div
