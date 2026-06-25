@@ -41,41 +41,39 @@ export function TeacherAnalytics() {
   const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
-  // Real data from Supabase
+  // Real data from Supabase — ALL users, not just class-linked
   const { students: realStudents, loading: realLoading, error: realError } = useTeacherAnalyticsStore()
   useEffect(() => {
-    useTeacherAnalyticsStore.getState().fetchStudents()
+    useTeacherAnalyticsStore.getState().fetchAllUsers()
   }, [])
 
   const selectedClass = selectedClassId ? classes[selectedClassId] : null
 
-  // Prefer real students from Supabase; fallback to classStore demo data; fallback to current user
+  // Global analytics: all users from Supabase, fallback to current user
   const hasRealStudents = realStudents.length > 0
-  const classStudents = hasRealStudents
+
+  const students = hasRealStudents
     ? realStudents.map(s => ({ id: s.studentId, name: s.studentName, progress: rawToProgressData(s.rawProgressData) }))
-    : (selectedClass?.students || [])
-
-  // Fallback: if no class students, use current user's own data
-  const currentUserName = useProgressStore((s) => s.userName) || 'Вы'
-  const currentUserId = useProgressStore((s) => s.userId) || 'current'
-  const currentUserStats = useProgressStore((s) => s.taskStats)
-  const currentUserAchievements = useProgressStore((s) => s.achievements)
-  const currentUserBehaviorProfile = useProgressStore((s) => s.behaviorProfile)
-  const currentUserLessons = useProgressStore((s) => s.lessonProgress)
-
-  const students = classStudents.length > 0
-    ? classStudents
-    : [{
-        id: currentUserId,
-        name: currentUserName,
-        progress: {
-          userStats: {},
-          lessonProgress: currentUserLessons,
-          taskStats: currentUserStats,
-          achievements: currentUserAchievements,
-          behaviorProfile: currentUserBehaviorProfile,
-        } as ProgressData
-      }]
+    : (() => {
+        // Fallback: current user's own data from localStorage
+        const currentUserName = useProgressStore.getState().userName || 'Вы'
+        const currentUserId = useProgressStore.getState().userId || 'current'
+        const currentUserStats = useProgressStore.getState().taskStats
+        const currentUserAchievements = useProgressStore.getState().achievements
+        const currentUserBehaviorProfile = useProgressStore.getState().behaviorProfile
+        const currentUserLessons = useProgressStore.getState().lessonProgress
+        return [{
+          id: currentUserId,
+          name: currentUserName,
+          progress: {
+            userStats: {},
+            lessonProgress: currentUserLessons,
+            taskStats: currentUserStats,
+            achievements: currentUserAchievements,
+            behaviorProfile: currentUserBehaviorProfile,
+          } as ProgressData
+        }]
+      })()
 
 
   const analytics = students.map(s => 
@@ -250,8 +248,8 @@ export function TeacherAnalytics() {
             <ArrowLeft size={20} className="text-gray-600" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-gray-800">Аналитика класса</h1>
-            <p className="text-xs text-gray-500">Понимание учеников — ключ к успеху</p>
+            <h1 className="text-lg font-bold text-gray-800">Аналитика всех пользователей</h1>
+            <p className="text-xs text-gray-500">Глобальная статистика приложения</p>
           </div>
         </div>
       </div>
@@ -281,11 +279,11 @@ export function TeacherAnalytics() {
             <div className="w-8 h-8 border-2 border-duo-green border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             <p className="text-gray-500 font-bold">Загружаем аналитику...</p>
           </div>
-        ) : classStudents.length === 0 && !hasRealStudents ? (
+        ) : !hasRealStudents ? (
           <div className="text-center py-12">
             <Users size={48} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 font-bold">Личная аналитика</p>
-            <p className="text-sm text-gray-400">Показаны ваши данные — добавьте учеников, чтобы увидеть аналитику класса</p>
+            <p className="text-gray-500 font-bold">Пока нет данных пользователей</p>
+            <p className="text-sm text-gray-400">Аналитика появится, когда пользователи синхронизируют свои данные</p>
             {realError && <p className="text-xs text-red-400 mt-2">{realError}</p>}
           </div>
         ) : (
@@ -301,7 +299,7 @@ export function TeacherAnalytics() {
                   <div className="w-8 h-8 rounded-lg bg-duo-green/10 flex items-center justify-center">
                     <Users size={18} className="text-duo-green" />
                   </div>
-                  <span className="text-xs text-gray-500 font-bold uppercase">Учеников</span>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Пользователей</span>
                 </div>
                 <p className="text-2xl font-black text-gray-800">{summary.totalStudents}</p>
               </motion.div>
