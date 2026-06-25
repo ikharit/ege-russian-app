@@ -26,6 +26,7 @@ import { useAnalyticsStore } from './stores/analyticsStore'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 import { usePageAnalytics } from './hooks/usePageAnalytics'
+import { useTeacherMode } from './hooks/useTeacherMode'
 import type { EventCategory } from './stores/analyticsStore'
 
 import { FeedbackDashboard } from './components/FeedbackDashboard'
@@ -113,7 +114,7 @@ const Task25Trainer = lazy(() => import('./pages/Task25Trainer').then(m => ({ de
 function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
-  const isTeacher = useProgressStore((s) => s.isTeacher)
+  const isTeacherMode = useTeacherMode()
 
   const tabs = [
     { path: '/', icon: BookOpen, label: 'Сегодня' },
@@ -121,7 +122,7 @@ function BottomNav() {
     { path: '/theory', icon: BookOpenText, label: 'Теория' },
     { path: '/stats', icon: BarChart3, label: 'Статистика' },
     { path: '/dashboard', icon: LayoutGrid, label: 'Обзор' },
-    ...(isTeacher ? [{ path: '/teacher/classroom', icon: GraduationCap, label: 'Учитель' }] : []),
+    ...(isTeacherMode ? [{ path: '/teacher/classroom', icon: GraduationCap, label: 'Учитель' }] : []),
   ]
 
   return (

@@ -14,6 +14,7 @@ import { ragRetriever, generateExplanation, recordFeedback } from '../lib/rag'
 import { speak, isTTSAvailable } from '../lib/tts'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
 import { useSettingsStore } from '../stores/settingsStore'
+import { useTeacherMode } from '../hooks/useTeacherMode'
 import { InlineQuestionEditor, applyQuestionEdits } from './InlineQuestionEditor'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
@@ -91,7 +92,7 @@ export function BaseTrainer<T>({
   const recordQuestionAnswered = useProgressStore((s) => s.recordQuestionAnswered)
   const recordWrongAnswer = useProgressStore((s) => s.recordWrongAnswer)
   const updateTaskStats = useProgressStore((s) => s.updateTaskStats)
-  const isTeacher = useProgressStore((s) => s.isTeacher)
+  const isTeacherMode = useTeacherMode()
 
   const [combo, setCombo] = useState(0) // session combo streak
   const [maxCombo, setMaxCombo] = useState(0)
@@ -450,7 +451,7 @@ export function BaseTrainer<T>({
             >
               <Settings size={18} className="text-gray-400" />
             </button>
-            {isTeacher && (
+            {isTeacherMode && (
               <button
                 onClick={() => setShowEditor(true)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
