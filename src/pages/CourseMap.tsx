@@ -172,7 +172,9 @@ export function CourseMap() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
 
   const [focusedSection, setFocusedSection] = useState<string | null>(null)
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(
+    new Set(course.sections.map((s) => s.id))
+  )
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
 

@@ -163,15 +163,6 @@ export default function App() {
   const unlockedAchievement = lastUnlocked ? achievements.find(a => a.id === lastUnlocked) : null
 
   const [authModalOpen, setAuthModalOpen] = useState(false)
-  const [regModalOpen, setRegModalOpen] = useState(false)
-  const profiles = useStudentStore((s) => s.profiles)
-
-  // Auto-show registration modal for new users
-  useEffect(() => {
-    if (profiles.length === 0 && location.pathname !== '/profile') {
-      setRegModalOpen(true)
-    }
-  }, [profiles.length, location.pathname])
 
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [userEmail, setUserEmail] = useState<string | null>(null)

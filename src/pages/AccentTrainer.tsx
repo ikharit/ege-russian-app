@@ -30,7 +30,7 @@ export function AccentTrainer() {
 
         return (
           <div className="flex flex-col items-center gap-6">
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-nowrap justify-center gap-1 overflow-x-auto pb-2">
               {letters.map((letter, index) => {
                 const isSelected = selectedIndex === index
                 const isCorrect = answerState === 'correct' && index === question.stressIndex
