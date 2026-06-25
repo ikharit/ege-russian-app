@@ -12,7 +12,6 @@ import { Statistics } from './pages/Statistics'
 import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { SyncStatus } from './components/SyncStatus'
-import { StudentRegistrationModal } from './components/StudentRegistrationModal'
 import { achievements } from './data/achievements'
 import { BookOpen, Map, BarChart3, GraduationCap, Gamepad2, BookOpenText, LayoutGrid } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
@@ -487,7 +486,6 @@ export default function App() {
     <div className="min-h-screen bg-duo-snow dark:bg-gray-900 flex flex-col">
       {!isLesson && <Header syncIndicator={syncIndicator} />}
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
-      <StudentRegistrationModal isOpen={regModalOpen} onClose={() => setRegModalOpen(false)} />
       {/* FCM Foreground Toast */}
       <AnimatePresence>
         {fcmToast && (

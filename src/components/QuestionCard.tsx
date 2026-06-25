@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, ArrowRight, BookOpen, Bookmark, BookmarkCheck, Lightbulb } from 'lucide-react'
+import { Check, X, ArrowRight, ArrowLeft, BookOpen, Bookmark, BookmarkCheck, Lightbulb } from 'lucide-react'
 import { Question, SavedExplanation } from '../types'
 import { getRelevantRules } from '../data/theory'
 import { ragRetriever, generateExplanation } from '../lib/rag'
@@ -42,11 +42,13 @@ interface QuestionCardProps {
   totalQuestions: number
   onAnswer: (isCorrect: boolean, userAnswer?: string[], hintsUsed?: number) => void
   onNext: () => void
+  onPrev?: () => void
+  previousAnswer?: { isCorrect: boolean; userAnswer?: string[] }
   heartsLeft: number
   onHintUsed?: (level: number, penalty: number) => void
 }
 
-export function QuestionCard({ question, questionNumber, totalQuestions, onAnswer, onNext, heartsLeft, onHintUsed }: QuestionCardProps) {
+export function QuestionCard({ question, questionNumber, totalQuestions, onAnswer, onNext, onPrev, previousAnswer, heartsLeft, onHintUsed }: QuestionCardProps) {
   const [selected, setSelected] = useState<string[]>([])
   const [textInput, setTextInput] = useState('')
   const [isChecked, setIsChecked] = useState(false)

@@ -2,6 +2,7 @@ import { UserStats, LessonProgress, WrongAnswer, UserAtomProgress, AnswerHistory
 import { ExamResult } from '../../data/fipiVariants'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { useAnalyticsStore } from '../analyticsStore'
+import { LeaderboardEntry } from './gamificationSlice'
 
 export interface SyncState {
   userId: string | null
@@ -96,6 +97,33 @@ export function createSyncActions(
           answerHistory: data.answer_history || get().answerHistory || [],
         })
       }
+    },
+
+    loadLeaderboard: async () => {
+      if (!isSupabaseConfigured) return
+      const { data, error } = await supabase
+        .from('user_progress')
+        .select('user_id, user_stats, lesson_progress, updated_at')
+        .order('updated_at', { ascending: false })
+        .limit(50)
+      if (error || !data) return
+      const entries: LeaderboardEntry[] = data.map((row: any) => {
+        const stats = row.user_stats || {}
+        const lessons = row.lesson_progress || {}
+        const completedCount = Object.values(lessons).filter((l: any) => l.status === 'completed').length
+        return {
+          id: row.user_id,
+          name: stats.name || 'Ученик',
+          avatar: '👤',
+          xp: stats.xp || 0,
+          level: stats.level || 1,
+          streak: stats.streak || 0,
+          lessonsCompleted: completedCount,
+          updatedAt: row.updated_at || stats.lastActivityDate || new Date().toISOString(),
+          achievements: stats.achievements || [],
+        }
+      })
+      set({ leaderboard: entries })
     },
 
     incrementExportCount: () => {
