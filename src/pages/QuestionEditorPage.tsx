@@ -8,13 +8,7 @@ import {
 import { course } from '../data/courseData'
 import { Question } from '../types'
 import { useProgressStore } from '../stores/progressStore'
-
-interface EditedQuestion {
-  id: string
-  sourceLessonId: string
-  changes: Partial<Question>
-  editedAt: string
-}
+import { loadLocalEdits, saveQuestionEdit, deleteQuestionEdit, QuestionEdit } from '../lib/questionEdits'
 
 const ALL_QUESTIONS = course.sections.flatMap(s =>
   s.lessons.flatMap(l =>
@@ -24,29 +18,16 @@ const ALL_QUESTIONS = course.sections.flatMap(s =>
 
 const QUESTIONS_BY_ID = new Map(ALL_QUESTIONS.map(q => [q.id, q]))
 
-const EDITED_KEY = 'ege-question-edits'
-
-function loadEdits(): Record<string, EditedQuestion> {
-  try {
-    return JSON.parse(localStorage.getItem(EDITED_KEY) || '{}')
-  } catch {
-    return {}
-  }
-}
-
-function saveEdits(edits: Record<string, EditedQuestion>) {
-  localStorage.setItem(EDITED_KEY, JSON.stringify(edits))
-}
-
 export function QuestionEditorPage() {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [filterTask, setFilterTask] = useState('')
   const [filterType, setFilterType] = useState<Question['type'] | ''>('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [edits, setEdits] = useState<Record<string, EditedQuestion>>(loadEdits)
+  const [edits, setEdits] = useState<Record<string, QuestionEdit>>(loadLocalEdits)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [showOnlyEdited, setShowOnlyEdited] = useState(false)
+  const [syncing, setSyncing] = useState(false)
 
   // Merge original questions with edits
   const questions = useMemo(() => {
@@ -82,20 +63,15 @@ export function QuestionEditorPage() {
     return result
   }, [questions, query, filterTask, filterType, showOnlyEdited, edits])
 
-  const handleSave = useCallback((id: string, changes: Partial<Question>) => {
+  const handleSave = useCallback(async (id: string, changes: Partial<Question>) => {
     const original = QUESTIONS_BY_ID.get(id)
     if (!original) return
 
-    const newEdit: EditedQuestion = {
-      id,
-      sourceLessonId: original._sourceLessonId || '',
-      changes,
-      editedAt: new Date().toISOString(),
-    }
+    setSyncing(true)
+    await saveQuestionEdit(id, original._sourceLessonId || '', changes)
+    setSyncing(false)
 
-    const next = { ...edits, [id]: newEdit }
-    setEdits(next)
-    saveEdits(next)
+    setEdits(loadLocalEdits())
     setSavedIds(prev => new Set(prev).add(id))
     setTimeout(() => {
       setSavedIds(prev => {
@@ -104,14 +80,12 @@ export function QuestionEditorPage() {
         return n
       })
     }, 2000)
-  }, [edits])
+  }, [])
 
-  const handleRevert = useCallback((id: string) => {
-    const next = { ...edits }
-    delete next[id]
-    setEdits(next)
-    saveEdits(next)
-  }, [edits])
+  const handleRevert = useCallback(async (id: string) => {
+    await deleteQuestionEdit(id)
+    setEdits(loadLocalEdits())
+  }, [])
 
   const editedCount = Object.keys(edits).length
 
