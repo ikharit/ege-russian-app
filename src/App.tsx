@@ -27,6 +27,7 @@ import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 import { usePageAnalytics } from './hooks/usePageAnalytics'
 import { useTeacherMode } from './hooks/useTeacherMode'
+import { loadQuestionEditsFromSupabase } from './lib/questionEdits'
 import type { EventCategory } from './stores/analyticsStore'
 
 import { FeedbackDashboard } from './components/FeedbackDashboard'
@@ -216,6 +217,11 @@ export default function App() {
       handleCallback()
     }
   }, [setUserId, loadProgress, setUserName])
+
+  // Load question edits from Supabase on app start
+  useEffect(() => {
+    loadQuestionEditsFromSupabase().catch(() => {})
+  }, [])
 
   // Notifications setup
   const permission = useNotificationStore((s) => s.permission)

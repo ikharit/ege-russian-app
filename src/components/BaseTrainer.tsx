@@ -15,7 +15,8 @@ import { speak, isTTSAvailable } from '../lib/tts'
 import { detectErrorType, getSubskillName } from '../utils/errorPatternAnalyzer'
 import { useSettingsStore } from '../stores/settingsStore'
 import { useTeacherMode } from '../hooks/useTeacherMode'
-import { InlineQuestionEditor, applyQuestionEdits } from './InlineQuestionEditor'
+import { applyQuestionEdits } from '../lib/questionEdits'
+import { InlineQuestionEditor } from './InlineQuestionEditor'
 
 export type TrainerAnswerState = 'idle' | 'correct' | 'wrong'
 
@@ -831,6 +832,7 @@ export function BaseTrainer<T>({
         {showEditor && effectiveQuestion && (
           <InlineQuestionEditor
             question={effectiveQuestion as any}
+            lessonId={taskNumber}
             onClose={() => setShowEditor(false)}
             onSaved={() => {
               setEditorKey(k => k + 1) // force re-render to apply edits

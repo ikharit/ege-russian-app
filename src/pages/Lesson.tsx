@@ -10,7 +10,8 @@ import { TheoryModal } from '../components/TheoryModal'
 import { useComboToasts } from '../components/ComboToast'
 import { useProgressStore } from '../stores/progressStore'
 import { useTeacherMode } from '../hooks/useTeacherMode'
-import { InlineQuestionEditor, applyQuestionEdits } from '../components/InlineQuestionEditor'
+import { applyQuestionEdits } from '../lib/questionEdits'
+import { InlineQuestionEditor } from '../components/InlineQuestionEditor'
 import { course } from '../data/courseData'
 import { getTheoryForLesson } from '../lib/theoryMapper'
 import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSound } from '../lib/sounds'
@@ -391,6 +392,7 @@ export function Lesson() {
         {showEditor && currentQuestion && (
           <InlineQuestionEditor
             question={currentQuestion as any}
+            lessonId={lesson.id}
             onClose={() => setShowEditor(false)}
             onSaved={() => setEditorKey(k => k + 1)}
           />

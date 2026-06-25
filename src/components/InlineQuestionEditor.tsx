@@ -1,52 +1,27 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Save, RotateCcw, AlertTriangle } from 'lucide-react'
+import { X, Save, RotateCcw, AlertTriangle, Cloud } from 'lucide-react'
 import { Question } from '../types'
-
-interface EditedQuestion {
-  id: string
-  sourceLessonId: string
-  changes: Partial<Question>
-  editedAt: string
-}
-
-const EDITED_KEY = 'ege-question-edits'
-
-function loadEdits(): Record<string, EditedQuestion> {
-  try {
-    return JSON.parse(localStorage.getItem(EDITED_KEY) || '{}')
-  } catch {
-    return {}
-  }
-}
-
-function saveEdits(edits: Record<string, EditedQuestion>) {
-  localStorage.setItem(EDITED_KEY, JSON.stringify(edits))
-}
-
-export function applyQuestionEdits(question: Question): Question {
-  const edits = loadEdits()
-  const edit = edits[question.id]
-  if (!edit) return question
-  return { ...question, ...edit.changes }
-}
+import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits } from '../lib/questionEdits'
 
 interface InlineQuestionEditorProps {
   question: Question
+  lessonId?: string
   onClose: () => void
   onSaved?: () => void
 }
 
-export function InlineQuestionEditor({ question, onClose, onSaved }: InlineQuestionEditorProps) {
+export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved }: InlineQuestionEditorProps) {
   const [text, setText] = useState(question.text)
   const [explanation, setExplanation] = useState(question.explanation)
   const [correctAnswer, setCorrectAnswer] = useState(question.correctAnswer.join(', '))
   const [options, setOptions] = useState(question.options?.join(', ') || '')
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>(question.difficulty || 'medium')
   const [saved, setSaved] = useState(false)
+  const [syncing, setSyncing] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setError('')
     const changes: Partial<Question> = {}
 
@@ -72,23 +47,23 @@ export function InlineQuestionEditor({ question, onClose, onSaved }: InlineQuest
       return
     }
 
-    const edits = loadEdits()
-    edits[question.id] = {
-      id: question.id,
-      sourceLessonId: '',
-      changes,
-      editedAt: new Date().toISOString(),
+    setSyncing(true)
+    const result = await saveQuestionEdit(question.id, lessonId, changes)
+    setSyncing(false)
+
+    if (result.success) {
+      setSaved(true)
+      onSaved?.()
+      setTimeout(() => setSaved(false), 2000)
+    } else {
+      setError('Ошибка сохранения: ' + (result.error || 'unknown'))
     }
-    saveEdits(edits)
-    setSaved(true)
-    onSaved?.()
-    setTimeout(() => setSaved(false), 2000)
   }
 
-  const handleRevert = () => {
-    const edits = loadEdits()
-    delete edits[question.id]
-    saveEdits(edits)
+  const handleRevert = async () => {
+    setSyncing(true)
+    await deleteQuestionEdit(question.id)
+    setSyncing(false)
     setText(question.text)
     setExplanation(question.explanation)
     setCorrectAnswer(question.correctAnswer.join(', '))
@@ -97,7 +72,7 @@ export function InlineQuestionEditor({ question, onClose, onSaved }: InlineQuest
     onSaved?.()
   }
 
-  const hasEdit = question.id in loadEdits()
+  const hasEdit = question.id in loadLocalEdits()
 
   return (
     <motion.div
@@ -113,6 +88,7 @@ export function InlineQuestionEditor({ question, onClose, onSaved }: InlineQuest
           <AlertTriangle size={16} className="text-amber-500" />
           <span className="font-bold text-sm">Редактировать задание</span>
           <span className="text-xs text-gray-400 font-mono">{question.id}</span>
+          {syncing && <Cloud size={14} className="text-duo-blue animate-pulse" />}
         </div>
         <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
           <X size={20} />
@@ -180,22 +156,24 @@ export function InlineQuestionEditor({ question, onClose, onSaved }: InlineQuest
         </div>
 
         {error && <p className="text-xs text-amber-600 font-bold">{error}</p>}
-        {saved && <p className="text-xs text-duo-green font-bold">✓ Сохранено!</p>}
+        {saved && <p className="text-xs text-duo-green font-bold">✓ Сохранено и синхронизировано!</p>}
       </div>
 
       {/* Footer actions */}
       <div className="px-4 py-3 border-t border-gray-100 flex gap-2">
         <button
           onClick={handleSave}
-          className="flex-1 py-3 bg-duo-green text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-duo-green-dark transition-colors"
+          disabled={syncing}
+          className="flex-1 py-3 bg-duo-green text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-duo-green-dark transition-colors disabled:opacity-50"
         >
           <Save size={16} />
-          {saved ? 'Сохранено!' : 'Сохранить правку'}
+          {syncing ? 'Синхронизация...' : saved ? 'Сохранено!' : 'Сохранить правку'}
         </button>
         {hasEdit && (
           <button
             onClick={handleRevert}
-            className="px-4 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-200 transition-colors"
+            disabled={syncing}
+            className="px-4 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50"
           >
             <RotateCcw size={16} />
             Отменить
