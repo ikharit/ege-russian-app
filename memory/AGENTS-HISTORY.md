@@ -47,6 +47,16 @@
 
 ## 🗂️ Полный журнал изменений (от новых к старым)
 
+### [2026-06-25] Агент: main (Leaderboard accuracy + Shop removed + DailyQuestionCard fallback + Vercel PWA cache)
+- **Что:** Дополнительные правки в рамках сессии state-sync:
+  1. **Leaderboard accuracy**: `syncSlice.ts` теперь считает `accuracy` и `totalAttempts` из `task_stats` при загрузке лидерборда из Supabase. Убран `limit(50)` — загружаются все записи. `gamificationSlice.ts` — добавлены поля `accuracy?: number` и `totalAttempts?: number` в `LeaderboardEntry`.
+  2. **Shop removed**: Убран `useShopStore` из `Header.tsx` (avatar → иконка `User` из lucide-react) и `Profile.tsx` (удалена секция `ShopInventorySection`, убран импорт `ShoppingBag`). Магазин не удалён из codebase, но убран из UI.
+  3. **DailyQuestionCard fallback**: Показывает информативный UI с подсказкой, когда нет данных для персонального вопроса (вместо `return null`).
+  4. **Vercel PWA cache**: Добавлены `Cache-Control: no-cache, no-store, must-revalidate` для `index.html`, `sw.js`, `manifest.webmanifest` в `vercel.json`. Критично для PWA auto-update — Service Worker не должен кэшироваться CDN.
+- **Где:** `src/stores/slices/syncSlice.ts`, `src/stores/slices/gamificationSlice.ts`, `src/components/Header.tsx`, `src/pages/Profile.tsx`, `src/components/DailyQuestionCard.tsx`, `vercel.json`
+- **Git:** незакоммиченные изменения (working tree)
+- **⚠️ Важно:** Магазин (`shopStore`) оставлен в codebase, но скрыт из UI. При необходимости — вернуть импорты и секцию.
+
 ### [2025-02-23] Агент: main (AccentTrainer UI — no line wrap for letters)
 - **Что:** Убран перенос букв на вторую строку в тренажёре ударений. Длинные слова (10+ букв) разбивались на две строки — неудобно для выбора ударной буквы.
 - **Как:** `flex-wrap` → `flex-nowrap` + `overflow-x-auto pb-2`. Gap уменьшен с `gap-2` до `gap-1`.
@@ -54,6 +64,21 @@
 - **Зачем:** UX — слово должно быть цельным, буквы не должны переноситься
 - **Git commit:** `b666b81`
 - **⚠️ Важно:** Теперь длинные слова остаются на одной строке, скроллятся горизонтально при необходимости. На мобильных — touch-scroll.
+
+### [2025-02-23] Агент: main (FIPI Codificator — unified task reference)
+- **Что:** Создан единый кодификатор ФИПИ — `src/data/fipiCodificator.ts` (27 заданий: номер → формат → темы → статус).
+- **Ключевые решения:**
+  - `FIPICodificator`: Record<number, FIPITaskFormat> — полная структура всех заданий ЕГЭ по русскому языку (2026)
+  - `validateTaskFormat()`: функция проверки соответствия задания в проекте кодификатору
+  - `getKnownIssues()`: список известных несоответствий в проекте
+- **Известные несоответствия (зафиксированы):**
+  - `task16LessonData.ts` — назван как task16, но по формату «Сколько запятых?» это **task17**
+  - `punctuation.ts` — уроки `lesson-punct-16-*` по формату **task17**, не task16
+  - `task16Questions.ts` — формат «Укажите предложение» (1 из 5), но по ФИПИ task16 = «Укажите 2 предложения из 5"
+- **Где:** `src/data/fipiCodificator.ts` (новый файл)
+- **Зачем:** Единый источник истины (single source of truth) для всех агентов. Теперь любое задание в проекте ДОЛЖНО соответствовать кодификатору.
+- **Git commit:** `e5dfcc5` (task16→17 fix), `...` (codificator)
+- **⚠️ Важно:** При добавлении новых заданий — проверять через `fipiCodificator.ts`. При несоответствии — обновлять кодификатор или исправлять задание.
 
 ### [2026-06-25] Агент: main (TodayPage cleanup + QuestionCard prev + Leaderboard Supabase + App simplification)
 - **Что:** Четыре улучшения в одной сессии:
