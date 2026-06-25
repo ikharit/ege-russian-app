@@ -448,7 +448,7 @@ export default function App() {
     setSyncStatus('idle')
   }, [setUserId])
 
-  const syncIndicator = (
+  const syncIndicator = isSupabaseConfigured ? (
     <div className="flex items-center gap-1.5">
       <SyncStatus />
       {userId ? (
@@ -467,7 +467,7 @@ export default function App() {
         </button>
       )}
     </div>
-  )
+  ) : null
 
   // Theme effect
   const theme = useSettingsStore((s) => s.theme)

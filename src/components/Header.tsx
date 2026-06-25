@@ -116,6 +116,12 @@ export function Header({ syncIndicator }: { syncIndicator?: ReactNode }) {
           {/* Notification Center */}
           <NotificationCenter />
 
+          {/* Auth / Sync indicator */}
+          {syncIndicator && (
+            <div className="flex items-center">
+              {syncIndicator}
+            </div>
+          )}
 
           {/* Profile */}
           <motion.button

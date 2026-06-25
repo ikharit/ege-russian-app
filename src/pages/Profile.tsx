@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { isSupabaseConfigured } from '../lib/supabase'
 import { motion } from 'framer-motion'
 import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, ShoppingBag, FileText, GraduationCap } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
@@ -772,9 +773,23 @@ export function Profile() {
         >
           Синхронизировать сейчас
         </button>
-        <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-800">
-          ⚠️ Войдите, чтобы не потерять прогресс на других устройствах
-        </div>
+        {isSupabaseConfigured ? (
+          <>
+            <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-800">
+              ⚠️ Войдите, чтобы не потерять прогресс на других устройствах
+            </div>
+            <button
+              onClick={() => navigate('/auth')}
+              className="mt-2 w-full py-2 bg-duo-green text-white rounded-lg font-bold text-sm hover:bg-duo-green/90 transition-colors"
+            >
+              🔑 Войти через Google
+            </button>
+          </>
+        ) : (
+          <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800">
+            ℹ️ Работает в локальном режиме — данные сохраняются на этом устройстве. Для синхронизации между устройствами требуется серверная авторизация (в разработке).
+          </div>
+        )}
       </div>
 
       {/* AI Assistant Section */}

@@ -209,23 +209,24 @@ All agents MUST be aware of these systems when working on trainers, analytics, o
 - **When adding knowledge entries**: ensure `content` and `explanation` contain meaningful keywords for TF-IDF matching.
 - **Do NOT** use external APIs for embeddings. Everything is client-side.
 
-### 3. BKT — Bayesian Knowledge Tracing (`src/utils/bktEngine.ts`)
+### 3. BKT + IRT — Unified Adaptive Store (`src/stores/adaptiveStore.ts`)
 
-- **Tracks P(knows atom)** for each atom (e.g., `prefix_pri_pre`, `alternating_root`).
-- **4 parameters** per atom: P(L0)=0.3, P(T)=0.3, P(G)=0.2, P(S)=0.1.
-- **Update**: `bkt.observe(atomId, correct)` after each question answer.
-- **Queries**: `getWeakAtoms(threshold=0.3)`, `getMasteredAtoms(threshold=0.9)`, `getRecommendedLesson()`.
-- **Persistence**: `localStorage` (`ege-bkt-state`).
-- **Do NOT** create a second BKT system. Use `getGlobalBKT()` singleton.
-
-### 4. IRT — Item Response Theory (`src/utils/irtEngine.ts`)
-
-- **Rasch 1PL model**: P(correct) = guess + (1 - guess) / (1 + exp(-1.7 * (theta - difficulty))).
-- **theta** (user ability): -3 to +3, updated via stochastic gradient ascent after each answer.
-- **calibrateDifficulty()**: Sets difficulty based on empirical correct rate.
-- **selectNextQuestion(pool, targetProbability=0.7)**: Picks question closest to target probability (zone of proximal development).
-- **Used in**: `BaseTrainer.tsx` — adaptive question ordering instead of random shuffle.
-- **Do NOT** replace random shuffle with pure randomness. Keep the IRT ordering.
+- **DEPRECATED**: `getGlobalBKT()` и `getGlobalIRT()` singletons в `src/utils/bktEngine.ts` / `src/utils/irtEngine.ts` — **НЕ ИСПОЛЬЗОВАТЬ**.
+- **NEW**: `useAdaptiveStore` (Zustand + persist) — единый store для IRT + BKT.
+  - `userAbility` (θ): -3..+3, обновляется stochastic gradient ascent после каждого ответа
+  - `irtItems`: questionId → {difficulty, total, correct, correctRate}
+  - `bktMirror`: atomId → {pKnown, attempts, correctCount}
+  - `selectNextQuestion(pool, target=0.7)`: возвращает вопрос с P(correct) ≈ target
+  - `observeIRT(questionId, correct)` / `observeBKT(atomId, correct)`: обновление state
+- **Hook**: `useAdaptiveEngine` (`src/hooks/useAdaptiveEngine.ts`) — обёртка для любого тренажёра
+  ```ts
+  const { questionOrder, observeAnswer } = useAdaptiveEngine(questions, taskNumber)
+  // questionOrder — IRT-отсортированные ID вопросов
+  // observeAnswer(questionId, correct, atoms) — обновить θ и BKT
+  ```
+- **Integrated in**: ВСЕ тренажеры (BaseTrainer, SwipeTrainerPage, DailyQuestionCard, MarathonPage, ExamVariantPage, MistakesReview, DuelPage, Lesson)
+- **Persistence**: `localStorage` (`ege-adaptive-storage`)
+- **Do NOT**: создавать второй adaptive store, использовать orphaned singletons
 
 ### 5. Error Pattern Analyzer (`src/utils/errorPatternAnalyzer.ts`)
 
@@ -239,8 +240,7 @@ All agents MUST be aware of these systems when working on trainers, analytics, o
 
 | System | Integrated In | Trigger |
 |--------|---------------|---------|
-| IRT | `BaseTrainer.tsx` | `handleCheck()` → `irt.updateAbility()` + `irt.selectNextQuestion()` |
-| BKT | `BaseTrainer.tsx` | `handleCheck()` → `bkt.observe(atom, correct)` for each atom |
+| Adaptive (IRT+BKT) | `BaseTrainer.tsx`, `SwipeTrainerPage`, `DailyQuestionCard`, `MarathonPage`, `ExamVariantPage`, `MistakesReview`, `DuelPage`, `Lesson` | `observeAnswer()` / `observeIRT()` + `observeBKT()` after each answer |
 | Error Patterns | `BaseTrainer.tsx` | `handleCheck()` → `detectErrorType()` + `sessionErrorPatterns` state |
 | Semantic RAG | `BaseTrainer.tsx` (via `ragRetriever`) | Wrong answer → `retrieveHybrid()` or `retrieveSemantic()` |
 | Predictive Score | `PredictiveScoreWidget.tsx`, `Statistics.tsx`, `EGEScorePredictor` | `getPredictiveScore(state)` on render |
@@ -255,12 +255,46 @@ npm run build:rag        # Rebuilds knowledge-index.json after any data change
 
 ---
 
-Last updated: 2026-07-18 by agent
+## 📋 Agent Update Protocol (MANDATORY)
+
+After EVERY session that changes code or data files, the agent MUST update these files:
+
+### Files to update
+1. `AGENTS.md` — append to the changelog at the bottom (what changed, why, relevant file paths)
+2. `AGENT_TASKS.md` — mark completed tasks with ✅, update status, add new tasks if discovered
+3. `memory/YYYY-MM-DD.md` — create if not exists, record what was done
+
+### What to record
+- Feature/bug name
+- File paths changed
+- Key implementation decisions
+- Breaking changes or deprecations
+- Verification steps (build passes, tests run)
+
+### Example changelog entry
+```
+Last updated: 2026-06-25 by agent
+- **Adaptive Engine**: Created `useAdaptiveEngine` hook (src/hooks/useAdaptiveEngine.ts) — unified IRT+BKT for all trainers. Integrated into BaseTrainer, SwipeTrainerPage, DailyQuestionCard, MarathonPage, ExamVariantPage, MistakesReview, DuelPage. Removed orphaned getGlobalBKT()/getGlobalIRT() singletons. Build passes clean.
+- **Daily Question**: Added text input support (not just multiple choice). Pool now includes all course questions + accent words. Fixed text answer validation and display.
+- **CourseMap animation**: Fixed collapse animation — replaced `layout` with `layout="position"`, wrapped in `<AnimatePresence initial={false}>`, added `overflow-hidden` + `transition`. No more "bounce" on collapse.
+```
+
+### Why this matters
+Multiple agents work on this codebase. Without updated docs, the next agent will:
+- Re-implement already-existing features
+- Use deprecated APIs (getGlobalBKT, getGlobalIRT)
+- Break recently-fixed bugs
+- Hallucinate rules that were already verified
+
+**Failure to update these files is a protocol violation.**
+
+---
+
+Last updated: 2026-06-25 by agent
 - **ML Pipeline**: Linear Regression Predictive Score, TF-IDF Semantic RAG, BKT Engine, IRT Engine, Error Pattern Analyzer — все интегрированы в BaseTrainer.tsx. Подробности в разделе «ML/Adaptive Pipeline» выше.
 - **RAG index**: 1061 entries (89 theory rules + 972 word explanations). Rebuild with `npm run build:rag` after any data change. Validate with `npm run validate:rag`.
 - **Task9 coverage**: 713/769 words (93%) have word-specific explanations via `rootDictionary` + `wordExplanations.json`. 324 remaining words need manual root analysis (mostly foreign/indeclinable roots).
-- **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%).
-- **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%).
+- **Dashboard accordion**: Разделы курса в Dashboard.tsx теперь сворачивающиеся (accordion) с анимацией Framer Motion. Клик по заголовку раскрывает список уроков с статусом (✓/id, цвета, bestScore%). Клик по заголовку → навигация на карту курса, клик по стрелке → toggle accordion.
 - **Sound effects**: `src/lib/sounds.ts` — Web Audio API synth sounds (correct/wrong/lessonComplete/combo/XPup/achievement). Mute toggle через `useSettingsStore`. Новые звуки: `playXPUpSound()`, `playAchievementSound()`.
 - **Dark mode**: Tailwind `darkMode: 'class'` + `document.documentElement.classList.toggle('dark')` в App.tsx. Переключатель в Profile: light/dark/system. Добавлены `dark:` классы в BottomNav и App root.
 - **Export/Import v2**: Полный backup всех stores (progress, student, class, studyPlan, settings). Формат `version: 2`. Profile.tsx кнопки экспорта/импорта обновлены.
