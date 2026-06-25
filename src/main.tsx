@@ -27,7 +27,7 @@ const swRegistration = registerSW({
 })
 
 // Store the update function for UI access
-updateServiceWorker = swRegistration.updateServiceWorker || null
+updateServiceWorker = swRegistration ? () => swRegistration(false) : null
 
 // @ts-ignore — expose for PWAUpdateToast component
 window.__updateServiceWorker = updateServiceWorker
