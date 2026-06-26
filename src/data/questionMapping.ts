@@ -134,8 +134,15 @@ const manualMappings: Record<string, Omit<CanonicalMapping, 'questionIds'> & { q
   'word:спешить:task9': {
     word: 'спешить',
     taskNumber: '9',
-    ruleId: 'alternation_spesh_spesh',
-    atomIds: ['root_spesh_spesh', 'vowel_alternation'],
+    ruleId: 'root_verifiable',
+    atomIds: ['root_verifiable', 'roots'],
+    questionIds: ['q9-8'],
+  },
+  'word:списать:task9': {
+    word: 'списать',
+    taskNumber: '9',
+    ruleId: 'root_verifiable',
+    atomIds: ['root_verifiable', 'roots'],
     questionIds: ['qd9-408'],
   },
 
