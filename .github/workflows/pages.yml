@@ -28,6 +28,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug build step by step
+        run: |
+          echo "=== Vite version ==="
+          npx vite --version
+          echo "=== Build RAG ==="
+          npm run build:rag
+          echo "=== Vite build ==="
+          npx vite build
+          echo "=== dist/index.html ==="
+          cat dist/index.html | head -10
+          echo "=== dist/index.html scripts ==="
+          cat dist/index.html | grep 'src="'
+          echo "=== dist assets ==="
+          ls dist/assets/ | wc -l
+
       - name: Build
         run: |
           set -e
