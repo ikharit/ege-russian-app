@@ -282,14 +282,12 @@
   - `algorithm-ege-platform.md` полностью переписан: отражает реальный стек (Capacitor, ML, spellEngine), 22 страницы, ML pipeline, агентский workflow.
   - `archive/` — перенесены ~130 файлов. Оставлены: Excel-реестры, DOCX/PDF, `algorithm-ege-platform.md`, `plan.md`.
 
-### [2026-06-26 12:07] Агент: main
-- **Что:** Агентский state-sync — документация отставала от кода (10+ коммитов не были отражены)
-- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/agent-registry.md`, `memory/2026-06-26.md`
-- **Зачем:** Предыдущий агент оставил коммиты без записей в агентских файлах. Следующие агенты могли бы не знать о: teacherAnalytics fixes, CI debug steps, deploy base path, cache-bust.
-- **Git commit:** (в процессе)
-- **⚠️ Важно:**
-  - Коммиты `cf33674`, `9f6f211` — TeacherAnalytics: убран timeout, sequential fetch, optional admin_user_analytics
-  - Коммиты `eefd84d`, `58cd07b`, `3d2e52e`, `7a4553e` — CI debug: dist contents check, step-by-step build, NODE_ENV=development, index.html dev-links check
-  - Коммит `4068bd1` — hardcoded base path `/ege-russian-app/` для GitHub Pages
-  - Коммиты `be96699`, `f60322a`, `dca49d6` — cache-bust query, deploy-pages experiments, возврат к peaceiris
-  - Сборка: `npm run build` ✅ (19.18s, 0 ошибок), `npm run validate:rag` ✅ (1379 entries, 0 errors, 268 warnings)
+### [2026-06-26 13:16] Агент: main
+- **Что:** Vercel deploy — switch from GitHub Pages to Vercel root domain
+- **Где:** `vite.config.ts`
+- **Зачем:** GitHub Pages требует base path `/ege-russian-app/`, Vercel использует root domain — asset'ы загружались с неправильного пути
+- **Git commit:** `75bf640`
+- **⚠️ Важно:** 
+  - `base: '/'` вместо `base: '/ege-russian-app/'`
+  - GitHub Pages workflow (`.github/workflows/pages.yml`) остаётся в репозитории, но primary deploy — Vercel
+  - Сборка проходит чисто, no TypeScript errors

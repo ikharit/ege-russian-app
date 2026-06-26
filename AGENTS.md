@@ -354,3 +354,6 @@ Last updated: 2026-06-26 by agent
 - **Deploy base path fix**: `vite.config.ts` — hardcoded `base: '/ege-russian-app/'` для корректной работы на GitHub Pages. Git: `4068bd1`.
 - **CI debug steps**: Добавлены debug-шаги в `.github/workflows/pages.yml`: проверка содержимого `dist/`, пошаговая сборка, проверка `index.html` на dev-ссылки. `NODE_ENV=development` для devDependencies. Git: `eefd84d`, `58cd07b`, `3d2e52e`, `7a4553e`.
 - **CI cache-bust and deploy**: Добавлен cache-bust query к `manifest.webmanifest`, переключение между `peaceiris/actions-gh-pages` и `actions/deploy-pages`, возврат к `peaceiris` с v4 и cache-bust. Git: `be96699`, `f60322a`, `dca49d6`.
+
+Last updated: 2026-06-26 by agent
+- **Vercel deploy**: `vite.config.ts` — `base: '/'` вместо `base: '/ege-russian-app/'` для деплоя на Vercel (root domain). GitHub Pages больше не используется как primary deploy. Git: `75bf640`.

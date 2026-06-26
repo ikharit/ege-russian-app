@@ -983,3 +983,21 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `eefd84d`, `58cd07b`, `3d2e52e`, `7a4553e`, `be96699`, `f60322a`, `dca49d6`
 
 **Критерий завершения**: CI проходит успешно, GitHub Pages деплоится и отображает приложение.
+
+---
+
+### ✅ ЗАДАЧА-А26: Vercel deploy — switch from GitHub Pages
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `vite.config.ts`
+
+**Решение**:
+1. `base: '/'` вместо `base: '/ege-russian-app/'` — для деплоя на Vercel root domain
+2. GitHub Pages больше не используется как primary deploy target
+
+**Файлы**: `vite.config.ts`
+
+**Git**: `75bf640`
+
+**Критерий завершения**: Приложение деплоится на Vercel без 404 на asset'ах, base path корректен для root domain.
