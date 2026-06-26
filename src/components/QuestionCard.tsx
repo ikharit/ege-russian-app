@@ -95,6 +95,12 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       if (previousAnswer.userAnswer) {
         if (isTextType) {
           setTextInput(previousAnswer.userAnswer[0] || '')
+        } else if (question.type === 'ege-multiple') {
+          const normalized = previousAnswer.userAnswer.map(a => {
+            const match = a.match(/^(\d+)\)/)
+            return match ? match[1] : a
+          })
+          setSelected(normalized)
         } else {
           setSelected(previousAnswer.userAnswer)
         }
@@ -165,7 +171,10 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
     setFocusedIdx(idx)
     if (question.type === 'single') {
       setSelected([option])
-    } else if (question.type === 'multiple' || question.type === 'ege-multiple') {
+    } else if (question.type === 'ege-multiple') {
+      const num = String(idx + 1)
+      setSelected(prev => prev.includes(num) ? prev.filter(o => o !== num) : [...prev, num])
+    } else if (question.type === 'multiple') {
       setSelected(prev => prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option])
     }
   }
@@ -385,8 +394,9 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
         <div className="flex flex-col gap-2" role="radiogroup" aria-label="Варианты ответа">
           <AnimatePresence>
             {question.options?.map((option, idx) => {
-              const isSelected = selected.includes(option)
-              const isCorrectOption = question.correctAnswer.includes(option)
+              const optionNum = String(idx + 1)
+              const isSelected = question.type === 'ege-multiple' ? selected.includes(optionNum) : selected.includes(option)
+              const isCorrectOption = question.type === 'ege-multiple' ? question.correctAnswer.includes(optionNum) : question.correctAnswer.includes(option)
               let buttonClass = 'border-2 rounded-xl p-4 text-left font-medium transition-all focus:outline-none focus:ring-2 focus:ring-duo-blue/30 '
 
               if (!isChecked) {
