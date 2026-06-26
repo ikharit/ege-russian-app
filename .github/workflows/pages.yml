@@ -6,8 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
+  id-token: write
 
 concurrency:
   group: "pages"
@@ -16,6 +17,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,28 +42,17 @@ jobs:
           cat dist/index.html | grep 'src="' || true
           if grep -q 'src/main.tsx' dist/index.html; then
             echo "ERROR: dist/index.html still contains dev src/main.tsx!"
-            echo "=== vite version ==="
-            npx vite --version
-            echo "=== node_modules/vite exists? ==="
-            test -d node_modules/vite && echo "YES" || echo "NO"
-            echo "=== dist contents ==="
-            ls -la dist/
             exit 1
           fi
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
-      - name: Add SPA redirect
-        run: cp dist/index.html dist/404.html
-
-      - name: Disable Jekyll
-        run: touch dist/.nojekyll
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
-          enable_jekyll: false
+        id: deployment
+        uses: actions/deploy-pages@v4
