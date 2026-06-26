@@ -185,6 +185,8 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
         return
       }
 
+      console.log('[TeacherAnalytics] user_progress rows:', progressData?.length || 0)
+
       // Fetch admin_user_analytics (secondary, optional)
       let analyticsData: any[] = []
       try {
@@ -193,6 +195,9 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
           .select('user_id, behavior_profile, daily_snapshots')
         if (!error && data) {
           analyticsData = data
+          console.log('[TeacherAnalytics] admin_user_analytics rows:', data.length)
+        } else if (error) {
+          console.warn('[TeacherAnalytics] admin_user_analytics error:', error)
         }
       } catch (e) {
         console.warn('admin_user_analytics fetch failed:', e)
@@ -201,6 +206,8 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
       const allUserIds = new Set([
         ...(progressData || []).map((p: any) => p.user_id),
       ])
+
+      console.log('[TeacherAnalytics] total userIds:', allUserIds.size)
 
       if (allUserIds.size === 0) {
         set({ students: [], loading: false })
