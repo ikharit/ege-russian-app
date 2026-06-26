@@ -27,21 +27,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Debug build step by step
-        run: |
-          echo "=== Vite version ==="
-          npx vite --version
-          echo "=== Build RAG ==="
-          npm run build:rag
-          echo "=== Vite build ==="
-          npx vite build
-          echo "=== dist/index.html ==="
-          cat dist/index.html | head -10
-          echo "=== dist/index.html scripts ==="
-          cat dist/index.html | grep 'src="'
-          echo "=== dist assets ==="
-          ls dist/assets/ | wc -l
+        env:
+          NODE_ENV: development
 
       - name: Build
         run: |
@@ -51,25 +38,9 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          GITHUB_PAGES: true
 
       - name: Add SPA redirect
         run: cp dist/index.html dist/404.html
-
-      - name: Debug dist contents
-        run: |
-          echo "=== dist/index.html (first 5 lines) ==="
-          cat dist/index.html | head -5
-          echo "=== dist/index.html (script src) ==="
-          cat dist/index.html | grep 'src="'
-          echo "=== dist/assets count ==="
-          ls dist/assets/ | wc -l
-          echo "=== dist/assets sample ==="
-          ls dist/assets/ | head -5
-          echo "=== dist/.nojekyll ==="
-          test -f dist/.nojekyll && echo "EXISTS" || echo "MISSING"
-          echo "=== dist/404.html ==="
-          test -f dist/404.html && echo "EXISTS" || echo "MISSING"
 
       - name: Disable Jekyll
         run: touch dist/.nojekyll
@@ -79,3 +50,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
+          enable_jekyll: false
