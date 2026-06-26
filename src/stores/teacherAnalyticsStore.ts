@@ -173,34 +173,32 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
     set({ loading: true, error: null })
 
-    // Timeout wrapper: if Supabase is slow, abort and show local data
-    const TIMEOUT_MS = 4000
-    const timeout = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS)
-    )
-
     try {
-      // Parallel queries + timeout
-      const [analyticsResult, progressResult] = await Promise.race([
-        Promise.all([
-          supabase.from('admin_user_analytics').select('user_id, behavior_profile, daily_snapshots').limit(500),
-          supabase.from('user_progress').select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers').limit(500),
-        ]),
-        timeout,
-      ]) as any
+      // Fetch user_progress first (primary source)
+      const { data: progressData, error: progressError } = await supabase
+        .from('user_progress')
+        .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers')
 
-      const { data: analyticsData, error: analyticsError } = analyticsResult
-      const { data: progressData, error: progressError } = progressResult
-
-      if (analyticsError && import.meta.env.DEV) {
-        console.warn('admin_user_analytics fetch:', analyticsError)
+      if (progressError) {
+        console.warn('user_progress fetch error:', progressError)
+        set({ error: 'Ошибка загрузки прогресса: ' + progressError.message, loading: false })
+        return
       }
-      if (progressError && import.meta.env.DEV) {
-        console.warn('user_progress fetch:', progressError)
+
+      // Fetch admin_user_analytics (secondary, optional)
+      let analyticsData: any[] = []
+      try {
+        const { data, error } = await supabase
+          .from('admin_user_analytics')
+          .select('user_id, behavior_profile, daily_snapshots')
+        if (!error && data) {
+          analyticsData = data
+        }
+      } catch (e) {
+        console.warn('admin_user_analytics fetch failed:', e)
       }
 
       const allUserIds = new Set([
-        ...(analyticsData || []).map((a: any) => a.user_id),
         ...(progressData || []).map((p: any) => p.user_id),
       ])
 
@@ -210,8 +208,8 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
       }
 
       const students: TeacherStudentView[] = Array.from(allUserIds).map((userId: string) => {
-        const analytics = analyticsData?.find((a: any) => a.user_id === userId)
         const progress = progressData?.find((p: any) => p.user_id === userId)
+        const analytics = analyticsData?.find((a: any) => a.user_id === userId)
         const stats = progress?.user_stats || {}
 
         const taskStats = progress?.task_stats || {}
@@ -261,12 +259,8 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
 
       set({ students, loading: false })
     } catch (err: any) {
-      const msg = err.message || ''
-      if (msg.includes('timeout')) {
-        set({ error: 'Сервер долго отвечает. Проверьте, запущена ли SQL-миграция.', loading: false })
-      } else {
-        set({ error: msg || 'Ошибка загрузки', loading: false })
-      }
+      const msg = err.message || 'Ошибка загрузки'
+      set({ error: msg, loading: false })
     }
   },
 
