@@ -780,3 +780,146 @@ import { getAtomById } from '../data/atomization/atoms'
 3. Добавлено `onRehydrateStorage` в `progressStore` и `studentStore` для логирования в консоль браузера
 
 **Файлы**: `src/App.tsx` (auto-save useEffect), `src/components/StudentRegistrationModal.tsx` (hasProgress check), `src/stores/progressStore.ts` (onRehydrateStorage), `src/stores/studentStore.ts` (onRehydrateStorage)
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-26)
+
+### ✅ ЗАДАЧА-А15: Friend system — система друзей
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/stores/friendStore.ts`, `src/pages/FriendsPage.tsx`, `supabase/migrations/20250115_friend_system.sql`
+
+**Решение**:
+1. Создан `friendStore.ts` — Zustand store для управления друзьями (Supabase + local fallback)
+2. Создан `FriendsPage.tsx` — страница друзей: список, поиск по username, заявки (pending/accepted), рейтинг друзей, аватарки, last_active
+3. SQL-миграция `20250115_friend_system.sql` — таблицы `friendships`, `friend_requests`, `user_profiles`
+4. Fallback: если Supabase не настроен — работает в local-only режиме (через localStorage)
+5. Исправлены TS ошибки в `friendStore.ts` (commit `55f7904`)
+
+**Критерий завершения**: Пользователь может добавлять друзей, видеть их рейтинг, принимать/отклонять заявки. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А16: Teacher analytics — расширенные метрики и графики
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/stores/teacherAnalyticsStore.ts`, `src/pages/TeacherAnalytics.tsx`, `src/types/index.ts`
+
+**Решение**:
+1. Расширен `TeacherStudentView` тип: добавлены `totalQuestionsAnswered`, `totalLessonTimeMinutes`, `maxCombo`, `hearts`, `examResults`, `theoryTests`, `answerHistory`
+2. `teacherAnalyticsStore.ts` — запросы к Supabase теперь читают `exam_results`, `theory_tests_completed`, `answer_history`, `daily_quest_progress`, `atom_progress`, `wrong_answers`
+3. `TeacherAnalytics.tsx` — новые виджеты:
+   - Summary cards: средний балл экзамена, средний max combo
+   - Overview widgets: распределение уровней (BarChart), heatmap прогресса по заданиям, top weak tasks, hourly activity
+   - Trends chart: активные пользователи во времени (LineChart)
+4. Dooshin review groups убраны из TeacherAnalytics.tsx (встроены в courseData.ts)
+
+**Файлы**: `src/stores/teacherAnalyticsStore.ts`, `src/pages/TeacherAnalytics.tsx`, `src/types/index.ts`
+
+**Критерий завершения**: Учитель видит полную аналитику по ученикам: метрики, графики, тренды. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А17: Dooshin review groups — встраивание в секции
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/data/courseData.ts`, `src/pages/TeacherAnalytics.tsx`
+
+**Решение**:
+1. Группы повторения Дощинского (task9-12, task15, task16-20) встроены внутрь существующих секций (grammar, orthography, punctuation) вместо отдельных топ-уровневых секций
+2. `courseData.ts` — добавлена embedding logic для review groups
+3. `TeacherAnalytics.tsx` — убраны захардкоженные review groups (теперь берутся из courseData)
+
+**Файлы**: `src/data/courseData.ts`
+
+**Критерий завершения**: Review groups отображаются внутри секций, не дублируются. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А18: ComingSoon sections — метка 'В разработке'
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/pages/CourseMap.tsx`
+
+**Решение**:
+1. Если все уроки в секции имеют `comingSoon: true` — вся секция помечается как 'В разработке'
+2. `CourseMap.tsx` — логика проверки + UI (бейдж/заголовок)
+
+**Файлы**: `src/pages/CourseMap.tsx`
+
+**Критерий завершения**: Секции, где все уроки в разработке, отображаются с пометкой 'В разработке'. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А19: PWA Update Toast — уведомление об обновлении
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/components/PWAUpdateToast.tsx`, `src/main.tsx`, `vite.config.ts`
+
+**Решение**:
+1. Создан `PWAUpdateToast.tsx` — toast-уведомление при обновлении Service Worker
+2. `main.tsx` — `registerSW` callback + `skipWaiting`/`clientsClaim`
+3. `vite.config.ts` — workbox config для PWA auto-update
+
+**Файлы**: `src/components/PWAUpdateToast.tsx`, `src/main.tsx`, `vite.config.ts`
+
+**Критерий завершения**: При деплое новой версии пользователь видит toast с кнопкой "Обновить". Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А20: CI/CD fixes — деплой на GitHub Pages
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `.github/workflows/pages.yml`, `.github/workflows/ci.yml`, `index.html`, `src/App.tsx`, `src/main.tsx`
+
+**Решение**:
+1. `.github/workflows/pages.yml` — деплой на GitHub Pages через `peaceiris/actions-gh-pages@v4`
+2. `.nojekyll` — добавлен для отключения Jekyll processing
+3. `NODE_OPTIONS=--max-old-space-size=4096` — для сборки без OOM
+4. `registerSW` return type fix — исправлен TypeScript
+5. `package-lock.json` — регенерирован для CI stability
+
+**Файлы**: `.github/workflows/pages.yml`, `.github/workflows/ci.yml`, `index.html`, `src/App.tsx`, `src/main.tsx`
+
+**Критерий завершения**: CI проходит успешно, GitHub Pages деплоится. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А21: TS fixes — исправления TypeScript для CI
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/components/InlineQuestionEditor.tsx`, `src/components/QuestionCard.tsx`, `src/pages/DuelPage.tsx`, `src/pages/FriendsPage.tsx`, `src/pages/Leaderboard.tsx`, `src/pages/Profile.tsx`, `src/pages/SwipeTrainerPage.tsx`
+
+**Решение**:
+1. Исправлены TypeScript ошибки в 7 файлах (mostly missing props, type mismatches, unused imports)
+2. Добавлены необходимые типы и пропсы для компиляции без ошибок
+
+**Файлы**: `src/components/InlineQuestionEditor.tsx`, `src/components/QuestionCard.tsx`, `src/pages/DuelPage.tsx`, `src/pages/FriendsPage.tsx`, `src/pages/Leaderboard.tsx`, `src/pages/Profile.tsx`, `src/pages/SwipeTrainerPage.tsx`
+
+**Критерий завершения**: `npm run build` проходит без TypeScript ошибок.
+
+---
+
+### ✅ ЗАДАЧА-А22: TeacherAnalytics store refactor — убран timeout
+
+**Статус:** ✅ Завершено (2026-06-26, uncommitted)
+
+**Где**: `src/stores/teacherAnalyticsStore.ts`
+
+**Решение**:
+1. Убран `Promise.race` с timeout (ранее `TIMEOUT_MS = 4000`)
+2. `admin_user_analytics` теперь optional fetch — если таблица не существует, ошибка не падает
+3. Упрощена обработка ошибок — нет специального case для timeout
+4. Primary source: `user_progress` (всегда запрашивается первым)
+
+**Файлы**: `src/stores/teacherAnalyticsStore.ts`
+
+**Критерий завершения**: TeacherAnalytics загружает данные без timeout, gracefully обрабатывает отсутствие `admin_user_analytics`. Сборка проходит чисто.

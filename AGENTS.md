@@ -291,6 +291,16 @@ Multiple agents work on this codebase. Without updated docs, the next agent will
 
 ---
 
+Last updated: 2026-06-26 by agent
+- **Friend system**: Полная система друзей — `friendStore.ts` (Supabase + local fallback), `FriendsPage.tsx` (список, поиск, заявки, рейтинг друзей), SQL-миграция `20250115_friend_system.sql`. Добавление, удаление, заявки, аватарки, last_active. Git: `6b011a7`, `2c3ec9c`, `55f7904`.
+- **Teacher analytics extended**: Расширенная аналитика для учителей — `TeacherAnalytics.tsx` + `teacherAnalyticsStore.ts`. Новые метрики: totalQuestionsAnswered, totalLessonTimeMinutes, maxCombo, hearts, examResults, theoryTests, answerHistory. Summary cards: средний балл экзамена, средний max combo. Overview widgets: распределение уровней (BarChart), heatmap прогресса по заданиям, top weak tasks, hourly activity. Trends chart: активные пользователи во времени. Git: `b2501ca`.
+- **Dooshin review groups embedded**: Группы повторения Дощинского (task9-12, task15, task16-20) встроены внутрь существующих секций (грамматика, орфография, пунктуация) вместо отдельных топ-уровневых секций. `courseData.ts` — embedding logic. `TeacherAnalytics.tsx` — убраны захардкоженные review groups. Git: `38c4d91`.
+- **ComingSoon sections**: Если все уроки в секции `comingSoon` — вся секция помечается как 'В разработке'. `CourseMap.tsx` — логика + UI. Git: `412c3e4`.
+- **PWA Update Toast**: Компонент `PWAUpdateToast.tsx` — показывает toast при обновлении Service Worker. `main.tsx` — `registerSW` callback + `skipWaiting`/`clientsClaim`. `vite.config.ts` — workbox config. Git: `e28d8ce`.
+- **CI/CD fixes**: `.github/workflows/pages.yml` — деплой на GitHub Pages через `peaceiris/actions-gh-pages` (v4), `.nojekyll`, `NODE_OPTIONS=--max-old-space-size=4096`. `registerSW` return type fix. `package-lock.json` регенерирован. Git: `c712719`, `5c9b2e4`, `500ee99`, `340d823`, `9da6b69`, `f1a68a8`, `3b60e99`.
+- **TS fixes**: Исправлены TypeScript ошибки в `InlineQuestionEditor.tsx`, `QuestionCard.tsx`, `DuelPage.tsx`, `FriendsPage.tsx`, `Leaderboard.tsx`, `Profile.tsx`, `SwipeTrainerPage.tsx`. Git: `100490b`.
+- **TeacherAnalytics store refactor (uncommitted)**: `teacherAnalyticsStore.ts` — убран timeout (Promise.race), `admin_user_analytics` теперь optional fetch, упрощена обработка ошибок. Primary source: `user_progress`.
+
 Last updated: 2026-06-25 by agent
 - **FIPI Codificator**: Создан единый кодификатор ФИПИ — `src/data/fipiCodificator.ts` (27 заданий, формат, темы, статус). Теперь все задания в проекте ДОЛЖНЫ соответствовать этому файлу. Включены функции валидации (`validateTaskFormat`). Известные несоответствия зафиксированы: task16LessonData.ts → по формату task17, task16Questions.ts → формат не соответствует ФИПИ (должно быть 2 из 5, а не 1 из 5). Git: `e5dfcc5` (task16→17 fix), `...` (codificator).
 - **Leaderboard accuracy**: `syncSlice.ts` теперь считает `accuracy` и `totalAttempts` из `task_stats` при загрузке лидерборда из Supabase. Убран `limit(50)` — загружаются все записи. `gamificationSlice.ts` — добавлены поля `accuracy?: number` и `totalAttempts?: number` в `LeaderboardEntry`. `src/stores/slices/syncSlice.ts`, `src/stores/slices/gamificationSlice.ts`.
