@@ -358,3 +358,5 @@ Last updated: 2026-06-26 by agent
 
 Last updated: 2026-06-26 by agent
 - **Vercel deploy**: `vite.config.ts` — `base: '/'` вместо `base: '/ege-russian-app/'` для деплоя на Vercel (root domain). GitHub Pages больше не используется как primary deploy. Git: `75bf640`.
+- **Auth redirect fix**: `src/lib/supabase.ts` — `redirectTo` изменён с `window.location.origin + window.location.pathname` на `window.location.origin + '/'`. Это фиксит OAuth редирект после входа через Google: раньше pathname мог включать `/ege-russian-app/`, и пользователь попадал на неправильный URL. Теперь всегда редиректит на корень. Git: `1b1195d`.
+- **GitHub Pages workflow disabled**: `.github/workflows/pages.yml` → `.github/workflows/pages.yml.disabled` — workflow GitHub Pages отключён, т.к. primary deploy теперь на Vercel. Файл оставлен с суффиксом `.disabled` для истории. Git: `53e2e49`.

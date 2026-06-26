@@ -291,3 +291,22 @@
   - `base: '/'` вместо `base: '/ege-russian-app/'`
   - GitHub Pages workflow (`.github/workflows/pages.yml`) остаётся в репозитории, но primary deploy — Vercel
   - Сборка проходит чисто, no TypeScript errors
+
+### [2026-06-26 21:22] Агент: main
+- **Что:** Отключение GitHub Pages workflow
+- **Где:** `.github/workflows/pages.yml` → `.github/workflows/pages.yml.disabled`
+- **Зачем:** Primary deploy теперь Vercel, GitHub Pages workflow больше не нужен и может конфликтовать
+- **Git commit:** `53e2e49`
+- **⚠️ Важно:** 
+  - Файл оставлен с суффиксом `.disabled` для истории (можно восстановить)
+  - В разделе Actions репозитория workflow больше не запускается
+
+### [2026-06-26 21:24] Агент: main
+- **Что:** Фикс OAuth редиректа для Google входа
+- **Где:** `src/lib/supabase.ts` (функция `signInWithGoogle()`)
+- **Зачем:** `window.location.pathname` мог включать `/ege-russian-app/` или другой путь, и после OAuth пользователь попадал на неправильный URL (404 или белый экран)
+- **Git commit:** `1b1195d`
+- **⚠️ Важно:** 
+  - `redirectTo` изменён с `window.location.origin + window.location.pathname` на `window.location.origin + '/'`
+  - Теперь всегда редиректит на корень — корректно работает на Vercel (root domain) и GitHub Pages
+  - Сборка проходит чисто, no TypeScript errors

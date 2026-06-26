@@ -63,6 +63,7 @@
 - **Ученики:** `src/stores/studentStore.ts`
 - **Регистрация:** `src/components/StudentRegistrationModal.tsx`
 - **Переключение:** `src/components/ProfileSwitcher.tsx`
+- **Deploy / Auth**: `vite.config.ts` (base path — `/` для Vercel), `src/lib/supabase.ts` (OAuth redirect → `/`), `.github/workflows/pages.yml.disabled` (GitHub Pages workflow отключён)
 
 ---
 

@@ -1001,3 +1001,45 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `75bf640`
 
 **Критерий завершения**: Приложение деплоится на Vercel без 404 на asset'ах, base path корректен для root domain.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-26, поздняя сессия — агентский state-sync)
+
+### ✅ ЗАДАЧА-А27: Отключение GitHub Pages workflow
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `.github/workflows/pages.yml` → `.github/workflows/pages.yml.disabled`
+
+**Решение**:
+1. Файл workflow переименован с `.yml` на `.yml.disabled` — GitHub больше не запускает этот workflow
+2. Primary deploy target теперь только Vercel, GitHub Pages не используется
+3. Файл оставлен с суффиксом `.disabled` для истории (можно восстановить, если понадобится)
+
+**Файлы**: `.github/workflows/pages.yml.disabled` (бывший `pages.yml`)
+
+**Git**: `53e2e49`
+
+**Критерий завершения**: В разделе Actions репозитория нет запусков GitHub Pages workflow. Деплой только через Vercel.
+
+---
+
+### ✅ ЗАДАЧА-А28: Фикс OAuth редиректа для Vercel
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `src/lib/supabase.ts` (функция `signInWithGoogle()`)
+
+**Решение**:
+1. `redirectTo` изменён с `window.location.origin + window.location.pathname` на `window.location.origin + '/'`
+2. Проблема: `window.location.pathname` мог включать `/ege-russian-app/` или другой путь, и после OAuth-входа через Google пользователь попадал на неправильный URL
+3. Теперь всегда редиректит на корень (`/`), что корректно работает как на Vercel (root domain), так и на GitHub Pages
+
+**Файлы**: `src/lib/supabase.ts`
+
+**Git**: `1b1195d`
+
+**Критерий завершения**: Вход через Google OAuth работает корректно, пользователь возвращается на главную страницу после авторизации.
+
+---
