@@ -22,6 +22,9 @@
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
 | Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2025-02-23)** — исправлены ошибочные классификации корней, placeholder'ы, самопроверки. |
+| Friend system | 🟢 | main | `friendStore.ts` + `FriendsPage.tsx` — добавление/удаление друзей, поиск, заявки, рейтинг. Supabase + local fallback. |
+| Teacher Analytics | 🟢 | main | `TeacherAnalytics.tsx` + `teacherAnalyticsStore.ts` — расширенная аналитика: метрики, графики, тренды. |
+| PWA Update Toast | 🟢 | main | `PWAUpdateToast.tsx` — toast при обновлении Service Worker, auto-reload. |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
 | MiniGames | 🟡 | — | TODO: связать с accent trainer store |
 | Theory (теория) | 🔵 | — | Тесты, рендерер, XP. Ждёт скрапинга оставшихся заданий |

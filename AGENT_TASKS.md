@@ -929,7 +929,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ### ✅ ЗАДАЧА-А22: TeacherAnalytics store refactor — убран timeout
 
-**Статус:** ✅ Завершено (2026-06-26, uncommitted)
+**Статус:** ✅ Завершено (2026-06-26)
 
 **Где**: `src/stores/teacherAnalyticsStore.ts`
 
@@ -942,3 +942,44 @@ import { getAtomById } from '../data/atomization/atoms'
 **Файлы**: `src/stores/teacherAnalyticsStore.ts`
 
 **Критерий завершения**: TeacherAnalytics загружает данные без timeout, gracefully обрабатывает отсутствие `admin_user_analytics`. Сборка проходит чисто.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-26, поздняя сессия)
+
+### ✅ ЗАДАЧА-А24: Deploy base path fix — GitHub Pages
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `vite.config.ts`
+
+**Решение**:
+1. Hardcoded `base: '/ege-russian-app/'` в `vite.config.ts` для корректной работы на GitHub Pages
+2. Без этого asset'ы (JS, CSS) загружались с неправильного пути, и страница показывала белый экран
+
+**Файлы**: `vite.config.ts`
+
+**Git**: `4068bd1`
+
+**Критерий завершения**: GitHub Pages отображает приложение корректно, без 404 на asset'ах.
+
+---
+
+### ✅ ЗАДАЧА-А25: CI/CD debug, cache-bust и deploy stability
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `.github/workflows/pages.yml`, `.github/workflows/ci.yml`, `index.html`
+
+**Решение**:
+1. **Debug steps**: добавлены шаги проверки содержимого `dist/` и `index.html` (нет dev-ссылок) в workflow
+2. **NODE_ENV=development**: установлен для корректной установки devDependencies в CI
+3. **Cache-bust**: добавлен query parameter к `manifest.webmanifest` для принудительного обновления кэша браузера
+4. **Deploy experiments**: проверена работа `actions/deploy-pages` (официальный action) vs `peaceiris/actions-gh-pages` — возврат к `peaceiris` с v4 и cache-bust query
+5. **package-lock.json**: регенерирован для стабильности CI
+
+**Файлы**: `.github/workflows/pages.yml`, `.github/workflows/ci.yml`, `index.html`, `package-lock.json`
+
+**Git**: `eefd84d`, `58cd07b`, `3d2e52e`, `7a4553e`, `be96699`, `f60322a`, `dca49d6`
+
+**Критерий завершения**: CI проходит успешно, GitHub Pages деплоится и отображает приложение.
