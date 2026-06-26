@@ -783,7 +783,26 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ---
 
+---
+
 ## 🆕 Новые задачи (добавлено 2026-06-26)
+
+### ✅ ЗАДАЧА-А23: Workspace cleanup + Deduplication + Docs актуализация
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `questionMapping.ts`, `algorithm-ege-platform.md`, корень workspace
+
+**Решение**:
+1. Создана папка `archive/` в корне workspace — перенесены ~130 одноразовых артефактов (скрипты, JSON, HTML, отчёты, batches, extracted-tasks). Оставлены: Excel-реестры, DOCX/PDF, `algorithm-ege-platform.md`, `plan.md`. Заброшенные проекты `ege-app/` и `atomization-project/` перемещены в `archive/`.
+2. Добавлены 9 маппингов в `questionMapping.ts` для дублей orthography.ts ↔ dooshin/task9.ts: исказить, ополчение, пловец, дирижёр, мораторий, метафора, почитатель, обжигаться, проживать. Исправлен маппинг "спешить" (qd9-408 — это "списать", не "спешить"). Всего 15/33 дублей связаны canonicalWordId.
+3. Полная перезапись `algorithm-ege-platform.md`: актуальный стек, ML pipeline, 22 страницы с статусами, агентский workflow, структура проекта.
+
+**Файлы**: `src/data/questionMapping.ts`, `algorithm-ege-platform.md` (корень workspace)
+
+**Критерий завершения**: Workspace чистый, 15 дублей связаны, документация актуальна. Сборка проходит чисто.
+
+---
 
 ### ✅ ЗАДАЧА-А15: Friend system — система друзей
 

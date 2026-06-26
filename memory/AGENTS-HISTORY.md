@@ -270,3 +270,14 @@
 - **Зачем:** Визуально 1-е место было ниже 2-го
 - **Git commit:** `9724b2f`
 - **⚠️ Важно:** Высоты теперь считаются по XP: `minHeight + (val/maxVal) * (maxHeight-minHeight)`
+
+### [2026-06-26 10:30] Агент: main
+- **Что:** Workspace cleanup + Deduplication + Docs актуализация
+- **Где:** `archive/` (корень workspace), `src/data/questionMapping.ts`, `algorithm-ege-platform.md` (корень workspace)
+- **Зачем:** Убрать мусор из корня workspace, связать дублирующиеся слова между orthography.ts и dooshin/task9.ts, актуализировать дизайн-документ
+- **Git commit:** (в процессе)
+- **⚠️ Важно:** 
+  - 15/33 дублей из `audit_report_final.txt` теперь связаны через `canonicalWordId` в `questionMapping.ts`. Оставшиеся 18 требуют массового аудита.
+  - `qd9-408` — это "списать" (корень -пис-), не "спешить". Исправлен маппинг.
+  - `algorithm-ege-platform.md` полностью переписан: отражает реальный стек (Capacitor, ML, spellEngine), 22 страницы, ML pipeline, агентский workflow.
+  - `archive/` — перенесены ~130 файлов. Оставлены: Excel-реестры, DOCX/PDF, `algorithm-ege-platform.md`, `plan.md`.
