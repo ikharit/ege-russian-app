@@ -106,6 +106,7 @@ function LessonCard({
 
   const cfg = statusConfig[status]
   const availableStyle = status === 'available' ? { backgroundColor: sectionColor } : {}
+  const isDooshin = lesson.id.startsWith('lesson-dooshin')
 
   return (
     <div className="relative">
@@ -120,7 +121,8 @@ function LessonCard({
       )}
 
       <motion.div
-        className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border}`}
+        className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border} ${isDooshin ? 'border-l-4' : ''}`}
+        style={isDooshin ? { borderLeftColor: sectionColor } : {}}
         whileHover={status !== 'locked' && status !== 'coming_soon' ? { scale: 1.01, x: 4 } : {}}
         whileTap={status !== 'locked' && status !== 'coming_soon' ? { scale: 0.99 } : {}}
         onClick={status !== 'coming_soon' ? onClick : undefined}
@@ -138,7 +140,14 @@ function LessonCard({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p className={`font-bold text-sm truncate ${cfg.text}`}>{lesson.title}</p>
+          <div className="flex items-center gap-2">
+            <p className={`font-bold text-sm truncate ${cfg.text}`}>{lesson.title}</p>
+            {isDooshin && (
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-duo-green/10 text-duo-green shrink-0">
+                Дошинский
+              </span>
+            )}
+          </div>
           <p className={`text-xs ${cfg.sub}`}>{cfg.subText}</p>
 
           {/* Progress bar for completed */}

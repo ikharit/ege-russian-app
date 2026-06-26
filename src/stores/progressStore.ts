@@ -76,6 +76,7 @@ export interface ProgressState {
   setUserId: (userId: string | null) => void
   syncProgress: () => Promise<void>
   loadProgress: () => Promise<void>
+  loadLeaderboard: () => Promise<void>
   checkHeartRestore: () => void
   setUserName: (name: string) => void
   toggleInfiniteHearts: () => void

@@ -7,28 +7,52 @@ import { punctuationAllSections } from './sections/punctuationAll'
 import { dooshinSection } from './sections/dooshinUnified'
 import { task22_27Sections } from './sections/task22_27'
 
-// Встраиваем отработки Дощинского в конец соответствующих секций
+// Встраиваем отработки Дощинского внутрь соответствующих групп уроков
 const dooshinGroups = dooshinSection.groups || []
 
-const embedDooshin = (sections: Section[], taskNumbers: string[]) => {
-  return sections.map((s) => ({
-    ...s,
-    groups: [
-      ...(s.groups || []),
-      ...dooshinGroups
-        .filter((g) => taskNumbers.includes(g.id.replace('group-task', '')))
-        .map((g) => ({
-          ...g,
-          id: `${g.id}-embedded`,
-          title: `Отработки Дощинского: ${g.title}`,
-        })),
-    ],
-  }))
+const mergeDooshinIntoGroups = (sections: Section[], taskNumbers: string[]) => {
+  return sections.map((s) => {
+    // Merge dooshin lessons into matching groups
+    const mergedGroups = (s.groups || []).map(g => {
+      const match = g.id.match(/^group-task(\d+)$/)
+      if (match && taskNumbers.includes(match[1])) {
+        const dooshinGroup = dooshinGroups.find(dg => dg.id === g.id)
+        if (dooshinGroup) {
+          return {
+            ...g,
+            lessons: [
+              ...g.lessons,
+              ...dooshinGroup.lessons.map(l => ({ ...l, sectionId: s.id }))
+            ],
+          }
+        }
+      }
+      return g
+    })
+
+    // Also add dooshin lessons to flat lessons array (for Lesson.tsx lookup)
+    const mergedLessons = [...s.lessons]
+    for (const g of mergedGroups) {
+      const match = g.id.match(/^group-task(\d+)$/)
+      if (match && taskNumbers.includes(match[1])) {
+        const dooshinGroup = dooshinGroups.find(dg => dg.id === g.id)
+        if (dooshinGroup) {
+          for (const l of dooshinGroup.lessons) {
+            if (!mergedLessons.some(ml => ml.id === l.id)) {
+              mergedLessons.push({ ...l, sectionId: s.id })
+            }
+          }
+        }
+      }
+    }
+
+    return { ...s, groups: mergedGroups, lessons: mergedLessons }
+  })
 }
 
-const grammarWithDooshin = embedDooshin(grammarSections, ['12', '13', '14'])
-const orthographyWithDooshin = embedDooshin(orthographyAllSections, ['9', '10', '11', '15'])
-const punctuationWithDooshin = embedDooshin(punctuationAllSections, ['16', '17', '18', '19', '20', '21'])
+const grammarWithDooshin = mergeDooshinIntoGroups(grammarSections, ['12', '13', '14'])
+const orthographyWithDooshin = mergeDooshinIntoGroups(orthographyAllSections, ['9', '10', '11', '15'])
+const punctuationWithDooshin = mergeDooshinIntoGroups(punctuationAllSections, ['16', '17', '18', '19', '20', '21'])
 
 export const course: Course = {
   id: 'ege-russian-2025',

@@ -32,9 +32,18 @@ export function Leaderboard() {
   const [mode, setMode] = useState<'xp' | 'streak' | 'homework' | 'accuracy'>('xp')
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
+  const loadLeaderboard = useProgressStore((s) => s.loadLeaderboard)
   useEffect(() => {
     checkRanks()
   }, [checkRanks, period, mode])
+
+  useEffect(() => {
+    loadLeaderboard()
+    const interval = setInterval(() => {
+      loadLeaderboard()
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [loadLeaderboard])
 
   const completedCount = Object.values(lessonProgress).filter(l => l.status === 'completed').length
 

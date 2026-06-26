@@ -36,9 +36,13 @@ export function FriendsPage() {
     completedLessons: Object.values(useProgressStore.getState().lessonProgress).filter((l: any) => l.status === 'completed').length,
   }
 
-  // Load friends on mount
+  // Load friends on mount + poll every 10s for incoming requests
   useEffect(() => {
     loadFriends()
+    const interval = setInterval(() => {
+      loadFriends()
+    }, 10000)
+    return () => clearInterval(interval)
   }, [loadFriends])
 
   // Auto-clear error after 5s
