@@ -81,6 +81,7 @@ export function Lesson() {
     setCorrectCount(0)
     setCombo(0)
     setGameOverReason(null)
+    setHasAutoCompleted(false)
     setDirection(0)
     setQuestionStartTime(Date.now())
     setHintsUsedPerQuestion({})
