@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Save, RotateCcw, AlertTriangle, Cloud } from 'lucide-react'
+import { X, Save, RotateCcw, AlertTriangle, Cloud, Download, FileCode } from 'lucide-react'
 import { Question } from '../types'
 import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits, isPendingSync } from '../lib/questionEdits'
 
@@ -66,6 +66,39 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
 
   const hasEdit = question.id in loadLocalEdits()
   const pending = isPendingSync(question.id)
+
+  const handleExport = () => {
+    const edits = loadLocalEdits()
+    const blob = new Blob([JSON.stringify(edits, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'edits.json'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleSaveToFiles = async () => {
+    const edits = loadLocalEdits()
+    try {
+      const res = await fetch('/api/save-edits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(edits),
+      })
+      const data = await res.json()
+      if (data.success) {
+        alert(`Сохранено в файлы: ${data.applied} правок`)
+        if (data.notFound.length > 0) {
+          console.warn('Не найдены:', data.notFound)
+        }
+      } else {
+        alert('Ошибка: ' + data.error)
+      }
+    } catch {
+      alert('Dev-сервер не отвечает. Используй «Скачать» и npm run export-edits')
+    }
+  }
 
   return (
     <motion.div
@@ -153,7 +186,7 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
       </div>
 
       {/* Footer actions */}
-      <div className="px-4 py-3 border-t border-gray-100 flex gap-2">
+      <div className="px-4 py-3 border-t border-gray-100 flex flex-wrap gap-2">
         <button
           onClick={handleSave}
           className="flex-1 py-3 bg-duo-green text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-duo-green-dark transition-colors"
@@ -170,6 +203,20 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
             Отменить
           </button>
         )}
+        <button
+          onClick={handleExport}
+          className="px-4 py-3 bg-amber-50 text-amber-700 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-amber-100 transition-colors"
+        >
+          <Download size={16} />
+          Скачать правки
+        </button>
+        <button
+          onClick={handleSaveToFiles}
+          className="px-4 py-3 bg-blue-50 text-blue-700 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-blue-100 transition-colors"
+        >
+          <FileCode size={16} />
+          В файлы (dev)
+        </button>
       </div>
     </motion.div>
   )

@@ -2,11 +2,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { exportEditsPlugin } from './src/vite-plugin-export-edits'
 
 export default defineConfig({
   base: '/ege-russian-app/',
   plugins: [
     react(),
+    exportEditsPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       // Для локальной сборки (vite preview) SW самоуничтожается, чтобы не было проблем с устаревшим кэшем.

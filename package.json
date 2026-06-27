@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "validate:task9": "node scripts/validate-task9.cjs",
-    "validate:questions": "npx tsx src/data/validators/runValidation.ts",
+    "export-edits": "node scripts/export-edits.cjs",
     "validate:rag": "node scripts/verify-rag.js",
     "install:hooks": "node scripts/install-hooks.cjs",
     "mobile:build": "npm run build && npx cap sync",
