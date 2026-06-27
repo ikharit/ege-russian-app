@@ -23,10 +23,24 @@ export function NextStepCard() {
   const dueWeek = getDueThisWeek(srsData)
 
   const nextLesson = useMemo(() => {
+    // Find the most recently started lesson (lastVisitedAt)
+    const started = Object.entries(lessonProgress)
+      .filter(([_, p]) => p.status === 'started' && p.lastVisitedAt)
+      .sort((a, b) => new Date(b[1].lastVisitedAt!).getTime() - new Date(a[1].lastVisitedAt!).getTime())
+    
+    if (started.length > 0) {
+      const lessonId = started[0][0]
+      for (const section of course.sections) {
+        const lesson = section.lessons.find(l => l.id === lessonId)
+        if (lesson) return { lesson, section }
+      }
+    }
+    
+    // Fallback: first available lesson in course order
     for (const section of course.sections) {
       for (const lesson of section.lessons) {
         const prog = lessonProgress[lesson.id]
-        if (!prog || prog.status === 'available' || prog.status === 'started') {
+        if (!prog || prog.status === 'available') {
           return { lesson, section }
         }
       }
@@ -79,20 +93,6 @@ export function NextStepCard() {
     borderColor = 'border-duo-blue/20'
     buttonText = 'Повторить'
     buttonColor = 'bg-duo-blue'
-  } else if (focusArea.topLessonId) {
-    mode = 'smart-path'
-    title = 'Продолжить обучение'
-    progressPct = focusArea.total > 0 ? Math.round((focusArea.completed / focusArea.total) * 100) : 0
-    subtitle = `${focusArea.sectionTitle} • ${focusArea.completed}/${focusArea.total} (${progressPct}%)`
-    lessonId = focusArea.topLessonId
-    lessonTitle = focusArea.topLessonTitle || 'Следующий урок'
-    sectionColor = focusArea.sectionColor || '#58cc02'
-    Icon = BookOpen
-    iconColor = 'text-duo-green'
-    bgGradient = 'from-duo-green/10 to-emerald-50'
-    borderColor = 'border-duo-green/20'
-    buttonText = 'Продолжить'
-    buttonColor = 'bg-duo-green'
   } else if (nextLesson) {
     mode = 'next-lesson'
     title = 'Продолжить обучение'
@@ -109,6 +109,20 @@ export function NextStepCard() {
     bgGradient = 'from-duo-green/10 to-emerald-50'
     borderColor = 'border-duo-green/20'
     buttonText = prog?.status === 'completed' ? 'Повторить' : 'Начать'
+    buttonColor = 'bg-duo-green'
+  } else if (focusArea.topLessonId) {
+    mode = 'smart-path'
+    title = 'Продолжить обучение'
+    progressPct = focusArea.total > 0 ? Math.round((focusArea.completed / focusArea.total) * 100) : 0
+    subtitle = `${focusArea.sectionTitle} • ${focusArea.completed}/${focusArea.total} (${progressPct}%)`
+    lessonId = focusArea.topLessonId
+    lessonTitle = focusArea.topLessonTitle || 'Следующий урок'
+    sectionColor = focusArea.sectionColor || '#58cc02'
+    Icon = BookOpen
+    iconColor = 'text-duo-green'
+    bgGradient = 'from-duo-green/10 to-emerald-50'
+    borderColor = 'border-duo-green/20'
+    buttonText = 'Продолжить'
     buttonColor = 'bg-duo-green'
   } else {
     mode = 'all-done'

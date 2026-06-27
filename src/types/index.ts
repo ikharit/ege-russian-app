@@ -108,6 +108,7 @@ export interface LessonProgress {
   attempts: number
   xpEarned: number
   completedAt?: string
+  lastVisitedAt?: string
 }
 
 export interface UserStats {

@@ -18,6 +18,7 @@ export function createLessonActions(set: any, get: any) {
             bestScore: state.lessonProgress[lessonId]?.bestScore || 0,
             attempts: (state.lessonProgress[lessonId]?.attempts || 0) + 1,
             xpEarned: state.lessonProgress[lessonId]?.xpEarned || 0,
+            lastVisitedAt: new Date().toISOString(),
           }
         }
       }))
