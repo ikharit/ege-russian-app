@@ -279,56 +279,34 @@ export function Lesson() {
   }, [currentQuestion])
 
   const handleFinish = useCallback(() => {
-    // Find next lesson in the same group/section
-    let foundCurrent = false
-    let nextLessonId: string | null = null
-
+    // Build the complete ordered list of lesson IDs as they appear in the course map
+    const orderedLessonIds: string[] = []
+    
     for (const section of course.sections) {
-      // Check flat lessons first
-      for (let i = 0; i < section.lessons.length; i++) {
-        if (section.lessons[i].id === lessonId) {
-          if (i + 1 < section.lessons.length) {
-            nextLessonId = section.lessons[i + 1].id
-          }
-          foundCurrent = true
-          break
-        }
-      }
-      if (nextLessonId) break
-
-      // Check grouped lessons
+      // Groups come first (main learning path order)
       for (const group of (section.groups || [])) {
-        for (let i = 0; i < group.lessons.length; i++) {
-          if (group.lessons[i].id === lessonId) {
-            if (i + 1 < group.lessons.length) {
-              nextLessonId = group.lessons[i + 1].id
-            }
-            foundCurrent = true
-            break
+        for (const lesson of group.lessons) {
+          orderedLessonIds.push(lesson.id)
+        }
+        for (const subgroup of (group.subgroups || [])) {
+          for (const lesson of subgroup.lessons) {
+            orderedLessonIds.push(lesson.id)
           }
         }
-        // Also check subgroups (dooshin reviews)
-        if (!nextLessonId) {
-          for (const subgroup of (group.subgroups || [])) {
-            for (let i = 0; i < subgroup.lessons.length; i++) {
-              if (subgroup.lessons[i].id === lessonId) {
-                if (i + 1 < subgroup.lessons.length) {
-                  nextLessonId = subgroup.lessons[i + 1].id
-                }
-                foundCurrent = true
-                break
-              }
-            }
-            if (nextLessonId) break
-          }
-        }
-        if (nextLessonId) break
       }
-      if (foundCurrent) break
+      // Then flat lessons not already in groups
+      for (const lesson of section.lessons) {
+        if (!orderedLessonIds.includes(lesson.id)) {
+          orderedLessonIds.push(lesson.id)
+        }
+      }
     }
 
-    if (nextLessonId) {
-      navigate(`/lesson/${nextLessonId}`)
+    const idx = orderedLessonIds.indexOf(lessonId || '')
+    const nextId = idx >= 0 && idx + 1 < orderedLessonIds.length ? orderedLessonIds[idx + 1] : null
+
+    if (nextId) {
+      navigate(`/lesson/${nextId}`)
     } else {
       navigate('/course')
     }
