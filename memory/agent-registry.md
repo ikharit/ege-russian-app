@@ -21,7 +21,7 @@
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
-| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2025-02-23)** — исправлены ошибочные классификации корней, placeholder'ы, самопроверки. |
+| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2026-06-27)** — стандартизированы чередующиеся корни (блист/блест, лаг/лож, зар/зор, пир/пер, мер/мир, тир/тер, скоч/скак, раст/рос, гар/гор, плав/плов, плыв/плав, мак/моч). Добавлено 10 EGE-формат вопросов. |
 | Friend system | 🟢 | main | `friendStore.ts` + `FriendsPage.tsx` — добавление/удаление друзей, поиск, заявки, рейтинг. Supabase + local fallback. |
 | Teacher Analytics | 🟢 | main | `TeacherAnalytics.tsx` + `teacherAnalyticsStore.ts` — расширенная аналитика: метрики, графики, тренды. |
 | PWA Update Toast | 🟢 | main | `PWAUpdateToast.tsx` — toast при обновлении Service Worker, auto-reload. |
