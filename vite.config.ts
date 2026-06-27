@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
-  base: '/',
+  base: '/ege-russian-app/',
   plugins: [
     react(),
     VitePWA({
