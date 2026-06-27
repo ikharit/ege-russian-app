@@ -233,8 +233,60 @@ export function Lesson() {
   }, [currentQuestion])
 
   const handleFinish = useCallback(() => {
-    navigate('/course')
-  }, [navigate])
+    // Find next lesson in the same group/section
+    let foundCurrent = false
+    let nextLessonId: string | null = null
+
+    for (const section of course.sections) {
+      // Check flat lessons first
+      for (let i = 0; i < section.lessons.length; i++) {
+        if (section.lessons[i].id === lessonId) {
+          if (i + 1 < section.lessons.length) {
+            nextLessonId = section.lessons[i + 1].id
+          }
+          foundCurrent = true
+          break
+        }
+      }
+      if (nextLessonId) break
+
+      // Check grouped lessons
+      for (const group of (section.groups || [])) {
+        for (let i = 0; i < group.lessons.length; i++) {
+          if (group.lessons[i].id === lessonId) {
+            if (i + 1 < group.lessons.length) {
+              nextLessonId = group.lessons[i + 1].id
+            }
+            foundCurrent = true
+            break
+          }
+        }
+        // Also check subgroups (dooshin reviews)
+        if (!nextLessonId) {
+          for (const subgroup of (group.subgroups || [])) {
+            for (let i = 0; i < subgroup.lessons.length; i++) {
+              if (subgroup.lessons[i].id === lessonId) {
+                if (i + 1 < subgroup.lessons.length) {
+                  nextLessonId = subgroup.lessons[i + 1].id
+                }
+                foundCurrent = true
+                break
+              }
+            }
+            if (nextLessonId) break
+          }
+        }
+        if (nextLessonId) break
+      }
+      if (foundCurrent) break
+    }
+
+    if (nextLessonId) {
+      navigate(`/lesson/${nextLessonId}`)
+    } else {
+      navigate('/course')
+    }
+  }, [navigate, lessonId])
 
   const handleRetry = useCallback(() => {
     restoreHearts()
