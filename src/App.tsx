@@ -27,7 +27,7 @@ import { supabase, isSupabaseConfigured } from './lib/supabase'
 import { cacheProgress, syncProgressIfOnline } from './lib/offlineCache'
 import { usePageAnalytics } from './hooks/usePageAnalytics'
 import { useTeacherMode } from './hooks/useTeacherMode'
-import { loadQuestionEditsFromSupabase, startBackgroundSync } from './lib/questionEdits'
+import { loadQuestionEditsFromSupabase, startBackgroundSync, subscribeToQuestionEdits } from './lib/questionEdits'
 import type { EventCategory } from './stores/analyticsStore'
 
 import { FeedbackDashboard } from './components/FeedbackDashboard'
@@ -225,11 +225,18 @@ export default function App() {
     }
   }, [setUserId, loadProgress, setUserName])
 
-  // Load question edits from Supabase on app start + start background sync
+  // Load question edits from Supabase on app start + start background sync + realtime subscription
   useEffect(() => {
     loadQuestionEditsFromSupabase().catch(() => {})
     const stop = startBackgroundSync()
-    return stop
+    const unsubscribe = subscribeToQuestionEdits((edit) => {
+      // Notify all components that a question was edited in real-time
+      window.dispatchEvent(new CustomEvent('question-edited', { detail: edit }))
+    })
+    return () => {
+      stop()
+      unsubscribe()
+    }
   }, [])
 
   // Notifications setup

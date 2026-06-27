@@ -214,3 +214,44 @@ export function startBackgroundSync() {
 
   return () => clearInterval(interval)
 }
+
+/** Subscribe to real-time question edits from Supabase */
+export function subscribeToQuestionEdits(callback?: (edit: QuestionEdit) => void) {
+  if (!isSupabaseConfigured) return () => {}
+
+  const channel = supabase
+    .channel('question_edits_changes')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'question_edits' },
+      (payload) => {
+        const row = payload.new as any
+        if (!row) return
+
+        const edit: QuestionEdit = {
+          id: row.question_id,
+          question_id: row.question_id,
+          lesson_id: row.lesson_id,
+          changes: row.changes as Partial<Question>,
+          edited_by: row.edited_by,
+          edited_at: row.edited_at,
+          created_at: row.created_at,
+          synced: true,
+        }
+
+        // Merge into localStorage (Supabase wins if newer)
+        const edits = loadLocalEdits()
+        const localEdit = edits[row.question_id]
+        if (!localEdit || new Date(edit.edited_at) >= new Date(localEdit.edited_at)) {
+          edits[row.question_id] = edit
+          saveLocalEdits(edits)
+          callback?.(edit)
+        }
+      }
+    )
+    .subscribe()
+
+  return () => {
+    supabase.removeChannel(channel)
+  }
+}

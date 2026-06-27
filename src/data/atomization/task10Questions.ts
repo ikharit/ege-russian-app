@@ -356,4 +356,9 @@ export const task10Questions: Question[] = [
     correctAnswer: ['б'],
     explanation: 'ДО- (добела, дословно, досыта).', xpReward: 10, atoms: ['prefix_unchangeable']
   },
+  {
+    id: 'q10-atom-69', type: 'text', text: 'Впишите пропущенную букву: пр_европейский (кандидат)',
+    correctAnswer: ['о'],
+    explanation: 'ПРО- = занимающий сторону чего-либо. Проевропейский — стоящий на стороне Европы. Проверьте: проамериканский, прояпонский.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
+  },
 ]

@@ -48,7 +48,15 @@ export function Lesson() {
 
   const [showEditor, setShowEditor] = useState(false)
   const [editorKey, setEditorKey] = useState(0)
+  const [editVersion, setEditVersion] = useState(0)
   const isTeacherMode = useTeacherMode()
+
+  // Real-time: re-apply question edits when they arrive from Supabase
+  useEffect(() => {
+    const handler = () => setEditVersion(v => v + 1)
+    window.addEventListener('question-edited', handler)
+    return () => window.removeEventListener('question-edited', handler)
+  }, [])
 
   const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
   const courseLesson = section?.lessons.find(l => l.id === lessonId)
@@ -107,7 +115,10 @@ export function Lesson() {
   }, [lesson])
 
   const rawQuestion = questions[currentQuestionIdx]
-  const currentQuestion = rawQuestion ? applyQuestionEdits(rawQuestion as any) as typeof rawQuestion : rawQuestion
+  const currentQuestion = useMemo(() => {
+    if (!rawQuestion) return rawQuestion
+    return applyQuestionEdits(rawQuestion as any) as typeof rawQuestion
+  }, [rawQuestion, editVersion])
 
   // Navigate to specific question via ?q= parameter
   useEffect(() => {
