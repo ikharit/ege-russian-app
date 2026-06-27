@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, Map, TrendingUp, Smile } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, Map, TrendingUp, Smile } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'

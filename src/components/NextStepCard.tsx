@@ -43,7 +43,7 @@ export function NextStepCard() {
   let lessonId = ''
   let lessonTitle = ''
   let sectionColor = '#58cc02'
-  let icon = BookOpen
+  let Icon = BookOpen
   let iconColor = 'text-duo-green'
   let bgGradient = 'from-duo-green/10 to-emerald-50'
   let borderColor = 'border-duo-green/20'
@@ -59,7 +59,7 @@ export function NextStepCard() {
     const lesson = course.sections.flatMap(s => s.lessons).find(l => l.id === lessonId)
     lessonTitle = lesson?.title || 'Повторение'
     sectionColor = '#ef4444'
-    icon = AlertCircle
+    Icon = AlertCircle
     iconColor = 'text-duo-red'
     bgGradient = 'from-duo-red/10 to-red-50'
     borderColor = 'border-duo-red/20'
@@ -73,7 +73,7 @@ export function NextStepCard() {
     const lesson = course.sections.flatMap(s => s.lessons).find(l => l.id === lessonId)
     lessonTitle = lesson?.title || 'Повторение'
     sectionColor = '#3b82f6'
-    icon = RotateCcw
+    Icon = RotateCcw
     iconColor = 'text-duo-blue'
     bgGradient = 'from-duo-blue/10 to-blue-50'
     borderColor = 'border-duo-blue/20'
@@ -87,7 +87,7 @@ export function NextStepCard() {
     lessonId = focusArea.topLessonId
     lessonTitle = focusArea.topLessonTitle || 'Следующий урок'
     sectionColor = focusArea.sectionColor || '#58cc02'
-    icon = BookOpen
+    Icon = BookOpen
     iconColor = 'text-duo-green'
     bgGradient = 'from-duo-green/10 to-emerald-50'
     borderColor = 'border-duo-green/20'
@@ -104,7 +104,7 @@ export function NextStepCard() {
     lessonId = nextLesson.lesson.id
     lessonTitle = nextLesson.lesson.title
     sectionColor = nextLesson.section.color
-    icon = BookOpen
+    Icon = BookOpen
     iconColor = 'text-duo-green'
     bgGradient = 'from-duo-green/10 to-emerald-50'
     borderColor = 'border-duo-green/20'
@@ -117,7 +117,7 @@ export function NextStepCard() {
     lessonId = ''
     lessonTitle = ''
     sectionColor = '#f59e0b'
-    icon = Zap
+    Icon = Zap
     iconColor = 'text-duo-yellow'
     bgGradient = 'from-duo-yellow/10 to-amber-50'
     borderColor = 'border-duo-yellow/20'
@@ -143,7 +143,7 @@ export function NextStepCard() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconColor}`} style={{ backgroundColor: `${sectionColor}20` }}>
-            <icon size={18} style={{ color: sectionColor }} />
+            <Icon size={18} style={{ color: sectionColor }} />
           </div>
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: sectionColor }}>

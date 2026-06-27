@@ -60,7 +60,7 @@ export function TeacherAnalytics() {
     : []
   const summary = hasRealStudents
     ? analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
-    : { totalStudents: 0, avgAccuracy: 0, avgCompletion: 0, avgStreak: 0, riskDistribution: { low: 0, medium: 0, high: 0 }, playerTypeDistribution: {}, motivationDistribution: {}, topWeakTopics: [], insights: [] }
+    : { totalStudents: 0, avgAccuracy: 0, avgCompletionRate: 0, avgStreak: 0, riskDistribution: { low: 0, medium: 0, high: 0 }, playerTypeDistribution: {}, motivationDistribution: {}, topWeakTopics: [], insights: [], dominantType: 'achiever' as PlayerType, typeDistribution: {}, atRiskCount: 0, topPerformers: [], needAttention: [], classInsights: [] }
 
   // Extended metrics
   const avgExamScore = (() => {

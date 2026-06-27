@@ -45,6 +45,12 @@ export interface ClassAnalyticsSummary {
   atRiskCount: number
   avgCompletionRate: number
   avgAccuracy: number
+  avgStreak?: number
+  riskDistribution?: { low: number; medium: number; high: number }
+  playerTypeDistribution?: Record<PlayerType, number>
+  motivationDistribution?: Record<string, number>
+  topWeakTopics?: string[]
+  insights?: string[]
   topPerformers: string[]
   needAttention: string[]
   classInsights: string[]
