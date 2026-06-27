@@ -67,6 +67,19 @@ export function Lesson() {
     }
   }, [courseLesson, lessonId])
 
+  // Reset all local game state when lessonId changes
+  useEffect(() => {
+    setCurrentQuestionIdx(0)
+    setCorrectCount(0)
+    setCombo(0)
+    setGameOverReason(null)
+    setDirection(0)
+    setQuestionStartTime(Date.now())
+    setHintsUsedPerQuestion({})
+    setAnswers({})
+    setShowEditor(false)
+  }, [lessonId])
+
   // Show theory on first visit if lesson is not completed
   useEffect(() => {
     if (theory && lessonProgress?.status !== 'completed') {
