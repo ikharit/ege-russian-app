@@ -600,14 +600,14 @@ export const grammarSections: Section[] = [
           { id: 'qd13-338', type: 'text', text: 'Впишите слитно или раздельно: (НЕ)ОЗАРЯЕМАЯ', correctAnswer: ['слитно'], explanation: 'Правильное написание: раздельно.', difficulty: 'easy', xpReward: 10, atoms: ['task13', 'ne_ni'] }
         ]
       },
-{
-        id: 'lesson-gram-13-ege',
-        sectionId: 'section-gram-1',
-        title: 'Задание 13. Формат ЕГЭ',
-        type: 'practice',
-        description: 'Реальные задания в формате ЕГЭ',
-        xpReward: 80,
-        prerequisites: [],
+{
+        id: 'lesson-gram-13-ege',
+        sectionId: 'section-gram-1',
+        title: 'Задание 13. Формат ЕГЭ',
+        type: 'practice',
+        description: 'Реальные задания в формате ЕГЭ',
+        xpReward: 80,
+        prerequisites: [],
         questions: [
   {
     "id": "q13-ege-1",
@@ -849,7 +849,7 @@ export const grammarSections: Section[] = [
       "ne_ni"
     ]
   }
-]
+]
       },
       {
         id: 'lesson-gram-14-d1',
@@ -970,14 +970,14 @@ export const grammarSections: Section[] = [
           { id: 'qd14-86', type: 'text', text: 'Впишите слитно, раздельно или через дефис: ТЕМ(ЖЕ)', correctAnswer: ['слитно'], explanation: 'Правильное написание: слитно.', difficulty: 'easy', xpReward: 10, atoms: ['task14', 'complex_words'] }
         ]
       },
-{
-        id: 'lesson-gram-14-ege',
-        sectionId: 'section-gram-1',
-        title: 'Задание 14. Формат ЕГЭ',
-        type: 'practice',
-        description: 'Реальные задания в формате ЕГЭ',
-        xpReward: 80,
-        prerequisites: [],
+{
+        id: 'lesson-gram-14-ege',
+        sectionId: 'section-gram-1',
+        title: 'Задание 14. Формат ЕГЭ',
+        type: 'practice',
+        description: 'Реальные задания в формате ЕГЭ',
+        xpReward: 80,
+        prerequisites: [],
         questions: [
   {
     "id": "q14-ege-1",
@@ -1216,7 +1216,7 @@ export const grammarSections: Section[] = [
       "complex_words"
     ]
   }
-]
+]
       }
     ]
   }
