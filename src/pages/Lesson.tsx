@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Heart, BookOpen, Pencil } from 'lucide-react'
 import { QuestionCard } from '../components/QuestionCard'
@@ -21,6 +21,7 @@ import { getCanonicalWordId, getRuleId, extractWordFromQuestion } from '../data/
 export function Lesson() {
   const { lessonId } = useParams()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const startLesson = useProgressStore((s) => s.startLesson)
   const completeLesson = useProgressStore((s) => s.completeLesson)
   const loseHeart = useProgressStore((s) => s.loseHeart)
@@ -94,6 +95,18 @@ export function Lesson() {
 
   const rawQuestion = questions[currentQuestionIdx]
   const currentQuestion = rawQuestion ? applyQuestionEdits(rawQuestion as any) as typeof rawQuestion : rawQuestion
+
+  // Navigate to specific question via ?q= parameter
+  useEffect(() => {
+    const qId = searchParams.get('q')
+    if (qId && questions.length > 0) {
+      const idx = questions.findIndex(q => q.id === qId)
+      if (idx !== -1 && idx !== currentQuestionIdx) {
+        setCurrentQuestionIdx(idx)
+        setDirection(idx > currentQuestionIdx ? 1 : -1)
+      }
+    }
+  }, [searchParams.get('q'), questions.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     startLesson(lesson.id)
@@ -191,6 +204,15 @@ export function Lesson() {
       setQuestionStartTime(Date.now())
     }
   }, [currentQuestionIdx])
+
+  // Update URL ?q= when question changes (allows sharing direct links)
+  useEffect(() => {
+    if (currentQuestion && searchParams.get('q') !== currentQuestion.id) {
+      const newParams = new URLSearchParams(searchParams)
+      newParams.set('q', currentQuestion.id)
+      setSearchParams(newParams, { replace: true })
+    }
+  }, [currentQuestionIdx, currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-complete lesson when finished — fixes bug where closing page loses progress
   const [hasAutoCompleted, setHasAutoCompleted] = useState(false)

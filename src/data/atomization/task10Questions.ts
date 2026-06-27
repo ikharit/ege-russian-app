@@ -356,9 +356,4 @@ export const task10Questions: Question[] = [
     correctAnswer: ['б'],
     explanation: 'ДО- (добела, дословно, досыта).', xpReward: 10, atoms: ['prefix_unchangeable']
   },
-    {
-    id: 'q10-atom-69', type: 'text', text: 'Впишите пропущенную букву: пр_европейские (интересы)',
-    correctAnswer: ['е'],
-    explanation: 'ПРЕ- = перед (раньше, впереди чего-либо). Преевропейские — существовавшие до/впереди Европы. Словарное слово, нельзя проверить по корню.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_dict']
-  },
 ]
