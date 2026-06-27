@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, ChevronDown, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, Map, TrendingUp, Smile } from 'lucide-react'
+import { BookOpen, Flame, Trophy, Star, Medal, Brain, ChevronRight, Zap, Calendar, AlertCircle, Gamepad2, Users, UserPlus, Target, ClipboardList, School, PenTool, Swords, Route, BookOpenText, MessageCircle, Map, TrendingUp, Smile } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
 import { useClassStore } from '../stores/classStore'
@@ -21,11 +21,9 @@ import { MotivationalBanner } from '../components/MotivationalBanner'
 import { MistakesCard } from '../components/dashboard/MistakesCard'
 import { DashboardNotificationWidget } from '../components/dashboard/DashboardNotificationWidget'
 import { DashboardDeadlineWidget } from '../components/dashboard/DashboardDeadlineWidget'
-import { SmartPathCard } from '../components/SmartPathCard'
-import { PredictiveScoreWidget } from '../components/PredictiveScoreWidget'
+import { NextStepCard } from '../components/NextStepCard'
 import { DailyQuestionCard } from '../components/DailyQuestionCard'
 import { WhatToStudyToday } from '../components/WhatToStudyToday'
-import { SRSCard } from '../components/SRSCard'
 import { ComparisonStats } from '../components/ComparisonStats'
 import { useStudyPlanStore } from '../stores/studyPlanStore'
 import { getEssayStats } from '../data/essayData'
@@ -263,35 +261,9 @@ export function Dashboard() {
     checkHeartRestore()
   }, [checkHeartRestore])
 
-  let nextLesson = null
-  for (const section of course.sections) {
-    for (const lesson of section.lessons) {
-      const prog = lessonProgress[lesson.id]
-      if (!prog || prog.status === 'available' || prog.status === 'started') {
-        nextLesson = { lesson, section }
-        break
-      }
-    }
-    if (nextLesson) break
-  }
-  if (!nextLesson) {
-    let worstLesson = null
-    let worstScore = 101
-    for (const section of course.sections) {
-      for (const lesson of section.lessons) {
-        const score = lessonProgress[lesson.id]?.bestScore ?? 0
-        if (score < worstScore) {
-          worstScore = score
-          worstLesson = { lesson, section }
-        }
-      }
-    }
-    nextLesson = worstLesson || { lesson: course.sections[0].lessons[0], section: course.sections[0] }
-  }
-
+  /* removed: nextLesson logic now lives in NextStepCard */
   const completedCount = Object.values(lessonProgress).filter(l => l.status === 'completed').length
   const totalLessons = course.sections.reduce((sum, s) => sum + s.lessons.length, 0)
-  const allCompleted = completedCount === totalLessons && totalLessons > 0
 
   const getProblematicTasks = useProgressStore((s) => s.getProblematicTasks)
   const problematicTasks = getProblematicTasks(3)
@@ -390,14 +362,8 @@ export function Dashboard() {
       {/* Daily Quests */}
       <DailyQuests />
 
-      {/* Smart Path */}
-      <SmartPathCard />
-
-      {/* SRS Card */}
-      <SRSCard />
-
-      {/* Predictive Score */}
-      <PredictiveScoreWidget />
+      {/* Next Step — unified: SRS + Smart Path + Continue learning */}
+      <NextStepCard />
 
       <WeeklyScheduleCard />
 
@@ -406,30 +372,6 @@ export function Dashboard() {
 
       {/* Daily Question — compact, one question per day */}
       <DailyQuestionCard />
-
-      {/* Main Action — Continue Lesson */}
-      {nextLesson && (
-        <motion.div
-          className={`rounded-2xl p-4 cursor-pointer shadow-sm ${allCompleted ? 'bg-gradient-to-r from-duo-yellow/10 to-amber-50 border border-duo-yellow/20' : 'bg-gradient-to-r from-duo-green/10 to-emerald-50 border border-duo-green/20'}`}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          onClick={() => navigate(`/lesson/${nextLesson.lesson.id}`)}
-        >
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${allCompleted ? 'bg-duo-yellow' : 'bg-duo-green'}`}>
-              <BookOpen size={20} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className={`text-[10px] uppercase tracking-wide font-bold ${allCompleted ? 'text-duo-yellow' : 'text-duo-green'}`}>
-                {allCompleted ? 'Все уроки пройдены! 🎉' : lessonProgress[nextLesson.lesson.id]?.status === 'completed' ? 'Повторить' : 'Продолжить обучение'}
-              </p>
-              <p className="font-bold text-sm text-gray-800 truncate">{nextLesson.lesson.title}</p>
-              <p className="text-xs text-gray-500 truncate">{nextLesson.section.title}</p>
-            </div>
-            <ChevronRight size={20} className={allCompleted ? 'text-duo-yellow' : 'text-duo-green'} />
-          </div>
-        </motion.div>
-      )}
 
       {/* Progress bar */}
       <div className="flex items-center gap-3">
