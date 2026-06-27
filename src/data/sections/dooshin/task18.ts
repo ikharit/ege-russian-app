@@ -13,7 +13,7 @@ export const dooshinTask18: Section = {
       {
         id: "lesson-dooshin-18-1",
         sectionId: "section-dooshin-18",
-        title: "Задание 18. Дощинский (1-30)",
+        title: "Вопросы 1-30",
         type: 'practice',
         description: "Выберите предложения, где нужна одна запятая",
         xpReward: 60,

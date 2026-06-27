@@ -13,7 +13,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-1",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (1-30)",
+        title: "Вопросы 1-30",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -54,7 +54,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-2",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (31-60)",
+        title: "Вопросы 31-60",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -95,7 +95,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-3",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (61-90)",
+        title: "Вопросы 61-90",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -136,7 +136,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-4",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (91-120)",
+        title: "Вопросы 91-120",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -177,7 +177,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-5",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (121-150)",
+        title: "Вопросы 121-150",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -218,7 +218,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-6",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (151-180)",
+        title: "Вопросы 151-180",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -259,7 +259,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-7",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (181-210)",
+        title: "Вопросы 181-210",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -300,7 +300,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-8",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (211-240)",
+        title: "Вопросы 211-240",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -341,7 +341,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-9",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (241-270)",
+        title: "Вопросы 241-270",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -382,7 +382,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-10",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (271-300)",
+        title: "Вопросы 271-300",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -423,7 +423,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-11",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (301-330)",
+        title: "Вопросы 301-330",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -464,7 +464,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-12",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (331-360)",
+        title: "Вопросы 331-360",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -505,7 +505,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-13",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (361-390)",
+        title: "Вопросы 361-390",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -546,7 +546,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-14",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (391-420)",
+        title: "Вопросы 391-420",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -587,7 +587,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-15",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (421-450)",
+        title: "Вопросы 421-450",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -628,7 +628,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-16",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (451-480)",
+        title: "Вопросы 451-480",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -669,7 +669,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-17",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (481-510)",
+        title: "Вопросы 481-510",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -710,7 +710,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-18",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (511-540)",
+        title: "Вопросы 511-540",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -751,7 +751,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-19",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (541-570)",
+        title: "Вопросы 541-570",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -792,7 +792,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-20",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (571-600)",
+        title: "Вопросы 571-600",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -833,7 +833,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-21",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (601-630)",
+        title: "Вопросы 601-630",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -874,7 +874,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-22",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (631-660)",
+        title: "Вопросы 631-660",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -915,7 +915,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-23",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (661-690)",
+        title: "Вопросы 661-690",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -956,7 +956,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-24",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (691-720)",
+        title: "Вопросы 691-720",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -997,7 +997,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-25",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (721-750)",
+        title: "Вопросы 721-750",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,
@@ -1038,7 +1038,7 @@ const _dooshinTask9: Section = {
       {
         id: "lesson-dooshin-9-26",
         sectionId: "section-dooshin-9",
-        title: "Задание 9. Дощинский (751-769)",
+        title: "Вопросы 751-769",
         type: 'practice',
         description: "Впишите пропущенную букву",
         xpReward: 60,

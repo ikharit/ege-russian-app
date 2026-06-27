@@ -13,7 +13,7 @@ export const dooshinTask17: Section = {
       {
         id: "lesson-dooshin-17-1",
         sectionId: "section-dooshin-17",
-        title: "Задание 17. Дощинский (1-30)",
+        title: "Вопросы 1-30",
         type: 'practice',
         description: "Выберите цифры, где нужны запятые",
         xpReward: 60,

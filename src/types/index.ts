@@ -76,6 +76,9 @@ export interface LessonGroup {
   title: string
   subtitle?: string
   lessons: Lesson[]
+  isReviewSubgroup?: boolean
+  prerequisites?: string[]
+  subgroups?: LessonGroup[]
 }
 
 export interface Section {

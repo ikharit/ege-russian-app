@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Trophy, Crown, Medal, ArrowUp, ArrowDown, Minus, Flame, Zap, Target, Calendar, BookOpen, TrendingUp } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
@@ -23,6 +24,7 @@ function getPeriodStart(period: 'week' | 'month' | 'all'): Date {
 }
 
 export function Leaderboard() {
+  const navigate = useNavigate()
   const leaderboard = useProgressStore((s) => s.leaderboard)
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
@@ -30,6 +32,7 @@ export function Leaderboard() {
   const achievements = useProgressStore((s) => s.achievements)
   const [period, setPeriod] = useState<'week' | 'month' | 'all'>('all')
   const [mode, setMode] = useState<'xp' | 'streak' | 'homework' | 'accuracy'>('xp')
+  const [isLoading, setIsLoading] = useState(true)
 
   const checkRanks = useProgressStore((s) => s.checkLeaderboardRanks)
   const loadLeaderboard = useProgressStore((s) => s.loadLeaderboard)
@@ -38,7 +41,12 @@ export function Leaderboard() {
   }, [checkRanks, period, mode])
 
   useEffect(() => {
-    loadLeaderboard()
+    const load = async () => {
+      setIsLoading(true)
+      await loadLeaderboard()
+      setIsLoading(false)
+    }
+    load()
     const interval = setInterval(() => {
       loadLeaderboard()
     }, 30000)
@@ -278,7 +286,21 @@ export function Leaderboard() {
         <p className="text-xs text-gray-400 text-center mb-4">Реальные ученики из Google Sheets</p>
       )}
 
-      {fullLeaderboard.length === 0 ? (
+      {isLoading ? (
+        <div className="space-y-3">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-gray-100 animate-pulse">
+              <div className="w-5 h-5 rounded bg-gray-200" />
+              <div className="w-10 h-10 rounded-full bg-gray-200" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-3 bg-gray-200 rounded w-1/4" />
+              </div>
+              <div className="h-4 bg-gray-200 rounded w-12" />
+            </div>
+          ))}
+        </div>
+      ) : fullLeaderboard.length === 0 ? (
         <div className="card text-center py-12">
           <p className="text-gray-500">Нет данных за выбранный период</p>
           <p className="text-xs text-gray-400 mt-2">Попробуйте выбрать другой период</p>
@@ -457,6 +479,21 @@ export function Leaderboard() {
             : 'Выполняйте домашнее задание, чтобы быть в топе!'}
         </p>
       </div>
+
+      {/* Participants count */}
+      {!isLoading && (
+        <div className="mt-4 text-center space-y-2">
+          <p className="text-xs text-gray-400">
+            В рейтинге участвуют <span className="font-bold text-gray-600">{leaderboard.length}</span> пользователей
+          </p>
+          <button
+            onClick={() => navigate('/users')}
+            className="text-xs text-duo-green font-bold hover:underline"
+          >
+            Смотреть всех пользователей →
+          </button>
+        </div>
+      )}
     </div>
   )
 }

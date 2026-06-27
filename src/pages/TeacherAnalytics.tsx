@@ -7,7 +7,6 @@ import {
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
 import { useClassStore } from '../stores/classStore'
 import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
-import { defaultTeacherStudents } from '../stores/slices/gamificationSlice'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
 import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
 import type { PlayerType } from '../utils/personalityEngine'
@@ -51,33 +50,17 @@ export function TeacherAnalytics() {
 
   // Global analytics: all users from Supabase
   const hasRealStudents = realStudents.length > 0
-  const isDemo = !hasRealStudents && !realLoading
 
   const students = hasRealStudents
     ? realStudents.map(s => ({ id: s.studentId, name: s.studentName, progress: rawToProgressData(s.rawProgressData) }))
-    : defaultTeacherStudents.map(s => ({
-        id: s.id,
-        name: s.name,
-        progress: rawToProgressData({
-          userStats: { name: s.name, xp: 0, level: 1, streak: 0, lastActivityDate: s.lastActive, totalQuestionsAnswered: s.totalAttempts, totalLessonTimeMinutes: 0, maxCombo: 0, hearts: 5, maxHearts: 5 },
-          lessonProgress: {},
-          taskStats: {},
-          achievements: [],
-          behaviorProfile: undefined,
-          examResults: [],
-          theoryTestsCompleted: {},
-          answerHistory: [],
-          atomProgress: {},
-          dailyQuestProgress: {},
-          wrongAnswers: [],
-        })
-      }))
+    : []
 
-
-  const analytics = students.map(s => 
-    analyzeStudent(s.id, s.name, s.progress)
-  )
-  const summary = analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
+  const analytics = hasRealStudents
+    ? students.map(s => analyzeStudent(s.id, s.name, s.progress))
+    : []
+  const summary = hasRealStudents
+    ? analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
+    : { totalStudents: 0, avgAccuracy: 0, avgCompletion: 0, avgStreak: 0, riskDistribution: { low: 0, medium: 0, high: 0 }, playerTypeDistribution: {}, motivationDistribution: {}, topWeakTopics: [], insights: [] }
 
   // Extended metrics
   const avgExamScore = (() => {
@@ -373,18 +356,17 @@ export function TeacherAnalytics() {
             <div className="w-8 h-8 border-2 border-duo-green border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             <p className="text-gray-500 font-bold">Загружаем аналитику...</p>
           </div>
+        ) : !hasRealStudents ? (
+          <div className="card text-center py-12">
+            <Users size={48} className="text-gray-200 mx-auto mb-3" />
+            <p className="text-gray-500 font-bold mb-2">Нет данных</p>
+            <p className="text-xs text-gray-400 max-w-xs mx-auto">
+              В таблице <code className="bg-gray-100 px-1 rounded">user_progress</code> Supabase пока нет записей.
+              Зарегистрируйтесь в приложении и решите задания, чтобы данные появились.
+            </p>
+          </div>
         ) : (
           <>
-            {/* Demo badge */}
-            {isDemo && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 flex items-start gap-2">
-                <AlertTriangle size={18} className="text-yellow-500 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm text-yellow-700 font-bold">Демо-данные</p>
-                  <p className="text-xs text-yellow-600">Аналитика показывает примерные данные. Подключите Supabase для реальных данных.</p>
-                </div>
-              </div>
-            )}
             {/* Summary Cards */}
             <div className="grid grid-cols-3 gap-3">
               <motion.div

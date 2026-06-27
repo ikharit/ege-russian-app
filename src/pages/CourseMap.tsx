@@ -106,7 +106,6 @@ function LessonCard({
 
   const cfg = statusConfig[status]
   const availableStyle = status === 'available' ? { backgroundColor: sectionColor } : {}
-  const isDooshin = lesson.id.startsWith('lesson-dooshin')
 
   return (
     <div className="relative">
@@ -121,8 +120,7 @@ function LessonCard({
       )}
 
       <motion.div
-        className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border} ${isDooshin ? 'border-l-4' : ''}`}
-        style={isDooshin ? { borderLeftColor: sectionColor } : {}}
+        className={`relative z-10 flex items-start gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-md ${cfg.bg} ${cfg.border}`}
         whileHover={status !== 'locked' && status !== 'coming_soon' ? { scale: 1.01, x: 4 } : {}}
         whileTap={status !== 'locked' && status !== 'coming_soon' ? { scale: 0.99 } : {}}
         onClick={status !== 'coming_soon' ? onClick : undefined}
@@ -140,14 +138,7 @@ function LessonCard({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className={`font-bold text-sm truncate ${cfg.text}`}>{lesson.title}</p>
-            {isDooshin && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-duo-green/10 text-duo-green shrink-0">
-                Дошинский
-              </span>
-            )}
-          </div>
+          <p className={`font-bold text-sm truncate ${cfg.text}`}>{lesson.title}</p>
           <p className={`text-xs ${cfg.sub}`}>{cfg.subText}</p>
 
           {/* Progress bar for completed */}
@@ -233,8 +224,15 @@ export function CourseMap() {
     })
 
   const getSectionProgress = (section: any) => {
-    const completed = section.lessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
-    const total = section.lessons.length
+    const allLessons = [
+      ...(section.lessons || []),
+      ...(section.groups?.flatMap((g: any) => [
+        ...g.lessons,
+        ...(g.subgroups?.flatMap((sg: any) => sg.lessons) || [])
+      ]) || [])
+    ]
+    const completed = allLessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
+    const total = allLessons.length
     return {
       completed,
       total,
@@ -243,15 +241,22 @@ export function CourseMap() {
   }
 
   const getGroupProgress = (group: any) => {
-    const completed = group.lessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
-    const total = group.lessons.length
+    const allLessons = [
+      ...(group.lessons || []),
+      ...(group.subgroups?.flatMap((sg: any) => sg.lessons) || [])
+    ]
+    const completed = allLessons.filter((l: any) => lessonProgress[l.id]?.status === 'completed').length
+    const total = allLessons.length
     return { completed, total, pct: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
   const isSectionAllComingSoon = (section: any) => {
     const allLessons = [
       ...(section.lessons || []),
-      ...(section.groups?.flatMap((g: any) => g.lessons) || [])
+      ...(section.groups?.flatMap((g: any) => [
+        ...g.lessons,
+        ...(g.subgroups?.flatMap((sg: any) => sg.lessons) || [])
+      ]) || [])
     ]
     return allLessons.length > 0 && allLessons.every((l: any) => l.isComingSoon)
   }
@@ -428,6 +433,84 @@ export function CourseMap() {
                                       }}
                                       />
                                     ))}
+                                    {/* Review subgroups (e.g., Dooshin) */}
+                                    {group.subgroups?.map((subgroup) => {
+                                      const allPrerequisitesMet = (subgroup.prerequisites || []).every(
+                                        (id: string) => lessonProgress[id]?.status === 'completed'
+                                      )
+                                      const isSubExpanded = expandedGroups[subgroup.id] ?? false
+                                      const subProg = getGroupProgress(subgroup)
+                                      return (
+                                        <div key={subgroup.id} className="border border-gray-200 rounded-xl overflow-hidden mt-2">
+                                          <button
+                                            onClick={() => {
+                                              if (!allPrerequisitesMet) return
+                                              toggleGroup(subgroup.id)
+                                            }}
+                                            className={`w-full flex items-center gap-3 px-4 py-3 transition-colors ${allPrerequisitesMet ? 'hover:bg-gray-50' : 'opacity-50 cursor-not-allowed'}`}
+                                          >
+                                            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500">
+                                              {!allPrerequisitesMet ? <Lock size={16} /> : (isSubExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />)}
+                                            </div>
+                                            <div className="flex-1 text-left">
+                                              <div className="flex items-center gap-2">
+                                                <p className="font-bold text-sm text-gray-800">{subgroup.title}</p>
+                                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-duo-green/10 text-duo-green shrink-0">
+                                                  Дошинский
+                                                </span>
+                                              </div>
+                                              <p className="text-xs text-gray-500">{subgroup.subtitle}</p>
+                                              {!allPrerequisitesMet && (
+                                                <p className="text-[10px] text-gray-400 mt-0.5">
+                                                  Пройдите все уроки выше, чтобы разблокировать
+                                                </p>
+                                              )}
+                                            </div>
+                                            {allPrerequisitesMet && (
+                                              <div className="text-right">
+                                                <span className="text-xs font-bold text-duo-green">{subProg.pct}%</span>
+                                                <span className="text-xs text-gray-400 ml-1">({subProg.completed}/{subProg.total})</span>
+                                              </div>
+                                            )}
+                                          </button>
+                                          <AnimatePresence>
+                                            {isSubExpanded && allPrerequisitesMet && (
+                                              <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="overflow-hidden"
+                                              >
+                                                <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                                                  {subgroup.lessons.map((lesson: any, lIdx: number) => (
+                                                    <LessonCard
+                                                      key={lesson.id}
+                                                      lesson={lesson}
+                                                      index={lIdx}
+                                                      total={subgroup.lessons.length}
+                                                      sectionColor={section.color}
+                                                      onClick={() => {
+                                                        if (lesson.isComingSoon) return
+                                                        const status = (() => {
+                                                          const p = lessonProgress[lesson.id]
+                                                          if (p?.status === 'completed') return 'completed'
+                                                          if (p?.status === 'started') return 'current'
+                                                          const available = useProgressStore.getState().isLessonAvailable(lesson.id, lesson.prerequisites)
+                                                          if (available) return 'available'
+                                                          return 'locked'
+                                                        })()
+                                                        if (status !== 'locked') navigate(`/lesson/${lesson.id}`)
+                                                      }}
+                                                    />
+                                                  ))}
+                                                </div>
+                                              </motion.div>
+                                            )}
+                                          </AnimatePresence>
+                                        </div>
+                                      )
+                                    })}
                                   </div>
                                 </motion.div>
                               )}

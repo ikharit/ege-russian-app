@@ -13,7 +13,7 @@ export const dooshinTask14: Section = {
       {
         id: "lesson-dooshin-14-1",
         sectionId: "section-dooshin-14",
-        title: "Задание 14. Дощинский (1-30)",
+        title: "Вопросы 1-30",
         type: 'practice',
         description: "Выберите правильный вариант написания",
         xpReward: 60,

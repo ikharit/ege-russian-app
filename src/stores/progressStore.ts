@@ -8,7 +8,7 @@ import { ExamResult } from '../data/fipiVariants'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { getInitialStats, createUserActions } from './slices/userSlice'
 import { createLessonActions, createAnalyticsActions } from './slices/lessonAnalyticsSlice'
-import { createGamificationActions, defaultLeaderboard, defaultTeacherStudents, LeaderboardEntry, TeacherStudent } from './slices/gamificationSlice'
+import { createGamificationActions, defaultTeacherStudents, LeaderboardEntry, TeacherStudent } from './slices/gamificationSlice'
 import { createAchievementChecker } from './slices/achievementChecker'
 import { createSyncActions } from './slices/syncSlice'
 import { getInitialEmotionalState, updateEmotionalState, recordAnswerAttempt, recordSessionStart, recordLevelUp, recordExamTaken, clearTransientFlags } from '../utils/emotionalState'
@@ -133,7 +133,7 @@ export const useProgressStore = create<ProgressState>()(
       heartRestoreCount: 0,
       exportCount: 0,
       dailyQuestProgress: {},
-      leaderboard: defaultLeaderboard,
+      leaderboard: [],
       leaderboardRanks: [],
       teacherStudents: defaultTeacherStudents,
       isTeacher: false,

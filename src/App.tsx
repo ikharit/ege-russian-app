@@ -59,6 +59,7 @@ const Task3SwipeTrainer = lazy(() => import('./pages/Task3SwipeTrainer').then(m 
 const Task25SwipeTrainer = lazy(() => import('./pages/Task25SwipeTrainer').then(m => ({ default: m.Task25SwipeTrainer })))
 const ShareResultPage = lazy(() => import('./pages/ShareResultPage').then(m => ({ default: m.ShareResultPage })))
 const Leaderboard = lazy(() => import('./pages/Leaderboard').then(m => ({ default: m.Leaderboard })))
+const UsersPage = lazy(() => import('./pages/UsersPage').then(m => ({ default: m.UsersPage })))
 const TeacherAnalytics = lazy(() => import('./pages/TeacherAnalytics').then(m => ({ default: m.TeacherAnalytics })))
 const Teacher = lazy(() => import('./pages/Teacher').then(m => ({ default: m.Teacher })))
 const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })))
@@ -172,6 +173,7 @@ export default function App() {
   const userId = useProgressStore((s) => s.userId)
   const setUserId = useProgressStore((s) => s.setUserId)
   const loadProgress = useProgressStore((s) => s.loadProgress)
+  const loadLeaderboard = useProgressStore((s) => s.loadLeaderboard)
   const setUserName = useProgressStore((s) => s.setUserName)
   const syncProgress = useProgressStore((s) => s.syncProgress)
   const setTeacherMode = useProgressStore((s) => s.setTeacherMode)
@@ -188,6 +190,11 @@ export default function App() {
       setTeacherMode(true)
     }
   }, [setTeacherMode])
+
+  // Load global leaderboard on app start
+  useEffect(() => {
+    loadLeaderboard()
+  }, [loadLeaderboard])
 
   // Handle OAuth callback (Google auth redirect)
   useEffect(() => {
@@ -564,6 +571,7 @@ export default function App() {
             <Route path="/lesson/:lessonId" element={<Lesson />} />
             <Route path="/stats" element={<Statistics />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/users" element={<UsersPage />} />
             <Route path="/teacher/heatmap" element={<ClassHeatmapPage />} />
             <Route path="/teacher/auto-homework" element={<AutoHomeworkPage />} />
             <Route path="/teacher" element={<Teacher />} />

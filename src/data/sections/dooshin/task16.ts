@@ -13,7 +13,7 @@ export const dooshinTask16: Section = {
       {
         id: "lesson-dooshin-16-1",
         sectionId: "section-dooshin-16",
-        title: "Задание 16. Дощинский (1-30)",
+        title: "Вопросы 1-30",
         type: 'practice',
         description: "Выберите предложение, в котором нужна запятая",
         xpReward: 60,
