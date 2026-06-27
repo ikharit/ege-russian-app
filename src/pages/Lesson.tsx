@@ -214,30 +214,48 @@ export function Lesson() {
 
   const handleNext = useCallback(() => {
     if (currentQuestionIdx < questions.length - 1) {
+      const nextIdx = currentQuestionIdx + 1
       setDirection(1)
-      setCurrentQuestionIdx(prev => prev + 1)
+      setCurrentQuestionIdx(nextIdx)
       setQuestionStartTime(Date.now())
+      // Update URL to reflect current question
+      const nextQuestion = questions[nextIdx]
+      if (nextQuestion && searchParams.get('q') !== nextQuestion.id) {
+        const newParams = new URLSearchParams(searchParams)
+        newParams.set('q', nextQuestion.id)
+        setSearchParams(newParams, { replace: true })
+      }
     } else {
       setGameOverReason('completed')
     }
-  }, [currentQuestionIdx, questions.length])
+  }, [currentQuestionIdx, questions, searchParams, setSearchParams])
 
   const handlePrev = useCallback(() => {
     if (currentQuestionIdx > 0) {
+      const prevIdx = currentQuestionIdx - 1
       setDirection(-1)
-      setCurrentQuestionIdx(prev => prev - 1)
+      setCurrentQuestionIdx(prevIdx)
       setQuestionStartTime(Date.now())
+      // Update URL to reflect current question
+      const prevQuestion = questions[prevIdx]
+      if (prevQuestion && searchParams.get('q') !== prevQuestion.id) {
+        const newParams = new URLSearchParams(searchParams)
+        newParams.set('q', prevQuestion.id)
+        setSearchParams(newParams, { replace: true })
+      }
     }
-  }, [currentQuestionIdx])
+  }, [currentQuestionIdx, questions, searchParams, setSearchParams])
 
   // Update URL ?q= when question changes (allows sharing direct links)
-  useEffect(() => {
-    if (currentQuestion && searchParams.get('q') !== currentQuestion.id) {
-      const newParams = new URLSearchParams(searchParams)
-      newParams.set('q', currentQuestion.id)
-      setSearchParams(newParams, { replace: true })
-    }
-  }, [currentQuestionIdx, currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  // NOTE: URL update now handled directly in handleNext/handlePrev to avoid
+  // infinite loops when loading with ?q= query param. This useEffect is disabled.
+  // useEffect(() => {
+  //   if (currentQuestion && searchParams.get('q') !== currentQuestion.id) {
+  //     const newParams = new URLSearchParams(searchParams)
+  //     newParams.set('q', currentQuestion.id)
+  //     setSearchParams(newParams, { replace: true })
+  //   }
+  // }, [currentQuestionIdx, currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-complete lesson when finished — fixes bug where closing page loses progress
   const [hasAutoCompleted, setHasAutoCompleted] = useState(false)
