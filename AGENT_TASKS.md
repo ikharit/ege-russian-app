@@ -1272,7 +1272,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ---
 
-## 🆕 Новые задачи (добавлено 2026-06-28 — агентский sync)
+## 🆕 Новые задачи (добавлено 2026-06-28 — агентский sync + syntax fix)
 
 ### ✅ ЗАДАЧА-А38: Актуализация агентских файлов после late-session commits
 
@@ -1294,3 +1294,25 @@ import { getAtomById } from '../data/atomization/atoms'
 **Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`, `src/data/atomization/task10Questions.ts`
 
 **Критерий завершения**: Все агентские файлы отражают последние изменения. Git commit сделан. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А39: Синтаксический фикс 41 explanation strings в dooshin/task10.ts
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `src/data/sections/dooshin/task10.ts`
+
+**Проблема**: Build падал с ошибкой `Expected "}" but found "глухих"` в `src/data/sections/dooshin/task10.ts`. В 41 explanation'ах приставок без-/бес- одинарная кавычка внутри строки (`согласной'.`) ломала JavaScript-строку и вызывала полное падение сборки.
+
+**Решение**:
+1. Массовая замена через Python: все 41 explanation обёрнуты в двойные кавычки + точка перенесена внутрь строки.
+2. Пример: `'Приставка без- БЕЗ- = перед звонкой согласной'. Мнемоника...'` → `"Приставка без- БЕЗ- = перед звонкой согласной. Мнемоника..."`
+
+**Файлы**: `src/data/sections/dooshin/task10.ts`
+
+**Git**: `9c50ec8`
+
+**Критерий завершения**: Build проходит чисто (18.19s, 0 TypeScript ошибок). validate:rag ✅ (1379 entries, 0 errors, 0 warnings). Следующие агенты: проверять, что explanation'ы не содержат одинарных кавычек внутри одинарно-закавыченных строк.
