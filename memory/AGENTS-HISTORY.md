@@ -379,3 +379,14 @@
   - atomization.ts: урок `lesson-atom-10-mixed` → `lesson-atom-10-ege` с 10 ege-multiple вопросами по приставкам
   - RAG rebuild: 1379 entries, 0 errors, 268 warnings (известные contradiction в word-generic)
   - build:rag ✅, validate:rag ✅
+
+
+### [2026-06-26 11:00] Агент: Agent 1
+- **Что:** Commit uncommitted changes from Agent 5 session (retrospective)
+- **Где:** `src/data/achievements.ts`, `src/data/sections/dooshin/task9.ts`, `src/pages/TodayPage.tsx`, `src/stores/slices/achievementChecker.ts`, `src/lib/questionEdits.ts`, `src/types/index.ts`
+- **Зачем:** Закоммитить изменения, оставленные в working tree предыдущим агентом (Agent 5, 2026-06-28). Эти изменения были в working tree, но не закоммичены.
+- **Git commit:** `0f02a32`
+- **⚠️ Важно:** 
+  - achievements.ts — частичный откат порогов ачивок (компромисс: добавлены обратно lower-tier ачивки: lessons-10, perfect, streak-3, xp-100/500, level-5)
+  - task9.ts — минорные фиксы explanation
+  - Все изменения от Agent 5, закоммичены ретроспективно Agent 1
