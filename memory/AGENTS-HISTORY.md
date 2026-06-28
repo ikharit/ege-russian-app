@@ -322,3 +322,15 @@
   - Добавлено 5 text-вопросов по приставкам прО-/прА- в task10Questions.ts (проевропейский, пророссийский, праславянский, проамериканский, праиндоевропейский)
   - Сборка: `npm run build` ✅ (19.77s, 0 ошибок), `npm run validate:rag` ✅ (1379 entries, 0 errors, 268 warnings)
   - Следующие агенты: продолжить ревизию оставшихся explanation'ов по ФИПИ (задача А8 в AGENT_TASKS.md)
+
+### [2026-06-28 02:00] Агент: main
+- **Что:** Актуализация агентских файлов после незакоммиченных изменений (task9 explanation fixes, atomization EGE lesson, grammar/orthography additions)
+- **Где:** `src/data/sections/dooshin/task9.ts`, `src/data/sections/atomization.ts`, `src/data/sections/grammar.ts`, `src/data/sections/orthography.ts`, `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`
+- **Зачем:** В working tree остались незакоммиченные изменения из предыдущих сессий — массовые исправления explanation'ов в dooshin/task9.ts (~40+), новый EGE-формат урок в atomization.ts (10 вопросов), добавлены вопросы в grammar.ts и orthography.ts. Агентские файлы не отражали эти изменения, что могло привести к дублированию работы или поломке данных.
+- **Git commit:** [будет сделан после этого обновления]
+- **⚠️ Важно:**
+  - 40+ explanation'ов в dooshin/task9.ts исправлены: проверочные слова, классификации корней, answers, уточнения в текстах вопросов
+  - Ключевые исправления: qd9-54 (цЫпочках, ответ Ы), qd9-59 (загОреть, ответ О), subtitle (чередующийся), "ненепроверяемый" → "непроверяемый"
+  - atomization.ts: урок `lesson-atom-10-mixed` → `lesson-atom-10-ege` с 10 ege-multiple вопросами по приставкам
+  - RAG rebuild: 1379 entries, 0 errors, 268 warnings (известные contradiction в word-generic)
+  - build:rag ✅, validate:rag ✅

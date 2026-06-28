@@ -1,8 +1,8 @@
 # Реестр заданий 9-20 ЕГЭ Русский — Инструкция для агентов
 
-> **Версия:** 1.8  
-> **Обновлен:** 2026-06-25
-> **Статус:** ✅ Задание 10 (atomization) — 70 вопросов переделаны в текстовый ввод  
+> **Версия:** 1.9  
+> **Обновлен:** 2026-06-28
+> **Статус:** ✅ Задание 10 (atomization) — 70 вопросов переделаны в текстовый ввод + 10 EGE-формат вопросов добавлены в `atomization.ts`  
 > **Автор:** main (оркестратор)  
 > **Excel 9-12:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_9-12_ЕГЭ_Русский.xlsx`  
 > **Excel 13-20:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_13-20_ЕГЭ_Русский.xlsx`  
@@ -259,3 +259,22 @@ print(q['correctAnswer'])  # ['построен']
 - `StudentRegistrationModal` теперь проверяет `hasProgress` перед сбросом — не сбрасывает, если уроки уже пройдены
 - Добавлено `onRehydrateStorage` в `progressStore` и `studentStore` для диагностики загрузки из `localStorage`
 - Файлы: `src/App.tsx`, `src/components/StudentRegistrationModal.tsx`, `src/stores/progressStore.ts`, `src/stores/studentStore.ts`
+
+---
+
+## Обновления 2026-06-28
+
+### Task 9 — массовые исправления explanation'ов (dooshin/task9.ts)
+- Исправлено ~40+ explanation'ов: проверочные слова, классификации корней, answers, уточнения в текстах вопросов
+- Ключевые фиксы: qd9-54 (цЫпочках, ответ Ы), qd9-59 (загОреть, ответ О), subtitle («чередующийся»), «ненепроверяемый» → «непроверяемый»
+- Проверочные слова приведены к ближайшим однокоренным: трЕпетный, умЕрший, плОть, глОтка, обИда, обретАть, дешЁво, пАра, возражЕние, апЕллировать, чЁска, жЁчь, слАдкий, молодОй
+- Файл: `src/data/sections/dooshin/task9.ts`
+
+### Task 10 — EGE-формат урок в atomization.ts
+- Урок `lesson-atom-10-mixed` переименован в `lesson-atom-10-ege` и заменён на 10 ege-multiple вопросов
+- Покрывает приставки: прЕ-/прА-, дО-/дА-, вО-/вА-, нА-/нО-, сЫ-/сУ-, черЕ-/чЕ-, рОз-/рАз-, и др.
+- Файл: `src/data/sections/atomization.ts`
+
+### RAG rebuild
+- `npm run build:rag` → 1379 entries (0 errors, 268 warnings — известные contradiction в word-generic)
+- Файл: `public/data/knowledge-index.json`
