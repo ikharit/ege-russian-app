@@ -18,7 +18,8 @@ export function createAchievementChecker(get: any) {
       if (!currentAchs.includes(id) && !unlocked.includes(id)) unlocked.push(id)
     }
 
-    // === УРОКИ (повышенные пороги) ===
+    // === УРОКИ (компромисс) ===
+    if (completedCount >= 10) addIfNew('ach-lessons-10')
     if (completedCount >= 25) addIfNew('ach-lessons-25')
     if (completedCount >= 50) addIfNew('ach-lessons-50')
     if (completedCount >= 100) addIfNew('ach-lessons-100')
@@ -28,6 +29,8 @@ export function createAchievementChecker(get: any) {
     const sortedCompleted = completedLessons
       .filter((l: any) => l.completedAt)
       .sort((a: any, b: any) => new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime())
+    
+    if (completedLessons.some((l: any) => l.score === 100)) addIfNew('ach-perfect')
     
     let currentPerfectStreak = 0
     let maxPerfectStreak = 0
@@ -44,18 +47,22 @@ export function createAchievementChecker(get: any) {
     if (maxPerfectStreak >= 10) addIfNew('ach-perfect-10')
     if (maxPerfectStreak >= 20) addIfNew('ach-perfect-20')
 
-    // === СТРИК (повышенные пороги) ===
+    // === СТРИК (компромисс) ===
+    if (streak >= 3) addIfNew('ach-streak-3')
     if (streak >= 7) addIfNew('ach-streak-7')
     if (streak >= 14) addIfNew('ach-streak-14')
     if (streak >= 30) addIfNew('ach-streak-30')
     if (streak >= 60) addIfNew('ach-streak-60')
 
-    // === XP (повышенные пороги) ===
+    // === XP (компромисс) ===
+    if (xp >= 100) addIfNew('ach-xp-100')
+    if (xp >= 500) addIfNew('ach-xp-500')
     if (xp >= 1000) addIfNew('ach-xp-1000')
     if (xp >= 5000) addIfNew('ach-xp-5000')
     if (xp >= 10000) addIfNew('ach-xp-10000')
 
-    // === УРОВНИ (повышенные пороги) ===
+    // === УРОВНИ (компромисс) ===
+    if (level >= 5) addIfNew('ach-level-5')
     if (level >= 10) addIfNew('ach-level-10')
     if (level >= 20) addIfNew('ach-level-20')
     if (level >= 50) addIfNew('ach-level-50')
@@ -91,36 +98,43 @@ export function createAchievementChecker(get: any) {
     const masteredAtoms = atomValues.filter((a: any) => a.masteryLevel === 'mastered').length
     if (masteredAtoms >= 5) addIfNew('ach-atom-master')
 
-    // === КОМБО (повышенные пороги) ===
+    // === КОМБО (компромисс) ===
     const maxCombo = state.userStats.maxCombo || 0
+    if (maxCombo >= 5) addIfNew('ach-combo-5')
     if (maxCombo >= 10) addIfNew('ach-combo-10')
     if (maxCombo >= 25) addIfNew('ach-combo-25')
 
-    // === ВОПРОСЫ (повышенные пороги) ===
+    // === ВОПРОСЫ (компромисс) ===
     const totalQuestions = state.userStats.totalQuestionsAnswered || 0
+    if (totalQuestions >= 50) addIfNew('ach-questions-50')
     if (totalQuestions >= 200) addIfNew('ach-questions-200')
     if (totalQuestions >= 500) addIfNew('ach-questions-500')
     if (totalQuestions >= 1000) addIfNew('ach-questions-1000')
 
-    // === ВРЕМЯ (повышенные пороги) ===
+    // === ВРЕМЯ (компромисс) ===
     const totalMinutes = state.userStats.totalLessonTimeMinutes || 0
+    if (totalMinutes >= 60) addIfNew('ach-time-1h')
     if (totalMinutes >= 300) addIfNew('ach-time-5h')
     if (totalMinutes >= 600) addIfNew('ach-time-10h')
     if (totalMinutes >= 3000) addIfNew('ach-time-50h')
 
-    // === РАБОТА НАД ОШИБКАМИ (повышенные пороги) ===
+    // === РАБОТА НАД ОШИБКАМИ (компромисс) ===
     const mistakesFixed = state.userStats.mistakesFixed || 0
+    if (mistakesFixed >= 1) addIfNew('ach-mistake-1')
+    if (mistakesFixed >= 5) addIfNew('ach-mistake-5')
     if (mistakesFixed >= 10) addIfNew('ach-mistake-10')
     if (mistakesFixed >= 25) addIfNew('ach-mistake-25')
     if (mistakesFixed >= 50) addIfNew('ach-mistake-50')
     if (state.wrongAnswers.length === 0 && mistakesFixed > 0) addIfNew('ach-mistake-all')
 
-    // === ДОЩИНСКИЙ (повышенные пороги) ===
+    // === ДОЩИНСКИЙ (компромисс) ===
     const dooshinCompleted = completedLessons.filter((l: any) => 
       l.id?.startsWith('lesson-dooshin') || l.id?.startsWith('qd')
     )
     const dooshinCount = dooshinCompleted.length
     
+    if (dooshinCount >= 1) addIfNew('ach-dooshin-first')
+    if (dooshinCount >= 5) addIfNew('ach-dooshin-5')
     if (dooshinCount >= 10) addIfNew('ach-dooshin-10')
     if (dooshinCount >= 20) addIfNew('ach-dooshin-20')
     const dooshinAllTarget = 40

@@ -169,7 +169,7 @@ export function GrowthTimeline() {
   const examResults = useProgressStore((s) => s.examResults)
   const userStats = useProgressStore((s) => s.userStats)
   const lessonProgress = useProgressStore((s) => s.lessonProgress)
-  const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory)
+  const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory ?? [])
 
   const fullData = useMemo(() => {
     return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory)
@@ -182,6 +182,22 @@ export function GrowthTimeline() {
   const visibleData = useMemo(() => {
     return fullData.slice(0, progressIndex + 1)
   }, [fullData, progressIndex])
+
+  // Fallback if no data
+  if (!visibleData || visibleData.length === 0) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <TrendingUp size={24} className="text-duo-green" />
+          <h1 className="text-xl font-bold text-gray-800">Мой рост</h1>
+        </div>
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
+          <p className="text-gray-500">Недостаточно данных для построения графика.</p>
+          <p className="text-sm text-gray-400 mt-2">Решай задания, чтобы увидеть свой прогресс!</p>
+        </div>
+      </div>
+    )
+  }
 
   const currentPoint = visibleData[visibleData.length - 1]
 

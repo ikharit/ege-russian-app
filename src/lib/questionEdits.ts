@@ -80,6 +80,7 @@ async function backgroundSyncSingle(questionId: string) {
       lesson_id: edit.lesson_id,
       changes: edit.changes as any,
       edited_by: user?.id || null,
+      agent: edit.agent,
       edited_at: edit.edited_at,
     }, { onConflict: 'question_id' })
 
@@ -185,6 +186,7 @@ export async function loadQuestionEditsFromSupabase(): Promise<Record<string, Qu
         lesson_id: row.lesson_id,
         changes: row.changes as Partial<Question>,
         edited_by: row.edited_by,
+        agent: row.agent,
         edited_at: row.edited_at,
         created_at: row.created_at,
         synced: true,

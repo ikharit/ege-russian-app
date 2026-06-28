@@ -282,6 +282,18 @@
   - 15/33 дублей из `audit_report_final.txt` теперь связаны через `canonicalWordId` в `questionMapping.ts`. Оставшиеся 18 требуют массового аудита.
   - `qd9-408` — это "списать" (корень -пис-), не "спешить". Исправлен маппинг.
   - `algorithm-ege-platform.md` полностью переписан: отражает реальный стек (Capacitor, ML, spellEngine), 22 страницы, ML pipeline, агентский workflow.
+
+### [2026-06-26 10:50] Агент: Agent 1
+- **Что:** Agent identification system
+- **Где:** `AGENTS.md`, `AGENT_REMINDER.md`, `AGENT_TASKS.md`, `memory/2026-06-26.md`, `memory/AGENTS-HISTORY.md`, `IDENTITY.md`
+- **Зачем:** Ввести систему идентификации агентов, чтобы отслеживать кто что делал
+- **Git commit:** `b0a1230`
+- **⚠️ Важно:** 
+  - Все записи в changelog и истории теперь содержат `by Agent N`
+  - Текущий агент: **Agent 1** (основной, оркестратор)
+  - AGENTS.md — добавлен `Current Agent ID: agent-1` в начало файла
+  - AGENT_TASKS.md — добавлено поле **Агент:** в заголовок и в задачу А23
+  - AGENT_REMINDER.md — добавлена заметка "Текущий агент: Agent 1"
   - `archive/` — перенесены ~130 файлов. Оставлены: Excel-реестры, DOCX/PDF, `algorithm-ege-platform.md`, `plan.md`.
 
 ### [2026-06-26 13:16] Агент: Agent 1

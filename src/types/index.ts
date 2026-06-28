@@ -39,6 +39,7 @@ export interface Question {
   theoryLessonId?: string
   theoryUrl?: string
   hints?: Hint[]
+  lastEditedBy?: string
 }
 
 export interface QuestionFeedback {

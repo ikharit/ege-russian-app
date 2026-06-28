@@ -81,6 +81,8 @@ export function TodayPage() {
 
   const isTeacher = activeProfile?.role === 'teacher' || false
 
+  const [showXPModal, setShowXPModal] = useState(false)
+
   const rank = getRankByLevel(stats.level)
   const xpInfo = getXPToNextLevel(stats.xp)
   const daysToExam = examDate
@@ -167,8 +169,9 @@ export function TodayPage() {
         </motion.div>
 
         <motion.div
-          className="flex-1 bg-white rounded-2xl p-2.5 shadow-sm border border-gray-100 flex items-center gap-2"
+          className="flex-1 bg-white rounded-2xl p-2.5 shadow-sm border border-gray-100 flex items-center gap-2 cursor-pointer"
           whileHover={{ scale: 1.02 }}
+          onClick={() => setShowXPModal(true)}
         >
           <Zap size={18} className="text-duo-yellow" fill="currentColor" />
           <div>
@@ -355,6 +358,8 @@ export function TodayPage() {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
       </motion.div>
+
+      <XPDetailModal isOpen={showXPModal} onClose={() => setShowXPModal(false)} />
     </div>
   )
 }
