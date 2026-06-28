@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Save, RotateCcw, AlertTriangle, Cloud, Download, FileCode } from 'lucide-react'
 import { Question } from '../types'
-import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits, isPendingSync, CURRENT_AGENT } from '../lib/questionEdits'
+import { saveQuestionEdit, deleteQuestionEdit, loadLocalEdits, isPendingSync } from '../lib/questionEdits'
 
 interface InlineQuestionEditorProps {
   question: Question
@@ -114,7 +114,6 @@ export function InlineQuestionEditor({ question, lessonId = '', onClose, onSaved
           <AlertTriangle size={16} className="text-amber-500" />
           <span className="font-bold text-sm">Редактировать задание</span>
           <span className="text-xs text-gray-400 font-mono">{question.id}</span>
-          <span className="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-bold">{CURRENT_AGENT}</span>
           {pending && <Cloud size={14} className="text-duo-blue animate-pulse" />}
         </div>
         <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">

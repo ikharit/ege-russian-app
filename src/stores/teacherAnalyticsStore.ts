@@ -165,111 +165,111 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
     }
   },
 
-  fetchAllUsers: async () => {
-    if (!isSupabaseConfigured) {
-      set({ error: 'Supabase не настроен' })
-      return
-    }
-
-    set({ loading: true, error: null })
-
-    try {
-      // Fetch user_progress first (primary source)
-      const { data: progressData, error: progressError } = await supabase
-        .from('user_progress')
-        .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers')
-
-      if (progressError) {
-        console.warn('user_progress fetch error:', progressError)
-        set({ error: 'Ошибка загрузки прогресса: ' + progressError.message, loading: false })
+    fetchAllUsers: async () => {
+      if (!isSupabaseConfigured) {
+        set({ error: 'Supabase не настроен' })
         return
       }
 
-      console.log('[TeacherAnalytics] user_progress rows:', progressData?.length || 0)
+      set({ loading: true, error: null })
 
-      // Fetch admin_user_analytics (secondary, optional)
-      let analyticsData: any[] = []
       try {
-        const { data, error } = await supabase
-          .from('admin_user_analytics')
-          .select('user_id, behavior_profile, daily_snapshots')
-        if (!error && data) {
-          analyticsData = data
-          console.log('[TeacherAnalytics] admin_user_analytics rows:', data.length)
-        } else if (error) {
-          console.warn('[TeacherAnalytics] admin_user_analytics error:', error)
+        // Use public_leaderboard view (bypasses RLS) instead of user_progress
+        const { data: progressData, error: progressError } = await supabase
+          .from('public_leaderboard')
+          .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers')
+
+        if (progressError) {
+          console.warn('public_leaderboard fetch error:', progressError)
+          set({ error: 'Ошибка загрузки прогресса: ' + progressError.message, loading: false })
+          return
         }
-      } catch (e) {
-        console.warn('admin_user_analytics fetch failed:', e)
-      }
 
-      const allUserIds = new Set([
-        ...(progressData || []).map((p: any) => p.user_id),
-      ])
+        console.log('[TeacherAnalytics] public_leaderboard rows:', progressData?.length || 0)
 
-      console.log('[TeacherAnalytics] total userIds:', allUserIds.size)
-
-      if (allUserIds.size === 0) {
-        set({ students: [], loading: false })
-        return
-      }
-
-      const students: TeacherStudentView[] = Array.from(allUserIds).map((userId: string) => {
-        const progress = progressData?.find((p: any) => p.user_id === userId)
-        const analytics = analyticsData?.find((a: any) => a.user_id === userId)
-        const stats = progress?.user_stats || {}
-
-        const taskStats = progress?.task_stats || {}
-        let total = 0, correct = 0
-        for (const t of Object.values(taskStats)) {
-          total += (t as any).total || 0
-          correct += (t as any).correct || 0
+        // Fetch admin_user_analytics (secondary, optional)
+        let analyticsData: any[] = []
+        try {
+          const { data, error } = await supabase
+            .from('admin_user_analytics')
+            .select('user_id, behavior_profile, daily_snapshots')
+          if (!error && data) {
+            analyticsData = data
+            console.log('[TeacherAnalytics] admin_user_analytics rows:', data.length)
+          } else if (error) {
+            console.warn('[TeacherAnalytics] admin_user_analytics error:', error)
+          }
+        } catch (e) {
+          console.warn('admin_user_analytics fetch failed:', e)
         }
-        const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0
 
-        return {
-          studentId: userId,
-          studentName: stats.name || 'Пользователь',
-          xp: stats.xp || 0,
-          level: stats.level || 1,
-          streak: stats.streak || 0,
-          lastActive: stats.lastActivityDate || '—',
-          topWeakWords: [],
-          topWeakRules: [],
-          overallAccuracy,
-          totalQuestionsAnswered: stats.totalQuestionsAnswered || 0,
-          totalLessonTimeMinutes: stats.totalLessonTimeMinutes || 0,
-          maxCombo: stats.maxCombo || 0,
-          hearts: stats.hearts || 0,
-          maxHearts: stats.maxHearts || 5,
-          examResults: progress?.exam_results || [],
-          theoryTestsCompleted: progress?.theory_tests_completed || {},
-          answerHistory: progress?.answer_history || [],
-          dailyQuestProgress: progress?.daily_quest_progress || {},
-          behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
-          dailySnapshots: analytics?.daily_snapshots || undefined,
-          rawProgressData: {
-            userStats: stats,
-            lessonProgress: progress?.lesson_progress || {},
-            taskStats: progress?.task_stats || {},
-            achievements: progress?.achievements || [],
-            behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
+        const allUserIds = new Set([
+          ...(progressData || []).map((p: any) => p.user_id),
+        ])
+
+        console.log('[TeacherAnalytics] total userIds:', allUserIds.size)
+
+        if (allUserIds.size === 0) {
+          set({ students: [], loading: false })
+          return
+        }
+
+        const students: TeacherStudentView[] = Array.from(allUserIds).map((userId: string) => {
+          const progress = progressData?.find((p: any) => p.user_id === userId)
+          const analytics = analyticsData?.find((a: any) => a.user_id === userId)
+          const stats = progress?.user_stats || {}
+
+          const taskStats = progress?.task_stats || {}
+          let total = 0, correct = 0
+          for (const t of Object.values(taskStats)) {
+            total += (t as any).total || 0
+            correct += (t as any).correct || 0
+          }
+          const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0
+
+          return {
+            studentId: userId,
+            studentName: stats.name || 'Пользователь',
+            xp: stats.xp || 0,
+            level: stats.level || 1,
+            streak: stats.streak || 0,
+            lastActive: stats.lastActivityDate || '—',
+            topWeakWords: [],
+            topWeakRules: [],
+            overallAccuracy,
+            totalQuestionsAnswered: stats.totalQuestionsAnswered || 0,
+            totalLessonTimeMinutes: stats.totalLessonTimeMinutes || 0,
+            maxCombo: stats.maxCombo || 0,
+            hearts: stats.hearts || 0,
+            maxHearts: stats.maxHearts || 5,
             examResults: progress?.exam_results || [],
             theoryTestsCompleted: progress?.theory_tests_completed || {},
             answerHistory: progress?.answer_history || [],
-            atomProgress: progress?.atom_progress || {},
             dailyQuestProgress: progress?.daily_quest_progress || {},
-            wrongAnswers: progress?.wrong_answers || [],
-          },
-        }
-      })
+            behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
+            dailySnapshots: analytics?.daily_snapshots || undefined,
+            rawProgressData: {
+              userStats: stats,
+              lessonProgress: progress?.lesson_progress || {},
+              taskStats: progress?.task_stats || {},
+              achievements: progress?.achievements || [],
+              behaviorProfile: analytics?.behavior_profile || progress?.behavior_profile || undefined,
+              examResults: progress?.exam_results || [],
+              theoryTestsCompleted: progress?.theory_tests_completed || {},
+              answerHistory: progress?.answer_history || [],
+              atomProgress: progress?.atom_progress || {},
+              dailyQuestProgress: progress?.daily_quest_progress || {},
+              wrongAnswers: progress?.wrong_answers || [],
+            },
+          }
+        })
 
-      set({ students, loading: false })
-    } catch (err: any) {
-      const msg = err.message || 'Ошибка загрузки'
-      set({ error: msg, loading: false })
-    }
-  },
+        set({ students, loading: false })
+      } catch (err: any) {
+        const msg = err.message || 'Ошибка загрузки'
+        set({ error: msg, loading: false })
+      }
+    },
 
   fetchStudentErrors: async (studentId: string) => {
     if (!isSupabaseConfigured) return []
