@@ -1093,6 +1093,29 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ---
 
+
+## 🆕 Новые задачи (добавлено 2026-06-28 — RLS fix)
+
+### ✅ ЗАДАЧА-А31: RLS fix — public_leaderboard view + teacher policy — Agent 2
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `supabase/migrations/004_leaderboard_rls.sql`, `src/stores/slices/syncSlice.ts`, `src/stores/teacherAnalyticsStore.ts`, `src/pages/UsersPage.tsx`
+
+**Проблема**: Leaderboard, TeacherAnalytics ("Аналитика всех пользователей"), UsersPage показывали пусто или только 1 пользователя. Причина: `user_progress` имеет RLS policy `auth.uid() = user_id` — каждый пользователь видел только свою запись. Supabase Table Editor показывал 4 записи (админ обходит RLS), но клиентский код получал только себя.
+
+**Решение**:
+1. Создан `public_leaderboard` view (bypasses RLS) + teacher policy для `teacher_student_links`.
+2. `syncSlice.ts` → `loadLeaderboard()` теперь использует `public_leaderboard` вместо `user_progress`.
+3. `teacherAnalyticsStore.ts` → `fetchAllUsers()` теперь использует `public_leaderboard` вместо `user_progress`.
+4. `UsersPage.tsx` → `loadUsers()` теперь использует `public_leaderboard` вместо `user_progress`.
+5. SQL-функции `get_leaderboard()`, `get_all_user_progress()`, `get_all_users_basic()` (security definer) — fallback если view не работает.
+
+**Файлы**: `supabase/migrations/004_leaderboard_rls.sql`, `src/stores/slices/syncSlice.ts`, `src/stores/teacherAnalyticsStore.ts`, `src/pages/UsersPage.tsx`
+
+**Git**: `25d34bc`
+
+**Критерий завершения**: Leaderboard, TeacherAnalytics, UsersPage отображают всех 4 пользователей из `user_progress`. Сборка проходит чисто. RAG: 0 errors, 0 warnings.
 ## 🆕 Новые задачи (добавлено 2026-06-26, 19:00 — data audit fixes)
 
 ### ✅ ЗАДАЧА-А30: Data audit — 5 фиксов (RAG, line endings, миграции, граф) — Agent 2
