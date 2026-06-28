@@ -250,9 +250,16 @@ function QuestionEditCard({
               {question.type}
             </span>
             {hasEdit && (
-              <span className="text-[10px] px-1.5 py-0.5 bg-duo-green text-white rounded font-bold">
-                правка
-              </span>
+              <>
+                <span className="text-[10px] px-1.5 py-0.5 bg-duo-green text-white rounded font-bold">
+                  правка
+                </span>
+                {agent && (
+                  <span className="text-[10px] px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded font-bold">
+                    {agent}
+                  </span>
+                )}
+              </>
             )}
           </div>
           <p className="text-sm text-gray-800 truncate mt-0.5">{question.text}</p>

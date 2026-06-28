@@ -34,12 +34,17 @@ export const atomizationSections: Section[] = [
       {
         id: 'lesson-atom-10-3',
         sectionId: 'section-atomization',
-        title: 'ВС- / ВЗ- / РАС- / РАЗ-',
+        title: 'Чередование по глухости/звонкости',
         type: 'practice',
-        description: 'Изменяемые приставки по глухости/звонкости',
+        description: 'ВЗ/ВС, РАЗ/РАС, ИЗ/ИС, БЕЗ/БЕС, ВОЗ/ВОС, ЧРЕЗ/ЧРЕС, НИЗ/НИС',
         xpReward: 50,
         prerequisites: ['lesson-atom-10-1'],
-        questions: task10Questions.filter(q => q.atoms?.includes('z_s_vz_vs') || q.atoms?.includes('ra_ro_vowel'))
+        questions: task10Questions.filter(q =>
+          q.atoms?.includes('z_s_vz_vs') ||
+          q.atoms?.includes('ra_ro_vowel') ||
+          q.atoms?.includes('z_s_deaf') ||
+          q.atoms?.includes('z_s_iz_is')
+        )
       },
       {
         id: 'lesson-atom-10-4',
@@ -54,25 +59,15 @@ export const atomizationSections: Section[] = [
       {
         id: 'lesson-atom-10-5',
         sectionId: 'section-atomization',
-        title: 'БЕЗ- / БЕС- / ОБЕС- / ЗАС-',
+        title: 'Ы / И после приставки С-',
         type: 'practice',
-        description: 'Приставки с чередованием согласных по глухости/звонкости',
+        description: 'СЫзнова, сЫграть, съесть — когда пишется Ы, а когда И',
         xpReward: 50,
         prerequisites: ['lesson-atom-10-3'],
-        questions: task10Questions.filter(q => q.atoms?.includes('z_s_deaf'))
+        questions: task10Questions.filter(q => q.atoms?.includes('prefix_y_i'))
       },
       {
         id: 'lesson-atom-10-6',
-        sectionId: 'section-atomization',
-        title: 'ИЗ- / ИС- / СЫ-',
-        type: 'practice',
-        description: 'Приставки ИЗ-/ИС- и Ы после С-',
-        xpReward: 50,
-        prerequisites: ['lesson-atom-10-5'],
-        questions: task10Questions.filter(q => q.atoms?.includes('z_s_iz_is') || q.atoms?.includes('prefix_y_i'))
-      },
-      {
-        id: 'lesson-atom-10-7',
         sectionId: 'section-atomization',
         title: 'Неизменяемые и сложные приставки',
         type: 'practice',
@@ -88,7 +83,7 @@ export const atomizationSections: Section[] = [
         type: 'practice',
         description: 'Реальные задания в формате ЕГЭ',
         xpReward: 80,
-        prerequisites: ['lesson-atom-10-7'],
+        prerequisites: ['lesson-atom-10-6'],
         questions: [
           { id: 'q10-ege-1', type: 'ege-multiple', text: 'Укажите варианты ответов, в которых во всех словах одного ряда пропущена одна и та же буква.', options: ['1) пр_исполнен, пр_града, пр_дзащита', '2) п_ртьера, п_солить, п_дкараулить', '3) в_тражи, в_рмишель, в_стибюль', '4) че_есчур, че_есполосица', '5) р_зъехаться, р_збрать, р_счерк'], correctAnswer: ['1', '2', '4'], explanation: '1) прЕисполнен, прЕграда, прЕдзащита — везде Е. 2) пОртьера, пОсолить, пОдкараулить — везде О. 4) черЕсчур, черЕсполосица — везде С.', difficulty: 'medium', xpReward: 15, atoms: ['task10', 'prefixes'] },
           { id: 'q10-ege-2', type: 'ege-multiple', text: 'Укажите варианты ответов, в которых во всех словах одного ряда пропущена одна и та же буква.', options: ['1) д_рассказать, д_печатать, д_караулить', '2) пр_седания, пр_образ, пр_граждение', '3) с_знова, из_мать, с_грать', '4) н_сахарить, н_дтреснутый, н_клейка', '5) к_рикатура, к_смонавт, к_сатка'], correctAnswer: ['1', '3', '4'], explanation: '1) дОрассказать, дОпечатать, дОкараулить — везде О. 3) сЫзнова, изЫмать, сЫграть — везде Ы. 4) нАсахарить, нАдтреснутый, нАклейка — везде А.', difficulty: 'medium', xpReward: 15, atoms: ['task10', 'prefixes'] },
