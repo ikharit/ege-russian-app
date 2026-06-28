@@ -1,0 +1,1 @@
+import{j as r}from"./framer-motion-BNeFXsM2.js";import{a9 as o}from"./index-DeZiUfnS.js";import"./router-BhV0Q2Lu.js";import"./dooshin-Oq-UgZ7c.js";import"./supabase-Be25SE7n.js";import"./lucide-D-AtUttA.js";import"./recharts-BHceiceg.js";function a(){return r.jsx(o,{})}export{a as GrowthPage};

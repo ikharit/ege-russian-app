@@ -1,0 +1,1 @@
+import{ac as o}from"./index-DeZiUfnS.js";import"./framer-motion-BNeFXsM2.js";import"./router-BhV0Q2Lu.js";import"./dooshin-Oq-UgZ7c.js";import"./supabase-Be25SE7n.js";import"./lucide-D-AtUttA.js";import"./recharts-BHceiceg.js";class d extends o{async show(e){}async hide(e){}}export{d as SplashScreenWeb};
