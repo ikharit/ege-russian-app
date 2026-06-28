@@ -1088,3 +1088,26 @@ import { getAtomById } from '../data/atomization/atoms'
 **Критерий завершения**: Все чередующиеся корни в dooshin/task9.ts имеют конкретные, проверяемые правила в explanation. EGE-формат вопросы добавлены. Text-вопросы по приставкам прО-/прА- добавлены. Сборка проходит чисто.
 
 ---
+
+## 🆕 Новые задачи (добавлено 2026-06-26, 19:00 — data audit fixes)
+
+### ✅ ЗАДАЧА-А30: Data audit — 5 фиксов (RAG, line endings, миграции, граф)
+
+**Статус:** ✅ Завершено (2026-06-26)
+
+**Где**: `scripts/verify-rag.js`, `AGENT_TASKS.md`, `supabase/migrations/`, `scripts/build-graph-relations.js`, `package.json`
+
+**Решение**:
+1. **RAG warnings**: Исправлен false positive в `verify-rag.js` — "непроверяемый" содержит "проверяемый" как substring. Добавлена `hasStandaloneWord()` для проверки standalone-слов. Результат: 268 warnings → 0.
+2. **Line endings**: `AGENT_TASKS.md` CRLF → LF через `sed -i 's/\r$//'`. `file` подтверждает: "UTF-8 text" без CRLF.
+3. **Миграции**: Дублирующий `001_unified_tracking.sql` (legacy, ALTER TABLE) перемещён в `archived/`. Создан `003_gin_indexes.sql` с GIN индексами для JSONB: user_stats, exam_results, behavior_profile, daily_snapshots + B-tree на updated_at.
+4. **Knowledge graph**: Создан `build-graph-relations.js` — парсит knowledge-index, questionMapping, atoms → генерирует `public/data/graph-relations.json` (1460 nodes, 4954 edges). Добавлен в build pipeline: `npm run build:graph`.
+5. **Сборка**: `npm run build` ✅ (15.36s, 0 ошибок). `npm run validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
+
+**Файлы**: `scripts/verify-rag.js`, `scripts/build-graph-relations.js`, `public/data/graph-relations.json`, `supabase/migrations/003_gin_indexes.sql`, `supabase/migrations/archived/001_unified_tracking.sql`, `package.json`
+
+**Git**: `eba63ec`
+
+**Критерий завершения**: Все 5 пунктов аудита исправлены. Сборка проходит чисто. RAG валидация: 0 errors, 0 warnings. Графовые связи явно экспортированы.
+
+---
