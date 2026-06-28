@@ -174,15 +174,7 @@ export function QuestionEditorPage() {
   )
 }
 
-function QuestionEditCard({
-  question,
-  isExpanded,
-  onToggle,
-  onSave,
-  onRevert,
-  isSaved,
-  hasEdit,
-}: {
+interface QuestionEditCardProps {
   question: Question & { _sourceSectionTitle?: string; _sourceLessonId?: string }
   isExpanded: boolean
   onToggle: () => void
@@ -190,7 +182,8 @@ function QuestionEditCard({
   onRevert: (id: string) => void
   isSaved: boolean
   hasEdit: boolean
-}) {
+  agent?: string
+}
   const [text, setText] = useState(question.text)
   const [explanation, setExplanation] = useState(question.explanation)
   const [correctAnswer, setCorrectAnswer] = useState(question.correctAnswer.join(', '))

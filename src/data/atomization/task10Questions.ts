@@ -32,7 +32,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-6', type: 'text', text: 'Впишите пропущенную букву: пр_обрёл',
     correctAnswer: ['и'],
-    explanation: 'ПРИ- — приближение. Проверочное: обрести.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
+    explanation: 'ПРИ- — присоединение (получение, добавление). Проверочное: обрести.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
     {
     id: 'q10-atom-7', type: 'text', text: 'Впишите пропущенную букву: пр_открыть',
@@ -99,7 +99,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-19', type: 'text', text: 'Впишите пропущенную букву: в_езд',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед ю, я, е, ё, у.', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (начинаются с [й]).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
     {
     id: 'q10-atom-20', type: 'text', text: 'Впишите пропущенную букву: в_езжать',
@@ -110,7 +110,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-21', type: 'text', text: 'Впишите пропущенную букву: ра_каяние',
     correctAnswer: ['с'],
-    explanation: 'РАС- перед глухими к, ч, п, с, т, ф, ц, ш, щ (раскаяние, расширить). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
+    explanation: 'РАС- перед глухими к, п, с, т, ф, х, ц, ш, щ (раскаяние, расширить). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
     {
     id: 'q10-atom-22', type: 'text', text: 'Впишите пропущенную букву: раз_брать',
@@ -188,12 +188,12 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-36', type: 'text', text: 'Впишите пропущенную букву: с_знова',
     correctAnswer: ['ы'],
-    explanation: 'СЫ- после приставки с перед з, с, г, д, в, б (сызнова, сыграть, съесть).', xpReward: 10, atoms: ['prefix_y_i']
+    explanation: 'Условно изменяемая приставка: С- перед глухими, СЫ- перед звонкими з, с, г, д, в, б (сызнова, сыграть), СЪ- перед йотированными гласными (съесть, съёмка).', xpReward: 10, atoms: ['prefix_y_i']
   },
     {
     id: 'q10-atom-37', type: 'text', text: 'Впишите пропущенную букву: с_грать',
     correctAnswer: ['ы'],
-    explanation: 'СЫ- после приставки с перед г (сыграть, съесть).', xpReward: 10, atoms: ['prefix_y_i']
+    explanation: 'Условно изменяемая приставка: СЫ- перед звонкими г, д, в, б (сыграть, съесть).', xpReward: 10, atoms: ['prefix_y_i']
   },
     {
     id: 'q10-atom-38', type: 'text', text: 'Впишите пропущенную букву: с_едобный',
@@ -203,7 +203,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-39', type: 'text', text: 'Впишите пропущенную букву: суб_ективный',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ перед е (субъективный, объективный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированной гласной Е (субъективный, объективный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign']
   },
     {
     id: 'q10-atom-40', type: 'text', text: 'Впишите пропущенную букву: с_ёжиться',
@@ -293,22 +293,22 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-56', type: 'text', text: 'Впишите пропущенную букву: сверх_зысканный',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ (сверхъестественный, трёхъядерный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (сверхъестественный, трёхъядерный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
     {
     id: 'q10-atom-57', type: 'text', text: 'Впишите пропущенную букву: трёх_ядерный',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ (трёхъядерный, двухъязычный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (трёхъядерный, двухъязычный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
     {
     id: 'q10-atom-58', type: 'text', text: 'Впишите пропущенную букву: двух_язычный',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ (двухъязычный, двухъярусный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (двухъязычный, двухъярусный).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
     {
     id: 'q10-atom-59', type: 'text', text: 'Впишите пропущенную букву: фотооб_ектив',
     correctAnswer: ['ъ'],
-    explanation: 'Разделительный Ъ (фотообъектив, аудиообъектив).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
+    explanation: 'Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (фотообъектив, аудиообъектив).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
     {
     id: 'q10-atom-60', type: 'text', text: 'Впишите пропущенную букву: контр_гра',
@@ -324,7 +324,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-62', type: 'text', text: 'Впишите пропущенную букву: меж_языковой',
     correctAnswer: ['ъ'],
-    explanation: 'МЕЖЪ- с разделительным Ъ (межъязыковой, межинститутский).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
+    explanation: 'МЕЖЪ- с разделительным Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (межъязыковой, межинститутский).', xpReward: 10, atoms: ['prefix_hard_soft', 'hard_sign', 'unch_compound']
   },
     {
     id: 'q10-atom-63', type: 'text', text: 'Впишите пропущенную букву: зас_лонить',
