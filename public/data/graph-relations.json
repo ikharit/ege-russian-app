@@ -8931,6 +8931,16 @@
       "relation": "references_atom"
     },
     {
+      "source": "rule:task12-endings",
+      "target": "atom:мИлАЯ",
+      "relation": "references_atom"
+    },
+    {
+      "source": "rule:task12-endings",
+      "target": "atom:цЕлУЮ",
+      "relation": "references_atom"
+    },
+    {
       "source": "rule:task12-2",
       "target": "task:12",
       "relation": "governs"
@@ -8952,6 +8962,11 @@
     },
     {
       "source": "rule:task12-2",
+      "target": "atom:2 спр.",
+      "relation": "references_atom"
+    },
+    {
+      "source": "rule:task12-2",
       "target": "atom:брить",
       "relation": "references_atom"
     },
@@ -8968,6 +8983,16 @@
     {
       "source": "rule:task12-2",
       "target": "atom:зыбиться",
+      "relation": "references_atom"
+    },
+    {
+      "source": "rule:task12-2",
+      "target": "atom:держать",
+      "relation": "references_atom"
+    },
+    {
+      "source": "rule:task12-2",
+      "target": "atom:гнать",
       "relation": "references_atom"
     },
     {
@@ -33372,9 +33397,9 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-06-28T17:09:30.815Z",
+    "generatedAt": "2026-06-28T17:35:18.742Z",
     "nodeCount": 1460,
-    "edgeCount": 4954,
+    "edgeCount": 4959,
     "sources": [
       "knowledge-index.json",
       "questionMapping.ts",
