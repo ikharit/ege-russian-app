@@ -129,6 +129,10 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isChecked) {
+        if (!canProceed) {
+          e.preventDefault()
+          return
+        }
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           handleNext()
@@ -256,6 +260,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   }
 
   const handleNext = () => {
+    if (!canProceed) return
     setSelected([])
     setTextInput('')
     setIsChecked(false)
