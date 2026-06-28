@@ -83,5 +83,5 @@
 ---
 
 *Last updated: 2026-06-28*
-*Current Agent: agent-6*
-*Recent changes: friendStore.ts build fix, Lesson.tsx ege-multiple shuffle fix, task9 data fixes (плав/плов, плот/плат), task10 прО-/прА- questions, Supabase RLS enabled, workspace cleanup*
+*Current Agent: Agent 3*
+*Recent changes: task9.ts uncommitted changes audit + 11 critical -гор-/-горе- bugfixes, agent files sync (AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, 2026-06-28.md), build + validate:rag clean*
