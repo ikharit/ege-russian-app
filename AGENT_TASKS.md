@@ -1360,6 +1360,6 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/data/sections/dooshin/task9.ts`, `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`
 
-**Git**: [будет сделан после этого обновления]
+**Git**: `10f9bc9` (task9 fixes), `eb5e857` (agent docs sync)
 
 **Критерий завершения**: Все агентские файлы отражают последние изменения. Build проходит чисто (10.65s, 0 TypeScript ошибок). validate:rag ✅ (1379 entries, 0 errors, 0 warnings). Ни одного `горе-` вместо `гор-` для слов от «гореть».
