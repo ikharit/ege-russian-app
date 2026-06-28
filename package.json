@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build:rag": "node scripts/build-rag-index.js",
-    "build": "npm run build:rag && vite build",
+    "build:graph": "node scripts/build-graph-relations.js",
+    "build": "npm run build:rag && npm run build:graph && vite build",
     "dev": "vite",
     "preview": "vite preview",
     "test": "vitest",

@@ -59,16 +59,28 @@ for (const entry of entries) {
 }
 
 // 4. Contradiction detection
+// For "проверяемый" vs "непроверяемый": "непроверяемый" contains "проверяемый" as substring.
+// We must check standalone words to avoid false positives.
 const contradictionPairs = [
   ['проверяемый', 'непроверяемый'],
   ['чередующийся', 'проверяемый'],
   ['чередующийся', 'непроверяемый'],
 ];
 
+function hasStandaloneWord(content, word) {
+  // If word is "проверяемый", exclude cases where it's part of "непроверяемый"
+  if (word === 'проверяемый') {
+    return content.includes(word) && !content.includes('непроверяемый');
+  }
+  return content.includes(word);
+}
+
 for (const entry of entries) {
   const content = (entry.content + ' ' + entry.explanation).toLowerCase();
   for (const [a, b] of contradictionPairs) {
-    if (content.includes(a) && content.includes(b)) {
+    const hasA = hasStandaloneWord(content, a);
+    const hasB = hasStandaloneWord(content, b);
+    if (hasA && hasB) {
       warnings.push(`Contradiction in entry "${entry.id}": contains both "${a}" and "${b}"`);
     }
   }
