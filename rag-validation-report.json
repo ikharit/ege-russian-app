@@ -1,10 +1,315 @@
 {
-  "timestamp": "2026-06-23T23:09:36.136Z",
-  "totalQuestions": 769,
-  "totalErrors": 0,
-  "errors": [],
+  "timestamp": "2026-06-28T16:21:07.674Z",
+  "totalQuestions": 765,
+  "totalErrors": 38,
+  "errors": [
+    {
+      "id": "qd9-32",
+      "word": "напржение",
+      "explanation": "Корень -пряж- (чередующийся). Чередование: пряж/пряг. Проверьте через: напряжЕние/прячь. Приставка: на-.",
+      "errors": [
+        "INVALID_ALTERNATION: \"напржение\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-124",
+      "word": "промкать",
+      "explanation": "Корень -мок- (чередующийся). Чередование: мок/мак. Проверьте через: мОкнуть/мАкать. Приставка: про-.",
+      "errors": [
+        "INVALID_ALTERNATION: \"промкать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-129",
+      "word": "поджг",
+      "explanation": "Корень -жёг- (чередующийся). Чередование: жёг/жиг. Под ударением пишется Ё (жёг), без ударения — И (зажигать). Проверьте через: жЕчь/зажИгать. Приставка: под-.",
+      "errors": [
+        "INVALID_ALTERNATION: \"поджг\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-155",
+      "word": "ксательная",
+      "explanation": "Корень -кас- (проверяемый). Проверьте через однокоренное: кАсаться. (Не чередование!)",
+      "errors": [
+        "HALLUCINATION: \"ксательная\" is labeled as verifiable/dictionary but mentions 'чередование' — this is likely a linguistic hallucination"
+      ]
+    },
+    {
+      "id": "qd9-159",
+      "word": "зажгать",
+      "explanation": "Корень -жиг- (чередующийся). Чередование: жиг/жёг. Без ударения пишется И (зажигать), под ударением — Ё (зажёг, жёг). Проверьте через: зажИгать/зажЁг.",
+      "errors": [
+        "INVALID_ALTERNATION: \"зажгать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-200",
+      "word": "выдраю",
+      "explanation": "Корень -дир- (чередующийся). Чередование: дир/дра. Проверьте через: выдИрать/драть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"выдраю\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-206",
+      "word": "мровой",
+      "explanation": "Корень -миров- (чередующийся). Чередование: миров/мер. Перед суффиксом -А- пишется И, в остальных случаях Е.",
+      "errors": [
+        "INVALID_ALTERNATION: \"мровой\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-222",
+      "word": "продраться",
+      "explanation": "Корень -дир- (чередующийся). Чередование: дир/дра. Проверьте через: продраться/продИраться.",
+      "errors": [
+        "INVALID_ALTERNATION: \"продраться\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-224",
+      "word": "рстовщичество",
+      "explanation": "Корень -ростовщ- (непроверяемый). Исключение из чередования рос/раст/ращ. Запомните: ростовщик (с о), как и отрасль, росток, ростовщина, но: расти, вырасти, нарастить.",
+      "errors": [
+        "HALLUCINATION: \"рстовщичество\" is labeled as verifiable/dictionary but mentions 'чередование' — this is likely a linguistic hallucination"
+      ]
+    },
+    {
+      "id": "qd9-227",
+      "word": "добраться",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: собИрать/собрать (соберу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"добраться\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-242",
+      "word": "бракосочтание",
+      "explanation": "Корень -бракосочет- (чередующийся). Чередование: бракосочет/бракосочит. Перед суффиксом -А- пишется И, в остальных случаях Е.",
+      "errors": [
+        "INVALID_ALTERNATION: \"бракосочтание\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-267",
+      "word": "собраться",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: собИраться/собрать (соберу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"собраться\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-275",
+      "word": "избрательно",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: собИрать/собрать (соберу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"избрательно\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-281",
+      "word": "укршение",
+      "explanation": "Корень -крас- (чередующийся). Чередование: крас/крош (проверьте через: укрАсить/крошить).",
+      "errors": [
+        "INVALID_ALTERNATION: \"укршение\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-299",
+      "word": "чинопочтание",
+      "explanation": "Корень -чинопочит- (чередующийся). Чередование: чинопочит/чинопочет. Перед суффиксом -А- пишется И, в остальных случаях Е.",
+      "errors": [
+        "INVALID_ALTERNATION: \"чинопочтание\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-315",
+      "word": "совмщать",
+      "explanation": "Корень -мес- (чередующийся). Чередование: мес/меш. Проверьте через: совмЕщать/совмЕшать.",
+      "errors": [
+        "INVALID_ALTERNATION: \"совмщать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-325",
+      "word": "сдрать",
+      "explanation": "Корень -дир- (чередующийся). Чередование: дир/дра. Проверьте через: сдИрать/драть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"сдрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-326",
+      "word": "пробраться",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: пробИраться/пробрать (проберётся).",
+      "errors": [
+        "INVALID_ALTERNATION: \"пробраться\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-332",
+      "word": "предполжение",
+      "explanation": "Корень -предполож- (чередующийся). Чередование: предполож/предполаг (проверьте через: предпОложить/предпОлагать).",
+      "errors": [
+        "INVALID_ALTERNATION: \"предполжение\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-341",
+      "word": "избрательный",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: избИрательный/избрать (изберёт).",
+      "errors": [
+        "INVALID_ALTERNATION: \"избрательный\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-350",
+      "word": "упрщённый",
+      "explanation": "Корень -прост- (чередующийся). Чередование: прост/прощ. Проверьте через: упрОщённый/простОй.",
+      "errors": [
+        "INVALID_ALTERNATION: \"упрщённый\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-352",
+      "word": "разбраться",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: разбИраться/разобрать (разберётся).",
+      "errors": [
+        "INVALID_ALTERNATION: \"разбраться\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-359",
+      "word": "обдрать",
+      "explanation": "Корень -дир- (чередующийся). Чередование: дир/дра. Проверьте через: обдИрать/драть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"обдрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-360",
+      "word": "распоржение",
+      "explanation": "Корень -ряд- (чередующийся). Чередование: ряд/ряж. Проверьте через: распорЯжение/распорЯдиться.",
+      "errors": [
+        "INVALID_ALTERNATION: \"распоржение\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-379",
+      "word": "перевзить",
+      "explanation": "Корень -воз- (чередующийся). Чередование: воз/вез. Проверьте через: перевЕзить/вОзить. Приставка: пере-.",
+      "errors": [
+        "INVALID_ALTERNATION: \"перевзить\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-405",
+      "word": "рстовщик",
+      "explanation": "Корень -ростовщ- (непроверяемый). Исключение из чередования рос/раст/ращ. Запомните: ростовщик (с о), как и отрасль, росток, ростовщина, но: расти, вырасти, нарастить.",
+      "errors": [
+        "HALLUCINATION: \"рстовщик\" is labeled as verifiable/dictionary but mentions 'чередование' — this is likely a linguistic hallucination"
+      ]
+    },
+    {
+      "id": "qd9-409",
+      "word": "выдрать",
+      "explanation": "Корень -дир- (чередующийся). Чередование: дир/дра. Проверьте через: выдИрать/драть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"выдрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-450",
+      "word": "отбрает",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: отбИрает/отобрать (отберёт).",
+      "errors": [
+        "INVALID_ALTERNATION: \"отбрает\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-490",
+      "word": "собрательный",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: собИрать/собрать (соберу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"собрательный\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-492",
+      "word": "упрщение",
+      "explanation": "Корень -прост- (чередующийся). Чередование: прост/прощ. Проверьте через: упрОщение/простОй.",
+      "errors": [
+        "INVALID_ALTERNATION: \"упрщение\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-558",
+      "word": "начнать",
+      "explanation": "Корень -чин- (чередующийся). Чередование: чин/чат. Проверьте через: начИнать/начАть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"начнать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-611",
+      "word": "выбрать",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: выбИрать/выбрать (выберет).",
+      "errors": [
+        "INVALID_ALTERNATION: \"выбрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-632",
+      "word": "усмрённый",
+      "explanation": "Корень -смир- (чередующийся). Чередование: смир/смер. Проверьте через: усмИрённый/смирИть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"усмрённый\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-644",
+      "word": "усмрять",
+      "explanation": "Корень -смир- (чередующийся). Чередование: смир/смер. Проверьте через: усмИрять/смирИть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"усмрять\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-666",
+      "word": "проклнать",
+      "explanation": "Корень -клян- (чередующийся). Чередование: клян/клят. Проверьте через: проклинАть/клЯсть.",
+      "errors": [
+        "INVALID_ALTERNATION: \"проклнать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-670",
+      "word": "выглдеть",
+      "explanation": "Корень -гляд- (чередующийся). Чередование: гляд/гляж (проверьте через: глЯдеть/глЯжу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"выглдеть\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-697",
+      "word": "собрать",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: собИрать/собрать (соберу).",
+      "errors": [
+        "INVALID_ALTERNATION: \"собрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    },
+    {
+      "id": "qd9-726",
+      "word": "забрать",
+      "explanation": "Корень -бира- (чередующийся). Чередование: бира/бер. Проверьте через: забИрать/забрать (заберёт).",
+      "errors": [
+        "INVALID_ALTERNATION: \"забрать\" claims alternating root but no documented alternation pattern found. Valid patterns: лаг/лож, раст/рос, скак/скоч, гар/гор, клан/клон, мер/мир, бер/бир, etc."
+      ]
+    }
+  ],
   "summary": {
-    "passRate": "100.0%",
-    "recommendation": "All clear. Safe to commit."
+    "passRate": "95.0%",
+    "recommendation": "Fix errors before committing. Run: node scripts/validate-rag.cjs"
   }
 }

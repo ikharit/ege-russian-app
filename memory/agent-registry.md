@@ -84,4 +84,4 @@
 
 *Last updated: 2026-06-28*
 *Current Agent: Agent 3*
-*Recent changes: task9.ts uncommitted changes audit + 11 critical -гор-/-горе- bugfixes, agent files sync (AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, 2026-06-28.md), build + validate:rag clean*
+*Recent changes: task9.ts regression fix — восстановлены correctAnswers для 11 вопросов с корнем гор/гар (qd9-141, 153, 213, 252, 330, 355, 369, 378, 683, 705, 714) после обратного дрейфа в working tree. Build + validate:rag clean.*
