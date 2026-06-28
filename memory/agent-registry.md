@@ -21,7 +21,8 @@
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
-| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2026-06-27)** — стандартизированы чередующиеся корни (блист/блест, лаг/лож, зар/зор, пир/пер, мер/мир, тир/тер, скоч/скак, раст/рос, гар/гор, плав/плов, плыв/плав, мак/моч). Добавлено 10 EGE-формат вопросов. |
+| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2026-06-27)** — стандартизированы чередующиеся корни. **Round 2 (2026-06-28):** ~40 дополнительных исправлений — проверочные слова, классификации корней, answers, опечатки. Добавлено 10 EGE-формат вопросов. |
+| Atomization | 🟢 | main | `lesson-atom-10-ege` — 10 вопросов в формате ЕГЭ (ege-multiple) по приставкам прЕ-/прА-, дО-/дА-, вО-/вА-, нА-/нО- и др. (2026-06-28). |
 | Friend system | 🟢 | main | `friendStore.ts` + `FriendsPage.tsx` — добавление/удаление друзей, поиск, заявки, рейтинг. Supabase + local fallback. |
 | Teacher Analytics | 🟢 | main | `TeacherAnalytics.tsx` + `teacherAnalyticsStore.ts` — расширенная аналитика: метрики, графики, тренды. |
 | PWA Update Toast | 🟢 | main | `PWAUpdateToast.tsx` — toast при обновлении Service Worker, auto-reload. |
@@ -64,6 +65,7 @@
 - **Регистрация:** `src/components/StudentRegistrationModal.tsx`
 - **Переключение:** `src/components/ProfileSwitcher.tsx`
 - **Deploy / Auth**: `vite.config.ts` (base path — `/` для Vercel), `src/lib/supabase.ts` (OAuth redirect → `/`), `.github/workflows/pages.yml.disabled` (GitHub Pages workflow отключён)
+- **Atomization (EGE)**: `src/data/sections/atomization.ts` — `lesson-atom-10-ege` (10 ege-multiple вопросов по приставкам)
 
 ---
 
@@ -77,3 +79,7 @@
 ---
 
 *Этот файл — live dashboard. Не дублируй сюда историю. Всё остальное — в `AGENTS.md`.*
+
+---
+
+*Last updated: 2026-06-28*
