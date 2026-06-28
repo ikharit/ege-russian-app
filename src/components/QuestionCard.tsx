@@ -433,7 +433,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
           {/* Explanation */}
           <div className="mb-3">
             <p className="text-sm text-gray-700 leading-relaxed">
-              {question.explanation}
+              {question.explanation || (isCorrect ? 'Ответ верный!' : 'Правильный ответ указан выше.')}
             </p>
           </div>
 
@@ -557,14 +557,14 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
       <button
         ref={checkBtnRef}
         onClick={isChecked ? handleNext : handleCheck}
-        disabled={!canCheck}
+        disabled={!canCheck || (isChecked && !canProceed)}
         aria-label={isChecked ? (questionNumber === totalQuestions ? 'Завершить урок' : 'Следующий вопрос') : 'Проверить ответ'}
-        className={`btn-primary w-full ${isChecked ? (isCorrect ? '' : 'bg-duo-red shadow-[0_4px_0_#d32f2f]') : ''}`}
+        className={`btn-primary w-full ${isChecked ? (isCorrect ? '' : 'bg-duo-red shadow-[0_4px_0_#d32f2f]') : ''} ${isChecked && !canProceed ? 'opacity-70 cursor-not-allowed' : ''}`}
       >
         {isChecked ? (
           <span className="flex items-center justify-center gap-2">
-            {questionNumber === totalQuestions ? 'Завершить' : 'Понятно, дальше →'}
-            <ArrowRight size={18} />
+            {!canProceed ? '👀 Читай объяснение...' : (questionNumber === totalQuestions ? 'Завершить' : 'Понятно, дальше →')}
+            {canProceed && <ArrowRight size={18} />}
           </span>
         ) : (
           'Проверить'
