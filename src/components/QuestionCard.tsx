@@ -55,6 +55,7 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   const [focusedIdx, setFocusedIdx] = useState(0)
   const [hintsRevealed, setHintsRevealed] = useState(0)
   const [lastUserAnswer, setLastUserAnswer] = useState<string | undefined>(undefined)
+  const [canProceed, setCanProceed] = useState(true)
   const navigate = useNavigate()
   
   const savedExplanations = useProgressStore((s) => s.savedExplanations)
@@ -84,6 +85,17 @@ export function QuestionCard({ question, questionNumber, totalQuestions, onAnswe
   useEffect(() => {
     if (isChecked && checkBtnRef.current) {
       checkBtnRef.current.focus()
+    }
+  }, [isChecked])
+
+  // After answer, block "Next" for 1.5s so user can read explanation
+  useEffect(() => {
+    if (isChecked) {
+      setCanProceed(false)
+      const timer = setTimeout(() => setCanProceed(true), 1500)
+      return () => clearTimeout(timer)
+    } else {
+      setCanProceed(true)
     }
   }, [isChecked])
 

@@ -139,11 +139,21 @@ export function exportEditsPlugin(): Plugin {
               if (!found) notFound.push(questionId)
             }
 
+            // Итоговая статистика по агентам
+            const agentStats: Record<string, number> = {}
+            for (const [, edit] of Object.entries(edits)) {
+              const editData = edit as any
+              if (!editData.changes || Object.keys(editData.changes).length === 0) continue
+              const a = editData.agent || 'неизвестно'
+              agentStats[a] = (agentStats[a] || 0) + 1
+            }
+
             res.setHeader('Content-Type', 'application/json')
             res.end(
               JSON.stringify({
                 success: true,
                 applied: appliedCount,
+                agentStats,
                 notFound,
               })
             )

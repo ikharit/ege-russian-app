@@ -47,7 +47,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-9', type: 'text', text: 'Впишите пропущенную букву: пр_клеить (к картону)',
     correctAnswer: ['и'],
-    explanation: 'ПРИ- — приближение. Проверочное: клеить.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
+    explanation: 'ПРИ- — присоединение, прикрепление. Проверочное: клеить. (Не путать с приближением: приехать, прилететь.)', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
     {
     id: 'q10-atom-10', type: 'text', text: 'Впишите пропущенную букву: пр_смотреться',
@@ -110,12 +110,12 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-21', type: 'text', text: 'Впишите пропущенную букву: ра_каяние',
     correctAnswer: ['с'],
-    explanation: 'РАС- перед глухими к, ч, п, с, т, ф, ц, ш, щ (раскаяние, расширить).', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
+    explanation: 'РАС- перед глухими к, ч, п, с, т, ф, ц, ш, щ (раскаяние, расширить). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
     {
     id: 'q10-atom-22', type: 'text', text: 'Впишите пропущенную букву: раз_брать',
     correctAnswer: ['о'],
-    explanation: 'РАЗ- перед звонкими и гласными (разобрать, разъехаться).', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
+    explanation: 'РАЗ- перед звонкими и гласными (разобрать, разъехаться). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_ra_ro', 'ra_ro_vowel']
   },
     {
     id: 'q10-atom-23', type: 'text', text: 'Впишите пропущенную букву: ро_черк',
@@ -136,27 +136,27 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-26', type: 'text', text: 'Впишите пропущенную букву: без_скусный',
     correctAnswer: ['ы'],
-    explanation: 'БЕЗ- перед звонкими б, в, г, д, з, ж (безыскусный, безграничный).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'БЕЗ- перед звонкими б, в, г, д, з, ж (безыскусный, безграничный). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-27', type: 'text', text: 'Впишите пропущенную букву: бес_правный',
     correctAnswer: ['п'],
-    explanation: 'БЕС- перед глухими п, с, т, к, ф, х, ц, ч, ш, щ (бесправный, бесконечный).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'БЕС- перед глухими п, с, т, к, ф, х, ц, ч, ш, щ (бесправный, бесконечный). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-28', type: 'text', text: 'Впишите пропущенную букву: бе_вкусный',
     correctAnswer: ['з'],
-    explanation: 'БЕЗ- перед звонкими (безвкусный, безбрежный).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'БЕЗ- перед звонкими (безвкусный, безбрежный). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-29', type: 'text', text: 'Впишите пропущенную букву: бе_конечный',
     correctAnswer: ['с'],
-    explanation: 'БЕС- перед глухими (бесконечный, бесчестный).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'БЕС- перед глухими (бесконечный, бесчестный). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-30', type: 'text', text: 'Впишите пропущенную букву: бе_звёздный',
     correctAnswer: ['з'],
-    explanation: 'БЕЗ- перед звонкими (беззвёздный, безбожный).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'БЕЗ- перед звонкими (беззвёздный, безбожный). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
   // === ИЗ- / ИС- / ИСПО- ===
     {
@@ -229,7 +229,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-44', type: 'text', text: 'Впишите пропущенную букву: обе_цветить',
     correctAnswer: ['с'],
-    explanation: 'ОБЕС- перед глухими ц, п, с, т, к (обесцветить, обеспечить).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'ОБЕС- перед глухими ц, п, с, т, к (обесцветить, обеспечить). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-45', type: 'text', text: 'Впишите пропущенную букву: об_ятия',
@@ -329,12 +329,12 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-63', type: 'text', text: 'Впишите пропущенную букву: зас_лонить',
     correctAnswer: ['л'],
-    explanation: 'ЗАС- перед глухими л (заслонить, заскорузлый).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
+    explanation: 'ЗАС- перед глухими л (заслонить, заскорузлый). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_deaf']
   },
     {
     id: 'q10-atom-64', type: 'text', text: 'Впишите пропущенную букву: во_пламениться',
     correctAnswer: ['с'],
-    explanation: 'ВОС- перед глухими п (воспламениться, воспитать).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
+    explanation: 'ВОС- перед глухими п (воспламениться, воспитать). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
     {
     id: 'q10-atom-65', type: 'text', text: 'Впишите пропущенную букву: от_граться',

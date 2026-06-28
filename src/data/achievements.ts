@@ -10,7 +10,9 @@ export const achievements: Achievement[] = [
   
   // === ИНТЕНСИВ ===
   { id: 'ach-fast-learner', title: 'Интенсив', description: 'Пройдите 3 урока за день', icon: 'Rocket', condition: 'fast_learner' },
-  { id: 'ach-marathon-day', title: 'Марафон дня', description: 'Пройдите 5 уроков за день', icon: 'Rocket', condition: 'marathon_day' },
+  { id: 'ach-5-lessons-day', title: 'Марафон дня', description: 'Пройдите 5 уроков за день', icon: 'Rocket', condition: 'marathon_day' },
+  { id: 'ach-10-lessons-day', title: 'Десятка за день', description: 'Пройдите 10 уроков за день', icon: 'Zap', condition: 'ten_lessons_day' },
+  { id: 'ach-15-lessons-day', title: 'Монстр интенсива', description: 'Пройдите 15 уроков за день', icon: 'Crown', condition: 'fifteen_lessons_day' },
   
   // === ИДЕАЛЬНЫЕ УРОКИ (подряд) ===
   { id: 'ach-perfect', title: 'Идеально', description: 'Пройдите урок без ошибок', icon: 'Trophy', condition: 'perfect_lesson' },
@@ -75,7 +77,10 @@ export const achievements: Achievement[] = [
   { id: 'ach-mistake-50', title: 'Полсотни', description: 'Исправьте 50 ошибок', icon: 'CheckCircle', condition: 'fix_mistake_50' },
   { id: 'ach-mistake-all', title: 'Всё чисто', description: 'Исправьте все ошибки (раздел пуст)', icon: 'CheckCircle', condition: 'fix_mistake_all' },
   
-  // === ДУЭЛИ ===
+  // === КОЛЛЕКЦИЯ ДОСТИЖЕНИЙ ===
+  { id: 'ach-collector-20', title: 'Собиратель', description: 'Получите 20 достижений', icon: 'Star', condition: 'collection_20' },
+  { id: 'ach-collector-40', title: 'Коллекционер', description: 'Получите 40 достижений', icon: 'Star', condition: 'collection_40' },
+  { id: 'ach-all-achievements', title: 'Абсолют', description: 'Соберите ВСЕ достижения', icon: 'Crown', condition: 'all_achievements' },
   { id: 'ach-duel-first', title: 'Первый поединок', description: 'Создайте или присоединитесь к дуэли', icon: 'Swords', condition: 'duel_first' },
   { id: 'ach-duel-win', title: 'Победитель', description: 'Выиграйте дуэль', icon: 'Trophy', condition: 'duel_win' },
   { id: 'ach-duel-wins-3', title: 'Серийный победитель', description: '3 победы в дуэлях', icon: 'Trophy', condition: 'duel_wins_3' },
@@ -102,7 +107,12 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-lessons-100': { current: Object.values(progress).filter((l: any) => l.status === 'completed').length, target: 100 },
     'ach-lessons-200': { current: Object.values(progress).filter((l: any) => l.status === 'completed').length, target: 200 },
     'ach-fast-learner': { current: 0, target: 1 },
-    'ach-marathon-day': { current: 0, target: 1 },
+    'ach-5-lessons-day': { current: 0, target: 1 },
+    'ach-10-lessons-day': { current: 0, target: 1 },
+    'ach-15-lessons-day': { current: 0, target: 1 },
+    'ach-collector-20': { current: stats.achievements.length, target: 20 },
+    'ach-collector-40': { current: stats.achievements.length, target: 40 },
+    'ach-all-achievements': { current: stats.achievements.length, target: allAchievements.length },
     'ach-xp-100': { current: stats.xp, target: 100 },
     'ach-xp-500': { current: stats.xp, target: 500 },
     'ach-xp-1000': { current: stats.xp, target: 1000 },

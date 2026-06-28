@@ -143,7 +143,21 @@ for (const [questionId, edit] of Object.entries(edits)) {
   if (!found) notFound.push(questionId)
 }
 
+// Итоговая статистика по агентам
+const agentStats = {}
+for (const [, edit] of Object.entries(edits)) {
+  if (!edit.changes || Object.keys(edit.changes).length === 0) continue
+  const a = edit.agent || 'неизвестно'
+  agentStats[a] = (agentStats[a] || 0) + 1
+}
+
 console.log(`\n📊 Применено: ${appliedCount} правок`)
+if (Object.keys(agentStats).length > 0) {
+  console.log('\n🤖 По агентам:')
+  for (const [a, count] of Object.entries(agentStats)) {
+    console.log(`   ${a}: ${count}`)
+  }
+}
 if (notFound.length > 0) {
   console.log(`⚠️  Не найдены: ${notFound.join(', ')}`)
 }

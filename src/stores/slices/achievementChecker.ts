@@ -169,8 +169,16 @@ export function createAchievementChecker(get: any) {
         return l.completedAt.startsWith(today)
       }).length
       if (lessonsToday >= 3) addIfNew('ach-fast-learner')
-      if (lessonsToday >= 5) addIfNew('ach-marathon-day')
+      if (lessonsToday >= 5) addIfNew('ach-5-lessons-day')
+      if (lessonsToday >= 10) addIfNew('ach-10-lessons-day')
+      if (lessonsToday >= 15) addIfNew('ach-15-lessons-day')
     }
+
+    // === КОЛЛЕКЦИЯ ДОСТИЖЕНИЙ ===
+    const achievementCount = state.achievements.length + unlocked.length
+    if (achievementCount >= 20) addIfNew('ach-collector-20')
+    if (achievementCount >= 40) addIfNew('ach-collector-40')
+    if (achievementCount >= allAchievements.length) addIfNew('ach-all-achievements')
 
     // === ДУЭЛИ ===
     const duels = useDuelStore.getState().duels
