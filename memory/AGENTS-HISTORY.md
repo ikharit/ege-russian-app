@@ -480,3 +480,66 @@
 - **Решение:** Файл откачен к состоянию коммита `10f9bc9` через `git checkout HEAD --`. Все 11 вопросов восстановлены. Сборка и RAG проходят чисто. Обновлены агентские файлы.
 - **Git commit:** [будет сделан после актуализации]
 - **⚠️ Важно:** Build: 11.31s, 0 errors. validate:rag: 1379 entries, 0 errors, 0 warnings. Следующие агенты: при обнаружении незакоммиченных изменений в `task9.ts` — проверять diff на regression `горе-` вместо `гор-`.
+
+### [2026-06-28 21:40] Агент: Agent 3
+- **Что:** Cache-bust v6 + content fixes — update manifest cache-bust, explanation fixes in task9.ts, grammar.ts, task7Questions.ts, theory/task12.ts, theoryTests.ts
+- **Где:** `index.html`, `src/data/sections/dooshin/task9.ts`, `src/data/sections/grammar.ts`, `src/data/task7Questions.ts`, `src/data/theory/task12.ts`, `src/data/theoryTests.ts`, `public/data/graph-relations.json`, `public/data/knowledge-index.json`
+- **Зачем:** Обновление PWA cache-bust + исправление неточностей в объяснениях спряжения и корней.
+- **Git commit:** `2ee6f6d`
+- **⚠️ Важно:** Build: 43.95s, 0 errors. validate:rag: 1379 entries, 0 errors, 0 warnings.
+
+### [2026-06-28 21:55] Агент: Agent 3
+- **Что:** Cloudflare Pages deployment workflow — добавлен CI/CD для деплоя на Cloudflare Pages
+- **Где:** `.github/workflows/cloudflare-pages.yml`
+- **Зачем:** Добавить второй deploy target (Cloudflare Pages) в дополнение к GitHub Pages.
+- **Git commit:** `3f3150d`
+
+### [2026-06-28 22:14] Агент: Agent 3
+- **Что:** Trigger Cloudflare Pages deployment (empty commit)
+- **Где:** —
+- **Зачем:** Принудительный запуск workflow для проверки.
+- **Git commit:** `775e7a2`
+
+### [2026-06-28 22:19] Агент: Agent 3
+- **Что:** Fix Cloudflare Pages workflow — add apiToken
+- **Где:** `.github/workflows/cloudflare-pages.yml`
+- **Зачем:** wrangler-action требует apiToken для аутентификации.
+- **Git commit:** `95e97f8`
+
+### [2026-06-28 22:22] Агент: Agent 3
+- **Что:** Fix Cloudflare Pages workflow — add GITHUB_TOKEN env
+- **Где:** `.github/workflows/cloudflare-pages.yml`
+- **Зачем:** Добавление GITHUB_TOKEN для доступа к репозиторию.
+- **Git commit:** `faa00c9`
+
+### [2026-06-28 22:24] Агент: Agent 3
+- **Что:** Fix Cloudflare Pages workflow — use wrangler CLI directly
+- **Где:** `.github/workflows/cloudflare-pages.yml`
+- **Зачем:** Упрощение workflow, прямой вызов wrangler CLI.
+- **Git commit:** `9077f30`
+
+### [2026-06-28 22:27] Агент: Agent 3
+- **Что:** Fix Cloudflare Pages workflow — use wrangler-action@v3
+- **Где:** `.github/workflows/cloudflare-pages.yml`
+- **Зачем:** Возврат к action с корректной версией v3.
+- **Git commit:** `2d64dee`
+
+### [2026-06-28 22:32] Агент: Agent 3
+- **Что:** Fix GitHub Pages workflow — use official actions/deploy-pages
+- **Где:** `.github/workflows/pages.yml`
+- **Зачем:** Переход на официальный GitHub action для деплоя Pages.
+- **Git commit:** `83322aa`
+
+### [2026-06-28 22:35] Агент: Agent 3
+- **Что:** Fix deploy — restore base to /ege-russian-app/ for GitHub Pages
+- **Где:** `vite.config.ts`
+- **Зачем:** GitHub Pages требует base path с именем репозитория. Было '/' для Vercel, восстановлено '/ege-russian-app/'.
+- **Git commit:** `2cb146b`
+- **⚠️ Важно:** Теперь dual-deploy: GitHub Pages (primary) + Cloudflare Pages (secondary). Vercel больше не используется.
+
+### [2026-06-28 22:39] Агент: Agent 3
+- **Что:** Shkolkovo content — добавлены задания 15 (Н/НН) из сборника Дощинского-2026
+- **Где:** `src/data/sections/shkolkovo/`, `src/data/sections/orthographyAll.ts`, `public/data/graph-relations.json`
+- **Зачем:** Расширение банка заданий заданием 15 (Н/НН) из сборника Дощинского-2026 (~150 вопросов с пояснениями).
+- **Git commit:** незакоммичено (в working tree)
+- **⚠️ Важно:** Файлы shkolkovo — untracked. Нужно закоммитить вместе с агентскими файлами.

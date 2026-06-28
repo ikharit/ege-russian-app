@@ -64,7 +64,8 @@
 - **Ученики:** `src/stores/studentStore.ts`
 - **Регистрация:** `src/components/StudentRegistrationModal.tsx`
 - **Переключение:** `src/components/ProfileSwitcher.tsx`
-- **Deploy / Auth**: `vite.config.ts` (base path — `/` для Vercel), `src/lib/supabase.ts` (OAuth redirect → `/`), `.github/workflows/pages.yml.disabled` (GitHub Pages workflow отключён)
+- **Deploy / Auth**: `vite.config.ts` (base path — `/ege-russian-app/` для GitHub Pages), `src/lib/supabase.ts` (OAuth redirect → `/`), `.github/workflows/pages.yml` (GitHub Pages — `actions/deploy-pages@v4`), `.github/workflows/cloudflare-pages.yml` (Cloudflare Pages — `wrangler-action@v3`)
+- **Shkolkovo (Дощинский-2026)**: `src/data/sections/shkolkovo/` — задание 15 (Н/НН), ~150 вопросов в ege-multiple формате с пояснениями
 - **Atomization (EGE)**: `src/data/sections/atomization.ts` — `lesson-atom-10-ege` (10 ege-multiple вопросов по приставкам)
 
 ---
@@ -84,4 +85,4 @@
 
 *Last updated: 2026-06-28*
 *Current Agent: Agent 3*
-*Recent changes: task9.ts regression fix — восстановлены correctAnswers для 11 вопросов с корнем гор/гар (qd9-141, 153, 213, 252, 330, 355, 369, 378, 683, 705, 714) после обратного дрейфа в working tree. Build + validate:rag clean.*
+*Recent changes: Cache-bust v6 + content fixes. Cloudflare Pages workflow added. GitHub Pages restored — dual deploy. Shkolkovo content added: задания 15 (Н/НН) из Дощинского-2026 (~150 вопросов). Build + validate:rag clean.*

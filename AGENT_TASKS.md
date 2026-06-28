@@ -1391,3 +1391,101 @@ import { getAtomById } from '../data/atomization/atoms'
 **Сборка**: `npm run build` ✅ (11.31s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
 
 **Критерий завершения**: Ни одного `горе-` вместо `гор-` для слов от «гореть» в `task9.ts`. Build и RAG проходят чисто.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-28 — deploy fixes)
+
+### ✅ ЗАДАЧА-А42: Cache-bust v6 + content fixes
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `index.html`, `src/data/sections/dooshin/task9.ts`, `src/data/sections/grammar.ts`, `src/data/task7Questions.ts`, `src/data/theory/task12.ts`, `src/data/theoryTests.ts`, `public/data/graph-relations.json`, `public/data/knowledge-index.json`
+
+**Решение**:
+1. `index.html` — cache-bust query parameter v=6 для принудительного обновления PWA.
+2. `task9.ts` — 6 исправлений explanation: бесшовный/бесшовные (шьЁт), отдалённый (дАль), выберется/выберешь (выбИрать/выбрать), воспалительный (палитра — непроверяемый).
+3. `grammar.ts` — упрощены объяснения спряжения (убраны повторяющиеся фразы).
+4. `task7Questions.ts` — исправлены explanation для "спит" и "слышим".
+5. `theory/task12.ts` — обновлена теория спряжения.
+6. `theoryTests.ts` — обновлены тестовые вопросы.
+7. `graph-relations.json` и `knowledge-index.json` — rebuild.
+
+**Файлы**: `index.html`, `src/data/sections/dooshin/task9.ts`, `src/data/sections/grammar.ts`, `src/data/task7Questions.ts`, `src/data/theory/task12.ts`, `src/data/theoryTests.ts`, `public/data/graph-relations.json`, `public/data/knowledge-index.json`
+
+**Git**: `2ee6f6d`
+
+**Сборка**: `npm run build` ✅ (43.95s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
+
+**Критерий завершения**: Build проходит чисто, PWA получает обновления, explanation'ы корректны.
+
+---
+
+### ✅ ЗАДАЧА-А43: Cloudflare Pages deployment workflow
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `.github/workflows/cloudflare-pages.yml`
+
+**Решение**:
+1. Создан workflow `.github/workflows/cloudflare-pages.yml` — деплой на Cloudflare Pages при push в main.
+2. Использует `cloudflare/wrangler-action@v3` с `apiToken` и `accountId`.
+3. Требуется настройка secrets в GitHub: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+4. 4 итерации фиксов: `apiToken` (`95e97f8`), `GITHUB_TOKEN` env (`faa00c9`), wrangler CLI (`9077f30`), финальная `wrangler-action@v3` (`2d64dee`).
+
+**Файлы**: `.github/workflows/cloudflare-pages.yml`
+
+**Git**: `3f3150d` (создание), `775e7a2` (trigger), `95e97f8` (apiToken), `faa00c9` (GITHUB_TOKEN), `9077f30` (wrangler CLI), `2d64dee` (wrangler-action@v3)
+
+**Критерий завершения**: Workflow деплоит на Cloudflare Pages при push в main. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А44: GitHub Pages restore + dual deploy
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `vite.config.ts`, `.github/workflows/pages.yml`
+
+**Решение**:
+1. `vite.config.ts` — restored `base: '/ege-russian-app/'` (было '/' для Vercel). GitHub Pages требует base path с именем репозитория.
+2. `.github/workflows/pages.yml` — переименован обратно из `.disabled` → `.yml`, обновлён на official `actions/deploy-pages@v4` (вместо `peaceiris/actions-gh-pages`).
+3. Теперь dual-deploy: GitHub Pages (primary) + Cloudflare Pages (secondary).
+
+**Файлы**: `vite.config.ts`, `.github/workflows/pages.yml`
+
+**Git**: `83322aa` (official deploy-pages), `2cb146b` (restore base path)
+
+**Критерий завершения**: GitHub Pages деплоится корректно, asset'ы загружаются с правильного base path. Cloudflare Pages деплоится параллельно. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А45: Shkolkovo content — задания 15 (Н/НН) из Дощинского-2026
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `src/data/sections/shkolkovo/`, `src/data/sections/orthographyAll.ts`, `public/data/graph-relations.json`
+
+**Решение**:
+1. Создана директория `src/data/sections/shkolkovo/` с файлами `index.ts`, `task1.ts`, `task15.ts`.
+2. Добавлены задания 15 (Н/НН) из сборника Дощинского-2026 — ~150 вопросов в формате ЕГЭ (ege-multiple) с пояснениями.
+3. `src/data/sections/orthographyAll.ts` — добавлен `shkolkovoSections` в импорт и фильтрацию группы "Задание 15" (`lesson-shkolkovo`).
+4. `public/data/graph-relations.json` — rebuild с обновлённым timestamp.
+
+**Файлы**: `src/data/sections/shkolkovo/index.ts`, `src/data/sections/shkolkovo/task1.ts`, `src/data/sections/shkolkovo/task15.ts`, `src/data/sections/orthographyAll.ts`, `public/data/graph-relations.json`
+
+**Git**: незакоммичено (untracked + modified в working tree)
+
+**Сборка**: `npm run build` ✅ (43.95s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
+
+**Критерий завершения**: Новые вопросы Школково отображаются в группе "Задание 15" орфографии. Build и RAG проходят чисто.
+
+---

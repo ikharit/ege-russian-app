@@ -5,6 +5,7 @@ import { grammarSections } from './grammar'
 import { nnnSections } from './n_nn'
 import { dooshin15Sections } from './dooshin15'
 import { dooshin20Sections } from './dooshin20'
+import { shkolkovoSections } from './shkolkovo'
 
 const allLessons = [
   ...orthographySections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
@@ -13,6 +14,7 @@ const allLessons = [
   ...nnnSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...dooshin15Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...dooshin20Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
+  ...shkolkovoSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
 ]
 
 export const orthographyAllSections: Section[] = [
@@ -66,7 +68,7 @@ export const orthographyAllSections: Section[] = [
         id: 'group-task15',
         title: 'Задание 15',
         subtitle: 'Н / НН',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-') || l.id.startsWith('lesson-dooshin-15') || l.id.startsWith('qd15-')),
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-') || l.id.startsWith('lesson-dooshin-15') || l.id.startsWith('qd15-') || l.id.startsWith('lesson-shkolkovo')),
       },
       {
         id: 'group-task20',

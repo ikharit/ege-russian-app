@@ -1,6 +1,6 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Current Agent ID:** `agent-3` | **Last updated:** 2026-06-29
+> **Current Agent ID:** `agent-3` | **Last updated:** 2026-06-28
 > 
 > All changelog entries from this session: **Agent 3**
 
@@ -416,5 +416,14 @@ Last updated: 2026-06-28 by Agent 3
 Last updated: 2026-06-28 by Agent 3
 - **Task 9 regression fix — восстановление correctAnswers после обратного дрейфа**: В `src/data/sections/dooshin/task9.ts` обнаружен обратный дрейф (regression) — 11 вопросов с корнем `-гор-` (гор/гар) вновь получили incorrect `correctAnswer: ["е"]` и explanation `-горе-` (проверяемый), хотя были исправлены в коммите `10f9bc9`. Это создавало несуществующие слова: «загеревший», «обгереть», «разгераться», «г_релый», «заг_рающий», «пог_рельцы», «разг_рающийся», «заг_раться», «заг_релый», «г_рячий», «возг_рание». Все 11 вопросов (qd9-141, qd9-153, qd9-213, qd9-252, qd9-330, qd9-355, qd9-369, qd9-378, qd9-683, qd9-705, qd9-714) восстановлены к `correctAnswer: ["о"]` и explanation с чередующимся корнем `-гор-`. Файл откачен к состоянию коммита `10f9bc9` через `git checkout HEAD --`. Проверены остальные correctAnswers в файле — не затронуты. Сборка: `npm run build` ✅ (11.31s, 0 ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings). Файл: `src/data/sections/dooshin/task9.ts`.
 
-Last updated: 2026-06-26 by Agent 1
-- **Commit uncommitted changes from Agent 5**: Закоммичены незакоммиченные изменения из working tree, оставленные Agent 5 (2026-06-28). achievements.ts — частичный откат порогов (компромисс: добавлены обратно ачивки lessons-10, perfect, streak-3, xp-100/500, level-5). task9.ts — минорные фиксы explanation. TodayPage.tsx — небольшие UI-правки. achievementChecker.ts — обновлены проверки для откатанных ачивок. questionEdits.ts — новый файл. types/index.ts — корректировки типов. Git: `0f02a32`.
+Last updated: 2026-06-28 by Agent 3
+- **Cache-bust v6 + content fixes**: `index.html` — обновлён cache-bust query parameter до v=6 для принудительного обновления PWA. `src/data/sections/dooshin/task9.ts` — 6 исправлений explanation: бесшовный (шьЁт), отдалённый (дАль), выберется/выберешь (выбИрать/выбрать), воспалительный (палитра — непроверяемый), бесшовные (шьЁт). `src/data/sections/grammar.ts` — упрощены объяснения спряжения (убраны повторяющиеся фразы "не на -ИТЬ, но глагол 2-го спряжения"). `src/data/task7Questions.ts` — исправлены explanation для "спит" (2-е спряжение, ударное окончание) и "слышим" (убрано ложное "исключение"). `src/data/theory/task12.ts` — обновлена теория спряжения с новыми примерами и правилами. `src/data/theoryTests.ts` — обновлены тестовые вопросы. `public/data/graph-relations.json` и `public/data/knowledge-index.json` — rebuild. Git: `2ee6f6d`.
+
+Last updated: 2026-06-28 by Agent 3
+- **Cloudflare Pages deployment**: Добавлен CI/CD workflow `.github/workflows/cloudflare-pages.yml` — автоматический деплой на Cloudflare Pages при push в main. Использует `cloudflare/wrangler-action@v3` с `apiToken` и `accountId`. Потребовалось 4 итерации фиксов: добавлен `apiToken` (`95e97f8`), `GITHUB_TOKEN` env (`faa00c9`), переход на wrangler CLI напрямую (`9077f30`), финальная версия через `wrangler-action@v3` (`2d64dee`). Git: `3f3150d`…`2d64dee`.
+
+Last updated: 2026-06-28 by Agent 3
+- **GitHub Pages restore + dual deploy**: Возврат к GitHub Pages как primary deploy target. `vite.config.ts` — restored `base: '/ege-russian-app/'` (было '/' для Vercel). `.github/workflows/pages.yml` — переименован обратно из `.disabled` и обновлён на official `actions/deploy-pages@v4` вместо `peaceiris/actions-gh-pages`. Теперь dual-deploy: GitHub Pages (`actions/deploy-pages@v4`) + Cloudflare Pages (`wrangler-action@v3`). Git: `83322aa`, `2cb146b`.
+
+Last updated: 2026-06-28 by Agent 3
+- **Shkolkovo content — задания 15 (Н/НН) из Дощинского-2026**: Добавлен новый раздел `src/data/sections/shkolkovo/` с заданиями 15 (Н/НН) из сборника Дощинского-2026. Содержит ~150 вопросов в формате ЕГЭ (ege-multiple) по правилам написания Н/НН. Вопросы взяты из вариантов с пояснениями. `src/data/sections/orthographyAll.ts` — добавлен `shkolkovoSections` в импорт и фильтрацию группы "Задание 15". `public/data/graph-relations.json` — rebuild с обновлённым timestamp. Файлы: `src/data/sections/shkolkovo/index.ts`, `task1.ts`, `task15.ts`.
