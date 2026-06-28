@@ -240,6 +240,7 @@ export function subscribeToQuestionEdits(callback?: (edit: QuestionEdit) => void
           lesson_id: row.lesson_id,
           changes: row.changes as Partial<Question>,
           edited_by: row.edited_by,
+          agent: row.agent,
           edited_at: row.edited_at,
           created_at: row.created_at,
           synced: true,

@@ -283,10 +283,10 @@
   - `qd9-408` — это "списать" (корень -пис-), не "спешить". Исправлен маппинг.
   - `algorithm-ege-platform.md` полностью переписан: отражает реальный стек (Capacitor, ML, spellEngine), 22 страницы, ML pipeline, агентский workflow.
 
-### [2026-06-26 10:50] Агент: Agent 1
-- **Что:** Agent identification system
-- **Где:** `AGENTS.md`, `AGENT_REMINDER.md`, `AGENT_TASKS.md`, `memory/2026-06-26.md`, `memory/AGENTS-HISTORY.md`, `IDENTITY.md`
-- **Зачем:** Ввести систему идентификации агентов, чтобы отслеживать кто что делал
+### [2026-06-28 10:23] Агент: Agent 1
+- **Что:** Agent identification system + незакоммиченные изменения (achievements, task9, achievementChecker)
+- **Где:** `AGENTS.md`, `AGENT_REMINDER.md`, `AGENT_TASKS.md`, `memory/2026-06-26.md`, `memory/AGENTS-HISTORY.md`, `IDENTITY.md`, `src/data/achievements.ts`, `src/stores/slices/achievementChecker.ts`, `src/data/sections/dooshin/task9.ts`, `public/data/graph-relations.json`
+- **Зачем:** Ввести систему идентификации агентов, чтобы отслеживать кто что делал. Также закоммичены незакоммиченные изменения из предыдущих сессий.
 - **Git commit:** `b0a1230`
 - **⚠️ Важно:** 
   - Все записи в changelog и истории теперь содержат `by Agent N`
@@ -294,6 +294,28 @@
   - AGENTS.md — добавлен `Current Agent ID: agent-1` в начало файла
   - AGENT_TASKS.md — добавлено поле **Агент:** в заголовок и в задачу А23
   - AGENT_REMINDER.md — добавлена заметка "Текущий агент: Agent 1"
+  - Также включены: achievements cleanup, task9 explanation fixes (round 3), achievementChecker.ts, graph-relations.json
+  
+### [2026-06-28 10:25] Агент: Agent 6
+- **Что:** Актуализация агентских файлов + добавлен agent-6 ID
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `src/lib/questionEdits.ts`
+- **Зачем:** Агент 6 выполнил чистку и фиксы (workspace cleanup, build fix, Supabase security, data fixes). Добавлены его изменения в агентские файлы.
+- **Git commit:** `2fe856a`
+- **⚠️ Важно:** 
+  - AGENTS.md — добавлены changelog entries для achievements cleanup и task9 round 3
+  - AGENT_TASKS.md — добавлены задачи А31 (achievements cleanup) и А32 (task9 round 3)
+  - Все записи теперь содержат agent ID
+
+### [2026-06-28 10:26] Агент: Agent 3
+- **Что:** Обновление агентской идентификации → Agent 3
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`, `src/lib/questionEdits.ts`, `src/pages/TodayPage.tsx`
+- **Зачем:** Смена текущего агента на Agent 3 (оркестратор)
+- **Git commit:** `8947bea`
+- **⚠️ Важно:** 
+  - Текущий агент: **Agent 3**
+  - AGENTS.md — Current Agent ID: `agent-3`
+  - memory/2026-06-28.md — дополнен агентской записью
+
   - `archive/` — перенесены ~130 файлов. Оставлены: Excel-реестры, DOCX/PDF, `algorithm-ege-platform.md`, `plan.md`.
 
 ### [2026-06-26 13:16] Агент: Agent 1

@@ -1095,7 +1095,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ## 🆕 Новые задачи (добавлено 2026-06-26, 19:00 — data audit fixes)
 
-### ✅ ЗАДАЧА-А30: Data audit — 5 фиксов (RAG, line endings, миграции, граф)
+### ✅ ЗАДАЧА-А30: Data audit — 5 фиксов (RAG, line endings, миграции, граф) — Agent 2
 
 **Статус:** ✅ Завершено (2026-06-26)
 
