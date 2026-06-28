@@ -121,6 +121,8 @@ export function exportEditsPlugin(): Plugin {
               const editData = edit as any
               if (!editData.changes || Object.keys(editData.changes).length === 0) continue
 
+              const agent = editData.agent || 'неизвестно'
+
               let found = false
               for (const filePath of files) {
                 const content = fs.readFileSync(filePath, 'utf-8')
@@ -129,6 +131,7 @@ export function exportEditsPlugin(): Plugin {
                   fs.writeFileSync(filePath, newContent, 'utf-8')
                   found = true
                   appliedCount++
+                  console.log(`[export-edits] ✅ ${questionId} → ${path.relative(process.cwd(), filePath)} (${agent})`)
                   break
                 }
               }

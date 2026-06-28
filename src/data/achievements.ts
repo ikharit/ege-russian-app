@@ -8,6 +8,10 @@ export const achievements: Achievement[] = [
   { id: 'ach-lessons-100', title: 'Магистр', description: 'Пройдите 100 уроков', icon: 'BookOpen', condition: 'complete_lessons_100' },
   { id: 'ach-lessons-200', title: 'Легенда', description: 'Пройдите 200 уроков', icon: 'BookOpen', condition: 'complete_lessons_200' },
   
+  // === ИНТЕНСИВ ===
+  { id: 'ach-fast-learner', title: 'Интенсив', description: 'Пройдите 3 урока за день', icon: 'Rocket', condition: 'fast_learner' },
+  { id: 'ach-marathon-day', title: 'Марафон дня', description: 'Пройдите 5 уроков за день', icon: 'Rocket', condition: 'marathon_day' },
+  
   // === ИДЕАЛЬНЫЕ УРОКИ (подряд) ===
   { id: 'ach-perfect', title: 'Идеально', description: 'Пройдите урок без ошибок', icon: 'Trophy', condition: 'perfect_lesson' },
   { id: 'ach-perfect-5', title: 'Безупречность', description: '5 идеальных уроков подряд', icon: 'Trophy', condition: 'perfect_5' },
@@ -97,6 +101,8 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-lessons-50': { current: Object.values(progress).filter((l: any) => l.status === 'completed').length, target: 50 },
     'ach-lessons-100': { current: Object.values(progress).filter((l: any) => l.status === 'completed').length, target: 100 },
     'ach-lessons-200': { current: Object.values(progress).filter((l: any) => l.status === 'completed').length, target: 200 },
+    'ach-fast-learner': { current: 0, target: 1 },
+    'ach-marathon-day': { current: 0, target: 1 },
     'ach-xp-100': { current: stats.xp, target: 100 },
     'ach-xp-500': { current: stats.xp, target: 500 },
     'ach-xp-1000': { current: stats.xp, target: 1000 },

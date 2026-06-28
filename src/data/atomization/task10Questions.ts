@@ -42,7 +42,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-8', type: 'text', text: 'Впишите пропущенную букву: пр_вязанный (к дереву)',
     correctAnswer: ['и'],
-    explanation: 'ПРИ- — приближение. Проверочное: вязать.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
+    explanation: 'ПРИ- — присоединение, прикрепление. Проверочное: вязать. (Не путать с приближением: приехать, прилететь.)', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
     {
     id: 'q10-atom-9', type: 'text', text: 'Впишите пропущенную букву: пр_клеить (к картону)',
@@ -83,18 +83,18 @@ export const task10Questions: Question[] = [
   // === ВС- / ВЗ- / ВЪ- ===
     {
     id: 'q10-atom-16', type: 'text', text: 'Впишите пропущенную букву: (рожь) в_колосилась',
-    correctAnswer: ['л'],
-    explanation: 'ВС- перед глухими к, х, п, с, т, ф, ц, ш, щ (всколоситься, вспыхнуть).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
+    correctAnswer: ['с'],
+    explanation: 'ВС- перед глухими к, х, п, с, т, ф, ц, ш, щ (всколоситься, вспыхнуть). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
     {
     id: 'q10-atom-17', type: 'text', text: 'Впишите пропущенную букву: вз_браться (на гору)',
     correctAnswer: ['о'],
-    explanation: 'ВЗ- перед звонкими б, д, з, г, ж, в (взобраться, вздремнуть).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
+    explanation: 'Неизменяемая приставка ВЗО- (взобраться, вздремнуть). Перед звонкими б, д, з, г, ж, в. Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
     {
     id: 'q10-atom-18', type: 'text', text: 'Впишите пропущенную букву: в_пыхнуть',
     correctAnswer: ['с'],
-    explanation: 'ВС- перед глухими (вспыхнуть, вскипеть).', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
+    explanation: 'ВС- перед глухими (вспыхнуть, вскипеть). Помните: есть ещё вариант ВЗ (вздыхать, взгляд, взмах). Мнемоника глухих: СТёПКа, ХоЧеШь ЩеЦ? Фу!', xpReward: 10, atoms: ['prefix_z_s', 'z_s_vz_vs']
   },
     {
     id: 'q10-atom-19', type: 'text', text: 'Впишите пропущенную букву: в_езд',
@@ -260,7 +260,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-50', type: 'text', text: 'Впишите пропущенную букву: непр_емлемый',
     correctAnswer: ['и'],
-    explanation: 'НЕПРИ- — неприемлемый (недопустимый).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
+    explanation: 'НЕПРИ- — неприемлемый (недопустимый). Мнемоника: это тот, который нельзя прИнять.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_verif']
   },
   // === ЧЕРЕС- / ЧРЕЗ- ===
     {

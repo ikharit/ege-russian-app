@@ -125,13 +125,15 @@ const notFound = []
 for (const [questionId, edit] of Object.entries(edits)) {
   if (!edit.changes || Object.keys(edit.changes).length === 0) continue
 
+  const agent = edit.agent || 'неизвестно'
+
   let found = false
   for (const filePath of files) {
     const content = fs.readFileSync(filePath, 'utf-8')
     const newContent = applyEdit(content, questionId, edit.changes)
     if (newContent !== null) {
       fs.writeFileSync(filePath, newContent, 'utf-8')
-      console.log(`✅ ${questionId} → ${path.relative(process.cwd(), filePath)}`)
+      console.log(`✅ ${questionId} → ${path.relative(process.cwd(), filePath)} (${agent})`)
       found = true
       appliedCount++
       break

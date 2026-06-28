@@ -161,6 +161,17 @@ export function createAchievementChecker(get: any) {
       }
     }
 
+    // === ИНТЕНСИВ ===
+    if (lessonId) {
+      const today = now.toISOString().split('T')[0]
+      const lessonsToday = completedLessons.filter((l: any) => {
+        if (!l.completedAt) return false
+        return l.completedAt.startsWith(today)
+      }).length
+      if (lessonsToday >= 3) addIfNew('ach-fast-learner')
+      if (lessonsToday >= 5) addIfNew('ach-marathon-day')
+    }
+
     // === ДУЭЛИ ===
     const duels = useDuelStore.getState().duels
     const myDuelResults = Object.values(duels).flatMap(d =>
