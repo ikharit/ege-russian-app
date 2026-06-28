@@ -1,12 +1,15 @@
 import { supabase, isSupabaseConfigured } from './supabase'
 import { Question } from '../types'
 
+export const CURRENT_AGENT = 'Агент 7'
+
 export interface QuestionEdit {
   id: string
   question_id: string
   lesson_id: string
   changes: Partial<Question>
   edited_by?: string
+  agent?: string
   edited_at: string
   created_at: string
   synced?: boolean

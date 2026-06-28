@@ -1,10 +1,10 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Current Agent ID:** `agent-1` | **Last updated:** 2026-06-26
+> **Current Agent ID:** `agent-3` | **Last updated:** 2026-06-29
 > 
-> All changelog entries from this session: **Agent 1**
+> All changelog entries from this session: **Agent 3**
 
-> **Агентская идентификация**: Каждый агент, работающий над проектом, обязан идентифицировать себя по номеру (Agent 1, Agent 2, и т.д.). Текущий агент — **Agent 1** (основной, оркестратор). При смене агента — обновляйте это поле в начале файла. Все записи в changelog и истории должны содержать `by Agent N`.
+> **Агентская идентификация**: Каждый агент, работающий над проектом, обязан идентифицировать себя по номеру (Agent 1, Agent 2, и т.д.). Текущий агент — **Agent 3** (оркестратор). При смене агента — обновляйте это поле в начале файла. Все записи в changelog и истории должны содержать `by Agent N`.
 
 ## RAG Pipeline (Anti-Hallucination Guard)
 
@@ -388,3 +388,8 @@ Last updated: 2026-06-27 by Agent 1
 
 Last updated: 2026-06-28 by Agent 5
 - **Agent handoff**: Смена агента — Agent 1 → Agent 5. Обновлены агентские идентификаторы в `AGENTS.md` (Current Agent ID: `agent-5`), `AGENT_REMINDER.md` (Agent ID: `agent-5`). Продолжается работа над багами и дублированием уроков.
+
+Last updated: 2026-06-28 by Agent 5
+- **Achievements cleanup**: Упрощена и перебалансирована система достижений. Убраны низкоуровневые и временные ачивки: `ach-first-lesson`, `ach-lessons-5/10`, `ach-xp-100/500`, `ach-level-5`, `ach-streak-3`, `ach-combo-5`, `ach-questions-50`, `ach-time-1h`, `ach-mistake-1/5`, `ach-dooshin-first/5`, `ach-perfect` (одиночный), `ach-no-hearts-lost`, `ach-heart-restore`, `ach-infinite`, `ach-night-owl`, `ach-early-bird`, `ach-weekend`, `ach-speedrun`, `ach-persistent`, `ach-retry-5`, `ach-export`, `ach-fast-learner`, `ach-quest-master`, `ach-collection/collector`. Повышены пороги: уроки 100/200, идеальные 20 подряд, стрик 60, XP 10000, уровень 50, комбо 25, вопросы 1000, время 50ч, ошибки 50. Добавлены: `ach-mistake-50`. Обновлены `getAchievementProgress()` в `achievements.ts` и логика `achievementChecker.ts` — убраны проверки удалённых ачивок, добавлены проверки новых порогов. Файлы: `src/data/achievements.ts`, `src/stores/slices/achievementChecker.ts`.
+- **Task 9 explanation fixes (round 3)**: Дополнительная ревизия ~15 explanation'ов в `src/data/sections/dooshin/task9.ts` (вопросы qd9-124…qd9-164). Исправлены классификации корней: промокать → чередующийся мок/мак, отраслевая → исключение из раст/рос, расчёска → проверяемый после шипящих (чЁска), поджёг → чередующийся жёг/жиг, выровнять → чередующийся равн/ровн, богатство → непроверяемый, касательная → проверяемый (не чередование), пригарью → исключение из гар/гор, шёлковый → проверяемый после шипящих, решётка → проверяемый после шипящих, одолеть → проверяемый через дОлг, забавляться → забАва. Уточнены детали для зажигать, шёпот, бесшовный. Ни один ответ не изменился — только тексты объяснений. Файл: `src/data/sections/dooshin/task9.ts`.
+- **Build check**: `npm run build` — проходит без TypeScript ошибок.
