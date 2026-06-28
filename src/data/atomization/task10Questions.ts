@@ -63,7 +63,7 @@ export const task10Questions: Question[] = [
     {
     id: 'q10-atom-12', type: 'text', text: 'Впишите пропущенную букву: пр_дъюбилейный',
     correctAnswer: ['е'],
-    explanation: 'ПРЕД- — заранее. Разделительный Ъ перед ю, я, е, ё, у.', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred', 'hard_sign']
+    explanation: 'ПРЕД- — заранее. Разделительный Ъ после приставки, оканчивающейся на согласную, перед йотированными гласными Е, Ё, Ю, Я (начинаются с [й]).', xpReward: 10, atoms: ['prefix_pre_pri', 'pre_pri_pred', 'hard_sign']
   },
     {
     id: 'q10-atom-13', type: 'text', text: 'Впишите пропущенную букву: п_дкараулить',

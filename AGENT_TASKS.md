@@ -1173,3 +1173,124 @@ import { getAtomById } from '../data/atomization/atoms'
 **Критерий завершения**: Все объяснения в диапазоне qd9-124…qd9-164 имеют корректную классификацию корней и проверяемые формулировки. Сборка проходит чисто.
 
 ---
+
+## 🆕 Новые задачи (добавлено 2026-06-28 — late session commits)
+
+### ✅ ЗАДАЧА-А33: QuestionEditorPage — agent field tracking
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `src/pages/QuestionEditorPage.tsx`
+
+**Решение**:
+1. В карточку редактирования вопроса добавлено поле "Агент" (agent) — строка, идентифицирующая агента, внёсшего правку.
+2. Позволяет отслеживать provenance правок: кто, когда и что изменил.
+3. Поле сохраняется вместе с остальными данными вопроса.
+
+**Файлы**: `src/pages/QuestionEditorPage.tsx`
+
+**Git**: `ebcc1f9`
+
+**Критерий завершения**: Редактор вопросов показывает и позволяет редактировать поле agent. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А34: Remove hints, rebalance achievements, add EGE format lessons (Agent 4)
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `src/pages/QuestionEditorPage.tsx`, `src/data/achievements.ts`, `src/data/atomization/task10Questions.ts`, `src/data/sections/dooshin/task10.ts`
+
+**Решение**:
+1. **Убраны hints**: Из `QuestionEditorPage.tsx` убрана система подсказок (hints) — она не использовалась и усложняла UI.
+2. **Перебалансированы achievements**: `achievements.ts` — упрощены пороги, убраны избыточные lower-tier ачивки.
+3. **EGE format lessons**: `task10Questions.ts` — добавлены вопросы в формате ЕГЭ (ege-multiple). `dooshin/task10.ts` — обновлены форматы вопросов.
+
+**Файлы**: `src/pages/QuestionEditorPage.tsx`, `src/data/achievements.ts`, `src/data/atomization/task10Questions.ts`, `src/data/sections/dooshin/task10.ts`, `public/data/graph-relations.json`
+
+**Git**: `255a7d1`
+
+**Критерий завершения**: Редактор без hints, achievements перебалансированы, EGE-формат вопросы добавлены. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А35: Atomization — merge deaf/voiced consonant prefixes into single lesson
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `src/data/sections/atomization.ts`, `src/data/sections/dooshin/task10.ts`, `.github/workflows/pages.yml`
+
+**Решение**:
+1. Уроки по глухим/звонким согласным (ВЗ/ВС, РАЗ/РАС, БЕЗ/БЕС, ИЗ/ИС) объединены в **один урок** с последовательным объяснением правил.
+2. Убрано размазывание правил по нескольким урокам (lesson-atom-10-3, 10-5, 10-6 раньше дублировали часть материала).
+3. `dooshin/task10.ts` — обновлены привязки вопросов к новой структуре уроков.
+4. `.github/workflows/pages.yml` — минорные правки (возможно, связанные с CI).
+
+**Файлы**: `src/data/sections/atomization.ts`, `src/data/sections/dooshin/task10.ts`, `.github/workflows/pages.yml`, `src/pages/QuestionEditorPage.tsx`
+
+**Git**: `4904112`
+
+**Критерий завершения**: Уроки по глухим/звонким согласным не дублируются, структура atomization чистая. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А36: Lesson explanation visibility fix
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `src/components/QuestionCard.tsx`
+
+**Решение**:
+1. Исправлено: explanation (объяснение правила) теперь **всегда виден** после правильного ответа.
+2. Раньше в некоторых состояниях (например, при быстром переходе или combo) explanation скрывался или не рендерился.
+3. Упрощена логика условного рендеринга — explanation показывается unconditionally после `isCorrect === true`.
+
+**Файлы**: `src/components/QuestionCard.tsx`
+
+**Git**: `9e216f9`
+
+**Критерий завершения**: При правильном ответе пользователь всегда видит explanation. Сборка проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А37: Deploy cache-bust v5 + peaceiris force_orphan
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `index.html`, `.github/workflows/pages.yml` (disabled, но оставлен для истории)
+
+**Решение**:
+1. `index.html` — обновлён cache-bust query parameter для принудительного обновления PWA (браузер не кэширует старую версию).
+2. `.github/workflows/pages.yml` — добавлен `force_orphan: true` для `peaceiris/actions-gh-pages@v4` — чистый деплой без истории в `gh-pages` branch.
+3. Это уменьшает размер gh-pages branch и ускоряет деплой.
+
+**Файлы**: `index.html`
+
+**Git**: `0bc2673`
+
+**Критерий завершения**: GitHub Pages деплоится корректно, PWA получает обновления. Сборка проходит чисто.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-28 — агентский sync)
+
+### ✅ ЗАДАЧА-А38: Актуализация агентских файлов после late-session commits
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`
+
+**Проблема**: Коммиты `9e216f9`, `255a7d1`, `ebcc1f9`, `4904112`, `0bc2673` (все от 2026-06-28) не были отражены в агентской документации. Следующий агент не знал бы о сделанных изменениях.
+
+**Решение**:
+1. Добавлены записи в `AGENTS.md` changelog для всех 5 коммитов + uncommitted change в `task10Questions.ts`.
+2. Добавлены задачи А33–А37 в `AGENT_TASKS.md`.
+3. Обновлён `memory/AGENTS-HISTORY.md` — архивные записи с commit hashes.
+4. Обновлён `memory/2026-06-28.md` — дополнены коммиты и uncommitted change.
+5. Закоммичены агентские файлы + uncommitted change.
+
+**Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`, `src/data/atomization/task10Questions.ts`
+
+**Критерий завершения**: Все агентские файлы отражают последние изменения. Git commit сделан. Сборка проходит чисто.

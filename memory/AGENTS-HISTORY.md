@@ -390,3 +390,66 @@
   - achievements.ts — частичный откат порогов ачивок (компромисс: добавлены обратно lower-tier ачивки: lessons-10, perfect, streak-3, xp-100/500, level-5)
   - task9.ts — минорные фиксы explanation
   - Все изменения от Agent 5, закоммичены ретроспективно Agent 1
+
+
+### [2026-06-28 11:32] Агент: Agent 5
+- **Что:** Deploy cache-bust v5 + peaceiris force_orphan
+- **Где:** `index.html`
+- **Зачем:** Принудительное обновление PWA — браузер не кэширует старую версию. Чистый деплой без истории в `gh-pages` branch.
+- **Git commit:** `0bc2673`
+- **⚠️ Важно:** cache-bust query parameter обновлён. Сборка проходит чисто.
+
+### [2026-06-28 11:31] Агент: Agent 5
+- **Что:** Atomization — merge deaf/voiced consonant prefixes into single lesson
+- **Где:** `src/data/sections/atomization.ts`, `src/data/sections/dooshin/task10.ts`, `.github/workflows/pages.yml`, `src/pages/QuestionEditorPage.tsx`
+- **Зачем:** Уроки по глухим/звонким согласным (ВЗ/ВС, РАЗ/РАС, БЕЗ/БЕС, ИЗ/ИС) дублировались между lesson-atom-10-3, 10-5, 10-6. Объединение в один урок устраняет дублирование и делает структуру чище.
+- **Git commit:** `4904112`
+- **⚠️ Важно:** `dooshin/task10.ts` — обновлены привязки вопросов. Сборка проходит чисто.
+
+### [2026-06-28 11:25] Агент: Agent 4
+- **Что:** QuestionEditorPage — agent field tracking
+- **Где:** `src/pages/QuestionEditorPage.tsx`
+- **Зачем:** Отслеживание provenance правок: кто, когда и что изменил в вопросе. Критично для координации нескольких агентов.
+- **Git commit:** `ebcc1f9`
+- **⚠️ Важно:** Поле "agent" добавлено в UI редактора. Сборка проходит чисто.
+
+### [2026-06-28 11:21] Агент: Agent 4
+- **Что:** Remove hints, rebalance achievements, add EGE format lessons
+- **Где:** `src/pages/QuestionEditorPage.tsx`, `src/data/achievements.ts`, `src/data/atomization/task10Questions.ts`, `src/data/sections/dooshin/task10.ts`, `public/data/graph-relations.json`
+- **Зачем:** Система hints не использовалась и усложняла UI. Achievements нуждались в перебалансировке. EGE-формат вопросы необходимы для подготовки к экзамену.
+- **Git commit:** `255a7d1`
+- **⚠️ Важно:** Hints убраны из редактора. Achievements перебалансированы. EGE-multiple вопросы добавлены в task10Questions.ts. Сборка проходит чисто.
+
+### [2026-06-28 11:20] Агент: Agent 5
+- **Что:** Lesson explanation visibility fix
+- **Где:** `src/components/QuestionCard.tsx`
+- **Зачем:** Explanation (объяснение правила) скрывалось в некоторых состояниях после правильного ответа. Пользователь должен видеть объяснение, чтобы учиться на ошибках.
+- **Git commit:** `9e216f9`
+- **⚠️ Важно:** Explanation теперь unconditionally виден после `isCorrect === true`. Сборка проходит чисто.
+
+### [2026-06-28 11:14] Агент: Agent 5
+- **Что:** Docs(agents): log atomization deduplication fix by Agent 5
+- **Где:** `AGENTS.md`, `src/components/QuestionCard.tsx`
+- **Зачем:** Частичная актуализация агентских файлов + минорный фикс QuestionCard.tsx (5 строк).
+- **Git commit:** `8ebce91`
+- **⚠️ Важно:** Агентские файлы частично обновлены, но последующие коммиты (`9e216f9`…`0bc2673`) не были задокументированы до сессии Agent 3 (2026-06-28 12:07).
+
+### [2026-06-28 11:12] Агент: Agent 5
+- **Что:** Atomization deduplication — remove duplicate questions between lesson-atom-10-3 and 10-5
+- **Где:** `src/data/sections/atomization.ts`, `src/data/atomization/task10Questions.ts`, `src/data/sections/dooshin/task10.ts`, `src/data/achievements.ts`, `src/stores/slices/achievementChecker.ts`, `src/components/InlineQuestionEditor.tsx`, `src/components/QuestionCard.tsx`, `public/data/graph-relations.json`, `scripts/export-edits.cjs`, `src/vite-plugin-export-edits.ts`
+- **Зачем:** Убрать дублирование теории между lesson-atom-10-3 (ВЗ/ВС + РАЗ/РАС) и lesson-atom-10-5 (БЕЗ/БЕС). Раньше оба урока содержали пересекающийся материал по глухим/звонким согласным.
+- **Git commit:** `1969bc1`
+- **⚠️ Важно:** lesson-atom-10-3 → только ВЗ/ВС + РАЗ/РАС. lesson-atom-10-5 → переименован в «БЕЗ- / БЕС- / ОБЕС- / ЗАС-». lesson-atom-10-6 → «ИЗ- / ИС- / СЫ-». lesson-atom-10-7 → «Неизменяемые и сложные приставки». Prerequisites lesson-atom-10-ege → lesson-atom-10-7. Сборка проходит чисто.
+
+### [2026-06-28 12:07] Агент: Agent 3
+- **Что:** Актуализация агентских файлов после late-session commits (Agent 4, 5, 6) + uncommitted change
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-28.md`, `src/data/atomization/task10Questions.ts`
+- **Зачем:** Коммиты `9e216f9`, `255a7d1`, `ebcc1f9`, `4904112`, `0bc2673` (все от 2026-06-28) не были отражены в агентской документации. Uncommitted change в `task10Questions.ts` (улучшение explanation q10-atom-12) тоже не был задокументирован.
+- **Git commit:** [будет сделан после этого обновления]
+- **⚠️ Важно:**
+  - Добавлены записи в `AGENTS.md` changelog для всех 5 коммитов + uncommitted change.
+  - Добавлены задачи А33–А38 в `AGENT_TASKS.md`.
+  - Обновлён `memory/AGENTS-HISTORY.md` — архивные записи с commit hashes.
+  - Обновлён `memory/2026-06-28.md` — дополнены коммиты и uncommitted change.
+  - Сборка: `npm run build` и `npm run validate:rag` — будут запущены для проверки.
+  - Следующие агенты: проверить, что все изменения отражены корректно.
