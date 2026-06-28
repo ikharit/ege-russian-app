@@ -1,6 +1,10 @@
--- Migration 004: public_leaderboard view + teacher RLS policy
+-- Migration 004: RPC functions for leaderboard + teacher RLS policy
 -- Fixes: Leaderboard, TeacherAnalytics, UsersPage were empty because
 -- user_progress RLS policy (auth.uid() = user_id) blocked reading other users.
+-- IMPORTANT: public_leaderboard VIEW does NOT bypass RLS in PostgreSQL.
+-- The view is a stored query that still applies RLS on the underlying table.
+-- The correct approach is SECURITY DEFINER functions (RPC) — they execute
+-- with the privileges of the function owner (postgres), not the invoker.
 -- ============================================================================
 
 -- 1. Teacher policy: teachers can view their linked students' progress
@@ -13,30 +17,7 @@ CREATE POLICY IF NOT EXISTS "Teachers can view linked students' progress" ON use
     )
   );
 
--- 2. Public leaderboard view: bypasses RLS for leaderboard/global analytics
--- Uses security definer (owner = postgres) to bypass RLS
-CREATE OR REPLACE VIEW public_leaderboard AS
-SELECT 
-  user_id,
-  user_stats,
-  lesson_progress,
-  task_stats,
-  achievements,
-  behavior_profile,
-  exam_results,
-  theory_tests_completed,
-  answer_history,
-  daily_quest_progress,
-  atom_progress,
-  wrong_answers,
-  updated_at
-FROM user_progress
-ORDER BY updated_at DESC;
-
--- Grant access to the view for all users
-GRANT SELECT ON public_leaderboard TO anon, authenticated;
-
--- 3. RPC function for leaderboard (alternative if view doesn't bypass RLS)
+-- 2. RPC function for leaderboard (SECURITY DEFINER — bypasses RLS)
 CREATE OR REPLACE FUNCTION public.get_leaderboard()
 RETURNS TABLE (
   user_id uuid,
@@ -54,7 +35,7 @@ AS $$
   ORDER BY updated_at DESC;
 $$;
 
--- 4. RPC function for all user progress (teacher analytics / admin)
+-- 3. RPC function for all user progress (teacher analytics / admin)
 CREATE OR REPLACE FUNCTION public.get_all_user_progress()
 RETURNS TABLE (
   user_id uuid,
@@ -78,7 +59,7 @@ AS $$
   SELECT * FROM user_progress ORDER BY updated_at DESC;
 $$;
 
--- 5. RPC function for users page (basic info)
+-- 4. RPC function for users page (basic info)
 CREATE OR REPLACE FUNCTION public.get_all_users_basic()
 RETURNS TABLE (
   user_id uuid,
@@ -93,3 +74,8 @@ AS $$
   FROM user_progress
   ORDER BY updated_at DESC;
 $$;
+
+-- 5. Drop the non-working public_leaderboard view (if it exists)
+-- Note: PostgreSQL views do NOT bypass RLS on underlying tables.
+-- The view was a red herring; RPC functions are the correct solution.
+DROP VIEW IF EXISTS public_leaderboard;

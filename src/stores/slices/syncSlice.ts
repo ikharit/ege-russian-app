@@ -101,10 +101,9 @@ export function createSyncActions(
 
     loadLeaderboard: async () => {
       if (!isSupabaseConfigured) return
-      // Use public_leaderboard view (bypasses RLS) instead of user_progress
+      // Use SECURITY DEFINER RPC function (bypasses RLS) instead of user_progress
       const { data, error } = await supabase
-        .from('public_leaderboard')
-        .select('user_id, user_stats, lesson_progress, task_stats, updated_at')
+        .rpc('get_leaderboard')
       if (error || !data) return
       const entries: LeaderboardEntry[] = data.map((row: any) => {
         const stats = row.user_stats || {}

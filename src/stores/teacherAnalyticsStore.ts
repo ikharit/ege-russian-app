@@ -174,18 +174,17 @@ export const useTeacherAnalyticsStore = create<TeacherAnalyticsState>((set, get)
       set({ loading: true, error: null })
 
       try {
-        // Use public_leaderboard view (bypasses RLS) instead of user_progress
+        // Use SECURITY DEFINER RPC function (bypasses RLS) instead of user_progress
         const { data: progressData, error: progressError } = await supabase
-          .from('public_leaderboard')
-          .select('user_id, user_stats, task_stats, lesson_progress, achievements, behavior_profile, exam_results, theory_tests_completed, answer_history, daily_quest_progress, atom_progress, wrong_answers')
+          .rpc('get_all_user_progress')
 
         if (progressError) {
-          console.warn('public_leaderboard fetch error:', progressError)
+          console.warn('get_all_user_progress RPC error:', progressError)
           set({ error: 'Ошибка загрузки прогресса: ' + progressError.message, loading: false })
           return
         }
 
-        console.log('[TeacherAnalytics] public_leaderboard rows:', progressData?.length || 0)
+        console.log('[TeacherAnalytics] get_all_user_progress rows:', progressData?.length || 0)
 
         // Fetch admin_user_analytics (secondary, optional)
         let analyticsData: any[] = []
