@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -9,6 +10,7 @@ import { course } from '../data/courseData'
 import { dailyQuests } from '../data/dailyQuests'
 import { RankBadge } from '../components/RankBadge'
 import { DailyQuestionCard } from '../components/DailyQuestionCard'
+import { XPDetailModal } from '../components/XPDetailModal'
 import { getRankByLevel, getXPToNextLevel } from '../data/ranks'
 import { getEssayStats } from '../data/essayData'
 

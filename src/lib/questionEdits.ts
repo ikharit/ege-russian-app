@@ -119,6 +119,7 @@ export function saveQuestionEdit(
     question_id: questionId,
     lesson_id: lessonId,
     changes,
+    agent: CURRENT_AGENT,
     edited_at: new Date().toISOString(),
     created_at: edits[questionId]?.created_at || new Date().toISOString(),
     synced: false,
