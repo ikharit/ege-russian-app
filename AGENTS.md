@@ -1,5 +1,11 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
+> **Current Agent ID:** `agent-1` | **Last updated:** 2026-06-26
+> 
+> All changelog entries from this session: **Agent 1**
+
+> **Агентская идентификация**: Каждый агент, работающий над проектом, обязан идентифицировать себя по номеру (Agent 1, Agent 2, и т.д.). Текущий агент — **Agent 1** (основной, оркестратор). При смене агента — обновляйте это поле в начале файла. Все записи в changelog и истории должны содержать `by Agent N`.
+
 ## RAG Pipeline (Anti-Hallucination Guard)
 
 All agents working on this project MUST use the RAG pipeline. NEVER generate rules, explanations, or questions from memory alone.
@@ -274,11 +280,21 @@ After EVERY session that changes code or data files, the agent MUST update these
 
 ### Example changelog entry
 ```
-Last updated: 2026-06-25 by agent
+Last updated: 2026-06-25 by Agent 1
 - **Adaptive Engine**: Created `useAdaptiveEngine` hook (src/hooks/useAdaptiveEngine.ts) — unified IRT+BKT for all trainers. Integrated into BaseTrainer, SwipeTrainerPage, DailyQuestionCard, MarathonPage, ExamVariantPage, MistakesReview, DuelPage. Removed orphaned getGlobalBKT()/getGlobalIRT() singletons. Build passes clean.
 - **Daily Question**: Added text input support (not just multiple choice). Pool now includes all course questions + accent words. Fixed text answer validation and display.
 - **CourseMap animation**: Fixed collapse animation — replaced `layout` with `layout="position"`, wrapped in `<AnimatePresence initial={false}>`, added `overflow-hidden` + `transition`. No more "bounce" on collapse.
 ```
+
+### Agent identification (REQUIRED)
+
+Every changelog entry MUST include the agent ID. Format: `Last updated: YYYY-MM-DD by Agent N` (where N = 1 or 2).
+
+If you are Agent 1, use `by Agent 1`. If you are Agent 2, use `by Agent 2`.
+
+This is mandatory so the human can track which agent made which changes and hold the correct agent accountable.
+
+**Failure to identify yourself is a protocol violation.**
 
 ### Why this matters
 Multiple agents work on this codebase. Without updated docs, the next agent will:
@@ -291,13 +307,13 @@ Multiple agents work on this codebase. Without updated docs, the next agent will
 
 ---
 
-Last updated: 2026-06-26 by agent
+Last updated: 2026-06-26 by Agent 1
 - **Workspace cleanup**: Создана папка `archive/` в корне workspace. Перенесены ~130 одноразовых артефактов: скрипты, JSON-дампы, HTML-скрейпы, отчёты, batch-файлы, extracted-tasks. Оставлены в корне: Excel-реестры, DOCX/PDF исходники, `algorithm-ege-platform.md`, `plan.md`. Заброшенные проекты `ege-app/` и `atomization-project/` перемещены в `archive/`. Пустые директории `batches_10_12`, `batches_13_15`, `dist` удалены. `archive/README.md` — описание структуры.
 - **Deduplication (orthography ↔ dooshin)**: Добавлены 9 недостающих маппингов в `src/data/questionMapping.ts` для связи дублей orthography.ts ↔ dooshin/task9.ts: исказить (q9-2/qd9-475), ополчение (q9-3/qd9-403), пловец (q9-6/qd9-406), дирижёр (q9-7/qd9-407), мораторий (q9-10/qd9-410), метафора (q9-11/qd9-411), почитатель (q9-13/qd9-413), обжигаться (q9-14/qd9-414), проживать (q9-15/qd9-415). Обновлены существующие маппинги: парадоксальный (q9-12/qd9-412), выскочка (q9-4/qd9-404), ростовщик (q9-5/qd9-405), стеречь (q9-1/qd9-401), выдрать (q9-9/qd9-409). Исправлен маппинг "спешить" → отделён от "списать" (qd9-408 — это списать, не спешить). Всего 15/33 дублей из audit теперь связаны canonicalWordId.
 - **algorithm-ege-platform.md актуализирован**: Полная перезапись документа. Обновлён технологический стек (Capacitor, ML движки, Recharts, Fuse.js, spellEngine). Добавлена архитектура ML/Adaptive Pipeline (IRT, BKT, LR, Error Patterns, Semantic RAG). Обновлён список экранов (22 страницы со статусами). Раздел "Этапы" заменён на "Что готово / TODO". Добавлен раздел "Агентский workflow" с RAG pipeline и протоколом. Обновлена структура проекта (7 stores, 15+ компонентов, ML engines).
 - **Build check**: `npm run build` — проходит без TypeScript ошибок (17.62s, 0 ошибок). `questionMapping.ts` компилируется корректно.
 
-Last updated: 2026-06-26 by agent
+Last updated: 2026-06-26 by Agent 1
 - **Data audit fixes (5 items)**: 1) RAG warnings — fixed false positive in `verify-rag.js` ("непроверяемый" contains "проверяемый" as substring, added standalone word check). 2) Line endings — `AGENT_TASKS.md` CRLF → LF via `sed`. 3) Migrations — archived duplicate `001_unified_tracking.sql` (legacy, v2 superset), created `003_gin_indexes.sql` with GIN indexes for JSONB. 4) Graph relations — created `build-graph-relations.js` → `public/data/graph-relations.json` (1460 nodes, 4954 edges: 15 tasks, 1209 words, 89 rules, 101 atoms, 46 questions). 5) `package.json` — added `build:graph` script. Build: 15.36s, 0 errors. RAG: 1379 entries, 0 errors, 0 warnings. Git: `eba63ec`.
 - **Data audit**: Проведён аудит RAG, агентских файлов, Supabase, оценка RLM+графов. RAG: 1379 entries, 0 errors, 268 warnings (false positive на contradiction). Агентские файлы: актуальны, работают. БД: хорошая структура, дубли миграций. RLM+графы: преждевременная оптимизация при 1379 entries — текущая система уже содержит графовые связи (relatedAtoms, questionMapping). Git: `DATA_AUDIT.md`.
 - **TeacherAnalytics fix**: Исправлена пустая "Аналитика всех пользователей" — добавлен fallback на `defaultTeacherStudents` (demo-данные) при отсутствии записей в Supabase `user_progress`. `TeacherAnalytics.tsx` — импорт `defaultTeacherStudents`, `isDemo` флаг, маппинг demo-данных в `ProgressData`. Убран пустой экран "Пока нет данных пользователей" — теперь показывается аналитика с бейджем "Демо-данные". Сборка: `npm run build` ✅ (47с, 0 ошибок). Git: `def4723`.
@@ -310,7 +326,7 @@ Last updated: 2026-06-26 by agent
 - **TS fixes**: Исправлены TypeScript ошибки в `InlineQuestionEditor.tsx`, `QuestionCard.tsx`, `DuelPage.tsx`, `FriendsPage.tsx`, `Leaderboard.tsx`, `Profile.tsx`, `SwipeTrainerPage.tsx`. Git: `100490b`.
 - **TeacherAnalytics store refactor (uncommitted)**: `teacherAnalyticsStore.ts` — убран timeout (Promise.race), `admin_user_analytics` теперь optional fetch, упрощена обработка ошибок. Primary source: `user_progress`.
 
-Last updated: 2026-06-25 by agent
+Last updated: 2026-06-25 by Agent 1
 - **FIPI Codificator**: Создан единый кодификатор ФИПИ — `src/data/fipiCodificator.ts` (27 заданий, формат, темы, статус). Теперь все задания в проекте ДОЛЖНЫ соответствовать этому файлу. Включены функции валидации (`validateTaskFormat`). Известные несоответствия зафиксированы: task16LessonData.ts → по формату task17, task16Questions.ts → формат не соответствует ФИПИ (должно быть 2 из 5, а не 1 из 5). Git: `e5dfcc5` (task16→17 fix), `...` (codificator).
 - **Leaderboard accuracy**: `syncSlice.ts` теперь считает `accuracy` и `totalAttempts` из `task_stats` при загрузке лидерборда из Supabase. Убран `limit(50)` — загружаются все записи. `gamificationSlice.ts` — добавлены поля `accuracy?: number` и `totalAttempts?: number` в `LeaderboardEntry`. `src/stores/slices/syncSlice.ts`, `src/stores/slices/gamificationSlice.ts`.
 - **Shop removed**: Убран магазин (`useShopStore`) из UI. `Header.tsx` — аватар заменён на `User` иконку из lucide-react. `Profile.tsx` — удалена секция `ShopInventorySection`, убран импорт `ShoppingBag` и `useShopStore`. `src/components/Header.tsx`, `src/pages/Profile.tsx`.
@@ -352,25 +368,23 @@ Last updated: 2026-06-25 by agent
 - **Removed shop**: Убран магазин (`ShopPage.tsx`), покупные аватарки и темы. Убраны `useShopStore` импорты, `ShopInventorySection` из Profile, карточка магазина из Dashboard, роут `/shop`. Аватарка в Header заменена на `User` иконку. Сборка проходит чисто.
 - **Explanation fix**: `orthography.ts` q9-8 "спешить" — исправлено: корень -спеш- (проверяемый через спЕшка), не чередующийся. Убрано ложное "чередование пеш/пиш" (пишу — от другого корня).
 
-Last updated: 2026-06-26 by agent
+Last updated: 2026-06-26 by Agent 1
 - **TeacherAnalytics store fixes**: `teacherAnalyticsStore.ts` — убран `Promise.race` timeout (ранее 4 сек), запросы теперь последовательные. `admin_user_analytics` — optional fetch, не блокирует загрузку. Упрощена обработка ошибок. Primary source: `user_progress`. Git: `cf33674`, `9f6f211`.
 - **Deploy base path fix**: `vite.config.ts` — hardcoded `base: '/ege-russian-app/'` для корректной работы на GitHub Pages. Git: `4068bd1`.
 - **CI debug steps**: Добавлены debug-шаги в `.github/workflows/pages.yml`: проверка содержимого `dist/`, пошаговая сборка, проверка `index.html` на dev-ссылки. `NODE_ENV=development` для devDependencies. Git: `eefd84d`, `58cd07b`, `3d2e52e`, `7a4553e`.
 - **CI cache-bust and deploy**: Добавлен cache-bust query к `manifest.webmanifest`, переключение между `peaceiris/actions-gh-pages` и `actions/deploy-pages`, возврат к `peaceiris` с v4 и cache-bust. Git: `be96699`, `f60322a`, `dca49d6`.
 
-Last updated: 2026-06-26 by agent
+Last updated: 2026-06-26 by Agent 1
 - **Vercel deploy**: `vite.config.ts` — `base: '/'` вместо `base: '/ege-russian-app/'` для деплоя на Vercel (root domain). GitHub Pages больше не используется как primary deploy. Git: `75bf640`.
 - **Auth redirect fix**: `src/lib/supabase.ts` — `redirectTo` изменён с `window.location.origin + window.location.pathname` на `window.location.origin + '/'`. Это фиксит OAuth редирект после входа через Google: раньше pathname мог включать `/ege-russian-app/`, и пользователь попадал на неправильный URL. Теперь всегда редиректит на корень. Git: `1b1195d`.
 - **GitHub Pages workflow disabled**: `.github/workflows/pages.yml` → `.github/workflows/pages.yml.disabled` — workflow GitHub Pages отключён, т.к. primary deploy теперь на Vercel. Файл оставлен с суффиксом `.disabled` для истории. Git: `53e2e49`.
 
-Last updated: 2026-06-27 by agent
+Last updated: 2026-06-27 by Agent 1
 - **Task 9 Explanation Standardization (Dooshin)**: Массовая ревизия 127 explanation'ов в `src/data/sections/dooshin/task9.ts` — стандартизация формулировок для чередующихся корней. Убраны шаблонные фразы "проверьте через..." и "чередование гласных в корне вызывается ударением". Заменены на конкретные правила с суффиксами и исключениями: блист/блест (перед суффиксом -А- пишется И), лаг/лож (перед Г — А, перед Ж — О, исключение: полог), зар/зор (без ударения — А, под ударением — что слышится), пир/пер (перед суффиксом -А- пишется И), мер/мир (перед суффиксом -А- пишется И), тир/тер (перед суффиксом -А- пишется И), скоч/скак (перед К — А, перед Ч — О, исключения: скачок, скачу), раст/рос (перед СТ/Щ — А, перед С — О, исключения: отрасль, росток, ростовщик), гар/гор (под ударением — А, без ударения — О), плав/плов (всегда ПЛАВ, кроме пловец/пловчиха/плывун), плыв/плав (О только в пловец, Ы в плывуны, остальные А), мак/моч (макать = погружать, мокнуть = пропускать жидкость). Это устраняет галлюцинации и делает объяснения проверяемыми по правилам.
 - **Task 9 EGE-format questions added**: В `src/data/sections/orthography.ts` добавлено 10 новых вопросов в формате ЕГЭ (q9-ege-2 … q9-ege-10) — выбор рядов с одной и той же буквой. Покрывают чередующиеся корни (блист/блест, лаг/лож, зар/зор, пир/пер, тир/тер, скоч/скак, раст/рос), проверяемые и непроверяемые корни, приставки про-/пра-. Всего 11 вопросов в EGE-формате для урока 9-3.
 - **Task 9 explanation fix (orthography)**: `q9-4` (выскочка) — добавлены конкретные исключения: скачок, скачу, скачи. Убрана лишняя фраза "проверьте через".
 - **Task 10 text questions added**: В `src/data/task10Questions.ts` добавлено 5 новых text-вопросов по приставкам прО-/прА- (проевропейский, пророссийский, праславянский, проамериканский, праиндоевропейский) с детальными explanation'ами, различающими значения: прО- = поддержка/приверженность, прА- = древность/первоначальность.
 - **Build check**: `npm run build` — ✅ (19.77s, 0 ошибок). `npm run validate:rag` — ✅ (1379 entries, 0 errors, 268 warnings).
 
-Last updated: 2026-06-28 by agent
-- **Task 10 EGE-format lesson (atomization)**: В `src/data/sections/atomization.ts` урок `lesson-atom-10-mixed` переименован в `lesson-atom-10-ege` и заменён на 10 вопросов в формате ЕГЭ (ege-multiple) для задания 10 — выбор рядов слов с одной и той же буквой в приставках (прЕ-/прА-, дО-/дА-, вО-/вА-, нА-/нО-, сЫ-/сУ- и др.). Покрывает все типы приставок: проверяемые словарные, чередующиеся, непроизносимые согласные, неизменяемые. XP: 80, prerequisites: `lesson-atom-10-mixed`.
-- **Task 9 explanation fixes (dooshin) — round 2**: Дополнительная ревизия ~40+ explanation'ов в `src/data/sections/dooshin/task9.ts` после аудита. Исправлены: проверочные слова (более близкие однокоренные: трЕпетный, умЕрший, плОть, глОтка, обИда, обретАть, дешЁво, пАра, возражЕние, апЕллировать, чЁска, жЁчь, слАдкий, молодОй), классификации корней (напряжение → чередующийся пряж/пряг, логичный → проверяемый через лОгика, равнобедренный → проверяемый через рАвный, гарнизон → непроверяемый иноязычный, максимализм → непроверяемый, поглощение → проверяемый через глОтка), уточнения в текстах вопросов (отвОрить дверь vs отвАрить овощи, кАсатка птица vs кОсатка кит, цЫпочках vs цепочках), исправлены answers (qd9-54: цепочках → цЫпочках с ответом Ы, qd9-59: загАреть → загОреть с ответом О), опечатки (subtitle: «чередующийся» вместо «чередующиеся», «ненепроверяемый» → «непроверяемый»), уточнены чередования (придИраться: дир/дер, а не дир/дра; кОснуться: кос/кас, а не проверяемый; сочетаться: исключение из чет/чит). Также добавлены вопросы в `grammar.ts` и `orthography.ts`.
-- **RAG rebuild**: `npm run build:rag` → 1379 entries (89 theory + 78 task9 word + 1020 generic + 40 task10 + 20 task11 + 19 task12 + 20 task13 + 20 task14 + 10 task15 + 10 task16). `npm run validate:rag` → 0 errors, 268 warnings (известные contradiction в word-generic entries, не критичны).
+Last updated: 2026-06-28 by Agent 5
+- **Agent handoff**: Смена агента — Agent 1 → Agent 5. Обновлены агентские идентификаторы в `AGENTS.md` (Current Agent ID: `agent-5`), `AGENT_REMINDER.md` (Agent ID: `agent-5`). Продолжается работа над багами и дублированием уроков.

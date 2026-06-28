@@ -11,7 +11,7 @@
 | Модуль | Статус | Последний агент | Примечание |
 |--------|--------|-----------------|------------|
 | Dashboard | 🟢 | main | NotificationWidget + DeadlineWidget + ProfileSwitcher |
-| Lesson / Уроки | 🟢 | main | Auto-complete, combo, звуки, confetti |
+| Lesson / Уроки | 🟢 | agent-6 | Auto-complete, combo, звуки, confetti. **Agent 6 (2026-06-28):** убрано перемешивание options для ege-multiple — вопросы ЕГЭ теперь показывают варианты в правильном порядке (1, 2, 3, 4, 5). Раньше correctAnswer содержал номера вариантов, а перемешивание ломало ответы. |
 | Leaderboard | 🟢 | main | 3 режима: XP, streak, homework |
 | Statistics | 🟢 | main | Упрощён: только Прогресс и Темы |
 | Profile | 🟢 | main | Статусы за лидерство, достижения |
@@ -21,9 +21,9 @@
 | Task10Trainer | 🟢 | main | Слова с НЕ/НИ (задание 10) |
 | Task16Trainer | 🟢 | main | Убран из UI, задание 16 в `punctuation.ts` |
 | Task5Trainer | 🟢 | main | **82 вопроса** — покрывает паронимический словник ФИПИ 2026 |
-| Dooshin | 🟢 | main | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2026-06-27)** — стандартизированы чередующиеся корни. **Round 2 (2026-06-28):** ~40 дополнительных исправлений — проверочные слова, классификации корней, answers, опечатки. Добавлено 10 EGE-формат вопросов. |
+| Dooshin | 🟢 | agent-6 | Объединён в 1 раздел с группами (dooshinUnified.ts). Добавлены задания 15 (61 вопрос) и 20 (150 вопросов, placeholder). **Task 9: mass fix 127 explanations (2026-06-27)** — стандартизированы чередующиеся корни. **Round 2 (2026-06-28):** ~40 дополнительных исправлений — проверочные слова, классификации корней, answers, опечатки. Добавлено 10 EGE-формат вопросов. **Agent 6 (2026-06-28):** добавлено примечание "Всегда ПЛАВ, кроме: ПЛОВЕЦ, ПЛОВЧИХА, ПЛЫВУН" ко всем объяснениям с корнем плав/плов. Исправлено ложное чередование "плот/плат" → два проверяемых корня (плот/плат). Добавлены 5 вопросов по приставкам прО-/прА-. |
 | Atomization | 🟢 | main | `lesson-atom-10-ege` — 10 вопросов в формате ЕГЭ (ege-multiple) по приставкам прЕ-/прА-, дО-/дА-, вО-/вА-, нА-/нО- и др. (2026-06-28). |
-| Friend system | 🟢 | main | `friendStore.ts` + `FriendsPage.tsx` — добавление/удаление друзей, поиск, заявки, рейтинг. Supabase + local fallback. |
+| Friend system | 🟢 | agent-6 | `friendStore.ts` + `FriendsPage.tsx` — добавление/удаление друзей, поиск, заявки, рейтинг. Supabase + local fallback. **Agent 6 (2026-06-28):** исправлены синтаксические ошибки в friendStore.ts (дублированный код, отсутствующие закрывающие скобки) — билд ломался. |
 | Teacher Analytics | 🟢 | main | `TeacherAnalytics.tsx` + `teacherAnalyticsStore.ts` — расширенная аналитика: метрики, графики, тренды. |
 | PWA Update Toast | 🟢 | main | `PWAUpdateToast.tsx` — toast при обновлении Service Worker, auto-reload. |
 | AdaptivePractice | 🟢 | main | Тренировка слабых атомов |
@@ -83,3 +83,5 @@
 ---
 
 *Last updated: 2026-06-28*
+*Current Agent: agent-6*
+*Recent changes: friendStore.ts build fix, Lesson.tsx ege-multiple shuffle fix, task9 data fixes (плав/плов, плот/плат), task10 прО-/прА- questions, Supabase RLS enabled, workspace cleanup*
