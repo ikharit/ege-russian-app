@@ -433,3 +433,6 @@ Last updated: 2026-06-28 by Agent 3
 
 Last updated: 2026-06-29 by Agent 3
 - **Аудит агентских файлов v2 — исправление stale-ссылок внутри самих агентских файлов**: После коммита `b3c00d2` (docs(agents): fix stale 'uncommitted' refs) обнаружено, что внутри закоммиченных агентских файлов остались stale-ссылки "будет сделан после актуализации". Исправлено: `AGENT_TASKS.md` задача А41 — `Git: будет сделан` → `Git: 958c608` (task9 regression fix). `AGENT_TASKS.md` задача А46 — `Git: будет сделан` → `Git: b3c00d2`. `memory/AGENTS-HISTORY.md` — последняя запись `Git commit: будет сделан` → `Git: b3c00d2`. `memory/2026-06-29.md` — строка о git commit. Обновлён `TASK_REGISTRY.md` — добавлены записи о task9 critical bugfix (11 questions), task9 regression fix, task10 syntax fix (41 strings), shkolkovo content (task15 Н/НН). Сборка: без изменений кода. Git: `80f1e74`.
+
+Last updated: 2026-06-29 by Agent 3
+- **Profile white screen fix — добавлен импорт ChevronDown**: В `src/pages/Profile.tsx` отсутствовал импорт `ChevronDown` из `lucide-react`, что вызывало `ReferenceError` при открытии страницы `/profile` и приводило к белому экрану (white screen). Исправление: добавлен импорт `ChevronDown` в существующую группу импортов из `lucide-react`. Сборка: `npm run build` ✅ (проверена, 0 ошибок). Файл: `src/pages/Profile.tsx`. Git: `4313f13`.

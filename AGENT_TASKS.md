@@ -1535,3 +1535,27 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `b3c00d2`
 
 **Критерий завершения**: Все агентские файлы отражают актуальное состояние репозитория. Ни одного "незакоммичено" при чистом working tree.
+
+---
+
+## А47 — Profile white screen fix (ChevronDown import)
+
+**Описание**: На странице `/profile` происходил белый экран (white screen) из-за отсутствующего импорта `ChevronDown` из `lucide-react`.
+
+**Приоритет:** 🔴 Критический (влияет на пользовательский опыт)
+
+**Статус:** ✅ Завершено (2026-06-29)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/Profile.tsx`
+
+**Проблема**: `ReferenceError: ChevronDown is not defined` при открытии `/profile` — компонент не рендерился, показывался белый экран.
+
+**Решение**: Добавлен импорт `ChevronDown` в существующую группу импортов из `lucide-react` в `Profile.tsx`.
+
+**Файлы**: `src/pages/Profile.tsx`
+
+**Git**: `4313f13`
+
+**Критерий завершения**: Страница `/profile` открывается без ошибок. `npm run build` проходит без ошибок.
