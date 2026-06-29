@@ -165,10 +165,10 @@ function buildGrowthData(
 
 export function GrowthTimeline() {
   const navigate = useNavigate()
-  const answerHistory = useProgressStore((s) => s.answerHistory)
-  const examResults = useProgressStore((s) => s.examResults)
+  const answerHistory = useProgressStore((s) => s.answerHistory || [])
+  const examResults = useProgressStore((s) => s.examResults || [])
   const userStats = useProgressStore((s) => s.userStats)
-  const lessonProgress = useProgressStore((s) => s.lessonProgress)
+  const lessonProgress = useProgressStore((s) => s.lessonProgress || {})
   const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory ?? [])
 
   const fullData = useMemo(() => {
@@ -176,15 +176,25 @@ export function GrowthTimeline() {
   }, [answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory])
 
   const [playing, setPlaying] = useState(false)
-  const [progressIndex, setProgressIndex] = useState(fullData.length - 1)
+  const [progressIndex, setProgressIndex] = useState(() => Math.max(0, fullData.length - 1))
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const prevFullDataLength = useRef(fullData.length)
+
+  // Reset progressIndex when fullData changes (e.g. after rehydration)
+  useEffect(() => {
+    if (fullData.length !== prevFullDataLength.current) {
+      prevFullDataLength.current = fullData.length
+      setProgressIndex(Math.max(0, fullData.length - 1))
+    }
+  }, [fullData])
 
   const visibleData = useMemo(() => {
-    return fullData.slice(0, progressIndex + 1)
+    const idx = Math.max(0, Math.min(progressIndex, fullData.length - 1))
+    return fullData.slice(0, idx + 1)
   }, [fullData, progressIndex])
 
-  // Fallback if no data
-  if (!visibleData || visibleData.length === 0) {
+  // Fallback if no data or not enough data for chart
+  if (!visibleData || visibleData.length < 2) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
         <div className="flex items-center gap-2">

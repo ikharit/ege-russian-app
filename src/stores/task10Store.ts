@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { task10Questions, Task10Question } from '../data/questions/task10'
+import { task10Questions } from '../data/questions/task10'
+import type { UnifiedQuestion } from '../data/questions/types'
 
 export type QuestionStatus = 'new' | 'deferred' | 'passed'
 
@@ -35,7 +36,7 @@ interface Task10State {
   sessionIndex: number
   selectedRows: number[]
   hasAnswered: boolean
-  getNextQuestion: () => Task10Question | null
+  getNextQuestion: () => UnifiedQuestion | null
   answerQuestion: (questionId: string, selectedRows: number[]) => { correct: boolean }
   startSession: () => void
   resetProgress: () => void
@@ -49,7 +50,7 @@ interface Task10State {
 
 const QUESTIONS_PER_STAGE = 4
 
-function getStageQuestions(stage: number): Task10Question[] {
+function getStageQuestions(stage: number): UnifiedQuestion[] {
   const start = stage * QUESTIONS_PER_STAGE
   const end = start + QUESTIONS_PER_STAGE
   return task10Questions.slice(start, end)

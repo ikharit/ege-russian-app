@@ -1,6 +1,8 @@
 import type { UnifiedQuestion } from './types'
+import { task5DooshinQuestions } from './task5_dooshin'
 
 export const task5Questions: UnifiedQuestion[] = [
+  ...task5DooshinQuestions,
   {
     id: 'q5-1',
     taskNumber: '5',

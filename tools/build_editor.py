@@ -663,7 +663,7 @@ def main():
     if os.path.exists(dooshin_path):
         questions = parse_ts_file(dooshin_path)
         all_questions.extend(questions)
-        print(f'  ✓ dooshin.ts — {len(questions)} вопросов')
+        print(f'  OK dooshin.ts - {len(questions)} questions')
 
     # Также парсим taskX_dooshin.ts файлы
     for filepath in sorted(glob.glob(os.path.join(questions_dir, 'task*_dooshin.ts'))):
@@ -682,8 +682,8 @@ def main():
         f.write(html)
 
     print(f'\nOK Editor created: {output_path}')
-    print(f'   Открой этот файл в браузере (двойной клик)')
-    print(f'   Редактируй вопросы → нажми "Экспортировать всё" → скачай taskX.ts')
+    print(f'   Open this file in browser (double click)')
+    print(f'   Edit questions -> click Export All -> download taskX.ts')
 
 
 if __name__ == '__main__':

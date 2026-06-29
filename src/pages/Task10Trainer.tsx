@@ -1,32 +1,23 @@
-// ⚠️ AGENT NOTICE: All wrong answers go to progressStore.wrongAnswers (unified bank)
-// UPDATED V4 — refactored to BaseTrainer
-import { motion } from 'framer-motion'
-import { Check, X } from 'lucide-react'
-import { task10QuestionsById } from '../data/questions/task10'
+// Task 10 Trainer — Prefixes (ПРЕ/ПРИ, Ъ/Ь, Ы/И)
+import { task10Questions } from '../data/questions/task10'
 import { BaseTrainer } from '../components/BaseTrainer'
 
 export function Task10Trainer() {
-  const questions = Object.values(task10QuestionsById)
-
   return (
     <BaseTrainer
       title="ПРЕ/ПРИ, Ъ/Ь, Ы/И"
       taskNumber="10"
-      questions={questions}
+      questions={task10Questions}
       getQuestionId={(q) => q.id}
-      getQuestionText={(q) =>
-        q.rows.map((r) => r.words.join(', ')).join(' / ')
-      }
-      getOptions={(q) => q.rows.map((r) => r.words.join(', '))}
-      getCorrectAnswer={(q) => q.correctAnswers.map((id) => 'ряд ' + id)}
+      getQuestionText={(q) => q.text}
+      getOptions={(q) => q.options || []}
+      getCorrectAnswer={(q) => q.correctAnswer}
       getExplanation={(q) => q.explanation}
       getAtoms={() => ['task10']}
       xpPerCorrect={5}
       renderPrompt={() => (
         <p className="text-gray-700 text-sm leading-relaxed">
-          Укажите варианты ответов, в которых{' '}
-          <strong>во всех словах одного ряда</strong> пропущена{' '}
-          <strong>одна и та же буква</strong>. Запишите номера ответов.
+          Впишите пропущенную букву.
         </p>
       )}
       renderQuestion={({
@@ -36,91 +27,42 @@ export function Task10Trainer() {
         onSelect,
         disabled,
       }) => {
-        const handleRowToggle = (rowId: number) => {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           if (disabled) return
-          const idStr = String(rowId)
-          onSelect(
-            selectedAnswer.includes(idStr)
-              ? selectedAnswer.filter((r) => r !== idStr)
-              : [...selectedAnswer, idStr]
-          )
+          onSelect([e.target.value.toLowerCase().trim()])
         }
 
-        return (
-          <div className="w-full space-y-3">
-            {question.rows.map((row) => {
-              const isSelected = selectedAnswer.includes(String(row.id))
-              const isCorrectRow = question.correctAnswers.includes(row.id)
-              const showCorrect =
-                answerState !== 'idle' && isCorrectRow
-              const showWrong =
-                answerState !== 'idle' && isSelected && !isCorrectRow
-              const showMissed =
-                answerState !== 'idle' && !isSelected && isCorrectRow
+        const correct = question.correctAnswer[0] || ''
+        const showCorrect = answerState !== 'idle'
+        const isCorrect = selectedAnswer[0]?.toLowerCase() === correct.toLowerCase()
+        const showWrong = answerState === 'wrong'
 
-              return (
-                <motion.button
-                  key={row.id}
-                  onClick={() => handleRowToggle(row.id)}
-                  disabled={disabled}
-                  whileHover={disabled ? {} : { scale: 1.01 }}
-                  whileTap={disabled ? {} : { scale: 0.99 }}
-                  className={`w-full bg-white rounded-2xl p-4 shadow-sm border-2 transition-all text-left ${
-                    showCorrect
-                      ? 'border-green-400 bg-green-50'
-                      : showWrong
-                      ? 'border-red-400 bg-red-50'
-                      : showMissed
-                      ? 'border-green-300 bg-green-50/50'
-                      : isSelected
-                      ? 'border-duo-blue bg-blue-50'
-                      : 'border-transparent hover:border-gray-200'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-                        showCorrect
-                          ? 'bg-green-400 text-white'
-                          : showWrong
-                          ? 'bg-red-400 text-white'
-                          : showMissed
-                          ? 'bg-green-200 text-green-700'
-                          : isSelected
-                          ? 'bg-duo-blue text-white'
-                          : 'bg-gray-100 text-gray-500'
-                      }`}
-                    >
-                      {showCorrect || showMissed ? (
-                        <Check size={16} />
-                      ) : showWrong ? (
-                        <X size={16} />
-                      ) : (
-                        row.id
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-wrap gap-x-4 gap-y-1">
-                        {row.words.map((word, idx) => (
-                          <span key={idx} className="text-lg text-gray-800">
-                            {word.split('___').map((part, pIdx) => (
-                              <span key={pIdx}>
-                                {part}
-                                {pIdx < word.split('___').length - 1 && (
-                                  <span className="text-gray-400 mx-0.5">
-                                    ___
-                                  </span>
-                                )}
-                              </span>
-                            ))}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.button>
-              )
-            })}
+        return (
+          <div className="w-full space-y-4">
+            <p className="text-gray-800 text-lg font-medium whitespace-pre-line">
+              {question.text}
+            </p>
+            <input
+              type="text"
+              value={selectedAnswer[0] || ''}
+              onChange={handleChange}
+              disabled={disabled}
+              maxLength={1}
+              className={`w-24 h-16 text-center text-2xl font-bold rounded-2xl border-2 outline-none transition-all mx-auto block
+                ${showCorrect
+                  ? isCorrect
+                    ? 'border-green-400 bg-green-50 text-green-700'
+                    : 'border-red-400 bg-red-50 text-red-700'
+                  : 'border-gray-200 bg-white text-gray-800 focus:border-duo-blue focus:bg-blue-50'
+                }
+              `}
+              placeholder="?"
+            />
+            {showWrong && (
+              <p className="text-sm text-red-500 text-center">
+                Правильный ответ: <strong>{correct}</strong>
+              </p>
+            )}
           </div>
         )
       }}

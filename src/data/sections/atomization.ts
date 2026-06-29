@@ -1,5 +1,5 @@
 import { Section } from '../../types'
-import { task10Questions } from '../atomization/task10Questions'
+import { task10Questions } from '../questions/task10'
 
 export const atomizationSections: Section[] = [
   {

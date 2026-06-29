@@ -1,4 +1,5 @@
 import type { UnifiedQuestion } from './types'
+import { task11DooshinQuestions } from './task11_dooshin'
 
 // ⚠️ ВНИМАНИЕ АГЕНТАМ: БАЗА ДАННЫХ ПЕРЕПИСАНА (Агент 7, 2026-06-29)
 // Старые файлы `src/data/taskXQuestions.ts` теперь — ТОЛЬКО АДАПТЕРЫ.
