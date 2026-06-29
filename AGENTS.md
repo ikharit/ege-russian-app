@@ -436,3 +436,6 @@ Last updated: 2026-06-29 by Agent 3
 
 Last updated: 2026-06-29 by Agent 3
 - **Profile white screen fix — добавлен импорт ChevronDown**: В `src/pages/Profile.tsx` отсутствовал импорт `ChevronDown` из `lucide-react`, что вызывало `ReferenceError` при открытии страницы `/profile` и приводило к белому экрану (white screen). Исправление: добавлен импорт `ChevronDown` в существующую группу импортов из `lucide-react`. Сборка: `npm run build` ✅ (проверена, 0 ошибок). Файл: `src/pages/Profile.tsx`. Git: `4313f13`.
+
+Last updated: 2026-06-29 by Agent 3
+- **Аудит актуальности агентских файлов**: Проверены все агентские файлы относительно последнего коммита с изменениями кода (`4313f13` — Profile ChevronDown fix). `AGENTS.md`, `AGENT_TASKS.md`, `memory/2026-06-29.md`, `memory/AGENTS-HISTORY.md` — актуальны и содержат запись о `4313f13`. `memory/agent-registry.md` — устарел (дата `2026-06-28`), обновлён: `Last updated: 2026-06-29`, добавлено упоминание о Profile fix в `Recent changes`. Сборка: `npm run build` ✅ (36.24s, 0 ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings). Git: `408ade9`.

@@ -1559,3 +1559,27 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `4313f13`
 
 **Критерий завершения**: Страница `/profile` открывается без ошибок. `npm run build` проходит без ошибок.
+
+---
+
+## А48 — Аудит актуальности агентских файлов (2026-06-29)
+
+**Описание**: Проверка, что все агентские файлы (AGENTS.md, AGENT_TASKS.md, memory/AGENTS-HISTORY.md, memory/2026-06-29.md, memory/agent-registry.md) отражают последние изменения кода (`4313f13` — Profile ChevronDown fix).
+
+**Приоритет:** 🟡 Средний (поддержание порядка)
+
+**Статус:** ✅ Завершено (2026-06-29)
+
+**Агент:** Agent 3
+
+**Где**: `memory/agent-registry.md` (требовал обновления), `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`
+
+**Проблема**: `memory/agent-registry.md` содержал устаревшую дату (`2026-06-28`) и не упоминал последний багфикс (`4313f13`). Остальные файлы были актуальны.
+
+**Решение**: Обновлён `memory/agent-registry.md` — дата, `Recent changes`. Добавлены архивные записи в `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`.
+
+**Файлы**: `memory/agent-registry.md`, `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`
+
+**Git**: `408ade9`
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию о последнем коммите с изменениями кода. `npm run build` и `validate:rag` проходят без ошибок.

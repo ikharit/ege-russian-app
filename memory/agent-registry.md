@@ -83,6 +83,6 @@
 
 ---
 
-*Last updated: 2026-06-28*
+*Last updated: 2026-06-29*
 *Current Agent: Agent 3*
-*Recent changes: Cache-bust v6 + content fixes. Cloudflare Pages workflow added. GitHub Pages restored — dual deploy. Shkolkovo content added: задания 15 (Н/НН) из Дощинского-2026 (~150 вопросов). Build + validate:rag clean.*
+*Recent changes: Profile white screen fix (ChevronDown import). Cache-bust v6 + content fixes. Cloudflare Pages workflow added. GitHub Pages restored — dual deploy. Shkolkovo content added: задания 15 (Н/НН) из Дощинского-2026 (~150 вопросов). Build + validate:rag clean.*
