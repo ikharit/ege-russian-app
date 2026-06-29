@@ -77,9 +77,12 @@ export function Leaderboard() {
   const periodStart = getPeriodStart(period)
 
   const filtered = useMemo(() => {
-    const all = [...leaderboard, currentUserEntry]
-      .filter(e => period === 'all' || new Date(e.updatedAt) >= periodStart)
-    return all
+    const myUserId = useProgressStore.getState().userId
+    const alreadyInLeaderboard = myUserId && leaderboard.some(e => e.id === myUserId)
+    const all = alreadyInLeaderboard
+      ? [...leaderboard]
+      : [...leaderboard, currentUserEntry]
+    return all.filter(e => period === 'all' || new Date(e.updatedAt) >= periodStart)
   }, [leaderboard, currentUserEntry, period, periodStart])
 
   const sortedByXP = [...filtered].sort((a, b) => b.xp - a.xp)

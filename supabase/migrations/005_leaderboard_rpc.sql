@@ -1,4 +1,4 @@
--- Migration 005: Create get_leaderboard RPC for leaderboard
+Migration 005: Create get_leaderboard RPC for leaderboard
 -- Run this in Supabase SQL Editor: https://supabase.com/dashboard/project/szehpyhpsyvkgeakuuec/sql/new
 --
 -- Fixes: Leaderboard shows only "Вы" because get_leaderboard() RPC does not exist.
@@ -27,10 +27,13 @@ CREATE TABLE IF NOT EXISTS public.user_progress (
 -- Enable RLS on user_progress
 ALTER TABLE public.user_progress ENABLE ROW LEVEL SECURITY;
 
--- Users can only see/update their own row
-CREATE POLICY IF NOT EXISTS "Users can view own progress" ON user_progress
+-- Users can only see/update their own row (DROP IF EXISTS first, then CREATE)
+DROP POLICY IF EXISTS "Users can view own progress" ON user_progress;
+CREATE POLICY "Users can view own progress" ON user_progress
   FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY IF NOT EXISTS "Users can update own progress" ON user_progress
+
+DROP POLICY IF EXISTS "Users can update own progress" ON user_progress;
+CREATE POLICY "Users can update own progress" ON user_progress
   FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
 -- 2. Create SECURITY DEFINER RPC function (bypasses RLS, reads all rows)
@@ -61,21 +64,26 @@ RETURNS TABLE (
   user_stats jsonb,
   lesson_progress jsonb,
   task_stats jsonb,
-  achievements jsonb,
-  behavior_profile jsonb,
-  exam_results jsonb,
-  theory_tests_completed jsonb,
-  answer_history jsonb,
-  daily_quest_progress jsonb,
   atom_progress jsonb,
   wrong_answers jsonb,
+  achievements jsonb,
+  daily_quest_progress jsonb,
+  theory_tests_completed jsonb,
+  leaderboard_ranks jsonb,
+  teacher_students jsonb,
+  is_teacher boolean,
+  exam_results jsonb,
+  answer_history jsonb,
+  behavior_profile jsonb,
   updated_at timestamptz
 )
 LANGUAGE sql
 SECURITY DEFINER
 SET search_path = public
 AS $$
-  SELECT * FROM user_progress ORDER BY updated_at DESC;
+  SELECT user_id, user_stats, lesson_progress, task_stats, atom_progress, wrong_answers, achievements, daily_quest_progress, theory_tests_completed, leaderboard_ranks, teacher_students, is_teacher, exam_results, answer_history, behavior_profile, updated_at
+  FROM user_progress
+  ORDER BY updated_at DESC;
 $$;
 
 GRANT EXECUTE ON FUNCTION public.get_all_user_progress() TO anon, authenticated;
