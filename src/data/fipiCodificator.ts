@@ -159,7 +159,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     examples: ['Впишите пропущенную букву: иск_зить, оп_лчение'],
     codificatorElements: ['3.2'],
     projectFiles: [
-      'src/data/sections/dooshin/task9.ts',
+      'src/data/questions/task9_dooshin.ts',
       'src/data/sections/orthography.ts',
       'src/data/rules/task9-rules.json',
     ],
@@ -177,7 +177,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     topics: ['Приставки', 'ПРЕ/ПРИ', 'ЗА/С', 'НЕ/НИ', 'НАД/НАДО', 'БЕЗ/БЕС', 'ИС/ИЗ/ВОЗ/ВЗО/ВОС'],
     examples: ['Впишите пропущенные буквы: пр_дать, с_полнить, в_збудить'],
     codificatorElements: ['3.3'],
-    projectFiles: ['src/data/sections/dooshin/task10.ts', 'src/data/sections/orthography.ts'],
+    projectFiles: ['src/data/questions/task10_dooshin.ts', 'src/data/sections/orthography.ts'],
     status: 'implemented',
   },
 

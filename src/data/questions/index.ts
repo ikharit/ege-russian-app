@@ -48,7 +48,6 @@ import { task24Questions } from './task24'
 import { task25Questions } from './task25'
 import { task26Questions } from './task26'
 import { task27Questions } from './task27'
-import { dooshinQuestions } from './dooshin'
 
 // ─── Все вопросы ───
 export const allQuestions: UnifiedQuestion[] = [
@@ -79,7 +78,6 @@ export const allQuestions: UnifiedQuestion[] = [
   ...task25Questions,
   ...task26Questions,
   ...task27Questions,
-  ...dooshinQuestions,
 ]
 
 // ─── Индекс по ID ───

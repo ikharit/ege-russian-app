@@ -1,4 +1,5 @@
 import type { UnifiedQuestion } from './types'
+import { task9DooshinQuestions } from './task9_dooshin'
 
 export const task9Questions: UnifiedQuestion[] = [
   {
@@ -307,11 +308,11 @@ export const task9Questions: UnifiedQuestion[] = [
     type: 'text',
     text: 'Впишите пропущенную букву: поч_татель (таланта)',
     correctAnswer: ['и'],
-    explanation: 'Корень -чит- (проверяемая). Проверочное: читать.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'root_verifiable', 'root_chit_chitat'],
-    tags: ['root_chit_chitat', 'root_verifiable', 'task9'],
+    explanation: 'Корень -чит- (чередуется с -чет- в почтить, почтение). Проверочное: почтить.',
+    difficulty: 'medium',
+    xpReward: 12,
+    atoms: ['task9', 'root_vowel_alternation', 'root_chit_chet'],
+    tags: ['root_vowel_alternation', 'task9'],
   },
   {
     id: 'q9-14',
@@ -463,11 +464,11 @@ export const task9Questions: UnifiedQuestion[] = [
     type: 'text',
     text: 'Впишите пропущенную букву: выч_тание',
     correctAnswer: ['и'],
-    explanation: 'Корень -чит- (от читать). Проверочное слово: читать.',
+    explanation: 'Корень -чит- (чередуется с -чес- в вычесть, счесть). Проверочное: вычесть.',
     difficulty: 'medium',
     xpReward: 12,
-    atoms: ['task9', 'roots'],
-    tags: ['roots', 'task9'],
+    atoms: ['task9', 'root_vowel_alternation', 'root_chit_ches'],
+    tags: ['root_vowel_alternation', 'task9'],
   },
   {
     id: 'q9-27',
@@ -530,6 +531,7 @@ export const task9Questions: UnifiedQuestion[] = [
     atoms: ['task9', 'roots'],
     tags: ['roots', 'task9'],
   },
+  ...task9DooshinQuestions,
 ]
 
 export const task9QuestionsById = Object.fromEntries(

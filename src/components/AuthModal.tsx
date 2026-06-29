@@ -64,6 +64,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         setUserName(data.user.email.split('@')[0])
       }
       await loadProgress()
+      // Синхронизируем локальный прогресс в Supabase при первом входе
+      const syncProgress = useProgressStore.getState().syncProgress
+      await syncProgress()
       setSuccess('Вход выполнен!')
       setTimeout(() => {
         handleClose()
@@ -100,6 +103,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       if (data.user.email) {
         setUserName(data.user.email.split('@')[0])
       }
+      // Синхронизируем локальный прогресс в Supabase при регистрации
+      const syncProgress = useProgressStore.getState().syncProgress
+      await syncProgress()
       setSuccess('Регистрация успешна! Проверьте email для подтверждения.')
       setTimeout(() => {
         handleClose()

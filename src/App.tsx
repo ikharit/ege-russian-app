@@ -214,6 +214,9 @@ export default function App() {
           }
           await loadProgress()
           await useAnalyticsStore.getState().loadAnalytics()
+          // Синхронизируем локальный прогресс в Supabase при OAuth входе
+          const syncProgress = useProgressStore.getState().syncProgress
+          await syncProgress()
           // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname)
         }

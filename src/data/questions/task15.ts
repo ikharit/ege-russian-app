@@ -1,4 +1,5 @@
 import type { UnifiedQuestion } from './types'
+import { task15DooshinQuestions } from './task15_dooshin'
 
 export const task15Questions: UnifiedQuestion[] = [
   {

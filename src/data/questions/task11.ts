@@ -2298,6 +2298,7 @@ export const task11Questions: UnifiedQuestion[] = [
     agent: 'Агент 7',
     createdAt: '2026-06-29T22:46:16.884088',
   },
+  ...task11DooshinQuestions,
 ]
 
 export const task11QuestionsById = Object.fromEntries(task11Questions.map(q => [q.id, q]))

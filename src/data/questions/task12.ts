@@ -1,4 +1,5 @@
 import type { UnifiedQuestion } from './types'
+import { task12DooshinQuestions } from './task12_dooshin'
 
 export const task12Questions: UnifiedQuestion[] = [
   {
@@ -1769,7 +1770,8 @@ export const task12Questions: UnifiedQuestion[] = [
     xpReward: 15,
     atoms: ['task12', 'endings'],
     tags: ['endings', 'task12'],
-  }
+  },
+  ...task12DooshinQuestions,
 ]
 
 export const task12QuestionsById = Object.fromEntries(

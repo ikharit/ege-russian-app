@@ -1,4 +1,5 @@
 import type { UnifiedQuestion } from './types'
+import { task10DooshinQuestions } from './task10_dooshin'
 
 export const task10Questions: UnifiedQuestion[] = [
   {
@@ -832,7 +833,8 @@ export const task10Questions: UnifiedQuestion[] = [
     xpReward: 10,
     atoms: ['prefix_pre_pri', 'pre_pri_dict'],
     tags: ['pre_pri_dict', 'prefix_pre_pri', 'task10'],
-  }
+  },
+  ...task10DooshinQuestions,
 ]
 
 export const task10QuestionsById = Object.fromEntries(
