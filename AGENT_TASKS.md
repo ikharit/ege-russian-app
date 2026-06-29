@@ -1512,7 +1512,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`, `TASK_REGISTRY.md`
 
-**Git**: `f666c1e`
+**Git**: `80f1e74`
 
 **Критерий завершения**: Ни одного "будет сделан" в агентских файлах при чистом working tree. TASK_REGISTRY.md отражает все изменения заданий 9-20.
 
