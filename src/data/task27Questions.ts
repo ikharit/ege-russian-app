@@ -1,2 +1,2 @@
 // АДАПТЕР: Старый импорт → новая единая база
-export { task5Questions, task5QuestionsById } from '../questions/task5'
+export { task27Questions } from '../questions/task27'
