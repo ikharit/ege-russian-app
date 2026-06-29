@@ -112,7 +112,7 @@ export function getAchievementProgress(id: string, stats: any, progress: any): {
     'ach-15-lessons-day': { current: 0, target: 1 },
     'ach-collector-20': { current: stats.achievements.length, target: 20 },
     'ach-collector-40': { current: stats.achievements.length, target: 40 },
-    'ach-all-achievements': { current: stats.achievements.length, target: allAchievements.length },
+    'ach-all-achievements': { current: stats.achievements.length, target: achievements.length },
     'ach-xp-100': { current: stats.xp, target: 100 },
     'ach-xp-500': { current: stats.xp, target: 500 },
     'ach-xp-1000': { current: stats.xp, target: 1000 },
