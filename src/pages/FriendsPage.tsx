@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, UserPlus, Search, Heart, Trophy, Flame, Zap, X, Check, Users, Activity, Copy, Loader2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, UserPlus, Search, Heart, Trophy, Flame, Zap, X, Check, Users, Activity, Copy, Loader2, AlertCircle, LogIn } from 'lucide-react'
 import { useFriendStore } from '../stores/friendStore'
 import { useProgressStore } from '../stores/progressStore'
 
@@ -195,12 +195,25 @@ export function FriendsPage() {
 
       {/* Login hint if not authenticated */}
       {!myUserId && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 flex items-center gap-2">
-          <AlertCircle size={16} className="text-amber-600 shrink-0" />
-          <p className="text-xs text-amber-800">
-            Войдите в аккаунт, чтобы добавлять друзей и синхронизировать их между устройствами.
-          </p>
-        </div>
+        <motion.div
+          className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 flex flex-col items-center gap-3"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center gap-2">
+            <AlertCircle size={16} className="text-amber-600 shrink-0" />
+            <p className="text-xs text-amber-800">
+              Войдите в аккаунт, чтобы добавлять друзей и синхронизировать их между устройствами.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/auth')}
+            className="px-4 py-2 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors flex items-center gap-2 text-sm"
+          >
+            <LogIn size={16} />
+            <span>Войти в аккаунт</span>
+          </button>
+        </motion.div>
       )}
 
       {/* Tabs */}

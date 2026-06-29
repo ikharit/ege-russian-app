@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, ChevronDown, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, FileText, GraduationCap, Copy } from 'lucide-react'
+import { ArrowLeft, User, Trophy, Flame, Star, Heart, Zap, Trash2, Download, Upload, Bell, ChevronRight, ChevronDown, BookOpen, Users, Volume2, VolumeX, Moon, Sun, Bot, CheckCircle, AlertTriangle, XCircle, Loader2, BellRing, BellOff, TestTube, FileText, GraduationCap, Copy, LogIn } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useFirebaseStore } from '../stores/firebaseStore'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -429,6 +429,26 @@ export function Profile() {
         </button>
         <h1 className="text-xl font-bold text-gray-800">Профиль</h1>
       </div>
+
+      {/* Login prompt if not authenticated */}
+      {!myUserId && (
+        <motion.div
+          className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex flex-col items-center gap-3"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="text-sm text-yellow-800 text-center">
+            🔒 Войдите, чтобы синхронизировать прогресс между устройствами и добавлять друзей
+          </p>
+          <button
+            onClick={() => navigate('/auth')}
+            className="px-4 py-2 bg-duo-green text-white font-bold rounded-xl hover:bg-duo-green/90 transition-colors flex items-center gap-2"
+          >
+            <LogIn size={16} />
+            <span>Войти в аккаунт</span>
+          </button>
+        </motion.div>
+      )}
 
       {/* Avatar + Name */}
       <div className="text-center">

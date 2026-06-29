@@ -13,7 +13,7 @@ import { AchievementToast } from './components/AchievementToast'
 import { AuthModal } from './components/AuthModal'
 import { PWAUpdateToast } from './components/PWAUpdateToast'
 import { achievements } from './data/achievements'
-import { BookOpen, Map, BarChart3, GraduationCap, BookOpenText, LayoutGrid } from 'lucide-react'
+import { BookOpen, Map, BarChart3, GraduationCap, BookOpenText, LayoutGrid, LogIn } from 'lucide-react'
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -486,7 +486,7 @@ export default function App() {
     setSyncStatus('idle')
   }, [setUserId])
 
-  const syncIndicator = isSupabaseConfigured ? (
+  const syncIndicator = (
     <div className="flex items-center gap-1.5">
       {userId ? (
         <button
@@ -498,13 +498,14 @@ export default function App() {
       ) : (
         <button
           onClick={() => setAuthModalOpen(true)}
-          className="text-xs text-duo-green font-bold hover:underline"
+          className="flex items-center gap-1 px-2.5 py-1.5 bg-duo-green text-white text-xs font-bold rounded-lg hover:bg-duo-green/90 transition-colors"
         >
-          Войти
+          <LogIn size={14} />
+          <span>Войти</span>
         </button>
       )}
     </div>
-  ) : null
+  )
 
   // Theme effect
   const theme = useSettingsStore((s) => s.theme)
