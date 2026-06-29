@@ -1,4 +1,6 @@
-import type { UnifiedQuestion } from '../types'
+import type { UnifiedQuestion } from './types'
+import { task16DooshinQuestions } from './task16_dooshin'
+
 export const task16Questions: UnifiedQuestion[] = [
   {
     id: "q16-1",
@@ -264,6 +266,7 @@ export const task16Questions: UnifiedQuestion[] = [
     atoms: ["punctuation"],
     tags: ["пунктуация", "задание16", "ege"],
   },
+  ...task16DooshinQuestions,
 ]
 
 export const task16QuestionsById = Object.fromEntries(task16Questions.map(q => [q.id, q]))

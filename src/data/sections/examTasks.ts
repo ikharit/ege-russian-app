@@ -1,4 +1,5 @@
 import { Section } from '../../types'
+import { task20DooshinQuestions } from '../questions/task20_dooshin'
 
 export const examTasksSections: Section[] = [
   // Задание 20: Паронимы (дополнительные)
@@ -220,6 +221,16 @@ export const examTasksSections: Section[] = [
             difficulty: 'hard', xpReward: 15, atoms: ['task20', 'paronyms']
           },
         ]
+      },
+      {
+        id: 'lesson-task20-dooshin',
+        sectionId: 'section-task20',
+        title: 'Задание 20. Дощинский (2026)',
+        type: 'practice',
+        description: 'Вопросы из сборника Дощинского-2026',
+        xpReward: 60,
+        prerequisites: [],
+        questions: task20DooshinQuestions
       }
     ]
   },

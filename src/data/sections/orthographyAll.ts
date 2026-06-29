@@ -64,13 +64,12 @@ export const orthographyAllSections: Section[] = [
         id: 'group-task15',
         title: 'Задание 15',
         subtitle: 'Н / НН',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-nnn') || l.id.startsWith('q15-') || l.id.startsWith('lesson-dooshin-15') || l.id.startsWith('qd15-') || l.id.startsWith('lesson-shkolkovo')),
-      },
-      {
-        id: 'group-task20',
-        title: 'Задание 20',
-        subtitle: 'Расстановка запятых (Дощинский)',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-dooshin-20') || l.id.startsWith('qd20-')),
+        lessons: allLessons.filter(l => 
+          l.id.startsWith('lesson-nnn') || 
+          l.id.startsWith('q15-') || 
+          l.id.startsWith('lesson-dooshin-15') || 
+          l.id.startsWith('lesson-shkolkovo-task15')
+        ),
       },
     ],
   }

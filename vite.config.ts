@@ -73,7 +73,6 @@ export default defineConfig({
       plugins: [visualizer({ open: false, filename: 'dist/stats.html' })],
       output: {
         manualChunks: {
-          dooshin: ['./src/data/sections/dooshin'],
           recharts: ['recharts'],
           'framer-motion': ['framer-motion'],
           supabase: ['@supabase/supabase-js'],

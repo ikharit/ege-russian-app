@@ -1,4 +1,5 @@
 import { Section } from '../../types'
+import { task15DooshinQuestions } from '../questions/task15_dooshin'
 
 export const nnnSections: Section[] = [
   {
@@ -61,6 +62,16 @@ export const nnnSections: Section[] = [
           { id: 'q15-29', type: 'single', text: 'Как правильно?', options: ['непрошенный', 'непрошеный'], correctAnswer: ["непрошенный"], explanation: 'Не + причастие: сохраняются две н (просить → прошенный).', difficulty: 'medium', xpReward: 12, atoms: ['task15', 'n_nn_verb_adj'] },
           { id: 'q15-30', type: 'single', text: 'Как правильно?', options: ['сплетенный', 'сплетеный'], correctAnswer: ["сплетенный"], explanation: 'Причастие с приставкой от глагола совершенного вида (сплести → сплетенный).', difficulty: 'medium', xpReward: 12, atoms: ['task15', 'n_nn_verb_adj'] },
         ]
+      },
+      {
+        id: 'lesson-dooshin-15-1',
+        sectionId: 'section-nnn-15',
+        title: 'Задание 15. Дощинский (2026)',
+        type: 'practice',
+        description: 'Вопросы из сборника Дощинского-2026',
+        xpReward: 60,
+        prerequisites: [],
+        questions: task15DooshinQuestions
       }
     ]
   }

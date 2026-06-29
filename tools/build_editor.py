@@ -656,7 +656,7 @@ def main():
             continue
         questions = parse_ts_file(filepath)
         all_questions.extend(questions)
-        print(f'  ✓ {os.path.basename(filepath)} — {len(questions)} вопросов')
+        print(f'  OK {os.path.basename(filepath)} - {len(questions)} questions')
 
     # Также парсим dooshin.ts (если есть)
     dooshin_path = os.path.join(questions_dir, 'dooshin.ts')
@@ -669,9 +669,9 @@ def main():
     for filepath in sorted(glob.glob(os.path.join(questions_dir, 'task*_dooshin.ts'))):
         questions = parse_ts_file(filepath)
         all_questions.extend(questions)
-        print(f'  ✓ {os.path.basename(filepath)} — {len(questions)} вопросов')
+        print(f'  OK {os.path.basename(filepath)} - {len(questions)} questions')
 
-    print(f'\nВсего вопросов: {len(all_questions)}')
+    print(f'\nTotal questions: {len(all_questions)}')
 
     # Встраиваем JSON в HTML
     json_str = json.dumps(all_questions, ensure_ascii=False, indent=2)
@@ -681,7 +681,7 @@ def main():
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-    print(f'\n✅ Редактор создан: {output_path}')
+    print(f'\nOK Editor created: {output_path}')
     print(f'   Открой этот файл в браузере (двойной клик)')
     print(f'   Редактируй вопросы → нажми "Экспортировать всё" → скачай taskX.ts')
 
