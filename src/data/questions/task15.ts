@@ -587,7 +587,8 @@ export const task15Questions: UnifiedQuestion[] = [
     xpReward: 12,
     atoms: ['task15', 'n_nn_verb_adj'],
     tags: ['n_nn_verb_adj', 'task15'],
-  }
+  },
+  ...task15DooshinQuestions,
 ]
 
 export const task15QuestionsById = Object.fromEntries(

@@ -652,18 +652,24 @@ def main():
 
     all_questions = []
     for filepath in sorted(glob.glob(os.path.join(questions_dir, 'task*.ts'))):
-        if 'index' in filepath or 'types' in filepath or 'search' in filepath:
+        if 'index' in filepath or 'types' in filepath or 'search' in filepath or '_dooshin' in filepath:
             continue
         questions = parse_ts_file(filepath)
         all_questions.extend(questions)
         print(f'  ✓ {os.path.basename(filepath)} — {len(questions)} вопросов')
 
-    # Также парсим dooshin.ts
+    # Также парсим dooshin.ts (если есть)
     dooshin_path = os.path.join(questions_dir, 'dooshin.ts')
     if os.path.exists(dooshin_path):
         questions = parse_ts_file(dooshin_path)
         all_questions.extend(questions)
         print(f'  ✓ dooshin.ts — {len(questions)} вопросов')
+
+    # Также парсим taskX_dooshin.ts файлы
+    for filepath in sorted(glob.glob(os.path.join(questions_dir, 'task*_dooshin.ts'))):
+        questions = parse_ts_file(filepath)
+        all_questions.extend(questions)
+        print(f'  ✓ {os.path.basename(filepath)} — {len(questions)} вопросов')
 
     print(f'\nВсего вопросов: {len(all_questions)}')
 

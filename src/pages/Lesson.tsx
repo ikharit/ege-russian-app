@@ -64,15 +64,8 @@ export function Lesson() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress[lessonId ?? ''])
   const theory = lesson ? getTheoryForLesson(lesson.id) : undefined
 
-  // Lazy-load dooshin questions if lesson has empty questions array
   useEffect(() => {
     setLesson(courseLesson)
-    if (courseLesson && courseLesson.questions.length === 0 && lessonId?.startsWith('lesson-dooshin')) {
-      import('../data/sections/dooshinUnified').then(({ dooshinSection }) => {
-        const fullLesson = dooshinSection.lessons.find(l => l.id === lessonId)
-        if (fullLesson) setLesson(fullLesson)
-      })
-    }
   }, [courseLesson, lessonId])
 
   // Reset all local game state when lessonId changes

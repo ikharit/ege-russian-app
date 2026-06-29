@@ -127,40 +127,6 @@ export function createAchievementChecker(get: any) {
     if (mistakesFixed >= 50) addIfNew('ach-mistake-50')
     if (state.wrongAnswers.length === 0 && mistakesFixed > 0) addIfNew('ach-mistake-all')
 
-    // === ДОЩИНСКИЙ (компромисс) ===
-    const dooshinCompleted = completedLessons.filter((l: any) => 
-      l.id?.startsWith('lesson-dooshin') || l.id?.startsWith('qd')
-    )
-    const dooshinCount = dooshinCompleted.length
-    
-    if (dooshinCount >= 1) addIfNew('ach-dooshin-first')
-    if (dooshinCount >= 5) addIfNew('ach-dooshin-5')
-    if (dooshinCount >= 10) addIfNew('ach-dooshin-10')
-    if (dooshinCount >= 20) addIfNew('ach-dooshin-20')
-    const dooshinAllTarget = 40
-    if (dooshinCount >= dooshinAllTarget) addIfNew('ach-dooshin-all')
-    
-    const dooshinSection = course.sections.find((s: any) => s.id === 'section-dooshin-all')
-    if (dooshinSection) {
-      const task9Group = dooshinSection.groups?.find((g: any) => g.id === 'group-task9')
-      const task10Group = dooshinSection.groups?.find((g: any) => g.id === 'group-task10')
-      const task11Group = dooshinSection.groups?.find((g: any) => g.id === 'group-task11')
-      const task12Group = dooshinSection.groups?.find((g: any) => g.id === 'group-task12')
-      
-      if (task9Group && task9Group.lessons.every((l: any) => state.lessonProgress[l.id]?.status === 'completed')) {
-        addIfNew('ach-dooshin-9')
-      }
-      if (task10Group && task10Group.lessons.every((l: any) => state.lessonProgress[l.id]?.status === 'completed')) {
-        addIfNew('ach-dooshin-task-10')
-      }
-      if (task11Group && task11Group.lessons.every((l: any) => state.lessonProgress[l.id]?.status === 'completed')) {
-        addIfNew('ach-dooshin-11')
-      }
-      if (task12Group && task12Group.lessons.every((l: any) => state.lessonProgress[l.id]?.status === 'completed')) {
-        addIfNew('ach-dooshin-12')
-      }
-    }
-
     // === ИНТЕНСИВ ===
     if (lessonId) {
       const today = now.toISOString().split('T')[0]

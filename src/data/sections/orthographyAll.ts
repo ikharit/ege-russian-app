@@ -3,8 +3,6 @@ import { orthographySections } from './orthography'
 import { atomizationSections } from './atomization'
 import { grammarSections } from './grammar'
 import { nnnSections } from './n_nn'
-import { dooshin15Sections } from './dooshin15'
-import { dooshin20Sections } from './dooshin20'
 import { shkolkovoSections } from './shkolkovo'
 
 const allLessons = [
@@ -12,8 +10,6 @@ const allLessons = [
   ...atomizationSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...grammarSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...nnnSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
-  ...dooshin15Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
-  ...dooshin20Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
   ...shkolkovoSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthography' }))),
 ]
 

@@ -50,42 +50,21 @@ export function Statistics() {
     '20': 'section-punctuation',
   }
 
-  // Distribute dooshin lessons into base sections
-  const dooshinSection = course.sections.find(s => s.id === 'section-dooshin-all')
-  const dooshinLessonIdsBySection: Map<string, string[]> = new Map()
-  if (dooshinSection) {
-    for (const lesson of dooshinSection.lessons) {
-      const match = lesson.id.match(/lesson-dooshin-(\d+)-/)
-      if (match) {
-        const targetSection = dooshinTaskToSection[match[1]]
-        if (targetSection) {
-          const arr = dooshinLessonIdsBySection.get(targetSection) || []
-          arr.push(lesson.id)
-          dooshinLessonIdsBySection.set(targetSection, arr)
-        }
-      }
+  // Calculate per-section stats
+  const sectionStats = course.sections.map(section => {
+    const allLessonIds = section.lessons.map(l => l.id)
+
+    const completed = allLessonIds.filter(id => lessonProgress[id]?.status === 'completed').length
+    const totalScore = allLessonIds.reduce((sum, id) => sum + (lessonProgress[id]?.bestScore || 0), 0)
+    const avgScore = completed > 0 ? Math.round(totalScore / completed) : 0
+    return {
+      name: section.title,
+      completed,
+      total: allLessonIds.length,
+      score: avgScore,
+      fill: section.color
     }
-  }
-
-  // Calculate per-section stats (excluding dooshin, merging its lessons)
-  const sectionStats = course.sections
-    .filter(s => s.id !== 'section-dooshin-all')
-    .map(section => {
-      const baseLessonIds = section.lessons.map(l => l.id)
-      const dooshinIds = dooshinLessonIdsBySection.get(section.id) || []
-      const allLessonIds = [...baseLessonIds, ...dooshinIds]
-
-      const completed = allLessonIds.filter(id => lessonProgress[id]?.status === 'completed').length
-      const totalScore = allLessonIds.reduce((sum, id) => sum + (lessonProgress[id]?.bestScore || 0), 0)
-      const avgScore = completed > 0 ? Math.round(totalScore / completed) : 0
-      return {
-        name: section.title,
-        completed,
-        total: allLessonIds.length,
-        score: avgScore,
-        fill: section.color
-      }
-    })
+  })
 
   const radarData = sectionStats.map(s => ({
     subject: s.name.replace('Орфография: ', '').replace('Пунктуация: ', '').slice(0, 15),
