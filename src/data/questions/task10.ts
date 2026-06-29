@@ -4,6 +4,10 @@ export const task10Questions: UnifiedQuestion[] = [
   {
     id: 'q10-atom-1',
     taskNumber: '10',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'text',
     text: 'Впишите пропущенную букву: пр_исполнен (отваги)',
     correctAnswer: ['е'],

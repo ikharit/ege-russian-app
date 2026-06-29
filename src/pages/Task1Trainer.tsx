@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BaseTrainer } from '../components/BaseTrainer'
-import { task1Questions } from '../data/task1Questions'
+import { task1Questions } from '../data/questions/task1'
 
 export function Task1Trainer() {
   const [showText, setShowText] = useState(true)

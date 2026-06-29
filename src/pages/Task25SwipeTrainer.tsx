@@ -1,5 +1,5 @@
 import { SwipeTrainerPage } from './SwipeTrainerPage'
-import { task25Questions } from '../data/task25Questions'
+import { task25Questions } from '../data/questions/task25'
 
 export function Task25SwipeTrainer() {
   return (

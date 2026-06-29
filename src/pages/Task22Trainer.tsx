@@ -1,4 +1,4 @@
-import { task22Questions } from '../data/task22Questions'
+import { task22Questions } from '../data/questions/task22'
 import { SimpleTrainerPage } from './SimpleTrainerPage'
 
 export function Task22Trainer() {

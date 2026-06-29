@@ -1,4 +1,14 @@
 // ═══════════════════════════════════════════════════════════════════════════════
+//
+// ⚠️ ВНИМАНИЕ АГЕНТАМ: БАЗА ДАННЫХ ПЕРЕПИСАНА (Агент 7, 2026-06-29)
+// Старые файлы `src/data/taskXQuestions.ts` теперь — ТОЛЬКО АДАПТЕРЫ.
+// Источник правды: `src/data/questions/taskX.ts`.
+// Не добавляй вопросы в старые файлы! Добавляй сюда.
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
+//
 // ЕДИНАЯ БАЗА ВСЕХ ВОПРОСОВ ЕГЭ — ИНДЕКСЫ
 // ═══════════════════════════════════════════════════════════════════════════════
 //
@@ -28,6 +38,8 @@ import { task14Questions } from './task14'
 import { task15Questions } from './task15'
 import { task16Questions } from './task16'
 import { task17Questions } from './task17'
+import { task18Questions } from './task18'
+import { task19Questions } from './task19'
 import { task20Questions } from './task20'
 import { task21Questions } from './task21'
 import { task22Questions } from './task22'
@@ -57,6 +69,8 @@ export const allQuestions: UnifiedQuestion[] = [
   ...task15Questions,
   ...task16Questions,
   ...task17Questions,
+  ...task18Questions,
+  ...task19Questions,
   ...task20Questions,
   ...task21Questions,
   ...task22Questions,

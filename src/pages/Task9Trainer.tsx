@@ -1,4 +1,4 @@
-import { task9Questions } from '../data/task9Questions'
+import { task9Questions } from '../data/questions/task9'
 import { SimpleTrainerPage } from './SimpleTrainerPage'
 
 export function Task9Trainer() {

@@ -2,7 +2,7 @@
 // UPDATED V4 — refactored to BaseTrainer
 import { motion } from 'framer-motion'
 import { Check, X } from 'lucide-react'
-import { task5QuestionsById } from '../data/task5Questions'
+import { task5QuestionsById } from '../data/questions/task5'
 import { BaseTrainer } from '../components/BaseTrainer'
 
 export function Task5Trainer() {

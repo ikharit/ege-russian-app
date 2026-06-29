@@ -40,6 +40,12 @@ export interface Question {
   theoryUrl?: string
   hints?: Hint[]
   lastEditedBy?: string
+  verified?: boolean
+  agent?: string
+  tags?: string[]
+  taskNumber?: string
+  xpReward?: number
+  difficulty?: 'easy' | 'medium' | 'hard'
 }
 
 export interface QuestionFeedback {

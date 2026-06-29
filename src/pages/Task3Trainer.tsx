@@ -1,5 +1,5 @@
 import { BaseTrainer } from '../components/BaseTrainer'
-import { task3Questions } from '../data/task3Questions'
+import { task3Questions } from '../data/questions/task3'
 
 export function Task3Trainer() {
   return (

@@ -1,5 +1,5 @@
 import { Section } from "../../../types"
-import { task16Questions } from '../../task16Questions'
+import { task16Questions } from '../../questions/task16'
 
 export const dooshinTask16: Section = {
     id: "section-dooshin-16",
@@ -21,9 +21,9 @@ export const dooshinTask16: Section = {
         questions: task16Questions.slice(0, 30).map((q, i) => ({
           id: `qd16-${i + 1}`,
           type: 'single' as const,
-          text: `${q.instruction}\n\n1) ${q.sentences[0].text}\n2) ${q.sentences[1].text}\n3) ${q.sentences[2].text}\n4) ${q.sentences[3].text}`,
-          options: ["1", "2", "3", "4"],
-          correctAnswer: [String(q.correctAnswer)],
+          text: q.text,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
           explanation: q.explanation,
           difficulty: 'easy' as const,
           xpReward: 10,

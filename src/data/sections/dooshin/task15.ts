@@ -1,5 +1,5 @@
 import { Section } from "../../../types"
-import { task15Questions } from '../../task15Questions'
+import { task15Questions } from '../../questions/task15'
 
 export const dooshinTask15: Section = {
     id: "section-dooshin-15",

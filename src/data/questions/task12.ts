@@ -4,6 +4,10 @@ export const task12Questions: UnifiedQuestion[] = [
   {
     id: 't12-1',
     taskNumber: '12',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'text',
     text: 'Вставьте окончание: читаемый (кем?) студент…',
     correctAnswer: ['студентом'],

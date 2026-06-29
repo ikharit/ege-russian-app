@@ -4,6 +4,10 @@ export const task5Questions: UnifiedQuestion[] = [
   {
     id: 'q5-1',
     taskNumber: '5',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'single',
     text: 'В библиотеке оформили ... на журналы.',
     options: ['абонемент', 'абонент'],

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { BaseTrainer } from '../components/BaseTrainer'
-import { task12Questions } from '../data/task12Questions'
+import { task12Questions } from '../data/questions/task12'
 
 function TextInputQuestion({
   question,

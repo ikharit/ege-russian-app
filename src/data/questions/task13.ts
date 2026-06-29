@@ -4,6 +4,10 @@ export const task13Questions: UnifiedQuestion[] = [
 {
     id: 't13-1',
     taskNumber: '13',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'single',
     text: 'Как правильно написать: (не)знающий ответа?',
     options: ['незнающий', 'не знающий', 'не-знающий'],
@@ -414,5 +418,4 @@ export const task13Questions: UnifiedQuestion[] = [
     atoms: ['ne_noun'],
     tags: ['ne_noun', 'task13'],
   }
-])
-)
+]

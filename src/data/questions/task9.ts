@@ -4,6 +4,10 @@ export const task9Questions: UnifiedQuestion[] = [
   {
     id: 't9-1',
     taskNumber: '9',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'single',
     text: 'Вставьте пропущенную букву: постро..нный',
     options: ['построенный', 'построённый', 'построинный', 'построанный'],
@@ -530,66 +534,6 @@ export const task9Questions: UnifiedQuestion[] = [
     atoms: ['task9', 'roots'],
     tags: ['roots', 'task9'],
   },
-  {
-    id: 'q11-1',
-    taskNumber: '9',
-    type: 'text',
-    text: 'Впишите пропущенную букву: щегол_ватый',
-    correctAnswer: ['е'],
-    explanation: 'Суффикс -еват-: щеголеватый.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'suffixes'],
-    tags: ['suffixes', 'task9'],
-  },
-  {
-    id: 'q11-2',
-    taskNumber: '9',
-    type: 'text',
-    text: 'Впишите пропущенную букву: находч_вый',
-    correctAnswer: ['и'],
-    explanation: 'Суффикс -ив-: находчивый.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'suffixes'],
-    tags: ['suffixes', 'task9'],
-  },
-  {
-    id: 'q11-3',
-    taskNumber: '9',
-    type: 'text',
-    text: 'Впишите пропущенную букву: застр_вать',
-    correctAnswer: ['е'],
-    explanation: 'Суффикс -ева- в глаголе застревать.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'suffixes'],
-    tags: ['suffixes', 'task9'],
-  },
-  {
-    id: 'q11-4',
-    taskNumber: '9',
-    type: 'text',
-    text: 'Впишите пропущенную букву: гел_вая (ручка)',
-    correctAnswer: ['е'],
-    explanation: 'От гель: гелевая.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'suffixes'],
-    tags: ['suffixes', 'task9'],
-  },
-  {
-    id: 'q11-5',
-    taskNumber: '9',
-    type: 'text',
-    text: 'Впишите пропущенную букву: испыт_вать',
-    correctAnswer: ['ы'],
-    explanation: 'Суффикс -ыв-: испытывать.',
-    difficulty: 'easy',
-    xpReward: 10,
-    atoms: ['task9', 'suffixes'],
-    tags: ['suffixes', 'task9'],
-  }
 ]
 
 export const task9QuestionsById = Object.fromEntries(

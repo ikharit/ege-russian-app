@@ -4,6 +4,10 @@
 import type { UnifiedQuestion } from './types'
 
 export const task17Questions: UnifiedQuestion[] = [
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
   {
     id: 't17-1',
     taskNumber: '17',

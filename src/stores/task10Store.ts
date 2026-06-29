@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { task10Questions, Task10Question } from '../data/task10Questions'
+import { task10Questions, Task10Question } from '../data/questions/task10'
 
 export type QuestionStatus = 'new' | 'deferred' | 'passed'
 

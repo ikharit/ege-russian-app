@@ -4,6 +4,10 @@ export const task14Questions: UnifiedQuestion[] = [
 {
     id: 't14-1',
     taskNumber: '14',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'single',
     text: 'Как правильно написать: (в)ехать в город?',
     options: ['въехать', 'в ехать', 'в-ехать'],
@@ -484,5 +488,4 @@ export const task14Questions: UnifiedQuestion[] = [
     atoms: ['defis_compound'],
     tags: ['defis_compound', 'task14'],
   }
-])
-)
+]

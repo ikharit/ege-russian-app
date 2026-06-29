@@ -4,6 +4,10 @@ export const task20Questions: UnifiedQuestion[] = [
   {
     id: 'q20-1-1',
     taskNumber: '20',
+//
+// 📋 ПРАВИЛО ДЛЯ АГЕНТОВ: Если создашь временные файлы или устаревшие
+// адаптеры — УДАЛИ их или перемести в workspace/archive/ege-app/
+//
     type: 'single',
     text: 'Вставьте правильное слово.',
     options: ['аллегорический', 'аллегоричный'],

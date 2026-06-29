@@ -68,7 +68,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     topics: ['Паронимы', 'Лексические нормы'],
     examples: ['Выберите правильное слово: предоставить/представить'],
     codificatorElements: ['2.1'],
-    projectFiles: ['src/data/task5Questions.ts', 'src/pages/Task5Trainer.tsx'],
+    projectFiles: ['src/data/questions/task5.ts', 'src/pages/Task5Trainer.tsx'],
     status: 'implemented',
   },
 
@@ -143,7 +143,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     topics: ['НЕ/НИ', 'Частицы', 'Приставки', 'Отрицание'],
     examples: ['Впишите пропущенную частицу: (не)вероятно, (не)забываемый'],
     codificatorElements: ['3.1'],
-    projectFiles: ['src/data/task10Questions.ts', 'src/pages/Task10Trainer.tsx'],
+    projectFiles: ['src/data/questions/task10.ts', 'src/pages/Task10Trainer.tsx'],
     status: 'implemented',
   },
 
@@ -283,7 +283,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     examples: ['Укажите два предложения, в которых нужно поставить одну запятую: 1)... 2)... 3)... 4)... 5)...'],
     codificatorElements: ['4.1', '4.2', '4.3', '4.4', '4.5'],
     projectFiles: [
-      'src/data/task16Questions.ts',
+      'src/data/questions/task16.ts',
       'src/pages/Task16Trainer.tsx',
     ],
     status: 'partial',
@@ -301,7 +301,7 @@ export const FIPICodificator: Record<number, FIPITaskFormat> = {
     examples: ['Сколько запятых нужно поставить в предложении? Когда начался дождь мы укрылись под крышей. (0/1/2/3)'],
     codificatorElements: ['4.1', '4.2', '4.3', '4.4', '4.5', '4.6'],
     projectFiles: [
-      'src/data/task17Questions.ts',
+      'src/data/questions/task17.ts',
       'src/data/task16LessonData.ts',    // ⚠️ ОШИБКА НАЗВАНИЯ — это task17 по формату
       'src/data/sections/punctuation.ts', // ⚠️ lesson-punct-16-* — это task17 по формату
       'src/pages/Task16Trainer.tsx',     // ⚠️ использует task16Questions, но формат — task17
@@ -517,6 +517,6 @@ export function getKnownIssues(): string[] {
   return [
     '⚠️ task16LessonData.ts назван как task16, но по формату — task17 ("Сколько запятых?")',
     '⚠️ punctuation.ts: lesson-punct-16-* — по формату task17, а не task16',
-    '⚠️ task16Questions.ts: формат "Укажите предложение" (1 из 5) — это скорее task16, но по ФИПИ task16 = "2 предложения из 5"',
+    '⚠️ task16.ts: формат "Укажите предложение" (1 из 5) — это скорее task16, но по ФИПИ task16 = "2 предложения из 5"',
   ]
 }
