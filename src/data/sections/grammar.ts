@@ -110,9 +110,9 @@ export const grammarSections: Section[] = [
         ]
       },
       {
-        id: 'lesson-gram-14-1',
+        id: 'lesson-gram-13-2',
         sectionId: 'section-gram-1',
-        title: 'Задание 14. НИ- и НЕ-',
+        title: 'Задание 13. НИ- и НЕ-',
         type: 'practice',
         description: 'Различение частиц НИ и НЕ в отрицательных конструкциях',
         xpReward: 70,
@@ -137,7 +137,7 @@ export const grammarSections: Section[] = [
         type: 'practice',
         description: 'Слитное, раздельное и дефисное написание',
         xpReward: 70,
-        prerequisites: ['lesson-gram-14-1'],
+        prerequisites: ['lesson-gram-13-2'],
         questions: [
           { id: 'q14-11', type: 'single', text: 'Как написать? (в) пол..не', options: ['полдень', 'пол день'], correctAnswer: ['полдень'], explanation: '«Полдень» — слитно.', difficulty: 'medium', xpReward: 12, atoms: ['solid_writing'] },
           { id: 'q14-12', type: 'single', text: 'Как написать? (в) пол..ночи', options: ['полночи', 'пол ночи'], correctAnswer: ['полночи'], explanation: '«Полночи» — слитно.', difficulty: 'medium', xpReward: 12, atoms: ['solid_writing'] },

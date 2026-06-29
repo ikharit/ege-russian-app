@@ -57,7 +57,7 @@ export const orthographyAllSections: Section[] = [
       {
         id: 'group-task14',
         title: 'Задание 14',
-        subtitle: 'НИ и НЕ',
+        subtitle: 'Слитное, раздельное и дефисное написание',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-gram-14') || l.id.startsWith('q14-')),
       },
       {
