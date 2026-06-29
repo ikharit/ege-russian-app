@@ -5,7 +5,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import { exportEditsPlugin } from './src/vite-plugin-export-edits'
 
 export default defineConfig({
-  base: '/ege-russian-app/',
+  base: '/',
   plugins: [
     react(),
     exportEditsPlugin(),
