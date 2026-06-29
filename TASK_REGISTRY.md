@@ -278,3 +278,44 @@ print(q['correctAnswer'])  # ['построен']
 ### RAG rebuild
 - `npm run build:rag` → 1379 entries (0 errors, 268 warnings — известные contradiction в word-generic)
 - Файл: `public/data/knowledge-index.json`
+
+---
+
+## Обновления 2026-06-28 (поздняя сессия)
+
+### Task 9 — critical bugfix: 11 вопросов с корнем -гор- (чередующийся гор/гар)
+- Исправлена системная ошибка: корень `-гор-` (чередующийся гор/гар) был заменён на `-горе-` (проверяемый) в 11 вопросах от слова «гореть»
+- Несуществующие слова: «загеревший», «обгереть», «разгераться», «г_релый», «заг_рающий», «пог_рельцы», «разг_рающийся», «заг_раться», «заг_релый», «г_рячий», «возг_рание»
+- Все 11 вопросов (qd9-141, qd9-153, qd9-213, qd9-252, qd9-330, qd9-355, qd9-369, qd9-378, qd9-683, qd9-705, qd9-714) восстановлены к `correctAnswer: ["о"]` и explanation с чередующимся корнем `-гор-`
+- Сохранены корректные правки: умерла (умЕреть), шорох (непроверяемый), замарать (мАркий), поджёг (жЕчь), жёсткий (жЕсть), решётка (решЕто), кардинально (иноязычный), вольнолюбивый (вОльный), добираться (собИрать), капюшон (иноязычный)
+- Файл: `src/data/sections/dooshin/task9.ts`
+- Git: `10f9bc9`
+
+### Task 9 — regression fix (обратный дрейф)
+- Обнаружен обратный дрейф: 11 вопросов с корнем `-гор-` вновь получили incorrect `correctAnswer: ["е"]` и explanation `-горе-`, хотя были исправлены в коммите `10f9bc9`
+- Файл откачен к состоянию коммита `10f9bc9` через `git checkout HEAD --`
+- Git: `958c608`
+
+### Task 10 — синтаксический фикс 41 explanation strings
+- Build падал с ошибкой `Expected "}" but found "глухих"` в `src/data/sections/dooshin/task10.ts`
+- В 41 explanation'ах приставок без-/бес- одинарная кавычка внутри строки (`согласной'.`) ломала JavaScript-строку
+- Все строки обёрнуты в двойные кавычки + точка перенесена внутрь строки
+- Файл: `src/data/sections/dooshin/task10.ts`
+- Git: `9c50ec8`
+
+### Shkolkovo content — задание 15 (Н/НН) из Дощинского-2026
+- Создан раздел `src/data/sections/shkolkovo/` с ~150 вопросами в формате ЕГЭ (ege-multiple) по правилам написания Н/НН
+- `src/data/sections/orthographyAll.ts` — добавлен `shkolkovoSections` в импорт и фильтрацию группы "Задание 15"
+- `public/data/graph-relations.json` — rebuild с обновлённым timestamp
+- Файлы: `src/data/sections/shkolkovo/index.ts`, `task1.ts`, `task15.ts`, `src/data/sections/orthographyAll.ts`
+- Git: `143b6dc`
+
+### Cache-bust v6 + content fixes
+- `index.html` — cache-bust query parameter v=6 для PWA
+- `task9.ts` — 6 исправлений explanation: бесшовный/бесшовные (шьЁт), отдалённый (дАль), выберется/выберешь (выбИрать/выбрать), воспалительный (палитра — непроверяемый)
+- `grammar.ts` — упрощены объяснения спряжения
+- `task7Questions.ts` — исправлены explanation для "спит" и "слышим"
+- `theory/task12.ts` — обновлена теория спряжения
+- `theoryTests.ts` — обновлены тестовые вопросы
+- `graph-relations.json` и `knowledge-index.json` — rebuild
+- Git: `2ee6f6d`

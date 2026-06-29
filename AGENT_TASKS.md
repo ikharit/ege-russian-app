@@ -1386,7 +1386,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/data/sections/dooshin/task9.ts`
 
-**Git**: будет сделан после актуализации агентских файлов
+**Git**: `958c608`
 
 **Сборка**: `npm run build` ✅ (11.31s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
 
@@ -1490,9 +1490,31 @@ import { getAtomById } from '../data/atomization/atoms'
 
 ---
 
-## 🆕 Новые задачи (добавлено 2026-06-29 — агентский аудит)
+## 🆕 Новые задачи (добавлено 2026-06-29 — агентский аудит v2)
 
-### ✅ ЗАДАЧА-А46: Аудит агентских файлов — исправление stale 'незакоммичено'
+### ✅ ЗАДАЧА-А47: Аудит агентских файлов v2 — исправление stale-ссылок внутри закоммиченных файлов
+
+**Статус:** ✅ Завершено (2026-06-29)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`, `TASK_REGISTRY.md`
+
+**Проблема**: Коммит `b3c00d2` (docs(agents): fix stale 'uncommitted' refs) содержал агентские файлы, но внутри самих этих файлов остались stale-ссылки "будет сделан после актуализации". Следующий агент мог бы подумать, что работа не завершена.
+
+**Решение**:
+1. `AGENT_TASKS.md` задача А41 — `Git: будет сделан` → `Git: 958c608` (task9 regression fix).
+2. `AGENT_TASKS.md` задача А46 — `Git: будет сделан` → `Git: b3c00d2`.
+3. `memory/AGENTS-HISTORY.md` — последняя запись `Git commit: будет сделан` → `Git: b3c00d2`.
+4. `memory/2026-06-29.md` — строка о git commit актуализирована.
+5. `AGENTS.md` — добавлена запись "Аудит агентских файлов v2".
+6. `TASK_REGISTRY.md` — добавлены записи о task9 critical bugfix (11 questions), task9 regression fix, task10 syntax fix (41 strings), shkolkovo content (task15 Н/НН), cache-bust v6 + content fixes.
+
+**Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-29.md`, `TASK_REGISTRY.md`
+
+**Git**: `f666c1e`
+
+**Критерий завершения**: Ни одного "будет сделан" в агентских файлах при чистом working tree. TASK_REGISTRY.md отражает все изменения заданий 9-20.
 
 **Статус:** ✅ Завершено (2026-06-29)
 
@@ -1510,6 +1532,6 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `AGENTS.md`
 
-**Git**: будет сделан после актуализации
+**Git**: `b3c00d2`
 
 **Критерий завершения**: Все агентские файлы отражают актуальное состояние репозитория. Ни одного "незакоммичено" при чистом working tree.
