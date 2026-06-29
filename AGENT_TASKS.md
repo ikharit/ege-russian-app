@@ -1482,10 +1482,34 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/data/sections/shkolkovo/index.ts`, `src/data/sections/shkolkovo/task1.ts`, `src/data/sections/shkolkovo/task15.ts`, `src/data/sections/orthographyAll.ts`, `public/data/graph-relations.json`
 
-**Git**: незакоммичено (untracked + modified в working tree)
+**Git**: `143b6dc` (входит в docs(agents): sync agent files — cache-bust v6, Cloudflare deploy, GitHub Pages restore, Shkolkovo content)
 
 **Сборка**: `npm run build` ✅ (43.95s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
 
 **Критерий завершения**: Новые вопросы Школково отображаются в группе "Задание 15" орфографии. Build и RAG проходят чисто.
 
 ---
+
+## 🆕 Новые задачи (добавлено 2026-06-29 — агентский аудит)
+
+### ✅ ЗАДАЧА-А46: Аудит агентских файлов — исправление stale 'незакоммичено'
+
+**Статус:** ✅ Завершено (2026-06-29)
+
+**Агент:** Agent 3
+
+**Где**: `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `AGENTS.md`
+
+**Проблема**: `git status --short` показал чистый working tree, но агентские файлы содержали stale-ссылки "незакоммичено" для Shkolkovo content (задача А45). Следующий агент мог бы подумать, что файлы не закоммичены, и дублировать работу или пытаться коммитить отсутствующие изменения.
+
+**Решение**:
+1. `AGENT_TASKS.md` задача А45 — `Git: незакоммичено` → `Git: 143b6dc`.
+2. `memory/AGENTS-HISTORY.md` — последняя запись `Git commit: незакоммичено` → `Git: 143b6dc`. Убрано устаревшее предупреждение "Файлы shkolkovo — untracked".
+3. `AGENTS.md` — добавлен Git hash `143b6dc` к записи о Shkolkovo.
+4. Создана дневная сводка `memory/2026-06-29.md`.
+
+**Файлы**: `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `AGENTS.md`
+
+**Git**: будет сделан после актуализации
+
+**Критерий завершения**: Все агентские файлы отражают актуальное состояние репозитория. Ни одного "незакоммичено" при чистом working tree.

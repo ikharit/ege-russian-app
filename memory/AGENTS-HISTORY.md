@@ -541,5 +541,11 @@
 - **Что:** Shkolkovo content — добавлены задания 15 (Н/НН) из сборника Дощинского-2026
 - **Где:** `src/data/sections/shkolkovo/`, `src/data/sections/orthographyAll.ts`, `public/data/graph-relations.json`
 - **Зачем:** Расширение банка заданий заданием 15 (Н/НН) из сборника Дощинского-2026 (~150 вопросов с пояснениями).
-- **Git commit:** незакоммичено (в working tree)
-- **⚠️ Важно:** Файлы shkolkovo — untracked. Нужно закоммитить вместе с агентскими файлами.
+- **Git commit:** `143b6dc` (входит в docs(agents): sync agent files — cache-bust v6, Cloudflare deploy, GitHub Pages restore, Shkolkovo content)
+
+### [2026-06-29 13:23] Агент: Agent 3
+- **Что:** Аудит агентских файлов — исправление stale 'незакоммичено'
+- **Где:** `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `AGENTS.md`
+- **Зачем:** `git status --short` показал чистый working tree, но агентские файлы содержали stale-ссылки 'незакоммичено' для Shkolkovo content. Следующий агент мог бы подумать, что файлы не закоммичены.
+- **Git commit:** будет сделан после актуализации
+
