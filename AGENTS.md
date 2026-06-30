@@ -514,7 +514,7 @@ Last updated: 2026-06-30 by Agent 2
   10. **Экспорт CSV** — кнопка 📥 CSV, скачивает `teacher-analytics-YYYY-MM-DD.csv` с полной таблицей.
   11. **Автообновление** — `fetchAllUsers()` каждые 5 минут.
   12. **Sticky header** — поиск + сортировка + фильтры прилипают к верху при скролле.
-- Файлы: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`. Сборка: `npm run build` ✅ (14.07s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `TBD`.
+- Файлы: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`. Сборка: `npm run build` ✅ (14.07s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `0ba0d6d`.
 
 Last updated: 2026-06-30 by Agent 1
 - **Аудит GrowthTimeline.tsx + рефакторинг**: Проведён аудит и фикс потенциальных проблем, вызывающих белый экран на /growth:
