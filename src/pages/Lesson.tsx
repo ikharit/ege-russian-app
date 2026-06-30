@@ -18,10 +18,7 @@ import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSou
 import { detectErrorType } from '../utils/errorPatternAnalyzer'
 import { getCanonicalWordId, getRuleId, extractWordFromQuestion } from '../data/questionMapping'
 
-export function Lesson() {
-  const { lessonId } = useParams()
-  const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
+function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchParams }: { lesson: any; lessonId: string; navigate: any; searchParams: any; setSearchParams: any }) {
   const startLesson = useProgressStore((s) => s.startLesson)
   const completeLesson = useProgressStore((s) => s.completeLesson)
   const loseHeart = useProgressStore((s) => s.loseHeart)
@@ -58,15 +55,8 @@ export function Lesson() {
     return () => window.removeEventListener('question-edited', handler)
   }, [])
 
-  const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
-  const courseLesson = section?.lessons.find(l => l.id === lessonId)
-  const [lesson, setLesson] = useState(courseLesson)
   const lessonProgress = useProgressStore((s) => s.lessonProgress[lessonId ?? ''])
-  const theory = lesson ? getTheoryForLesson(lesson.id) : undefined
-
-  useEffect(() => {
-    setLesson(courseLesson)
-  }, [courseLesson, lessonId])
+  const theory = getTheoryForLesson(lesson.id)
 
   // Reset all local game state when lessonId changes
   useEffect(() => {
@@ -89,27 +79,7 @@ export function Lesson() {
     }
   }, [theory, lessonProgress?.status])
 
-  if (!lesson) {
-    return (
-      <div className="max-w-md mx-auto px-4 py-8 text-center">
-        <h2 className="text-xl font-bold text-gray-800">Урок не найден</h2>
-        <button onClick={() => navigate('/')} className="btn-primary mt-4">На главную</button>
-      </div>
-    )
-  }
-
   const questions = useMemo(() => {
-    return lesson.questions.map(q => {
-      // Не перемешиваем options для ege-multiple, т.к. correctAnswer — номера вариантов
-      const shuffledOptions = (q.options && q.type !== 'ege-multiple')
-        ? [...q.options].sort(() => Math.random() - 0.5)
-        : q.options
-      return { ...q, options: shuffledOptions }
-    })
-  }, [lesson])
-
-  const rawQuestion = questions[currentQuestionIdx]
-  const currentQuestion = useMemo(() => {
     if (!rawQuestion) return rawQuestion
     return applyQuestionEdits(rawQuestion as any) as typeof rawQuestion
   }, [rawQuestion, editVersion])
@@ -490,5 +460,34 @@ export function Lesson() {
         )}
       </AnimatePresence>
     </div>
+  )
+}
+
+
+export function Lesson() {
+  const { lessonId } = useParams()
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const section = course.sections.find(s => s.lessons.some(l => l.id === lessonId))
+  const lesson = section?.lessons.find(l => l.id === lessonId)
+
+  if (!lesson) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-8 text-center">
+        <h2 className="text-xl font-bold text-gray-800">Урок не найден</h2>
+        <button onClick={() => navigate('/')} className="btn-primary mt-4">На главную</button>
+      </div>
+    )
+  }
+
+  return (
+    <LessonContent
+      lesson={lesson}
+      lessonId={lessonId}
+      navigate={navigate}
+      searchParams={searchParams}
+      setSearchParams={setSearchParams}
+    />
   )
 }
