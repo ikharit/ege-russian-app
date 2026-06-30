@@ -2228,7 +2228,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Агент:** Agent 3
 
-**Где**: `src/stores/progressStore.ts`
+**Где**: `src/stores/progressStore.ts`, `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`
 
 **Проблема**: Ответы пользователей на вопросы не логировались в Supabase, что ограничивало возможности аналитики (Teacher Analytics v2, Content Gap, Learning Velocity).
 
@@ -2238,11 +2238,12 @@ import { getAtomById } from '../data/atomization/atoms'
 3. Условия: `isSupabaseConfigured` + пользователь авторизован (`supabase.auth.getUser()`).
 4. Ошибки логируются в консоль через `.catch()`, не блокируют UI.
 5. `answer_logs` — новая таблица (или существующая) для детального анализа ответов.
+6. Добавлены 3 компонента аналитики для учителя: `AnswerLogsDeepDive` (детальный разбор ответов), `EarlyWarning` (раннее предупреждение), `SessionQuality` (оценка качества сессии).
 
-**Файлы**: `src/stores/progressStore.ts`
+**Файлы**: `src/stores/progressStore.ts`, `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`
 
-**Сборка**: `npm run build` ✅ (0 TypeScript ошибок). `validate:rag` ✅ (0 errors).
+**Сборка**: `npm run build` ✅ (26.09s, 0 TypeScript ошибок). `validate:rag` ✅ (1350 entries, 0 errors).
 
-**Git**: `TBD` (будет закоммичено в этой сессии)
+**Git**: `6dbbafd`
 
-**Критерий завершения**: Build проходит чисто. Ответы логируются в Supabase (если настроен). Нет ошибок TypeScript.
+**Критерий завершения**: Build проходит чисто. Ответы логируются в Supabase (если настроен). Нет ошибок TypeScript. 3 новых компонента аналитики созданы.
