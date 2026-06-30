@@ -1,5 +1,8 @@
 import { Section } from '../../types'
 import { task16LessonQuestions } from '../task16LessonData'
+import { task17Questions } from '../questions/task17'
+import { task18Questions } from '../questions/task18'
+import { task19Questions } from '../questions/task19'
 
 export const punctuationSections: Section[] = [
   {
@@ -57,34 +60,103 @@ export const punctuationSections: Section[] = [
     id: 'section-punct-2',
     courseId: 'ege-russian-2025',
     title: 'Пунктуация: сложное предложение',
-    subtitle: 'ССП, СПП, бессоюзные',
-    order: 16,
+    subtitle: 'Обособленные члены, вводные слова, ССП, СПП, бессоюзные',
+    order: 17,
     icon: 'Pencil',
     color: '#ce82ff',
     lessons: [
+      // ─── Задание 17. Обособленные члены (61 вопрос) ───
       {
         id: 'lesson-punct-17-1',
         sectionId: 'section-punct-2',
-        title: 'Задание 17. Сложносочинённые предложения',
+        title: 'Задание 17. Обособленные члены (1)',
         type: 'practice',
-        description: 'Запятые между частями сложного предложения',
+        description: 'Причастные и деепричастные обороты, уточняющие члены',
         xpReward: 60,
         prerequisites: [],
-        questions: [
-          { id: 'q17-1', type: 'single', text: 'Сколько запятых нужно поставить?\n\nВетер усилился и пошёл дождь.', options: ['0', '1', '2'], correctAnswer: ['1'], explanation: 'Союз «и» между частями ССП выделяется запятой: «Ветер усилился, и пошёл дождь».', difficulty: 'easy', xpReward: 10, atoms: ['task17', 'punctuation'] }
-        ]
+        questions: task17Questions.slice(0, 15)
       },
+      {
+        id: 'lesson-punct-17-2',
+        sectionId: 'section-punct-2',
+        title: 'Задание 17. Обособленные члены (2)',
+        type: 'practice',
+        description: 'Причастные и деепричастные обороты, уточняющие члены',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-17-1'],
+        questions: task17Questions.slice(15, 30)
+      },
+      {
+        id: 'lesson-punct-17-3',
+        sectionId: 'section-punct-2',
+        title: 'Задание 17. Обособленные члены (3)',
+        type: 'practice',
+        description: 'Причастные и деепричастные обороты, уточняющие члены',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-17-2'],
+        questions: task17Questions.slice(30, 45)
+      },
+      {
+        id: 'lesson-punct-17-4',
+        sectionId: 'section-punct-2',
+        title: 'Задание 17. Обособленные члены (4)',
+        type: 'practice',
+        description: 'Причастные и деепричастные обороты, уточняющие члены',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-17-3'],
+        questions: task17Questions.slice(45, 61)
+      },
+      // ─── Задание 18. Вводные конструкции и обращения (1 вопрос) ───
+      {
+        id: 'lesson-punct-18-1',
+        sectionId: 'section-punct-2',
+        title: 'Задание 18. Вводные конструкции и обращения',
+        type: 'practice',
+        description: 'Вводные слова, обращения, пояснительные и уточняющие обороты',
+        xpReward: 60,
+        prerequisites: [],
+        questions: task18Questions
+      },
+      // ─── Задание 19. Сложное предложение (50 вопросов) ───
       {
         id: 'lesson-punct-19-1',
         sectionId: 'section-punct-2',
-        title: 'Задание 19. Прямая речь',
+        title: 'Задание 19. Сложное предложение (1)',
         type: 'practice',
-        description: 'Кавычки, тире, запятые в прямой речи',
-        xpReward: 70,
-        prerequisites: ['lesson-punct-17-1'],
-        questions: [
-          { id: 'q19-1', type: 'single', text: 'Сколько знаков нужно поставить?\n\nОн сказал: "Я приду".', options: ['0', '1', '2'], correctAnswer: ['0'], explanation: 'Точка ставится после закрывающей кавычки. Запятая перед прямой речью (после двоеточия) не нужна.', difficulty: 'medium', xpReward: 12, atoms: ['task19', 'punctuation'] }
-        ]
+        description: 'ССП, СПП, бессоюзные, прямая речь',
+        xpReward: 60,
+        prerequisites: [],
+        questions: task19Questions.slice(0, 15)
+      },
+      {
+        id: 'lesson-punct-19-2',
+        sectionId: 'section-punct-2',
+        title: 'Задание 19. Сложное предложение (2)',
+        type: 'practice',
+        description: 'ССП, СПП, бессоюзные, прямая речь',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-19-1'],
+        questions: task19Questions.slice(15, 30)
+      },
+      {
+        id: 'lesson-punct-19-3',
+        sectionId: 'section-punct-2',
+        title: 'Задание 19. Сложное предложение (3)',
+        type: 'practice',
+        description: 'ССП, СПП, бессоюзные, прямая речь',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-19-2'],
+        questions: task19Questions.slice(30, 45)
+      },
+      {
+        id: 'lesson-punct-19-4',
+        sectionId: 'section-punct-2',
+        title: 'Задание 19. Сложное предложение (4)',
+        type: 'practice',
+        description: 'ССП, СПП, бессоюзные, прямая речь',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-19-3'],
+        questions: task19Questions.slice(45, 50)
       }
     ]
   }

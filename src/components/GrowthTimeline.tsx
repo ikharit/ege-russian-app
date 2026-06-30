@@ -172,26 +172,35 @@ export function GrowthTimeline() {
   const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory || [])
 
   const fullData = useMemo(() => {
-    return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory)
+    try {
+      return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory)
+    } catch (e) {
+      console.error('Error building growth data:', e)
+      return generateDemoData()
+    }
   }, [answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory])
 
+  const safeFullData = useMemo(() => {
+    return fullData.filter((d): d is GrowthDataPoint => d !== null && d !== undefined && typeof d.dateLabel === 'string')
+  }, [fullData])
+
   const [playing, setPlaying] = useState(false)
-  const [progressIndex, setProgressIndex] = useState(() => Math.max(0, fullData.length - 1))
+  const [progressIndex, setProgressIndex] = useState(() => Math.max(0, safeFullData.length - 1))
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const prevFullDataLength = useRef(fullData.length)
+  const prevFullDataLength = useRef(safeFullData.length)
 
   // Reset progressIndex when fullData changes (e.g. after rehydration)
   useEffect(() => {
-    if (fullData.length !== prevFullDataLength.current) {
-      prevFullDataLength.current = fullData.length
-      setProgressIndex(Math.max(0, fullData.length - 1))
+    if (safeFullData.length !== prevFullDataLength.current) {
+      prevFullDataLength.current = safeFullData.length
+      setProgressIndex(Math.max(0, safeFullData.length - 1))
     }
-  }, [fullData])
+  }, [safeFullData])
 
   const visibleData = useMemo(() => {
-    const idx = Math.max(0, Math.min(progressIndex, fullData.length - 1))
-    return fullData.slice(0, idx + 1)
-  }, [fullData, progressIndex])
+    const idx = Math.max(0, Math.min(progressIndex, safeFullData.length - 1))
+    return safeFullData.slice(0, idx + 1)
+  }, [safeFullData, progressIndex])
 
   // Fallback if no data or not enough data for chart
   if (!visibleData || visibleData.length < 2) {
@@ -216,7 +225,7 @@ export function GrowthTimeline() {
     if (playing) {
       intervalRef.current = setInterval(() => {
         setProgressIndex((prev) => {
-          if (prev >= fullData.length - 1) {
+          if (prev >= safeFullData.length - 1) {
             setPlaying(false)
             return prev
           }
@@ -229,16 +238,16 @@ export function GrowthTimeline() {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
-  }, [playing, fullData.length])
+  }, [playing, safeFullData.length])
 
   const togglePlay = useCallback(() => {
-    if (progressIndex >= fullData.length - 1) {
+    if (progressIndex >= safeFullData.length - 1) {
       setProgressIndex(0)
       setPlaying(true)
     } else {
       setPlaying((p) => !p)
     }
-  }, [progressIndex, fullData.length])
+  }, [progressIndex, safeFullData.length])
 
   const handleSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaying(false)
@@ -247,8 +256,8 @@ export function GrowthTimeline() {
 
   const reset = useCallback(() => {
     setPlaying(false)
-    setProgressIndex(fullData.length - 1)
-  }, [fullData.length])
+    setProgressIndex(safeFullData.length - 1)
+  }, [safeFullData.length])
 
   // Custom tooltip
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -406,14 +415,14 @@ export function GrowthTimeline() {
       {/* Slider */}
       <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm flex flex-col gap-2">
         <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>{fullData[0]?.date}</span>
+          <span>{safeFullData[0]?.date}</span>
           <span className="font-bold text-gray-800">{currentPoint?.date}</span>
-          <span>{fullData[fullData.length - 1]?.date}</span>
+          <span>{safeFullData[safeFullData.length - 1]?.date}</span>
         </div>
         <input
           type="range"
           min={0}
-          max={fullData.length - 1}
+          max={safeFullData.length - 1}
           value={progressIndex}
           onChange={handleSlider}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-duo-green"

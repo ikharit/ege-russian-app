@@ -236,7 +236,7 @@ export const task9Questions: UnifiedQuestion[] = [
     type: 'text',
     text: 'Впишите пропущенную букву: сп_шите (текст)',
     correctAnswer: ['и'],
-    explanation: 'Корень -пиш- (проверяемый). Проверочное слово: пишу.',
+    explanation: 'Корень -пиш- (проверяемый). Проверочное слово: пИшет.',
     difficulty: 'easy',
     xpReward: 10,
     atoms: ['task9', 'root_verifiable', 'root_pish_pis'],
