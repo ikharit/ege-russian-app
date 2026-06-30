@@ -47,6 +47,7 @@ function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchPara
   const [editorKey, setEditorKey] = useState(0)
   const [editVersion, setEditVersion] = useState(0)
   const isTeacherMode = useTeacherMode()
+  const [hasAutoCompleted, setHasAutoCompleted] = useState(false)
 
   // Real-time: re-apply question edits when they arrive from Supabase
   useEffect(() => {
@@ -222,7 +223,6 @@ function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchPara
   // }, [currentQuestionIdx, currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-complete lesson when finished — fixes bug where closing page loses progress
-  const [hasAutoCompleted, setHasAutoCompleted] = useState(false)
   useEffect(() => {
     if (gameOverReason === 'completed' && !hasAutoCompleted) {
       setHasAutoCompleted(true)
