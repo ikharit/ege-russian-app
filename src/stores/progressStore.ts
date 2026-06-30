@@ -398,6 +398,25 @@ export const useProgressStore = create<ProgressState>()(
         set((s: any) => ({
           answerHistory: [...s.answerHistory, entry],
         }))
+        // Fire-and-forget log to Supabase answer_logs
+        if (isSupabaseConfigured) {
+          supabase.auth.getUser().then(({ data: { user } }) => {
+            if (user) {
+              supabase.from('answer_logs').insert({
+                user_id: user.id,
+                question_id: entry.questionId,
+                canonical_word_id: entry.canonicalWordId || null,
+                word: entry.word || null,
+                rule_id: entry.ruleId || null,
+                task_number: entry.taskNumber,
+                is_correct: entry.correct,
+                user_answer: entry.userAnswer || [],
+                error_type: entry.errorType || null,
+                time_spent_ms: entry.timeSpent || 0,
+              }).catch((e: any) => console.warn('Failed to log answer to Supabase:', e))
+            }
+          }).catch((e: any) => console.warn('Auth error for answer log:', e))
+        }
       },
       getErrorAnalysis: (): ErrorAnalysis => {
         return analyzeErrors(get().answerHistory)

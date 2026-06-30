@@ -281,6 +281,7 @@ export interface AnswerHistory {
   correct: boolean
   errorType?: string
   hintsUsed?: number
+  userAnswer?: string[]     // ← ответ пользователя
   timestamp: string
   timeSpent: number // milliseconds
 }

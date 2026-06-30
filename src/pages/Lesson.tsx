@@ -170,6 +170,7 @@ function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchPara
       correct: isCorrect,
       errorType,
       hintsUsed: hintsCount,
+      userAnswer: userAnswer || [],
       timestamp: new Date().toISOString(),
       timeSpent,
     })
