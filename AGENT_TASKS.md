@@ -2278,3 +2278,27 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `786e052`
 
 **Критерий завершения**: Build проходит чисто. 10 табов в TeacherAnalytics. answer_logs заполняется из приложения.
+
+
+---
+
+### ✅ ЗАДАЧА-А59: Time Distribution — Pie Chart для распределения времени по категориям
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 2
+
+**Где**: `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`
+
+**Проблема**: Учитель не видел, сколько времени ученики проводят в разных частях приложения (уроки, тренажёры, теория, дашборд и т.д.).
+
+**Решение**:
+1. **TimeDistribution.tsx** — PieChart (donut) + легенда + таблица. 18 категорий с цветами и иконками.
+2. **TeacherAnalytics.tsx** — таб "Время" (11-й таб). Агрегирует `behaviorProfile.timeDistribution` по всем ученикам.
+3. **Данные**: `analyticsStore` уже собирает время через `usePageAnalytics` (автоматически на каждой странице).
+
+**Файлы**: `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`
+
+**Git**: `6703fde`
+
+**Критерий завершения**: Build проходит чисто. Pie Chart показывает распределение времени по категориям.

@@ -571,3 +571,12 @@ Last updated: 2026-06-30 by Agent 2
   6. **types/index.ts** — добавлено поле `userAnswer?: string[]` в `AnswerHistory`.
   7. **Lesson.tsx** — `userAnswer` передаётся в `recordAnswer`.
 - Файлы: `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/stores/progressStore.ts`, `src/types/index.ts`, `src/pages/Lesson.tsx`. Сборка: `npm run build` ✅ (26.92s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `786e052`.
+
+
+Last updated: 2026-06-30 by Agent 2
+- **Teacher Analytics — Time Distribution tab with Pie Chart**: Добавлена визуализация распределения времени по категориям активности.
+  1. **TimeDistribution.tsx** — компонент с PieChart (recharts) + легенда + таблица. Категории: Уроки, Тренажёры, Теория, Экзамены, Карточки, Дашборд, Профиль, Рейтинг, Магазин, Чат, Игры, Дуэли, Марафон, Адаптив, Ошибки, и др. Цветовая схема для каждой категории.
+  2. **TeacherAnalytics.tsx** — новый таб "Время" (11-й таб). Агрегирует `behaviorProfile.timeDistribution` по всем ученикам класса.
+  3. **Визуализация**: PieChart (donut) с процентами, таблица с цветными индикаторами и иконками, суммарное время в часах.
+  4. **Источник данных**: `analyticsStore` уже собирает `timeDistribution` через `usePageAnalytics` (hook отслеживает время на каждой странице). Синхронизируется с Supabase `user_analytics.behavior_profile`.
+- Файлы: `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`. Сборка: `npm run build` ✅ (52.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `6703fde`.
