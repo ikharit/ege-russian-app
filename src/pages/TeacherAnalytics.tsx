@@ -550,6 +550,9 @@ export function TeacherAnalytics() {
               {([
                 { key: 'overview', label: 'Обзор', icon: BarChart3 },
                 { key: 'trends', label: 'Тренды', icon: TrendingUp },
+                { key: 'gaps', label: 'Пробелы', icon: Target },
+                { key: 'velocity', label: 'Скорость', icon: Zap },
+                { key: 'leaderboard', label: 'Рейтинг', icon: Trophy },
                 { key: 'alerts', label: 'Уведомления', icon: Bell },
                 { key: 'recommendations', label: 'Рекомендации', icon: Lightbulb },
               ] as const).map((tab) => (
@@ -1410,6 +1413,21 @@ export function TeacherAnalytics() {
                             <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует (тип)</p>
                             <p className="text-xs text-blue-600">{a.motivation}</p>
                           </div>
+
+                          {/* Peer Comparison */}
+                          <PeerComparison
+                            students={realStudents.map(s => ({
+                              studentId: s.studentId,
+                              name: s.name,
+                              xp: s.xp,
+                              accuracy: s.accuracy,
+                              streak: s.streak,
+                              totalLessonTimeMinutes: s.totalLessonTimeMinutes,
+                              answerHistory: s.answerHistory,
+                            }))}
+                            selectedStudentId={a.profileId}
+                          />
+
                           <div className="bg-duo-green/5 rounded-xl p-3 border border-duo-green/10">
                             <p className="text-xs font-bold text-duo-green-dark mb-1">Рекомендация</p>
                             <p className="text-xs text-gray-600">{a.recommendation}</p>
@@ -1640,6 +1658,41 @@ export function TeacherAnalytics() {
                 )}
               </div>
             )}
+            {activeTab === 'gaps' && (
+              <div className="flex flex-col gap-4">
+                <ContentGapAnalysis answerHistory={realStudents.flatMap(s => s.answerHistory || [])} />
+              </div>
+            )}
+
+            {activeTab === 'velocity' && (
+              <div className="flex flex-col gap-4">
+                <LearningVelocity students={realStudents.map(s => ({
+                  studentId: s.studentId,
+                  name: s.name,
+                  xp: s.xp,
+                  accuracy: s.accuracy,
+                  streak: s.streak,
+                  totalLessonTimeMinutes: s.totalLessonTimeMinutes,
+                  dailySnapshots: s.dailySnapshots,
+                  answerHistory: s.answerHistory,
+                }))} />
+              </div>
+            )}
+
+            {activeTab === 'leaderboard' && (
+              <div className="flex flex-col gap-4">
+                <ClassLeaderboard students={realStudents.map(s => ({
+                  studentId: s.studentId,
+                  name: s.name,
+                  xp: s.xp,
+                  accuracy: s.accuracy,
+                  streak: s.streak,
+                  totalLessonTimeMinutes: s.totalLessonTimeMinutes,
+                  answerHistory: s.answerHistory,
+                }))} />
+              </div>
+            )}
+
           </>
         )}
       </div>

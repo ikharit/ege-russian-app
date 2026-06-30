@@ -533,11 +533,15 @@ Last updated: 2026-06-30 by Agent 3
   4. Это исправляет потенциальное нарушение Rules of Hooks (роутер-хуки вызывались после состояния) и упрощает читаемость.
 - Файл: `src/pages/Lesson.tsx`. Git: `55f52e6`. Сборка: `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
 
-Last updated: 2026-06-30 by OpenClaw Agent
-- **feat(GrowthTimeline): add lessonsCount, atomsMastered, theoryCompleted metrics**: В `src/components/GrowthTimeline.tsx` добавлены 3 новые метрики в `GrowthDataPoint`:
-  1. `lessonsCount`: количество пройденных уроков (`Object.values(lessonProgress).filter(p => p.status === 'completed').length`).
-  2. `atomsMastered`: количество атомов с accuracy ≥ 80% (`Object.values(atomProgress).filter(a => a.accuracy >= 80).length`).
-  3. `theoryCompleted`: количество пройденных тестов по теории (`Object.values(theoryTestsCompleted).filter(t => t.completed).length`).
-  4. `buildGrowthData` теперь принимает `atomProgress` и `theoryTestsCompleted` как параметры.
-- Файл: `src/components/GrowthTimeline.tsx`. Git: `8c15e1a` (data layer), `f4e0992` (visualization layer). Сборка: `npm run build` ✅ (19.45s, 0 TypeScript ошибок).
+Last updated: 2026-06-30 by Agent 1
+- **feat(GrowthTimeline): add more metrics — lessonsCount, atomsMastered, theoryCompleted**: Расширен `GrowthDataPoint` и UI страницы /growth:
+  1. `GrowthDataPoint`: добавлены поля `lessonsCount` (пройдено уроков), `atomsMastered` (атомов с accuracy ≥ 80%), `theoryCompleted` (тестов по теории).
+  2. `buildGrowthData`: принимает `atomProgress` и `theoryTestsCompleted`, считает snapshot на каждый день.
+  3. `generateDemoData`: добавлены новые поля с realistic values.
+  4. `safeFullData`: guards для новых numeric полей.
+  5. UI: grid расширен до 6 карточек (3 mobile / 6 desktop). Новые карточки: 'Пройдено' (rose-500), 'Атомов' (cyan-500).
+  6. `CustomTooltip`: добавлены иконки BookOpen, Atom, GraduationCap + новые поля.
+  7. Chart: добавлена линия `lessonsCount` (amber/orange) + легенда под графиком (Уроки, XP, Точность).
+  8. Imports: добавлены BookOpen, Atom, GraduationCap из lucide-react.
+- Файл: `src/components/GrowthTimeline.tsx`. Git: `6a7d4e6`.
 
