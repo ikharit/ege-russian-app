@@ -123,6 +123,9 @@ function buildGrowthData(
   const rollingWindow: { correct: number; total: number }[] = []
 
   for (const date of sortedDates) {
+    // Skip invalid dates
+    if (!date || isNaN(new Date(date).getTime())) continue
+
     const ans = dayAnswers.get(date) || { correct: 0, total: 0 }
     if (ans.total > 0) {
       rollingWindow.push(ans)
@@ -181,7 +184,14 @@ export function GrowthTimeline() {
   }, [answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory])
 
   const safeFullData = useMemo(() => {
-    return fullData.filter((d): d is GrowthDataPoint => d !== null && d !== undefined && typeof d.dateLabel === 'string')
+    return fullData.filter((d): d is GrowthDataPoint => 
+      d !== null && d !== undefined && 
+      typeof d.dateLabel === 'string' &&
+      d.dateLabel !== 'NaN.NaN' &&
+      !d.dateLabel.includes('NaN') &&
+      typeof d.xp === 'number' && !isNaN(d.xp) &&
+      typeof d.accuracy === 'number' && !isNaN(d.accuracy)
+    )
   }, [fullData])
 
   const [playing, setPlaying] = useState(false)
@@ -298,7 +308,7 @@ export function GrowthTimeline() {
   // Event dots
   const eventDots = useMemo(() => {
     return visibleData
-      .filter((d) => d.events.length > 0)
+      .filter((d) => d && d.events && d.events.length > 0 && d.dateLabel && d.dateLabel !== 'NaN.NaN')
       .map((d, i) => (
         <ReferenceDot
           key={i}
