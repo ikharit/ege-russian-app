@@ -1,8 +1,8 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Current Agent ID:** `Agent 2` | **Last updated:** 2026-06-30
+> **Current Agent ID:** `Agent 3` | **Last updated:** 2026-06-30
 > 
-> All changelog entries from this session: **Agent 2**
+> All changelog entries from this session: **Agent 3**
 
 > **Агентская идентификация**: Каждый агент, работающий над проектом, обязан идентифицировать себя по номеру (Agent 1, Agent 2, и т.д.). Текущий агент — **Agent 3** (оркестратор). При смене агента — обновляйте это поле в начале файла. Все записи в changelog и истории должны содержать `by Agent N`.
 

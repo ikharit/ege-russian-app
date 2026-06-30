@@ -25,6 +25,13 @@ export const punctuationAllSections: Section[] = [
         title: 'Задание 16',
         subtitle: 'Однородные члены и сложное предложение',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-16') || l.id.startsWith('q16-')),
+        subgroups: task16DooshinSections[0]?.lessons.map(l => ({
+          id: l.id.replace('lesson-', 'subgroup-'),
+          title: l.title,
+          subtitle: 'Дощинский',
+          lessons: [l],
+          isReviewSubgroup: true,
+        })) || [],
       },
       {
         id: 'group-task17',
@@ -43,24 +50,26 @@ export const punctuationAllSections: Section[] = [
         title: 'Задание 19',
         subtitle: 'Сложное предложение',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-19') || l.id.startsWith('q19-') || l.id.startsWith('lesson-task19') || l.id.startsWith('q19-1-')),
-      },
-      {
-        id: 'group-task16-dooshin',
-        title: 'Задание 16 (Дощинский)',
-        subtitle: 'Дополнительные вопросы',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-16-d')),
-      },
-      {
-        id: 'group-task19-dooshin',
-        title: 'Задание 19 (Дощинский)',
-        subtitle: 'Дополнительные вопросы',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-19-d')),
+        subgroups: task19DooshinSections[0]?.lessons.map(l => ({
+          id: l.id.replace('lesson-', 'subgroup-'),
+          title: l.title,
+          subtitle: 'Дощинский',
+          lessons: [l],
+          isReviewSubgroup: true,
+        })) || [],
       },
       {
         id: 'group-task20',
         title: 'Задание 20',
         subtitle: 'Сложное предложение (Дощинский)',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-20') || l.id.startsWith('lesson-task20-d')),
+        subgroups: task20DooshinSections[0]?.lessons.map(l => ({
+          id: l.id.replace('lesson-', 'subgroup-'),
+          title: l.title,
+          subtitle: 'Дощинский',
+          lessons: [l],
+          isReviewSubgroup: true,
+        })) || [],
       },
     ],
   }

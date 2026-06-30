@@ -3,6 +3,8 @@ import { task4Sections } from './task4'
 import { task5Sections } from './task5'
 import { task6_8Sections } from './task6_8'
 import { task21Questions } from '../questions/task21'
+import { task5DooshinSections } from './dooshinSections'
+import { task6DooshinSections } from './dooshinSections'
 
 const task21Lessons = [
   {
@@ -46,12 +48,26 @@ export const orthoepyLexicographySections: Section[] = [
         title: 'Задание 5',
         subtitle: 'Паронимы',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-task5') || l.id.startsWith('q5-')),
+        subgroups: task5DooshinSections[0]?.lessons.map(l => ({
+          id: l.id.replace('lesson-', 'subgroup-'),
+          title: l.title,
+          subtitle: 'Дощинский',
+          lessons: [l],
+          isReviewSubgroup: true,
+        })) || [],
       },
       {
         id: 'group-task6',
         title: 'Задание 6',
         subtitle: 'Лексическая сочетаемость',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-task6') || l.id.startsWith('q6-')),
+        subgroups: task6DooshinSections[0]?.lessons.map(l => ({
+          id: l.id.replace('lesson-', 'subgroup-'),
+          title: l.title,
+          subtitle: 'Дощинский',
+          lessons: [l],
+          isReviewSubgroup: true,
+        })) || [],
       },
       {
         id: 'group-task21',

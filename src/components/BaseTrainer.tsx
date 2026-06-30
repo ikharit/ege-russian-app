@@ -44,6 +44,10 @@ export interface BaseTrainerProps<T> {
   getExplanation: (q: T) => string
   getAtoms?: (q: T) => string[]
   xpPerCorrect?: number
+  /** If true, automatically checks the answer as soon as the user selects it (no "Check" button needed). */
+  autoCheck?: boolean
+  /** Custom validation function. If not provided, uses exact match. */
+  validateAnswer?: (userAnswer: string[], correctAnswer: string[]) => boolean
   /** Render the question UI. Receives question, selected answers, state, and selection handler. */
   renderQuestion: (props: {
     question: T
@@ -70,6 +74,8 @@ export function BaseTrainer<T>({
   getExplanation,
   getAtoms,
   xpPerCorrect = 5,
+  autoCheck = false,
+  validateAnswer,
   renderQuestion,
   renderPrompt,
   extraSettings,
@@ -180,12 +186,22 @@ export function BaseTrainer<T>({
     setSelectedAnswer(answer)
   }, [answerState])
 
-  const handleCheck = useCallback(() => {
-    if (!effectiveQuestion || selectedAnswer.length === 0) return
+  // Auto-check when answer is selected and autoCheck is enabled
+  useEffect(() => {
+    if (autoCheck && selectedAnswer.length > 0 && answerState === 'idle') {
+      handleCheck(selectedAnswer)
+    }
+  }, [selectedAnswer, autoCheck, answerState, handleCheck])
+
+  const handleCheck = useCallback((forcedAnswer?: string[]) => {
+    if (!effectiveQuestion) return
+    const answerToCheck = forcedAnswer && forcedAnswer.length > 0 ? forcedAnswer : selectedAnswer
+    if (answerToCheck.length === 0) return
     const correct = getCorrectAnswer(effectiveQuestion)
-    const isRight =
-      correct.length === selectedAnswer.length &&
-      selectedAnswer.every((s) => correct.includes(s))
+    const isRight = validateAnswer
+      ? validateAnswer(answerToCheck, correct)
+      : correct.length === answerToCheck.length &&
+        answerToCheck.every((s) => correct.includes(s))
     setIsCorrect(isRight)
     setAnswerState(isRight ? 'correct' : 'wrong')
     recordQuestionAnswered()
@@ -230,7 +246,7 @@ export function BaseTrainer<T>({
           explanation: getExplanation(effectiveQuestion),
           atoms: getAtoms ? getAtoms(effectiveQuestion) : [`task${taskNumber}`],
         },
-        selectedAnswer
+        answerToCheck
       )
       updateTaskStats(taskNumber, false)
       setStats((s) => ({ ...s, totalWrong: s.totalWrong + 1, streak: 0 }))
@@ -246,7 +262,7 @@ export function BaseTrainer<T>({
         navigator.vibrate([30, 30, 30])
       }
     }
-  }, [effectiveQuestion, selectedAnswer, taskNumber, xpPerCorrect])
+  }, [effectiveQuestion, selectedAnswer, taskNumber, xpPerCorrect, validateAnswer])
 
   const handleNext = useCallback(() => {
     if (currentIndex >= questions.length - 1) {
