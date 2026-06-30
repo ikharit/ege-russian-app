@@ -599,3 +599,10 @@
 - **Git commit:** 4a06f86
 - **⚠️ Важно:** Следующие агенты должны проверять git log и git diff при каждой сессии.
 
+### [2026-06-30 07:30] Агент: Agent 3
+- **Что:** Fix stale TBD в AGENTS-HISTORY.md + update agent-registry.md + AGENTS.md changelog update
+- **Где:** `memory/AGENTS-HISTORY.md`, `memory/agent-registry.md`, `AGENTS.md`
+- **Зачем:** Коммит `06af1a8` (replace TBD with actual git hash) не исправил `memory/AGENTS-HISTORY.md`. В последней записи остался `Git commit: TBD`. Также `agent-registry.md` содержал устаревшую дату (`2026-06-29`).
+- **Git commit:** 9bd728f (fix TBD + registry), 77db4a5 (AGENTS.md changelog)
+- **Сборка:** `npm run build` ✅ (15.50s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
+
