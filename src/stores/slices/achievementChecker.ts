@@ -129,7 +129,7 @@ export function createAchievementChecker(get: any) {
 
     // === ИНТЕНСИВ ===
     if (lessonId) {
-      const today = now.toISOString().split('T')[0]
+      const today = new Date().toISOString().split('T')[0]
       const lessonsToday = completedLessons.filter((l: any) => {
         if (!l.completedAt) return false
         return l.completedAt.startsWith(today)
