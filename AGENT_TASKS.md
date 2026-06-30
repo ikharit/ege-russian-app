@@ -1583,3 +1583,123 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `408ade9`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последнем коммите с изменениями кода. `npm run build` и `validate:rag` проходят без ошибок.
+
+---
+
+## А49 — Leaderboard duplicate fix (2026-06-30)
+
+**Описание**: Пользователь, уже синхронизированный с Supabase leaderboard, отображался дважды: один раз из Supabase (get_leaderboard RPC), второй — как local 'Вы' currentUserEntry.
+
+**Приоритет:** 🔴 Высокий (баг UI)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/Leaderboard.tsx`, `supabase/migrations/005_leaderboard_rpc.sql`
+
+**Решение**: Добавлена проверка — если userId уже есть в Supabase leaderboard, local 'Вы' не добавляется. Обновлён RPC get_leaderboard.
+
+**Git**: `7b82511`
+
+**Критерий завершения**: Пользователь в leaderboard отображается один раз. Build проходит.
+
+---
+
+## А50 — Task10 correctAnswer fix + Task19 dooshin content (2026-06-30)
+
+**Описание**: Вопрос qd10-75 "пр_мадонна" имел incorrect answer ['и'] (примадонна), правильный ответ ['е'] (премадонна). Также отсутствовали задания 19 в формате Дощинского.
+
+**Приоритет:** 🔴 Высокий (неверный ответ)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/data/questions/task10_dooshin.ts`, `src/data/questions/task19.ts`, `src/data/questions/task19_dooshin.ts`
+
+**Решение**: Исправлен correctAnswer qd10-75. Добавлен task19_dooshin.ts (484 вопроса).
+
+**Git**: `68e2f6d`
+
+**Критерий завершения**: DailyQuestionCard показывает правильный ответ. Task19 dooshin доступен в тренажёре.
+
+---
+
+## А51 — Task13/14/16 dooshin + Leaderboard cleanup + Task20 move (2026-06-30)
+
+**Описание**: Массовое добавление dooshin-контента для заданий 13, 14, 16. Task20 перемещён в пунктуацию. Task15 cleanup фильтра.
+
+**Приоритет:** 🟡 Средний (контент)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/data/questions/task13_dooshin.ts`, `task14_dooshin.ts`, `task16_dooshin.ts`, `src/pages/Leaderboard.tsx`, `src/data/sections/examTasks.ts`, `src/data/sections/n_nn.ts`, `src/data/sections/orthographyAll.ts`
+
+**Решение**: Добавлены task13_dooshin.ts (5973 вопроса), task14_dooshin.ts (12049 вопросов), task16_dooshin.ts (4823 вопроса). Task20 перенесён в punctuation group. Leaderboard duplicate fix v2.
+
+**Git**: `bf0ebfc`
+
+**Критерий завершения**: Новые задания доступны в тренажёрах. Build проходит.
+
+---
+
+## А52 — GrowthTimeline fix + Task5/6/11 dooshin + Legacy cleanup (2026-06-30)
+
+**Описание**: GrowthTimeline падал с ошибкой recharts scale при <2 data points. Добавлены dooshin-задания 5, 6, 11. Удалены legacy atomization/task10Questions.ts и task1-3, 17 JSON.
+
+**Приоритет:** 🔴 Высокий (краш UI)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 4 (GrowthTimeline), Agent 3 (dooshin + cleanup)
+
+**Где**: `src/components/GrowthTimeline.tsx`, `src/data/questions/task5_dooshin.ts`, `task6_dooshin.ts`, `task11.ts`, `src/data/hints.ts`, `src/pages/Task10Trainer.tsx`, `src/stores/task10Store.ts`
+
+**Решение**: GrowthTimeline — reset progressIndex на data change, guard <2 points. Добавлены task5_dooshin.ts (1969 вопросов), task6_dooshin.ts (1857 вопросов). Удалены legacy JSON/task10Questions.ts.
+
+**Git**: `2fb67a6`
+
+**Критерий завершения**: GrowthTimeline не падает. Новые задания доступны. Build проходит.
+
+---
+
+## А53 — Task14 cleanup: garbage removal + NI/NE fix (2026-06-30)
+
+**Описание**: task14.ts содержал garbage questions (t14-* prefix — это task10, q14-1..20 — это task13 NI/NE). Subtitle group-task14 был 'НИ и НЕ' вместо 'Слитное, раздельное и дефисное написание'.
+
+**Приоритет:** 🟡 Средний (контент + UI)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/data/questions/task14.ts`, `src/data/sections/grammar.ts`, `src/data/sections/orthographyAll.ts`
+
+**Решение**: Удалены garbage questions (t14-*, q14-1..20). Переименован урок lesson-gram-14-1 → lesson-gram-13-2 (НИ- и НЕ-). Subtitle group-task14 исправлен.
+
+**Git**: `8d65ac2`
+
+**Критерий завершения**: Task14 содержит только корректные dooshin questions. Build проходит.
+
+---
+
+## А54 — Аудит агентских файлов v3 (2026-06-30)
+
+**Описание**: 5 коммитов с изменениями кода (7b82511..8d65ac2) не были отражены в агентских файлах. Требуется актуализация.
+
+**Приоритет:** 🟡 Средний (поддержание порядка)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `TASK_REGISTRY.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+
+**Решение**: Обновлены все агентские файлы. Запущены `npm run build:rag` и `validate:rag`. Сделан git commit.
+
+**Git**: `TBD`
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах. Build и validate проходят без ошибок.

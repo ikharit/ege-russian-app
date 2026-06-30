@@ -562,3 +562,40 @@
 - **Git commit:** 408ade9
 - **⚠️ Важно:** Следующие агенты должны проверять `memory/agent-registry.md` при каждой сессии — он часто отстаёт.
 
+### [2026-06-30 01:28] Агент: Agent 3
+- **Что:** Leaderboard duplicate fix — предотвращение дублирования пользователя, уже в Supabase leaderboard
+- **Где:** `src/pages/Leaderboard.tsx`, `supabase/migrations/005_leaderboard_rpc.sql`
+- **Зачем:** Пользователь отображался дважды: из Supabase (get_leaderboard RPC) и как local 'Вы' currentUserEntry
+- **Git commit:** 7b82511
+
+### [2026-06-30 01:39] Агент: Agent 3
+- **Что:** Task10 correctAnswer fix + Task19 dooshin content
+- **Где:** `src/data/questions/task10_dooshin.ts`, `src/data/questions/task19.ts`, `src/data/questions/task19_dooshin.ts`
+- **Зачем:** qd10-75 "пр_мадонна" имел неверный ответ ['и'] (примадонна), правильный ['е'] (премадонна). Добавлен task19_dooshin.ts (484 вопроса).
+- **Git commit:** 68e2f6d
+
+### [2026-06-30 02:11] Агент: Agent 3
+- **Что:** Task13/14/16 dooshin content + Task20 move to punctuation + Leaderboard cleanup
+- **Где:** `src/data/questions/task13_dooshin.ts`, `task14_dooshin.ts`, `task16_dooshin.ts`, `src/pages/Leaderboard.tsx`, `src/data/sections/examTasks.ts`, `n_nn.ts`, `orthographyAll.ts`
+- **Зачем:** Массовое добавление dooshin-контента (~23,845 вопросов). Task20 перенесён в punctuation. Task15 filter cleanup.
+- **Git commit:** bf0ebfc
+
+### [2026-06-30 02:29] Агент: Agent 4 (GrowthTimeline), Agent 3 (dooshin + cleanup)
+- **Что:** GrowthTimeline recharts fix + Task5/6/11 dooshin + Legacy cleanup
+- **Где:** `src/components/GrowthTimeline.tsx`, `src/data/questions/task5_dooshin.ts`, `task6_dooshin.ts`, `task11.ts`, `src/data/hints.ts`, `src/pages/Task10Trainer.tsx`, `src/stores/task10Store.ts`
+- **Зачем:** GrowthTimeline падал с ошибкой scale при <2 data points. Добавлены dooshin-задания 5 (1969), 6 (1857), 11. Удалены legacy JSON/task10Questions.ts.
+- **Git commit:** 2fb67a6
+
+### [2026-06-30 02:34] Агент: Agent 3
+- **Что:** Task14 cleanup — garbage removal + NI/NE fix
+- **Где:** `src/data/questions/task14.ts`, `src/data/sections/grammar.ts`, `src/data/sections/orthographyAll.ts`
+- **Зачем:** Удалены garbage questions (t14-* prefix — task10, q14-1..20 — task13 NI/NE). Исправлен subtitle group-task14.
+- **Git commit:** 8d65ac2
+
+### [2026-06-30 07:18] Агент: Agent 3
+- **Что:** Аудит агентских файлов — 5 незадокументированных коммитов (7b82511..8d65ac2)
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `TASK_REGISTRY.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+- **Зачем:** Все 5 коммитов с изменениями кода не были отражены в агентских файлах. Проведена полная актуализация. Запущены build:rag + validate:rag. Сделан git commit.
+- **Git commit:** TBD
+- **⚠️ Важно:** Следующие агенты должны проверять git log и git diff при каждой сессии.
+

@@ -1,8 +1,8 @@
 # Реестр заданий 9-20 ЕГЭ Русский — Инструкция для агентов
 
-> **Версия:** 1.9  
-> **Обновлен:** 2026-06-28
-> **Статус:** ✅ Задание 10 (atomization) — 70 вопросов переделаны в текстовый ввод + 10 EGE-формат вопросов добавлены в `atomization.ts`  
+> **Версия:** 1.10  
+> **Обновлен:** 2026-06-30
+> **Статус:** ✅ Добавлены dooshin-задания 5, 6, 11, 13, 14, 16, 19. Task10 fix. Task14 cleanup. Task20 moved to punctuation.  
 > **Автор:** main (оркестратор)  
 > **Excel 9-12:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_9-12_ЕГЭ_Русский.xlsx`  
 > **Excel 13-20:** `C:\Users\USER\Documents\kimi\workspace\Реестр_заданий_13-20_ЕГЭ_Русский.xlsx`  
@@ -22,11 +22,15 @@
 - `src/data/sections/orthography.ts` — 36 вопросов (задания 9, 11)
 - `src/data/sections/dooshin.ts` — 2,717 вопросов (задания 9-12, Дощинский)
 
-### Задания 13-20 (661 вопрос)
-- `src/data/sections/grammar.ts` — 459 вопросов (задания 13-14, включая Дощинский)
+### Задания 13-20 (~26,348 вопросов)
+- `src/data/sections/grammar.ts` — 459 вопросов (задания 13-14, базовые)
+- `src/data/questions/task13_dooshin.ts` — 5,973 вопроса (задание 13, Дощинский)
+- `src/data/questions/task14_dooshin.ts` — 12,049 вопросов (задание 14, Дощинский)
 - `src/data/sections/n_nn.ts` — 30 вопросов (задание 15)
-- `src/data/task16LessonData.ts` — 20 вопросов (задание 16)
-- `src/data/sections/punctuation.ts` — 2 вопроса (задания 17, 19)
+- `src/data/questions/task16_dooshin.ts` — 4,823 вопроса (задание 16, Дощинский)
+- `src/data/task16LessonData.ts` — 20 вопросов (задание 16, базовые)
+- `src/data/sections/punctuation.ts` — 2 вопроса (задания 17, 19, базовые)
+- `src/data/questions/task19_dooshin.ts` — 484 вопроса (задание 19, Дощинский)
 - `src/data/sections/dooshin20.ts` — 150 вопросов (задание 20, Дощинский 2024-2026) ✅ [Аудит пройден](AUDIT_TASK20.md)
 - **Задание 18** — в проекте отсутствует (нет в материалах Дощинского)
 
@@ -319,3 +323,45 @@ print(q['correctAnswer'])  # ['построен']
 - `theoryTests.ts` — обновлены тестовые вопросы
 - `graph-relations.json` и `knowledge-index.json` — rebuild
 - Git: `2ee6f6d`
+
+---
+
+## Обновления 2026-06-30
+
+### Task10 fix — correctAnswer qd10-75 (премадонна)
+- `src/data/questions/task10_dooshin.ts` — qd10-75 correctAnswer ['и'] → ['е'] (премадонна, не примадонна)
+- `src/data/questions/task19.ts` — добавлены записи
+- `src/data/questions/task19_dooshin.ts` — 484 новых вопроса (задание 19, Дощинский)
+- Git: `68e2f6d`
+
+### Task13/14/16 dooshin content + Task20 move + Leaderboard cleanup
+- `src/data/questions/task13_dooshin.ts` — 5,973 вопроса (задание 13, Дощинский)
+- `src/data/questions/task14_dooshin.ts` — 12,049 вопросов (задание 14, Дощинский)
+- `src/data/questions/task16_dooshin.ts` — 4,823 вопроса (задание 16, Дощинский)
+- `src/data/sections/examTasks.ts` — добавлены импорты новых dooshin-файлов
+- `src/data/sections/n_nn.ts` — task15 filter cleanup
+- `src/data/sections/orthographyAll.ts` — task20 moved to punctuation group
+- `src/pages/Leaderboard.tsx` — duplicate user fix v2
+- Git: `bf0ebfc`
+
+### Task5/6/11 dooshin + GrowthTimeline fix + Legacy cleanup
+- `src/data/questions/task5_dooshin.ts` — 1,969 вопросов (задание 5, Дощинский)
+- `src/data/questions/task6_dooshin.ts` — 1,857 вопросов (задание 6, Дощинский)
+- `src/data/questions/task11.ts` — дополнен вопросами
+- `src/components/GrowthTimeline.tsx` — fix recharts scale error (reset progressIndex, guard <2 data points)
+- `src/data/hints.ts` — обновлены подсказки
+- `src/pages/Task10Trainer.tsx` — обновления для task10
+- `src/stores/task10Store.ts` — обновления store
+- Удалены legacy: `src/data/atomization/task10Questions.ts`, `src/data/task1Questions.json`, `src/data/task2Questions.json`, `src/data/task3Questions.json`, `src/data/task17Questions.json`
+- Git: `2fb67a6`
+
+### Task14 cleanup — garbage removal + NI/NE fix
+- `src/data/questions/task14.ts` — удалены garbage questions (t14-* prefix — task10, q14-1..20 — task13 NI/NE)
+- `src/data/sections/grammar.ts` — lesson-gram-14-1 переименован в lesson-gram-13-2 (title: "Задание 13. НИ- и НЕ-")
+- `src/data/sections/orthographyAll.ts` — subtitle group-task14 исправлен с "НИ и НЕ" на "Слитное, раздельное и дефисное написание"
+- Git: `8d65ac2`
+
+### Leaderboard duplicate fix
+- `src/pages/Leaderboard.tsx` — предотвращение дублирования пользователя, уже в Supabase leaderboard
+- `supabase/migrations/005_leaderboard_rpc.sql` — обновлён get_leaderboard RPC
+- Git: `7b82511`
