@@ -81,9 +81,20 @@ function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchPara
   }, [theory, lessonProgress?.status])
 
   const questions = useMemo(() => {
+    return lesson.questions.map(q => {
+      // Не перемешиваем options для ege-multiple, т.к. correctAnswer — номера вариантов
+      const shuffledOptions = (q.options && q.type !== 'ege-multiple')
+        ? [...q.options].sort(() => Math.random() - 0.5)
+        : q.options
+      return { ...q, options: shuffledOptions }
+    })
+  }, [lesson])
+
+  const rawQuestion = questions[currentQuestionIdx]
+  const currentQuestion = useMemo(() => {
     if (!rawQuestion) return rawQuestion
-    return applyQuestionEdits(rawQuestion as any) as typeof rawQuestion
-  }, [rawQuestion, editVersion])
+    return applyQuestionEdits(rawQuestion as any, lessonId, editVersion) as typeof rawQuestion
+  }, [rawQuestion, lessonId, editVersion])
 
   // Navigate to specific question via ?q= parameter
   useEffect(() => {
