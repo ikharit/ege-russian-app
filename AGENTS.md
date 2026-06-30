@@ -444,6 +444,12 @@ Last updated: 2026-06-30 by Agent 3
 - **Аудит агентских файлов v3 — fix stale TBD + agent-registry update**: После коммита `4a06f86` обнаружено, что `memory/AGENTS-HISTORY.md` всё ещё содержал `Git commit: TBD` (не был исправлен в `06af1a8`). Исправлено: `TBD` → `4a06f86`. Обновлён `memory/agent-registry.md` — дата `2026-06-29` → `2026-06-30`, добавлены recent changes (Task5/6/11/13/14/16/19 dooshin, GrowthTimeline fix, Task14 cleanup, Leaderboard fix). Сборка: `npm run build` ✅ (15.50s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings). Git: `9bd728f`.
 
 Last updated: 2026-06-30 by Agent 3
+- **docs(agents): replace TBD with actual git hash 4a06f86**: Коммит `4a06f86` (аудит v3 — 5 незадокументированных коммитов) оставил `Git: TBD` в `AGENTS.md`, `AGENT_TASKS.md`, `memory/2026-06-30.md`. Заменено на актуальный хеш `4a06f86`. Файлы: `AGENTS.md`, `AGENT_TASKS.md`, `memory/2026-06-30.md`. Git: `06af1a8`.
+
+Last updated: 2026-06-30 by Agent 3
+- **docs(agents): add AGENTS-HISTORY entry for v3 fix**: Добавлена архивная запись в `memory/AGENTS-HISTORY.md` о коммите `9bd728f` (fix TBD + registry + AGENTS.md changelog), чтобы следующие агенты видели полную историю фиксов. Файл: `memory/AGENTS-HISTORY.md`. Git: `c3f96f4`.
+
+Last updated: 2026-06-30 by Agent 3
 - **Leaderboard duplicate fix + task content expansion**: 5 коммитов агентов 3/4 не были отражены в агентских файлах:
   1. `7b82511` — Leaderboard: предотвращение дублирования пользователя, уже присутствующего в Supabase leaderboard (через get_leaderboard RPC). Файлы: `src/pages/Leaderboard.tsx`, `supabase/migrations/005_leaderboard_rpc.sql`.
   2. `68e2f6d` — Task10: исправлен correctAnswer qd10-75 `['и']` → `['е']` (премадонна). Добавлены task19_dooshin.ts (484 вопроса). Файлы: `src/data/questions/task10_dooshin.ts`, `src/data/questions/task19.ts`, `src/data/questions/task19_dooshin.ts`.

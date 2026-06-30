@@ -1703,3 +1703,27 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `4a06f86`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах. Build и validate проходят без ошибок.
+
+---
+
+## А55 — Аудит агентских файлов v4: fix stale TBD + AGENTS-HISTORY entry (2026-06-30)
+
+**Описание**: После коммита `4a06f86` остались stale-ссылки `TBD` в AGENTS.md, AGENT_TASKS.md, memory/2026-06-30.md. Также AGENTS-HISTORY.md не содержал записи о самом фиксе TBD (коммит `9bd728f`).
+
+**Приоритет:** 🟡 Средний (поддержание порядка)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `memory/agent-registry.md`
+
+**Решение**: 
+1. `06af1a8` — заменён TBD → `4a06f86` в AGENTS.md, AGENT_TASKS.md, memory/2026-06-30.md.
+2. `9bd728f` — исправлен TBD в AGENTS-HISTORY.md + обновлён agent-registry.md + rebuild graph-relations.json.
+3. `77db4a5` — добавлена changelog-запись в AGENTS.md.
+4. `c3f96f4` — добавлена архивная запись в AGENTS-HISTORY.md.
+
+**Git**: `06af1a8`, `9bd728f`, `77db4a5`, `c3f96f4`
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию. Нет stale-ссылок TBD. Build и validate проходят без ошибок.

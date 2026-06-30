@@ -606,3 +606,15 @@
 - **Git commit:** 9bd728f (fix TBD + registry), 77db4a5 (AGENTS.md changelog)
 - **Сборка:** `npm run build` ✅ (15.50s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings).
 
+### [2026-06-30 08:14] Агент: Agent 3
+- **Что:** docs(agents): replace TBD with actual git hash 4a06f86
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/2026-06-30.md`
+- **Зачем:** Коммит `4a06f86` (аудит v3) оставил `Git: TBD` в нескольких агентских файлах. Заменено на актуальный хеш `4a06f86`.
+- **Git commit:** 06af1a8
+
+### [2026-06-30 08:16] Агент: Agent 3
+- **Что:** docs(agents): add AGENTS-HISTORY entry for v3 fix
+- **Где:** `memory/AGENTS-HISTORY.md`
+- **Зачем:** Добавлена архивная запись о коммите `9bd728f` (fix TBD + registry + AGENTS.md changelog) в AGENTS-HISTORY.md, чтобы полная история была доступна следующим агентам.
+- **Git commit:** c3f96f4
+
