@@ -2182,7 +2182,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Сборка**: `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
 
-**Git**: TBD (будет закоммичено в этой сессии)
+**Git**: `55f52e6`
 
 **Критерий завершения**: Build проходит чисто. Lesson.tsx компилируется без ошибок, функционал урока не сломан.
 
@@ -2215,6 +2215,34 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/components/teacher/ContentGapAnalysis.tsx`, `src/components/teacher/LearningVelocity.tsx`, `src/components/teacher/ClassLeaderboard.tsx`, `src/components/teacher/PeerComparison.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`
 
-**Git**: `TBD`
+**Git**: `9d520cc`
 
 **Критерий завершения**: Build проходит чисто. 4 новых таба работают. Peer Comparison показывается в карточке.
+
+
+## 🆕 Новые задачи (добавлено 2026-06-30 — post-v8)
+
+### ✅ ЗАДАЧА-А71: Supabase answer logging — fire-and-forget log to answer_logs
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/stores/progressStore.ts`
+
+**Проблема**: Ответы пользователей на вопросы не логировались в Supabase, что ограничивало возможности аналитики (Teacher Analytics v2, Content Gap, Learning Velocity).
+
+**Решение**:
+1. В метод `recordAnswer()` добавлен fire-and-forget insert в таблицу `answer_logs` (Supabase).
+2. Поля: user_id, question_id, canonical_word_id, word, rule_id, task_number, is_correct, user_answer, error_type, time_spent_ms.
+3. Условия: `isSupabaseConfigured` + пользователь авторизован (`supabase.auth.getUser()`).
+4. Ошибки логируются в консоль через `.catch()`, не блокируют UI.
+5. `answer_logs` — новая таблица (или существующая) для детального анализа ответов.
+
+**Файлы**: `src/stores/progressStore.ts`
+
+**Сборка**: `npm run build` ✅ (0 TypeScript ошибок). `validate:rag` ✅ (0 errors).
+
+**Git**: `TBD` (будет закоммичено в этой сессии)
+
+**Критерий завершения**: Build проходит чисто. Ответы логируются в Supabase (если настроен). Нет ошибок TypeScript.

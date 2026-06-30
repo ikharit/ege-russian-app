@@ -15,6 +15,9 @@ import { ContentGapAnalysis } from '../components/teacher/ContentGapAnalysis'
 import { LearningVelocity } from '../components/teacher/LearningVelocity'
 import { ClassLeaderboard } from '../components/teacher/ClassLeaderboard'
 import { PeerComparison } from '../components/teacher/PeerComparison'
+import { AnswerLogsDeepDive } from '../components/teacher/AnswerLogsDeepDive'
+import { EarlyWarning } from '../components/teacher/EarlyWarning'
+import { SessionQuality } from '../components/teacher/SessionQuality'
 
 const RISK_CONFIG = {
   low: { color: '#58cc02', label: 'Всё хорошо', icon: CheckCircle },
@@ -41,7 +44,7 @@ export function TeacherAnalytics() {
   const [riskFilter, setRiskFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
   const [typeFilter, setTypeFilter] = useState<'all' | PlayerType>('all')
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations' | 'gaps' | 'velocity' | 'leaderboard'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'gaps' | 'velocity' | 'leaderboard' | 'alerts' | 'recommendations' | 'errors' | 'sessions' | 'warning'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
   // New: search, sort, comparison
@@ -553,6 +556,9 @@ export function TeacherAnalytics() {
                 { key: 'gaps', label: 'Пробелы', icon: Target },
                 { key: 'velocity', label: 'Скорость', icon: Zap },
                 { key: 'leaderboard', label: 'Рейтинг', icon: Trophy },
+                { key: 'errors', label: 'Ошибки', icon: AlertTriangle },
+                { key: 'sessions', label: 'Сессии', icon: Clock },
+                { key: 'warning', label: '⚠️ Риск', icon: AlertTriangle },
                 { key: 'alerts', label: 'Уведомления', icon: Bell },
                 { key: 'recommendations', label: 'Рекомендации', icon: Lightbulb },
               ] as const).map((tab) => (
@@ -1689,6 +1695,33 @@ export function TeacherAnalytics() {
                   streak: s.streak,
                   totalLessonTimeMinutes: s.totalLessonTimeMinutes,
                   answerHistory: s.answerHistory,
+                }))} />
+              </div>
+            )}
+
+            {activeTab === 'errors' && (
+              <div className="flex flex-col gap-4">
+                <AnswerLogsDeepDive answerHistory={realStudents.flatMap(s => s.answerHistory || [])} />
+              </div>
+            )}
+
+            {activeTab === 'sessions' && (
+              <div className="flex flex-col gap-4">
+                <SessionQuality answerHistory={realStudents.flatMap(s => s.answerHistory || [])} />
+              </div>
+            )}
+
+            {activeTab === 'warning' && (
+              <div className="flex flex-col gap-4">
+                <EarlyWarning students={realStudents.map(s => ({
+                  studentId: s.studentId,
+                  name: s.name,
+                  accuracy: s.accuracy,
+                  lastActivityDays: s.lastActivityDays,
+                  streak: s.streak,
+                  dailySnapshots: s.dailySnapshots,
+                  answerHistory: s.answerHistory,
+                  xp: s.xp,
                 }))} />
               </div>
             )}

@@ -554,4 +554,8 @@ Last updated: 2026-06-30 by Agent 2
   4. **PeerComparison.tsx** — percentile по 5 метрикам (XP, точность, стрик, время, ответы). Показывается в раскрытой карточке ученика: "Выше X% класса". Цветовая шкала (зелёный/жёлтый/красный).
   5. **TeacherAnalytics.tsx** — добавлены табы: "Пробелы", "Скорость", "Рейтинг". PeerComparison внедрён в раскрытую карточку.
   6. **studentAnalytics.ts** — исправлен `lastActivity` (убран `taskStats.lastAttemptAt` fallback).
-- Файлы: `src/components/teacher/ContentGapAnalysis.tsx`, `src/components/teacher/LearningVelocity.tsx`, `src/components/teacher/ClassLeaderboard.tsx`, `src/components/teacher/PeerComparison.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`. Сборка: `npm run build` ✅ (25.85s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `TBD`.
+- Файлы: `src/components/teacher/ContentGapAnalysis.tsx`, `src/components/teacher/LearningVelocity.tsx`, `src/components/teacher/ClassLeaderboard.tsx`, `src/components/teacher/PeerComparison.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`. Сборка: `npm run build` ✅ (25.85s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `9d520cc`.
+
+Last updated: 2026-06-30 by Agent 3
+- **Supabase answer logging — fire-and-forget log to `answer_logs`**: В `src/stores/progressStore.ts` метод `recordAnswer()` теперь асинхронно логирует каждый ответ в Supabase таблицу `answer_logs`. Поля: user_id, question_id, canonical_word_id, word, rule_id, task_number, is_correct, user_answer, error_type, time_spent_ms. Логирование fire-and-forget (`.catch()` для ошибок, не блокирует UI). Условие: `isSupabaseConfigured` + пользователь авторизован.
+- Файл: `src/stores/progressStore.ts`. Сборка: `npm run build` ✅. Git: `TBD` (будет закоммичено в этой сессии).
