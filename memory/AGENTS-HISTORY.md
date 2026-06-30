@@ -645,4 +645,11 @@
 - **Git commit:** `1d91e56` (restore task20/21), `5ec016d` (agent docs v5+1)
 - **Сборка:** `npm run build` ✅, `validate:rag` ✅
 
+### [2026-06-30] Агент: Agent 3
+- **Что:** fix(GrowthTimeline): add safeFullData filter, try/catch around buildGrowthData + uncommitted orthography/Teacher changes — документирование
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+- **Зачем:** Коммит `3047ff1` (Agent 4) — доработка `GrowthTimeline.tsx` (try/catch, safeFullData filter), изменения в `orthography.ts`, `punctuation.ts`, `task9.ts`. Также uncommitted changes: `orthography.ts` (5 explanation fixes), `Teacher.tsx` (Supabase real data integration). Добавлена задача А59 в AGENT_TASKS.md.
+- **Git commit:** `3047ff1` (GrowthTimeline fix), `TBD` (agent docs v6)
+- **Сборка:** `npm run build` ✅, `validate:rag` ✅
+
 
