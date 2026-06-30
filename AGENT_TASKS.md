@@ -1813,7 +1813,7 @@ import { getAtomById } from '../data/atomization/atoms'
 3. **Uncommitted**: `orthography.ts` — 5 explanation fixes (почтитель, обжигаться, макнуть, вычитание, полагаться) с улучшенными проверочными словами.
 4. **Uncommitted**: `Teacher.tsx` — интеграция Supabase real data: `useTeacherAnalyticsStore`, `fetchAllUsers()`, mapping `supabaseRawStudents` → Teacher format с `weakTopics`, `accuracy`, `completedCount`.
 
-**Git**: `3047ff1` + `TBD`
+**Git**: `3047ff1` + `8c961b7`
 
 **Критерий завершения**: Build проходит чисто. GrowthTimeline не падает при <2 data points. Teacher page показывает реальные данные из Supabase.
 
