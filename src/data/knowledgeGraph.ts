@@ -22,8 +22,6 @@ export const taskToSectionMap: Record<number, string> = {
   17: 'group-task17',
   18: 'group-task18',
   19: 'group-task19',
-  20: 'group-task20',
-  21: 'group-task21',
   22: 'group-task22',
   23: 'group-task23',
   24: 'group-task24',
@@ -36,15 +34,12 @@ export const taskToSectionMap: Record<number, string> = {
 export const knowledgeEdges: KnowledgeEdge[] = [
   // Орфография → усложнение
   { source: 'node-task9', target: 'node-task19', label: 'усложнение', strength: 2 },
-  { source: 'node-task10', target: 'node-task20', label: 'усложнение', strength: 2 },
-  { source: 'node-task11', target: 'node-task21', label: 'усложнение', strength: 2 },
   { source: 'node-task12', target: 'node-task22', label: 'усложнение', strength: 2 },
   { source: 'node-task13', target: 'node-task23', label: 'усложнение', strength: 2 },
   { source: 'node-task14', target: 'node-task24', label: 'усложнение', strength: 2 },
   { source: 'node-task15', target: 'node-task25', label: 'усложнение', strength: 2 },
 
   // Лексика → связанная тема
-  { source: 'node-task5', target: 'node-task21', label: 'связанная тема', strength: 1 },
   { source: 'node-task6', target: 'node-task22', label: 'связанная тема', strength: 1 },
 
   // Грамматика → связанная тема
@@ -65,8 +60,6 @@ export const knowledgeEdges: KnowledgeEdge[] = [
   { source: 'node-task27', target: 'node-task17', label: 'требует знания', strength: 1 },
   { source: 'node-task27', target: 'node-task18', label: 'требует знания', strength: 1 },
   { source: 'node-task27', target: 'node-task19', label: 'требует знания', strength: 1 },
-  { source: 'node-task27', target: 'node-task20', label: 'требует знания', strength: 1 },
-  { source: 'node-task27', target: 'node-task21', label: 'требует знания', strength: 1 },
   { source: 'node-task27', target: 'node-task22', label: 'требует знания', strength: 1 },
   { source: 'node-task27', target: 'node-task23', label: 'требует знания', strength: 1 },
   { source: 'node-task27', target: 'node-task24', label: 'требует знания', strength: 1 },
@@ -84,8 +77,6 @@ export const knowledgeEdges: KnowledgeEdge[] = [
   { source: 'node-task16', target: 'node-task17', label: 'предпосылка', strength: 1 },
   { source: 'node-task17', target: 'node-task18', label: 'предпосылка', strength: 1 },
   { source: 'node-task18', target: 'node-task19', label: 'предпосылка', strength: 1 },
-  { source: 'node-task19', target: 'node-task20', label: 'предпосылка', strength: 1 },
-  { source: 'node-task20', target: 'node-task21', label: 'предпосылка', strength: 1 },
 
   { source: 'node-task4', target: 'node-task5', label: 'предпосылка', strength: 1 },
   { source: 'node-task5', target: 'node-task6', label: 'предпосылка', strength: 1 },

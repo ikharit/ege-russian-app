@@ -418,14 +418,6 @@ export const atoms: Atom[] = [
     taskNumbers: [19],
     difficulty: 'medium'
   },
-  // Задание №20 — пунктуация (сложное синтаксическое)
-  {
-    id: 'task20',
-    name: 'Задание №20 — Сложное синтаксическое целое',
-    description: 'Связь между частями сложного синтаксического целого.',
-    taskNumbers: [20],
-    difficulty: 'medium'
-  },
   // Задание №22 — тропы
   {
     id: 'task22',

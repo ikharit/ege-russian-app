@@ -329,18 +329,6 @@
       "source": "theory/task17-21.ts"
     },
     {
-      "id": "rule:task20-1",
-      "type": "rule",
-      "label": "task20-1",
-      "source": "theory/task17-21.ts"
-    },
-    {
-      "id": "rule:task21-1",
-      "type": "rule",
-      "label": "task21-1",
-      "source": "theory/task17-21.ts"
-    },
-    {
       "id": "task:22",
       "type": "task",
       "label": "Задание 22"
@@ -8519,11 +8507,6 @@
       "label": "Задание №19 — Прямая речь"
     },
     {
-      "id": "atom:task20",
-      "type": "atom",
-      "label": "Задание №20 — Сложное синтаксическое целое"
-    },
-    {
       "id": "atom:task22",
       "type": "atom",
       "label": "Задание №22 — Изобразительно-выразительные средства"
@@ -9662,46 +9645,6 @@
     },
     {
       "source": "rule:task19-1",
-      "target": "atom:запятая",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task20-1",
-      "target": "task:17",
-      "relation": "governs"
-    },
-    {
-      "source": "rule:task20-1",
-      "target": "atom:однородные члены",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task20-1",
-      "target": "atom:запятая",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task20-1",
-      "target": "atom:союзы",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task21-1",
-      "target": "task:17",
-      "relation": "governs"
-    },
-    {
-      "source": "rule:task21-1",
-      "target": "atom:уточнение",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task21-1",
-      "target": "atom:пояснение",
-      "relation": "references_atom"
-    },
-    {
-      "source": "rule:task21-1",
       "target": "atom:запятая",
       "relation": "references_atom"
     },
@@ -33397,9 +33340,9 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-06-30T09:37:53.473Z",
-    "nodeCount": 1460,
-    "edgeCount": 4959,
+    "generatedAt": "2026-06-30T10:09:36.454Z",
+    "nodeCount": 1457,
+    "edgeCount": 4951,
     "sources": [
       "knowledge-index.json",
       "questionMapping.ts",
