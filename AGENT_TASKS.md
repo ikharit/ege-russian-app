@@ -1771,3 +1771,25 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 4 коммитах. Нет uncommitted changes в коде. Build и validate проходят без ошибок.
 
+---
+
+## А58 — fix: restore task20/task21 taskNumber and atoms (2026-06-30)
+
+**Описание**: Коммит `1d91e56` (OpenClaw Agent) откатил часть рефакторинга `f71aead` — taskNumber и atoms в `task20.ts`, `task21.ts`, `task20_dooshin.ts` восстановлены на '20'/'21' (вместо '5'/'6'). Также восстановлены импорты в `questions/index.ts`, `TrainersPage.tsx`, `questionTheoryMap.ts`, `examTasks.ts`. ⚠️ Создан конфликт: `examTasks.ts` по-прежнему содержит title "Задание 5 (дополнительно)" / "Задание 6 (дополнительно)", но внутренние вопросы имеют `taskNumber: '20'` и `'21'`. Система в несогласованном состоянии.
+
+**Приоритет:** 🔴 Высокий (несоответствие данных и UI)
+
+**Статус:** ⚠️ Обнаружено, требует решения
+
+**Агент:** OpenClaw Agent (коммит `1d91e56`)
+
+**Где**: `src/data/questions/task20.ts`, `task21.ts`, `task20_dooshin.ts`, `questions/index.ts`, `TrainersPage.tsx`, `questionTheoryMap.ts`, `examTasks.ts`
+
+**Решение**: Нужно принять решение:
+- Либо полный rebrand 20→5 (как в `f71aead`) — привести `task20.ts`/`task21.ts` к `taskNumber: '5'`/`'6'` и обновить `examTasks.ts` title на "Задание 5" / "Задание 6" (без "дополнительно").
+- Либо откат title в `examTasks.ts` обратно на "Задание 20" / "Задание 21", чтобы соответствовать внутренним `taskNumber`.
+
+**Git**: `1d91e56`
+
+**Критерий завершения**: `taskNumber` в questions соответствует title в `examTasks.ts`. Нет конфликта между UI и данными.
+
