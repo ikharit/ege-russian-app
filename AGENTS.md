@@ -314,6 +314,9 @@ Last updated: 2026-06-26 by Agent 1
 - **Build check**: `npm run build` — проходит без TypeScript ошибок (17.62s, 0 ошибок). `questionMapping.ts` компилируется корректно.
 
 Last updated: 2026-06-28 by Agent 2
+- **Teacher dashboard real data**: Интегрированы реальные данные из Supabase в панель учителя. `Teacher.tsx` теперь использует `useTeacherAnalyticsStore` + `fetchAllUsers()` (RPC `get_all_user_progress`) вместо `mockStudents`. Добавлен mapping `supabaseStudents` из `TeacherStudentView` в формат Teacher. Приоритет: Supabase > local profiles > demo. Сборка: 18.79s, 0 ошибок. Git: `8a8efb4`.
+
+Last updated: 2026-06-28 by Agent 2
 - **RLS fix**: Leaderboard, TeacherAnalytics, UsersPage показывали пусто, потому что `user_progress` имеет RLS policy `auth.uid() = user_id` — каждый пользователь видел только себя. Создан `public_leaderboard` view (bypasses RLS) + teacher policy для `teacher_student_links`. Обновлены `syncSlice.ts` (Leaderboard), `teacherAnalyticsStore.ts` (fetchAllUsers), `UsersPage.tsx` — теперь все используют `public_leaderboard`. Сборка: 11.64s, 0 ошибок. RAG: 1379 entries, 0 errors, 0 warnings. Git: `25d34bc`.
 
 Last updated: 2026-06-28 by Agent 2
