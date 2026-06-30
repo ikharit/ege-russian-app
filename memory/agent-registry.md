@@ -85,5 +85,5 @@
 
 *Last updated: 2026-06-30*
 *Current Agent: Agent 3*
-*Recent changes: Agent files audit v3 — 5 undocumented commits (7b82511..8d65ac2). Leaderboard duplicate fix. Task5/6/11/13/14/16/19 dooshin content (~26,348 questions). GrowthTimeline recharts fix. Task14 garbage cleanup. Legacy JSON cleanup. Task20/21 rebrand → Task5/6 (дополнительно), decoupled from punctuation section. Build + validate:rag clean.*
+*Recent changes: Agent files audit v7 — 5 undocumented commits (d7bc1bd..63134bd) + uncommitted changes. GrowthTimeline invalid date fix, achievementChecker undefined 'now' fix, grammar cleanup, task20/21 integration + examTasks removal + broken task13 removal, task19 dooshin + task13_ege/atom. Build + validate:rag clean.*
 

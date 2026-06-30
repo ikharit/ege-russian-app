@@ -50,6 +50,12 @@ export const orthographyAllSections: Section[] = [
       },
 
       {
+        id: 'group-task13',
+        title: 'Задание 13',
+        subtitle: 'НЕ / НИ с частями речи',
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-gram-13') || l.id.startsWith('q13-') || l.id.startsWith('sh13-')),
+      },
+      {
         id: 'group-task14',
         title: 'Задание 14',
         subtitle: 'Слитное, раздельное и дефисное написание',

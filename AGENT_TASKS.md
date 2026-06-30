@@ -1,6 +1,6 @@
 # Техзадание для агента-исполнителя
 
-> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 3** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
+> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 2** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
 >
 > **Контекст**: React-приложение на Vite для подготовки к ЕГЭ по русскому языку. Стек: React 18 + TypeScript + Tailwind CSS + Zustand + Framer Motion + React Router (HashRouter). Данные хранятся в `localStorage` (Zustand persist). Supabase подключён, но необязателен.
 >
@@ -1839,3 +1839,147 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `8a8efb4` — feat(teacher): integrate Supabase real data into Teacher dashboard
 
 **Критерий завершения**: Teacher dashboard показывает реальных учеников из Supabase (4 записи). Метрики (всего учеников, активных, средний балл, уроков) считаются из реальных данных. Build проходит чисто.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-30 — late session commits)
+
+### ✅ ЗАДАЧА-А60: GrowthTimeline invalid date fix (Agent 4)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 4
+
+**Где**: `src/components/GrowthTimeline.tsx`, `public/data/graph-relations.json`
+
+**Проблема**: GrowthTimeline падал с ошибкой recharts при наличии невалидных дат (NaN.NaN в dateLabel) или при <2 data points после предыдущих фиксов.
+
+**Решение**:
+1. Добавлен `safeFullData` filter — пропускает только валидные записи (убирает null/undefined/invalid dateLabel).
+2. Добавлен guard для `ReferenceDot` — не рендерится, если данные невалидны.
+3. Обновлён `graph-relations.json`.
+
+**Файлы**: `src/components/GrowthTimeline.tsx`, `public/data/graph-relations.json`
+
+**Git**: `d7bc1bd`
+
+**Критерий завершения**: GrowthTimeline не падает при невалидных датах. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А61: AchievementChecker undefined 'now' fix
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/stores/slices/achievementChecker.ts`
+
+**Проблема**: В achievementChecker использовалась переменная `now` без объявления/инициализации, что приводило к `undefined` и потенциальным ошибкам при проверке достижений.
+
+**Решение**: Заменено на `new Date()`.
+
+**Файлы**: `src/stores/slices/achievementChecker.ts`
+
+**Git**: `e7683f8`
+
+**Критерий завершения**: AchievementChecker работает без undefined переменных. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А62: Grammar sections cleanup + dooshinSections archive
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/data/sections/grammar.ts`, `public/data/graph-relations.json`
+
+**Проблема**: В `grammar.ts` оставались неиспользуемые dooshin-уроки (49 строк), которые были перенесены в `dooshinSections.ts`. Также graph-relations.json требовал обновления.
+
+**Решение**:
+1. Удалены 49 строк неиспользуемого кода из `grammar.ts`.
+2. Обновлён `graph-relations.json`.
+
+**Файлы**: `src/data/sections/grammar.ts`, `public/data/graph-relations.json`
+
+**Git**: `5148820`
+
+**Критерий завершения**: grammar.ts не содержит мёртвого кода. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А63: Task20/21 integration into punctuation/orthoepyLex + examTasks removal + broken task13 removal
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/data/sections/dooshinSections.ts`, `src/data/sections/orthoepyLexicography.ts`, `src/data/sections/examTasks.ts`, `src/data/questions/task13.ts`, `src/data/questions/task13_dooshin.ts`, `src/pages/Task13Trainer.tsx`, и др.
+
+**Проблема**: 
+1. `examTasks.ts` — устаревший файл, дублировал функциональность punctuation/orthography.
+2. `task13.ts` и `task13_dooshin.ts` — содержали битые/неправильные данные (задание 13 — НЕ/НИ, но формат был несоответствующий).
+3. Task20 и task21 не были интегрированы в правильные секции (punctuationAll и orthoepyLexicography).
+
+**Решение**:
+1. **Удалены**: `examTasks.ts`, `task13.ts`, `task13_dooshin.ts` (5973 вопросов), `task13-word-explanations.json`, `Task13Trainer.tsx`, `examQuestionLoader.ts`.
+2. **Созданы**: `dooshinSections.ts` (1652 строки, единый агрегатор dooshin-контента), `orthoepyLexicography.ts` (21 строка, секция для задания 21).
+3. **Task20** — интегрирован в `punctuationAll.ts`.
+4. **Task21** — интегрирован в `orthoepyLexicography.ts`.
+5. **Обновлены**: `courseData.ts` (добавлен `dooshinSections`), `App.tsx`, `knowledgeGraph.ts`, `questions/index.ts`, `grammar.ts`, `orthographyAll.ts`, `punctuationAll.ts`, `theory/index.ts`, `TrainersPage.tsx`, `studyPlanStore.ts`.
+6. ** knowledge-index.json** — перестроен, удалено 456 entries связанных с task13/examTasks.
+
+**Файлы**: 23 файла, 1714 вставок, 7712 удалений.
+
+**Git**: `f45c43f`
+
+**Критерий завершения**: Нет дублирования examTasks. Task20/21 в правильных секциях. task13 битый контент удалён. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А64: Task19 dooshin sections + task13_ege/atom replacement
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/data/questions/task13_ege.ts`, `src/data/questions/task13_atom.ts`, `src/data/questions/task19.ts`, `src/data/sections/dooshinSections.ts`, `src/data/sections/punctuationAll.ts`
+
+**Проблема**: Task19 содержал dooshin-контент, который дублировался. Task13 (НЕ/НИ) требовал замены битого контента на корректный ЕГЭ-формат и атомарный формат.
+
+**Решение**:
+1. Создан `task13_ege.ts` — 143 вопроса в формате ЕГЭ (5 предложений, выбор цифр).
+2. Создан `task13_atom.ts` — 699 вопросов в атомарном формате (по одному предложению).
+3. Добавлены task19 dooshin sections в `dooshinSections.ts`.
+4. Удалены дубли из `task19.ts`.
+5. Обновлён `punctuationAll.ts`.
+
+**Файлы**: `src/data/questions/task13_ege.ts` (143 вопроса), `task13_atom.ts` (699 вопросов), `task19.ts`, `src/data/sections/dooshinSections.ts`, `punctuationAll.ts`, `telegram-bot/src/types.ts`.
+
+**Git**: `63134bd`
+
+**Критерий завершения**: Task13 имеет корректный контент (ЕГЭ + атомарный). Task19 не дублируется. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А65: Аудит агентских файлов v7 — документирование 5 коммитов + uncommitted changes
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `memory/agent-registry.md`
+
+**Проблема**: Коммиты `d7bc1bd`..`63134bd` (5 коммитов OpenClaw Agent) не были отражены в агентских файлах. Также в working tree остались uncommitted changes: `index.ts`, `grammar.ts`, `orthographyAll.ts` (task13 integration), `task13_new.ts` (untracked), `ML_AUDIT.md` (untracked).
+
+**Решение**:
+1. Обновлены все агентские файлы: AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, 2026-06-30.md, agent-registry.md.
+2. Добавлены задачи А60–А64 в AGENT_TASKS.md.
+3. Сборка и RAG-валидация проходят чисто.
+
+**Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `memory/agent-registry.md`
+
+**Git**: `TBD`
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах и uncommitted changes. Build и validate проходят без ошибок. Нет stale-ссылок.

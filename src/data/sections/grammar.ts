@@ -1,4 +1,6 @@
 import { Section } from '../../types'
+import { task13EgeQuestions } from '../../data/questions/task13_ege'
+import { task13AtomQuestions } from '../../data/questions/task13_atom'
 
 export const grammarSections: Section[] = [
   {
@@ -82,6 +84,26 @@ export const grammarSections: Section[] = [
           { id: 'q12-ege-9', type: 'ege-multiple', text: 'Укажите варианты ответов, в которых во всех словах одного ряда пропущена одна и та же буква.', options: ['1) уменьш_нный, высуш_нный, занавеш_нное', '2) мел_щий, лопоч_щий, блещ_щий', '3) распуска_тся, клокоч_т, разве_шь', '4) скач_нный, повенч_нные, замеш_нный', '5) ове_нный, рав_ший, вид_мый'], correctAnswer: ['1', '2', '3', '4'], explanation: '1) уменьшЕнный, высушЕнный, занавешЕнное — везде Е. 2) мелУщий, лопочУщий, блещУщий — везде У. 3) распускаЕтся, клокочЕт, развеЕшь — везде Е. 4) скачАнный, повенчАнные, замешАнный — везде А.', difficulty: 'medium', xpReward: 15, atoms: ['task12', 'endings'] },
           { id: 'q12-ege-10', type: 'ege-multiple', text: 'Укажите варианты ответов, в которых во всех словах одного ряда пропущена одна и та же буква.', options: ['1) мел_щий, лопоч_щий, блещ_щий', '2) уменьш_нный, высуш_нный, разбуж_нный', '3) скач_нный, повенч_нные, замеш_нный', '4) ключ_вший, относ_шься, терп_шь', '5) ове_нный, рав_ший, пропол_шь'], correctAnswer: ['1', '2', '3', '4'], explanation: '1) мелУщий, лопочУщий, блещУщий — везде У. 2) уменьшЕнный, высушЕнный, разбужЕнный — везде Е. 3) скачАнный, повенчАнные, замешАнный — везде А. 4) ключИвший, относИшься, терпИшь — везде И.', difficulty: 'medium', xpReward: 15, atoms: ['task12', 'endings'] },
         ]
+      },
+      {
+        id: 'lesson-gram-13-ege',
+        sectionId: 'section-gram-1',
+        title: 'Задание 13. НЕ/НИ с частями речи (ЕГЭ формат)',
+        type: 'practice',
+        description: 'Реальные задания ЕГЭ в оригинальном формате: 5 предложений с выбором цифр',
+        xpReward: 80,
+        prerequisites: ['lesson-gram-12-ege'],
+        questions: task13EgeQuestions,
+      },
+      {
+        id: 'lesson-gram-13-atom',
+        sectionId: 'section-gram-1',
+        title: 'Задание 13. НЕ/НИ с частями речи (атомарный)',
+        type: 'practice',
+        description: 'Пошаговое изучение: каждое предложение отдельно',
+        xpReward: 200,
+        prerequisites: ['lesson-gram-13-ege'],
+        questions: task13AtomQuestions,
       },
       {
         id: 'lesson-gram-14-2',

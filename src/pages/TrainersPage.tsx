@@ -129,6 +129,17 @@ const trainers: TrainerItem[] = [
   },
 
   {
+    id: 'task13',
+    taskNumber: '№13',
+    title: 'НЕ / НИ с частями речи',
+    subtitle: 'Прилагательные, наречия, деепричастия',
+    path: '/task13-trainer',
+    color: 'bg-amber-500',
+    bgGradient: 'from-amber-50 to-yellow-50',
+    borderColor: 'border-amber-200',
+    textColor: 'text-amber-500',
+  },
+  {
     id: 'task14',
     taskNumber: '№14',
     title: 'Слитное / раздельное / дефисное',

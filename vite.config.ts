@@ -45,7 +45,7 @@ export default defineConfig({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MB — покрывает index chunk ~3.1 MB
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB — покрывает index chunk ~6.8 MB
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',

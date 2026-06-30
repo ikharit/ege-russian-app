@@ -652,4 +652,18 @@
 - **Git commit:** `3047ff1` (GrowthTimeline fix), `8c961b7` (agent docs v6)
 - **Сборка:** `npm run build` ✅, `validate:rag` ✅
 
+### [2026-06-30] Агент: Agent 3 — Аудит агентских файлов v7
+- **Что:** Документирование 5 недокументированных коммитов OpenClaw Agent (`d7bc1bd`..`63134bd`) + uncommitted changes.
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `memory/agent-registry.md`
+- **Зачем:** 5 коммитов с изменениями кода (GrowthTimeline fix, achievementChecker fix, grammar cleanup, task20/21 integration + examTasks removal + task13 removal, task19 dooshin + task13_ege/atom) не были отражены в агентских файлах. Также в working tree: `index.ts`, `grammar.ts`, `orthographyAll.ts` (task13 integration), `task13_new.ts` (untracked), `ML_AUDIT.md` (untracked).
+- **Содержание 5 коммитов:**
+  1. `d7bc1bd` — fix(GrowthTimeline): skip invalid dates, filter NaN.NaN, guard ReferenceDot (Agent 4). Файлы: `GrowthTimeline.tsx`, `graph-relations.json`.
+  2. `e7683f8` — fix(lesson): replace undefined 'now' with new Date() in achievementChecker. Файлы: `achievementChecker.ts`.
+  3. `5148820` — fix(data): cleanup grammar sections (49 строк удалено), update graph relations. Файлы: `grammar.ts`, `graph-relations.json`.
+  4. `f45c43f` — fix: integrate task20 into punctuationAll, task21 into orthoepyLex; remove examTasks; add dooshin sections to course; remove broken task13. Файлы: `dooshinSections.ts` (1652 строки), `orthoepyLexicography.ts` (21 строка), удалены `examTasks.ts`, `task13.ts`, `task13_dooshin.ts`, `Task13Trainer.tsx`, `examQuestionLoader.ts`. 23 файла, 1714 insertions, 7712 deletions.
+  5. `63134bd` — fix: add task19 dooshin sections, remove from task19.ts to avoid duplication. Добавлены `task13_ege.ts` (143 вопроса), `task13_atom.ts` (699 вопросов). Файлы: `task13_ege.ts`, `task13_atom.ts`, `task19.ts`, `dooshinSections.ts`, `punctuationAll.ts`.
+- **Uncommitted changes:** `index.ts` (импорт task13NewQuestions), `grammar.ts` (уроки lesson-gram-13-ege/atom), `orthographyAll.ts` (group-task13), `task13_new.ts` (untracked), `ML_AUDIT.md` (untracked от Agent 2).
+- **Git commit:** `TBD` (agent files commit)
+- **Сборка:** `npm run build` ✅ (13.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors, 0 warnings).
+
 

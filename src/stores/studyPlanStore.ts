@@ -15,6 +15,7 @@ const allTrainers = [
   { id: 'task10-trainer', task: '10', title: 'ПРЕ/ПРИ, Ъ/Ь', path: '/task10-trainer' },
   { id: 'task11-trainer', task: '11', title: 'Суффиксы прилагательных', path: '/task11-trainer' },
   { id: 'task12-trainer', task: '12', title: 'Окончания причастий', path: '/task12-trainer' },
+  { id: 'task13-trainer', task: '13', title: 'НЕ/НИ с частями речи', path: '/task13-trainer' },
   { id: 'task14-trainer', task: '14', title: 'Наречия и предлоги', path: '/task14-trainer' },
   { id: 'task15-trainer', task: '15', title: 'Пунктуация', path: '/task15-trainer' },
   { id: 'task16-trainer', task: '16', title: 'Пунктуация в сложных', path: '/task16-trainer' },
