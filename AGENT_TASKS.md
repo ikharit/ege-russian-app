@@ -2186,3 +2186,35 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Критерий завершения**: Build проходит чисто. Lesson.tsx компилируется без ошибок, функционал урока не сломан.
 
+
+
+---
+
+### ✅ ЗАДАЧА-А57: Teacher Analytics v2 — Content Gap, Learning Velocity, Peer Comparison, Class Leaderboard
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 2
+
+**Где**: `src/components/teacher/`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`
+
+**Проблема**: Teacher Analytics не хватало:
+1. Анализа пробелов по заданиям и правилам (content gap)
+2. Скорости обучения (velocity) — week-over-week изменения
+3. Сравнения с классом (peer comparison / percentile)
+4. Рейтинга учеников (leaderboard) по разным метрикам
+5. Критический баг: `studentAnalytics.ts` использовал `taskStats.lastAttemptAt`, которого нет в Supabase
+
+**Решение**:
+1. **ContentGapAnalysis.tsx** — bar chart проблемных заданий + список проблемных правил. Источник: `answerHistory` из `user_progress`.
+2. **LearningVelocity.tsx** — top-5 рост/падение недели, таблица velocity score. Источник: `dailySnapshots` + `answerHistory`.
+3. **ClassLeaderboard.tsx** — grid top-5 по XP, точности, стрику, ответам, времени.
+4. **PeerComparison.tsx** — percentile по 5 метрикам в раскрытой карточке ученика.
+5. **TeacherAnalytics.tsx** — 3 новых таба + интеграция PeerComparison в карточку.
+6. **studentAnalytics.ts** — fix `lastActivity` (убран `taskStats.lastAttemptAt` fallback).
+
+**Файлы**: `src/components/teacher/ContentGapAnalysis.tsx`, `src/components/teacher/LearningVelocity.tsx`, `src/components/teacher/ClassLeaderboard.tsx`, `src/components/teacher/PeerComparison.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`
+
+**Git**: `TBD`
+
+**Критерий завершения**: Build проходит чисто. 4 новых таба работают. Peer Comparison показывается в карточке.

@@ -545,3 +545,13 @@ Last updated: 2026-06-30 by Agent 1
   8. Imports: добавлены BookOpen, Atom, GraduationCap из lucide-react.
 - Файл: `src/components/GrowthTimeline.tsx`. Git: `6a7d4e6`.
 
+
+Last updated: 2026-06-30 by Agent 2
+- **Teacher Analytics v2 — Content Gap, Learning Velocity, Peer Comparison, Class Leaderboard**: Добавлены 4 новых компонента аналитики в `src/components/teacher/` + интеграция в `TeacherAnalytics.tsx` (+3 новых таба: "Пробелы", "Скорость", "Рейтинг").
+  1. **ContentGapAnalysis.tsx** — агрегация `answerHistory` по `taskNumber` и `ruleId`. Показывает: bar chart (top-10 проблемных заданий), список проблемных правил с точностью. Источник: `answerHistory` из `user_progress` (JSONB).
+  2. **LearningVelocity.tsx** — сравнение последних 7 дней vs предыдущих 7. Показывает: "🚀 Рост недели" (top-5), "📉 Падение недели" (bottom-5), таблица скорости обучения (все ученики). Метрики: delta точности, delta ответов, delta сессий, composite velocity score.
+  3. **ClassLeaderboard.tsx** — 5 категорий: XP, Точность, Стрик, Ответов, Время. Top-5 в каждой. Grid layout (3 колонки на desktop).
+  4. **PeerComparison.tsx** — percentile по 5 метрикам (XP, точность, стрик, время, ответы). Показывается в раскрытой карточке ученика: "Выше X% класса". Цветовая шкала (зелёный/жёлтый/красный).
+  5. **TeacherAnalytics.tsx** — добавлены табы: "Пробелы", "Скорость", "Рейтинг". PeerComparison внедрён в раскрытую карточку.
+  6. **studentAnalytics.ts** — исправлен `lastActivity` (убран `taskStats.lastAttemptAt` fallback).
+- Файлы: `src/components/teacher/ContentGapAnalysis.tsx`, `src/components/teacher/LearningVelocity.tsx`, `src/components/teacher/ClassLeaderboard.tsx`, `src/components/teacher/PeerComparison.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`. Сборка: `npm run build` ✅ (25.85s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `TBD`.
