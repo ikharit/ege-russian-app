@@ -559,3 +559,15 @@ Last updated: 2026-06-30 by Agent 2
 Last updated: 2026-06-30 by Agent 3
 - **Supabase answer logging — fire-and-forget log to `answer_logs`**: В `src/stores/progressStore.ts` метод `recordAnswer()` теперь асинхронно логирует каждый ответ в Supabase таблицу `answer_logs`. Поля: user_id, question_id, canonical_word_id, word, rule_id, task_number, is_correct, user_answer, error_type, time_spent_ms. Логирование fire-and-forget (`.catch()` для ошибок, не блокирует UI). Условие: `isSupabaseConfigured` + пользователь авторизован. Также добавлены 3 новых компонента аналитики: `AnswerLogsDeepDive.tsx` (детальный анализ ответов), `EarlyWarning.tsx` (раннее предупреждение о проблемах), `SessionQuality.tsx` (качество сессии).
 - Файлы: `src/stores/progressStore.ts`, `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`. Сборка: `npm run build` ✅ (26.09s, 0 TypeScript ошибок). `validate:rag` ✅ (1350 entries, 0 errors). Git: `6dbbafd`.
+
+
+Last updated: 2026-06-30 by Agent 2
+- **Teacher Analytics v3 — Answer Logs Deep Dive, Early Warning, Session Quality**: Добавлены 3 новых компонента аналитики + интеграция в `TeacherAnalytics.tsx` (+3 новых таба: "Ошибки", "Сессии", "⚠️ Риск").
+  1. **AnswerLogsDeepDive.tsx** — детальный анализ ошибок. Сводка (всего ответов, точность, ошибок), ошибки по заданиям (bar chart), проблемные слова (cloud), последние 20 ошибок с типом и временем. Источник: `answerHistory` из `user_progress`.
+  2. **EarlyWarning.tsx** — раннее предупреждение. Risk score на основе: inactivity (>3 дней), broken streak, low accuracy (<50%), rapid decline (>20% точности за неделю). 3 уровня: критично (красный), внимание (жёлтый), наблюдать (синий). Конкретные рекомендации: "позвонить родителям", "написать сообщение", "напомнить о занятиях".
+  3. **SessionQuality.tsx** — анализ качества сессий. Сессии определяются по gap > 5 минут. Метрики: средняя длительность сессии, вопросов/сессия, время/вопрос, rage quit count. Распределение времени ответа: <3с (угадал), 3-10с (быстро), 10-30с (норма), >30с (задумался). Использование подсказок.
+  4. **TeacherAnalytics.tsx** — добавлены табы: "Ошибки", "Сессии", "⚠️ Риск". Всего 10 табов.
+  5. **progressStore.ts** — `recordAnswer` теперь fire-and-forget логирует в Supabase `answer_logs` (user_id, question_id, canonical_word_id, word, rule_id, task_number, is_correct, user_answer, error_type, time_spent_ms). Триггер `trg_answer_log_insert` автоматически обновляет `student_word_errors`.
+  6. **types/index.ts** — добавлено поле `userAnswer?: string[]` в `AnswerHistory`.
+  7. **Lesson.tsx** — `userAnswer` передаётся в `recordAnswer`.
+- Файлы: `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/stores/progressStore.ts`, `src/types/index.ts`, `src/pages/Lesson.tsx`. Сборка: `npm run build` ✅ (26.92s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `786e052`.

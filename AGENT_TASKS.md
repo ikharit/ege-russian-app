@@ -2247,3 +2247,34 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `6dbbafd`
 
 **Критерий завершения**: Build проходит чисто. Ответы логируются в Supabase (если настроен). Нет ошибок TypeScript. 3 новых компонента аналитики созданы.
+
+
+---
+
+### ✅ ЗАДАЧА-А58: Teacher Analytics v3 — Answer Logs Deep Dive, Early Warning, Session Quality + Supabase answer_logs
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 2
+
+**Где**: `src/components/teacher/`, `src/pages/TeacherAnalytics.tsx`, `src/stores/progressStore.ts`, `src/types/index.ts`, `src/pages/Lesson.tsx`
+
+**Проблема**: Teacher Analytics не хватало:
+1. Детального анализа ошибок (answer logs deep dive)
+2. Раннего предупреждения о риске отвала (early warning)
+3. Анализа качества сессий (session quality)
+4. Данные `answer_logs` в Supabase не заполнялись из приложения
+
+**Решение**:
+1. **AnswerLogsDeepDive.tsx** — сводка, ошибки по заданиям, проблемные слова, последние 20 ошибок.
+2. **EarlyWarning.tsx** — risk score (inactive + streak + accuracy + decline), 3 уровня, конкретные действия.
+3. **SessionQuality.tsx** — session detection (>5 min gap), avg duration, questions/session, time distribution, rage quit, hints usage.
+4. **progressStore.ts** — `recordAnswer` fire-and-forget insert в Supabase `answer_logs`.
+5. **types/index.ts** — добавлен `userAnswer?: string[]` в `AnswerHistory`.
+6. **Lesson.tsx** — `userAnswer` передаётся в `recordAnswer`.
+
+**Файлы**: `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`, `src/pages/TeacherAnalytics.tsx`, `src/stores/progressStore.ts`, `src/types/index.ts`, `src/pages/Lesson.tsx`
+
+**Git**: `786e052`
+
+**Критерий завершения**: Build проходит чисто. 10 табов в TeacherAnalytics. answer_logs заполняется из приложения.
