@@ -9,7 +9,6 @@ import { task9Questions } from './questions/task9'
 import { task10Questions } from './questions/task10'
 import { task11Questions } from './questions/task11'
 import { task12Questions } from './questions/task12'
-import { task13Questions } from './questions/task13'
 import { task14Questions } from './questions/task14'
 import { task15Questions } from './questions/task15'
 import { task16Questions } from './questions/task16'
@@ -26,7 +25,6 @@ const dataSourceMap: Record<string, unknown[]> = {
   task10: task10Questions,
   task11: task11Questions,
   task12: task12Questions,
-  task13: task13Questions,
   task14: task14Questions,
   task15: task15Questions,
   task16: task16Questions,

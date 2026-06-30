@@ -15,7 +15,6 @@ export const taskToSectionMap: Record<number, string> = {
   10: 'group-task10',
   11: 'group-task11',
   12: 'group-task12',
-  13: 'group-task13',
   14: 'group-task14',
   15: 'group-task15',
   16: 'group-task16',
@@ -35,7 +34,6 @@ export const knowledgeEdges: KnowledgeEdge[] = [
   // Орфография → усложнение
   { source: 'node-task9', target: 'node-task19', label: 'усложнение', strength: 2 },
   { source: 'node-task12', target: 'node-task22', label: 'усложнение', strength: 2 },
-  { source: 'node-task13', target: 'node-task23', label: 'усложнение', strength: 2 },
   { source: 'node-task14', target: 'node-task24', label: 'усложнение', strength: 2 },
   { source: 'node-task15', target: 'node-task25', label: 'усложнение', strength: 2 },
 
@@ -70,8 +68,7 @@ export const knowledgeEdges: KnowledgeEdge[] = [
   { source: 'node-task9', target: 'node-task10', label: 'предпосылка', strength: 1 },
   { source: 'node-task10', target: 'node-task11', label: 'предпосылка', strength: 1 },
   { source: 'node-task11', target: 'node-task12', label: 'предпосылка', strength: 1 },
-  { source: 'node-task12', target: 'node-task13', label: 'предпосылка', strength: 1 },
-  { source: 'node-task13', target: 'node-task14', label: 'предпосылка', strength: 1 },
+  { source: 'node-task12', target: 'node-task14', label: 'предпосылка', strength: 1 },
   { source: 'node-task14', target: 'node-task15', label: 'предпосылка', strength: 1 },
 
   { source: 'node-task16', target: 'node-task17', label: 'предпосылка', strength: 1 },

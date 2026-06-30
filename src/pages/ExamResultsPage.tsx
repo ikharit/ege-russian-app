@@ -173,7 +173,6 @@ export function ExamResultsPage() {
                     task10: '/task10-trainer',
                     task11: '/task11-trainer',
                     task12: '/task12-trainer',
-                    task13: '/task13-trainer',
                     task14: '/task14-trainer',
                     task15: '/task15-trainer',
                     task16: '/task16-trainer',

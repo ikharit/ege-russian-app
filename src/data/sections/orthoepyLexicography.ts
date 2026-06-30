@@ -2,11 +2,26 @@ import { Section } from '../../types'
 import { task4Sections } from './task4'
 import { task5Sections } from './task5'
 import { task6_8Sections } from './task6_8'
+import { task21Questions } from '../questions/task21'
+
+const task21Lessons = [
+  {
+    id: 'lesson-task21-1',
+    sectionId: 'section-orthoepy-lex',
+    title: 'Задание 6. Лексические нормы (дополнительно)',
+    type: 'practice',
+    description: 'Лексические нормы и канцеляризмы',
+    xpReward: 60,
+    prerequisites: [],
+    questions: task21Questions,
+  }
+]
 
 const allLessons = [
   ...task4Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthoepy-lex' }))),
   ...task5Sections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-orthoepy-lex' }))),
   ...task6_8Sections.flatMap(s => s.lessons.filter(l => l.id.startsWith('lesson-task6') || l.id.startsWith('q6-')).map(l => ({ ...l, sectionId: 'section-orthoepy-lex' }))),
+  ...task21Lessons.map(l => ({ ...l, sectionId: 'section-orthoepy-lex' })),
 ]
 
 export const orthoepyLexicographySections: Section[] = [
@@ -37,6 +52,12 @@ export const orthoepyLexicographySections: Section[] = [
         title: 'Задание 6',
         subtitle: 'Лексическая сочетаемость',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-task6') || l.id.startsWith('q6-')),
+      },
+      {
+        id: 'group-task21',
+        title: 'Задание 6 (дополнительно)',
+        subtitle: 'Лексические нормы',
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-task21')),
       },
     ],
   }

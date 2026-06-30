@@ -48,12 +48,7 @@ export const orthographyAllSections: Section[] = [
         subtitle: 'Окончания глаголов и причастий',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-gram-12') || l.id.startsWith('q12-')),
       },
-      {
-        id: 'group-task13',
-        title: 'Задание 13',
-        subtitle: 'НЕ с разными частями речи',
-        lessons: allLessons.filter(l => l.id.startsWith('lesson-gram-13') || l.id.startsWith('q13-')),
-      },
+
       {
         id: 'group-task14',
         title: 'Задание 14',

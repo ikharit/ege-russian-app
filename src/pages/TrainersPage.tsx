@@ -127,17 +127,7 @@ const trainers: TrainerItem[] = [
     borderColor: 'border-indigo-200',
     textColor: 'text-indigo-500',
   },
-  {
-    id: 'task13',
-    taskNumber: '№13',
-    title: 'НЕ / НИ с причастиями',
-    subtitle: 'Слитно или раздельно',
-    path: '/task13-trainer',
-    color: 'bg-teal-500',
-    bgGradient: 'from-teal-50 to-cyan-50',
-    borderColor: 'border-teal-200',
-    textColor: 'text-teal-500',
-  },
+
   {
     id: 'task14',
     taskNumber: '№14',

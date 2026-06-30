@@ -33,7 +33,6 @@ import { task9Questions } from './task9'
 import { task10Questions } from './task10'
 import { task11Questions } from './task11'
 import { task12Questions } from './task12'
-import { task13Questions } from './task13'
 import { task14Questions } from './task14'
 import { task15Questions } from './task15'
 import { task16Questions } from './task16'
@@ -63,7 +62,6 @@ export const allQuestions: UnifiedQuestion[] = [
   ...task10Questions,
   ...task11Questions,
   ...task12Questions,
-  ...task13Questions,
   ...task14Questions,
   ...task15Questions,
   ...task16Questions,
