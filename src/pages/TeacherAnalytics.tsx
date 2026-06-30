@@ -18,6 +18,7 @@ import { PeerComparison } from '../components/teacher/PeerComparison'
 import { AnswerLogsDeepDive } from '../components/teacher/AnswerLogsDeepDive'
 import { EarlyWarning } from '../components/teacher/EarlyWarning'
 import { SessionQuality } from '../components/teacher/SessionQuality'
+import { TimeDistribution } from '../components/teacher/TimeDistribution'
 
 const RISK_CONFIG = {
   low: { color: '#58cc02', label: 'Всё хорошо', icon: CheckCircle },
@@ -44,7 +45,7 @@ export function TeacherAnalytics() {
   const [riskFilter, setRiskFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
   const [typeFilter, setTypeFilter] = useState<'all' | PlayerType>('all')
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'gaps' | 'velocity' | 'leaderboard' | 'alerts' | 'recommendations' | 'errors' | 'sessions' | 'warning'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'gaps' | 'velocity' | 'leaderboard' | 'alerts' | 'recommendations' | 'errors' | 'sessions' | 'warning' | 'time'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
   // New: search, sort, comparison
@@ -556,6 +557,7 @@ export function TeacherAnalytics() {
                 { key: 'gaps', label: 'Пробелы', icon: Target },
                 { key: 'velocity', label: 'Скорость', icon: Zap },
                 { key: 'leaderboard', label: 'Рейтинг', icon: Trophy },
+                { key: 'time', label: 'Время', icon: Clock },
                 { key: 'errors', label: 'Ошибки', icon: AlertTriangle },
                 { key: 'sessions', label: 'Сессии', icon: Clock },
                 { key: 'warning', label: '⚠️ Риск', icon: AlertTriangle },
@@ -1723,6 +1725,21 @@ export function TeacherAnalytics() {
                   answerHistory: s.answerHistory,
                   xp: s.xp,
                 }))} />
+              </div>
+            )}
+
+            {activeTab === 'time' && (
+              <div className="flex flex-col gap-4">
+                {(() => {
+                  const aggregatedTime: Record<string, number> = {}
+                  realStudents.forEach(s => {
+                    const td = s.behaviorProfile?.timeDistribution || {}
+                    Object.entries(td).forEach(([cat, seconds]) => {
+                      aggregatedTime[cat] = (aggregatedTime[cat] || 0) + (seconds as number)
+                    })
+                  })
+                  return <TimeDistribution timeDistribution={aggregatedTime} />
+                })()}
               </div>
             )}
 
