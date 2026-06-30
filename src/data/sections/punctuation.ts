@@ -6,7 +6,7 @@ export const punctuationSections: Section[] = [
     id: 'section-punct-1',
     courseId: 'ege-russian-2025',
     title: 'Пунктуация: простое предложение',
-    subtitle: 'Однородные члены, обособленные члены, вводные слова',
+    subtitle: 'Однородные члены, придаточные и вводные слова',
     order: 16,
     icon: 'Pencil',
     color: '#ce82ff',
@@ -14,7 +14,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-1',
         sectionId: 'section-punct-1',
-        title: 'Задание 17. Придаточные и однородные',
+        title: 'Задание 16. Однородные члены и придаточные',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 60,
@@ -24,7 +24,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-2',
         sectionId: 'section-punct-1',
-        title: 'Задание 17. Придаточные и вводные',
+        title: 'Задание 16. Придаточные и вводные',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,
@@ -34,7 +34,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-3',
         sectionId: 'section-punct-1',
-        title: 'Задание 17. Вводные слова',
+        title: 'Задание 16. Вводные слова',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,
@@ -44,7 +44,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-16-4',
         sectionId: 'section-punct-1',
-        title: 'Задание 17. Сложные случаи',
+        title: 'Задание 16. Сложные случаи',
         type: 'practice',
         description: 'Реальные вопросы ЕГЭ (Дощинский-2026)',
         xpReward: 70,
@@ -65,7 +65,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-17-1',
         sectionId: 'section-punct-2',
-        title: 'Задание 17. Сложносочинённые предложения',
+        title: 'Задание 19. Сложносочинённые предложения',
         type: 'practice',
         description: 'Запятые между частями сложного предложения',
         xpReward: 60,

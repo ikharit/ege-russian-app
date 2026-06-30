@@ -6,7 +6,7 @@ export const examTasksSections: Section[] = [
   {
     id: 'section-task20',
     courseId: 'ege-russian-2025',
-    title: 'Задание 20',
+    title: 'Задание 5 (дополнительно)',
     subtitle: 'Паронимы (усложнённые случаи)',
     order: 20,
     icon: 'BookOpen',
@@ -15,7 +15,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task20-1',
         sectionId: 'section-task20',
-        title: 'Задание 20. Уровень 1',
+        title: 'Задание 5. Уровень 1 (усложнённые)',
         type: 'practice',
         description: 'Выберите правильное слово для вставки',
         xpReward: 60,
@@ -107,7 +107,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task20-2',
         sectionId: 'section-task20',
-        title: 'Задание 20. Уровень 2',
+        title: 'Задание 5. Уровень 2 (усложнённые)',
         type: 'practice',
         description: 'Сложные случаи паронимов',
         xpReward: 70,
@@ -198,7 +198,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task20-3',
         sectionId: 'section-task20',
-        title: 'Задание 20. Формат ЕГЭ',
+        title: 'Задание 5. Формат ЕГЭ (усложнённые)',
         type: 'test',
         description: 'Реальные задания ЕГЭ по паронимам',
         xpReward: 80,
@@ -225,7 +225,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task20-dooshin',
         sectionId: 'section-task20',
-        title: 'Задание 20. Дощинский (2026)',
+        title: 'Задание 5. Дощинский (2026)',
         type: 'practice',
         description: 'Вопросы из сборника Дощинского-2026',
         xpReward: 60,
@@ -238,7 +238,7 @@ export const examTasksSections: Section[] = [
   {
     id: 'section-task21',
     courseId: 'ege-russian-2025',
-    title: 'Задание 21',
+    title: 'Задание 6 (дополнительно)',
     subtitle: 'Лексические нормы (устаревшие, неправильные словосочетания)',
     order: 21,
     icon: 'BookOpen',
@@ -247,7 +247,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task21-1',
         sectionId: 'section-task21',
-        title: 'Задание 21. Уровень 1',
+        title: 'Задание 6. Уровень 1 (дополнительно)',
         type: 'practice',
         description: 'Найдите лексическую ошибку в тексте',
         xpReward: 60,
@@ -323,7 +323,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task21-2',
         sectionId: 'section-task21',
-        title: 'Задание 21. Уровень 2',
+        title: 'Задание 6. Уровень 2 (дополнительно)',
         type: 'practice',
         description: 'Сложные случаи лексических ошибок',
         xpReward: 70,
@@ -358,7 +358,7 @@ export const examTasksSections: Section[] = [
       {
         id: 'lesson-task21-3',
         sectionId: 'section-task21',
-        title: 'Задание 21. Формат ЕГЭ',
+        title: 'Задание 6. Формат ЕГЭ (дополнительно)',
         type: 'test',
         description: 'Реальные задания ЕГЭ по лексическим нормам',
         xpReward: 80,

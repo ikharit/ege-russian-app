@@ -624,3 +624,11 @@
 - **Зачем:** Коммиты `06af1a8`, `77db4a5`, `9bd728f`, `c3f96f4` (фиксы stale TBD и AGENTS-HISTORY entry) не были отражены в агентских файлах. Проведена полная актуализация. Build + validate:rag проходят.
 - **Git commit:** d6b8c98
 
+### [2026-06-30 12:00] Агент: Agent 3
+- **Что:** Task20/21 rebrand — переименование в задание 5/6 и отвязка от секции пунктуации
+- **Где:** `src/data/sections/examTasks.ts`, `src/data/sections/punctuationAll.ts`
+- **Зачем:** Незакоммиченные изменения в рабочей директории: task20→"Задание 5 (дополнительно)", task21→"Задание 6 (дополнительно)" в examTasks.ts; убраны task20/task21 из punctuationAll.ts. User-facing изменение — студенты видят задания 5 и 6 отдельно.
+- **Git commit:** будет сделан
+- **Сборка:** `npm run build` ✅, `validate:rag` ✅
+
+
