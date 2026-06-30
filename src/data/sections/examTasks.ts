@@ -28,7 +28,7 @@ export const examTasksSections: Section[] = [
             options: ['аллегорический', 'аллегоричный'],
             correctAnswer: ["аллегорический"],
             explanation: 'Аллегорический — относящийся к аллегории (аллегорический смысл).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-2', type: 'single',
@@ -36,7 +36,7 @@ export const examTasksSections: Section[] = [
             options: ['аналогичный', 'аналоговый'],
             correctAnswer: ["аналогичный"],
             explanation: 'Аналогичный — сходный, подобный (аналогичный случай). Аналоговый — относящийся к аналоговому сигналу (аналоговый прибор).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-3', type: 'single',
@@ -44,7 +44,7 @@ export const examTasksSections: Section[] = [
             options: ['безликий', 'безличный'],
             correctAnswer: ["безликий"],
             explanation: 'Безликий — лишённый индивидуальных черт (безликий город). Безличный — не выражающий лицо (безличная форма глагола).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-4', type: 'single',
@@ -52,7 +52,7 @@ export const examTasksSections: Section[] = [
             options: ['возвратный', 'обратный'],
             correctAnswer: ["возвратный"],
             explanation: 'Возвратный — относящийся к субъекту (возвратный глагол). Обратный — обратный, противоположный (обратный процесс).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-5', type: 'single',
@@ -60,7 +60,7 @@ export const examTasksSections: Section[] = [
             options: ['деятельный', 'деятельностный'],
             correctAnswer: ["деятельный"],
             explanation: 'Деятельный — энергичный, активный (деятельный человек). Деятельностный — относящийся к деятельности (деятельностный подход).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-6', type: 'single',
@@ -68,7 +68,7 @@ export const examTasksSections: Section[] = [
             options: ['достоверный', 'достоверный'],
             correctAnswer: ["достоверный"],
             explanation: 'Достоверный — заслуживающий доверия (достоверный источник).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-7', type: 'single',
@@ -76,7 +76,7 @@ export const examTasksSections: Section[] = [
             options: ['зрительный', 'зрелищный'],
             correctAnswer: ["зрительный"],
             explanation: 'Зрительный — относящийся к зрению (зрительный нерв). Зрелищный — зрелищный, эффектный (зрелищное представление).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-8', type: 'single',
@@ -84,7 +84,7 @@ export const examTasksSections: Section[] = [
             options: ['известковый', 'известный'],
             correctAnswer: ["известковый"],
             explanation: 'Известковый — содержащий известь (известковый раствор). Известный — знакомый (известный человек).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-9', type: 'single',
@@ -92,7 +92,7 @@ export const examTasksSections: Section[] = [
             options: ['каменный', 'каменистый'],
             correctAnswer: ["каменистый"],
             explanation: 'Каменистый — покрытый камнями (каменистая почва). Каменный — сделанный из камня (каменный дом).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-1-10', type: 'single',
@@ -100,7 +100,7 @@ export const examTasksSections: Section[] = [
             options: ['контрольный', 'контролируемый'],
             correctAnswer: ["контрольный"],
             explanation: 'Контрольный — проверочный (контрольная работа). Контролируемый — поддающийся контролю (контролируемый процесс).',
-            difficulty: 'easy', xpReward: 10, atoms: ['task5', 'paronyms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task20', 'paronyms']
           },
         ]
       },
@@ -119,7 +119,7 @@ export const examTasksSections: Section[] = [
             options: ['литературный', 'литературоведческий'],
             correctAnswer: ["литературоведческий"],
             explanation: 'Литературоведческий — относящийся к литературоведению (литературоведческий анализ). Литературный — относящийся к литературе (литературный герой).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-2', type: 'single',
@@ -127,7 +127,7 @@ export const examTasksSections: Section[] = [
             options: ['массовый', 'массовый'],
             correctAnswer: ["массовый"],
             explanation: 'Массовый — относящийся к массам (массовое явление).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-3', type: 'single',
@@ -135,7 +135,7 @@ export const examTasksSections: Section[] = [
             options: ['напряжённый', 'напряжительный'],
             correctAnswer: ["напряжённый"],
             explanation: 'Напряжённый — полный напряжения (напряжённая атмосфера). Напряжительный — не употребляется.',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-4', type: 'single',
@@ -143,7 +143,7 @@ export const examTasksSections: Section[] = [
             options: ['недоверие', 'недоверчивость'],
             correctAnswer: ["недоверие"],
             explanation: 'Недоверие — отсутствие доверия (недоверие к власти). Недоверчивость — качество человека (недоверчивый характер).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-5', type: 'single',
@@ -151,7 +151,7 @@ export const examTasksSections: Section[] = [
             options: ['непогрешимый', 'непогрешимый'],
             correctAnswer: ["непогрешимый"],
             explanation: 'Непогрешимый — не способный ошибаться.',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-6', type: 'single',
@@ -159,7 +159,7 @@ export const examTasksSections: Section[] = [
             options: ['объективный', 'объектный'],
             correctAnswer: ["объективный"],
             explanation: 'Объективный — беспристрастный, относящийся к объекту (объективный анализ). Объектный — относящийся к объекту (объектный признак).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-7', type: 'single',
@@ -167,7 +167,7 @@ export const examTasksSections: Section[] = [
             options: ['определяющий', 'определённый'],
             correctAnswer: ["определяющий"],
             explanation: 'Определяющий — который определяет (определяющий фактор). Определённый — конкретный, точный (определённый ответ).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-8', type: 'single',
@@ -175,7 +175,7 @@ export const examTasksSections: Section[] = [
             options: ['оригинальный', 'оригинальный'],
             correctAnswer: ["оригинальный"],
             explanation: 'Оригинальный — необычный, самобытный (оригинальная идея).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-9', type: 'single',
@@ -183,7 +183,7 @@ export const examTasksSections: Section[] = [
             options: ['признательный', 'признанный'],
             correctAnswer: ["признательный"],
             explanation: 'Признательный — выражающий благодарность (признательный взгляд). Признанный — общепризнанный (признанный мастер).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-2-10', type: 'single',
@@ -191,7 +191,7 @@ export const examTasksSections: Section[] = [
             options: ['разносторонний', 'многосторонний'],
             correctAnswer: ["разносторонний"],
             explanation: 'Разносторонний — имеющий разные стороны (разносторонний человек). Многосторонний — имеющий много сторон (многосторонний интерес).',
-            difficulty: 'medium', xpReward: 12, atoms: ['task5', 'paronyms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task20', 'paronyms']
           },
         ]
       },
@@ -210,7 +210,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["1", "2", "3", "4", "5"],
             explanation: 'Все предложения правильны.',
-            difficulty: 'hard', xpReward: 15, atoms: ['task5', 'paronyms']
+            difficulty: 'hard', xpReward: 15, atoms: ['task20', 'paronyms']
           },
           {
             id: 'q20-ege-2', type: 'ege-multiple',
@@ -218,7 +218,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["2", "4"],
             explanation: '2) Литературоведческий герой — неверно, правильно: литературный герой. 4) Контролируемый процесс — допустимо, но в данном контексте лучше контрольный процесс.',
-            difficulty: 'hard', xpReward: 15, atoms: ['task5', 'paronyms']
+            difficulty: 'hard', xpReward: 15, atoms: ['task20', 'paronyms']
           },
         ]
       },
@@ -260,7 +260,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["2"],
             explanation: 'В предложении 2: «мне довелось увидеть» — устаревшее выражение (книжное, архаичное). Правильно: «мне удалось увидеть» или «я увидел».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-2', type: 'ege-multiple',
@@ -268,7 +268,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["1"],
             explanation: 'В предложении 1: «научно-практическая конференция» — неправильное словосочетание. Правильно: «научно-практическая конференция» — допустимо, но обычно говорят «научная конференция» или «практическая конференция». Если подразумевается ученическая конференция — «научно-исследовательская конференция».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-3', type: 'ege-multiple',
@@ -276,7 +276,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["5"],
             explanation: 'В предложении 5: «духовно богаты» — неправильное словосочетание. Правильно: «духовно богатые» или «богаты духовно». «Духовно богаты» — нарушение словосочетания.',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-4', type: 'ege-multiple',
@@ -284,7 +284,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["4"],
             explanation: 'В предложении 4: «произвели на меня огромное впечатление» — канцеляризм. Лучше: «произвели на меня сильное впечатление» или «я был очень впечатлён».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-5', type: 'ege-multiple',
@@ -292,7 +292,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["4"],
             explanation: 'В предложении 4: «в выходные дни» — канцеляризм. Лучше: «по выходным» или «в выходные».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-6', type: 'ege-multiple',
@@ -300,7 +300,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["1"],
             explanation: 'В предложении 1: «посвятить себя науке» — устаревшее выражение. Правильно: «посвятить себя науке» — допустимо, но лучше: «посвятить себя научной работе».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-7', type: 'ege-multiple',
@@ -308,7 +308,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["5"],
             explanation: 'В предложении 5: «загорели» — разговорное выражение. Правильно: «загорели» — допустимо в разговорной речи, но в нейтральном стиле лучше: «загорели» или «приобрели загар».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-1-8', type: 'ege-multiple',
@@ -316,7 +316,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["5"],
             explanation: 'В предложении 5: «по окончании» — канцеляризм. Лучше: «по завершении» или «после окончания».',
-            difficulty: 'easy', xpReward: 10, atoms: ['task6', 'lexical_norms']
+            difficulty: 'easy', xpReward: 10, atoms: ['task21', 'lexical_norms']
           },
         ]
       },
@@ -335,7 +335,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["1", "5"],
             explanation: '1) «реализуется программа» — канцеляризм. Лучше: «осуществляется программа» или «программа действует». 5) «довольны проводимой работой» — неправильное управление. Правильно: «довольны работой» или «довольны, что работа проводится».',
-            difficulty: 'medium', xpReward: 12, atoms: ['task6', 'lexical_norms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-2-2', type: 'ege-multiple',
@@ -343,7 +343,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["5"],
             explanation: 'В предложении 5: «довольны увиденным» — канцеляризм. Лучше: «довольны увиденным» — допустимо, но «были довольны тем, что увидели» — более нейтрально.',
-            difficulty: 'medium', xpReward: 12, atoms: ['task6', 'lexical_norms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task21', 'lexical_norms']
           },
           {
             id: 'q21-2-3', type: 'ege-multiple',
@@ -351,7 +351,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["3"],
             explanation: 'В предложении 3: «каждые выходные» — неправильное словосочетание. Правильно: «каждые выходные» — допустимо, но «по выходным» — более нейтрально.',
-            difficulty: 'medium', xpReward: 12, atoms: ['task6', 'lexical_norms']
+            difficulty: 'medium', xpReward: 12, atoms: ['task21', 'lexical_norms']
           },
         ]
       },
@@ -370,7 +370,7 @@ export const examTasksSections: Section[] = [
             options: ['1', '2', '3', '4', '5'],
             correctAnswer: ["2"],
             explanation: 'В предложении 2: «приехали принять участие» — неправильное словосочетание. Правильно: «приехали, чтобы принять участие» или «приехали участвовать».',
-            difficulty: 'hard', xpReward: 15, atoms: ['task6', 'lexical_norms']
+            difficulty: 'hard', xpReward: 15, atoms: ['task21', 'lexical_norms']
           },
         ]
       }
