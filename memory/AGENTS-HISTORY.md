@@ -733,7 +733,7 @@
   4. `buildGrowthData` теперь принимает `atomProgress` и `theoryTestsCompleted`.
 - **Где:** `src/components/GrowthTimeline.tsx`
 - **Сборка:** `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
-- **Git commit:** `625855e` (docs(agents): audit and restore deleted Agent 1 changelog, document GrowthTimeline metrics + Lesson refactor)
+- **Git commit:** `f4e0992` (feat(GrowthTimeline): add lessonsCount area chart with amber gradient)
 - **Примечание:** Изменение обнаружено в working tree при аудите агентских файлов.
 
 

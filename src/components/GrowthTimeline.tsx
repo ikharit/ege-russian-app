@@ -441,7 +441,10 @@ export function GrowthTimeline() {
                     <stop offset="5%" stopColor="#58cc02" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#58cc02" stopOpacity={0} />
                   </linearGradient>
-                  <linearGradient id="accuracyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="lessonsGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                  </linearGradient>
                     <stop offset="5%" stopColor="#1cb0f6" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#1cb0f6" stopOpacity={0} />
                   </linearGradient>
@@ -451,6 +454,17 @@ export function GrowthTimeline() {
                 <YAxis yAxisId="left" tick={{ fontSize: 11 }} />
                 <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} domain={[0, 100]} />
                 <Tooltip content={<CustomTooltip />} />
+                <Area
+                  yAxisId="left"
+                  type="linear"
+                  dataKey="lessonsCount"
+                  stroke="#f59e0b"
+                  strokeWidth={2}
+                  fill="url(#lessonsGradient)"
+                  animationDuration={playing ? 300 : 2000}
+                  animationEasing="ease-out"
+                  isAnimationActive={true}
+                />
                 <Area
                   yAxisId="left"
                   type="linear"

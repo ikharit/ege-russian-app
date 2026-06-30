@@ -539,5 +539,5 @@ Last updated: 2026-06-30 by OpenClaw Agent
   2. `atomsMastered`: количество атомов с accuracy ≥ 80% (`Object.values(atomProgress).filter(a => a.accuracy >= 80).length`).
   3. `theoryCompleted`: количество пройденных тестов по теории (`Object.values(theoryTestsCompleted).filter(t => t.completed).length`).
   4. `buildGrowthData` теперь принимает `atomProgress` и `theoryTestsCompleted` как параметры.
-- Файл: `src/components/GrowthTimeline.tsx`. Git: `625855e`. Сборка: `npm run build` ✅ (19.45s, 0 TypeScript ошибок).
+- Файл: `src/components/GrowthTimeline.tsx`. Git: `8c15e1a` (data layer), `f4e0992` (visualization layer). Сборка: `npm run build` ✅ (19.45s, 0 TypeScript ошибок).
 

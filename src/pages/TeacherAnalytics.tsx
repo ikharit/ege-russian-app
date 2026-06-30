@@ -11,6 +11,10 @@ import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/student
 import { getPlayerTypeLabel, getPlayerTypeColor } from '../utils/personalityEngine'
 import type { PlayerType } from '../utils/personalityEngine'
 import type { ProgressData } from '../stores/classStore'
+import { ContentGapAnalysis } from '../components/teacher/ContentGapAnalysis'
+import { LearningVelocity } from '../components/teacher/LearningVelocity'
+import { ClassLeaderboard } from '../components/teacher/ClassLeaderboard'
+import { PeerComparison } from '../components/teacher/PeerComparison'
 
 const RISK_CONFIG = {
   low: { color: '#58cc02', label: 'Всё хорошо', icon: CheckCircle },
@@ -37,7 +41,7 @@ export function TeacherAnalytics() {
   const [riskFilter, setRiskFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
   const [typeFilter, setTypeFilter] = useState<'all' | PlayerType>('all')
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations' | 'gaps' | 'velocity' | 'leaderboard'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
   // New: search, sort, comparison
