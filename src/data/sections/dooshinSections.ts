@@ -8,6 +8,7 @@ import { task12DooshinQuestions } from '../questions/task12_dooshin'
 import { task14DooshinQuestions } from '../questions/task14_dooshin'
 import { task15DooshinQuestions } from '../questions/task15_dooshin'
 import { task16DooshinQuestions } from '../questions/task16_dooshin'
+import { task19DooshinQuestions } from '../questions/task19_dooshin'
 import { task20DooshinQuestions } from '../questions/task20_dooshin'
 
 export const task5DooshinSections: Section[] = [
@@ -1584,6 +1585,40 @@ export const task16DooshinSections: Section[] = [
   }
 ]
 
+
+export const task19DooshinSections: Section[] = [
+  {
+    id: 'section-punct-19-dooshin',
+    courseId: 'ege-russian-2025',
+    title: 'Задание 19. Сложное предложение (Дощинский)',
+    subtitle: 'Сложное предложение: Дощинский 2026',
+    order: 19,
+    icon: 'BookOpen',
+    color: '#58cc02',
+    lessons: [
+      {
+        id: 'lesson-punct-19-d-d1',
+        sectionId: 'section-punct-19-dooshin',
+        title: 'Задание 19. Дощинский (1–30)',
+        type: 'practice',
+        description: 'Вопросы из сборника Дощинского-2026',
+        xpReward: 60,
+        prerequisites: [],
+        questions: task19DooshinQuestions.slice(0, 30)
+      },
+      {
+        id: 'lesson-punct-19-d-d2',
+        sectionId: 'section-punct-19-dooshin',
+        title: 'Задание 19. Дощинский (31–32)',
+        type: 'practice',
+        description: 'Вопросы из сборника Дощинского-2026',
+        xpReward: 60,
+        prerequisites: ['lesson-punct-19-d-d1'],
+        questions: task19DooshinQuestions.slice(30, 32)
+      }
+    ]
+  }
+]
 
 export const task20DooshinSections: Section[] = [
   {

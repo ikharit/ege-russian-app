@@ -1,5 +1,4 @@
 import type { UnifiedQuestion } from '../types'
-import { task19DooshinQuestions } from './task19_dooshin'
 export const task19Questions: UnifiedQuestion[] = [
   {
     id: "t19-dosh-1",
@@ -655,7 +654,6 @@ export const task19Questions: UnifiedQuestion[] = [
     atoms: ["task19"],
     tags: ["пунктуация", "задание19", "ege", "сложное предложение"],
   },
-  ...task19DooshinQuestions,
 ]
 
 export const task19QuestionsById = Object.fromEntries(task19Questions.map(q => [q.id, q]))

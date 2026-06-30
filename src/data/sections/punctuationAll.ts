@@ -1,10 +1,11 @@
 import { Section } from '../../types'
 import { punctuationSections } from './punctuation'
-import { task16DooshinSections, task20DooshinSections } from './dooshinSections'
+import { task16DooshinSections, task19DooshinSections, task20DooshinSections } from './dooshinSections'
 
 const allLessons = [
   ...punctuationSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-punctuation' }))),
   ...task16DooshinSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-punctuation' }))),
+  ...task19DooshinSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-punctuation' }))),
   ...task20DooshinSections.flatMap(s => s.lessons.map(l => ({ ...l, sectionId: 'section-punctuation' }))),
 ]
 
@@ -48,6 +49,12 @@ export const punctuationAllSections: Section[] = [
         title: 'Задание 16 (Дощинский)',
         subtitle: 'Дополнительные вопросы',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-16-d')),
+      },
+      {
+        id: 'group-task19-dooshin',
+        title: 'Задание 19 (Дощинский)',
+        subtitle: 'Дополнительные вопросы',
+        lessons: allLessons.filter(l => l.id.startsWith('lesson-punct-19-d')),
       },
       {
         id: 'group-task20',
