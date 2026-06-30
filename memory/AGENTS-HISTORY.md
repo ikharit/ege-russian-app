@@ -631,4 +631,11 @@
 - **Git commit:** `1fe5f9d`
 - **Сборка:** `npm run build` ✅, `validate:rag` ✅
 
+### [2026-06-30] Агент: Agent 3
+- **Что:** Аудит агентских файлов v5 — документирование 4 недокументированных коммитов + uncommitted changes
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `src/data/questions/task9_dooshin.ts`, `tools/editor.html`
+- **Зачем:** Коммиты `4539e14`, `ed03890`, `7fdddf6`, `f71aead` (после `1fe5f9d`) не были отражены в агентских файлах. В working tree остались uncommitted changes в `task9_dooshin.ts` (explanation fix) и `tools/editor.html` (dev tool update).
+- **Git commit:** `a50797e` (task9_dooshin fix + editor.html), `TBD` (agent docs v5)
+- **Сборка:** `npm run build` ✅, `validate:rag` ✅
+
 

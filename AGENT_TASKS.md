@@ -1748,3 +1748,26 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Критерий завершения**: Задания 5 и 6 отображаются как отдельные секции, не внутри пунктуации. Нет дублирования. Build и validate проходят без ошибок.
 
+---
+
+## А57 — Аудит агентских файлов v5: 4 недокументированных коммита + uncommitted changes (2026-06-30)
+
+**Описание**: Коммиты после `1fe5f9d` (Task20/21 rebrand) не были отражены в агентских файлах: `4539e14` (docs build results), `ed03890` (nnn/orthography fix), `7fdddf6` (GrowthTimeline fix), `f71aead` (task20/21→5/6 refactor). Также в working tree — uncommitted fix в `task9_dooshin.ts` (explanation "парадоксальный") и `tools/editor.html`.
+
+**Приоритет:** 🟡 Средний (поддержание порядка)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `src/data/questions/task9_dooshin.ts`, `tools/editor.html`
+
+**Решение**:
+1. Обновлены агентские файлы: AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, memory/2026-06-30.md.
+2. Закоммичены uncommitted changes: `task9_dooshin.ts` (explanation fix) + `tools/editor.html` (dev tool update).
+3. Сборка и RAG-валидация проходят чисто.
+
+**Git**: `a50797e` (task9_dooshin fix + editor.html), `TBD` (agent docs v5)
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 4 коммитах. Нет uncommitted changes в коде. Build и validate проходят без ошибок.
+
