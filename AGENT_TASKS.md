@@ -1724,6 +1724,6 @@ import { getAtomById } from '../data/atomization/atoms'
 3. `77db4a5` — добавлена changelog-запись в AGENTS.md.
 4. `c3f96f4` — добавлена архивная запись в AGENTS-HISTORY.md.
 
-**Git**: `06af1a8`, `9bd728f`, `77db4a5`, `c3f96f4`
+**Git**: `06af1a8`, `9bd728f`, `77db4a5`, `c3f96f4`, `d6b8c98` (v4 audit commit)
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию. Нет stale-ссылок TBD. Build и validate проходят без ошибок.

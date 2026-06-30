@@ -618,3 +618,9 @@
 - **Зачем:** Добавлена архивная запись о коммите `9bd728f` (fix TBD + registry + AGENTS.md changelog) в AGENTS-HISTORY.md, чтобы полная история была доступна следующим агентам.
 - **Git commit:** c3f96f4
 
+### [2026-06-30 10:19] Агент: Agent 3
+- **Что:** Аудит агентских файлов v4 — документирование 4 недокументированных коммитов (06af1a8..c3f96f4)
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`
+- **Зачем:** Коммиты `06af1a8`, `77db4a5`, `9bd728f`, `c3f96f4` (фиксы stale TBD и AGENTS-HISTORY entry) не были отражены в агентских файлах. Проведена полная актуализация. Build + validate:rag проходят.
+- **Git commit:** d6b8c98
+

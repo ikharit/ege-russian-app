@@ -450,6 +450,9 @@ Last updated: 2026-06-30 by Agent 3
 - **docs(agents): add AGENTS-HISTORY entry for v3 fix**: Добавлена архивная запись в `memory/AGENTS-HISTORY.md` о коммите `9bd728f` (fix TBD + registry + AGENTS.md changelog), чтобы следующие агенты видели полную историю фиксов. Файл: `memory/AGENTS-HISTORY.md`. Git: `c3f96f4`.
 
 Last updated: 2026-06-30 by Agent 3
+- **Аудит агентских файлов v4 — документирование 4 недокументированных коммитов**: Коммиты `06af1a8` (replace TBD), `77db4a5` (AGENTS.md changelog), `9bd728f` (fix TBD + registry), `c3f96f4` (AGENTS-HISTORY entry) не были отражены в агентских файлах. Добавлены changelog entries в AGENTS.md, задача А55 в AGENT_TASKS.md, архивные записи в AGENTS-HISTORY.md. Build: `npm run build` ✅ (22.16s, 0 TypeScript ошибок). `validate:rag` ✅ (1379 entries, 0 errors, 0 warnings). Git: `d6b8c98`.
+
+Last updated: 2026-06-30 by Agent 3
 - **Leaderboard duplicate fix + task content expansion**: 5 коммитов агентов 3/4 не были отражены в агентских файлах:
   1. `7b82511` — Leaderboard: предотвращение дублирования пользователя, уже присутствующего в Supabase leaderboard (через get_leaderboard RPC). Файлы: `src/pages/Leaderboard.tsx`, `supabase/migrations/005_leaderboard_rpc.sql`.
   2. `68e2f6d` — Task10: исправлен correctAnswer qd10-75 `['и']` → `['е']` (премадонна). Добавлены task19_dooshin.ts (484 вопроса). Файлы: `src/data/questions/task10_dooshin.ts`, `src/data/questions/task19.ts`, `src/data/questions/task19_dooshin.ts`.
