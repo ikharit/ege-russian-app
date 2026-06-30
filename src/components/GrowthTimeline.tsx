@@ -12,7 +12,7 @@ import {
   ReferenceDot,
 } from 'recharts'
 import { useProgressStore } from '../stores/progressStore'
-import { Play, Pause, TrendingUp, RotateCcw, Calendar, Trophy, Target } from 'lucide-react'
+import { Play, Pause, TrendingUp, RotateCcw, Calendar, Trophy, Target, BookOpen, Atom, GraduationCap } from 'lucide-react'
 
 export interface GrowthDataPoint {
   date: string
@@ -21,6 +21,9 @@ export interface GrowthDataPoint {
   level: number
   accuracy: number
   lessonsCompleted: number
+  lessonsCount: number      // ← сколько уроков пройдено всего
+  atomsMastered: number     // ← сколько атомов освоено
+  theoryCompleted: number   // ← сколько тестов по теории пройдено
   events: string[]
 }
 
@@ -61,6 +64,9 @@ function generateDemoData(): GrowthDataPoint[] {
       level,
       accuracy: Math.round(accuracy),
       lessonsCompleted: lessons,
+      lessonsCount: lessons,
+      atomsMastered: Math.floor(lessons * 1.5),
+      theoryCompleted: Math.floor(lessons * 0.8),
       events,
     })
   }
@@ -73,7 +79,9 @@ function buildGrowthData(
   examResults: { date: string; variantId: string; secondaryScore: number }[],
   userStats: { xp: number; level: number },
   lessonProgress: Record<string, { status: string; completedAt?: string; xpEarned?: number }>,
-  predictiveScoreHistory: { date: string; score: number }[]
+  predictiveScoreHistory: { date: string; score: number }[],
+  atomProgress: Record<string, { accuracy: number; masteryLevel: string; lastAttemptAt: string }>,
+  theoryTestsCompleted: Record<string, { completed: boolean; completedAt?: string }>
 ): GrowthDataPoint[] {
   // Collect all dates
   const dateMap = new Map<string, GrowthDataPoint>()
@@ -159,6 +167,9 @@ function buildGrowthData(
       level: currentLevel,
       accuracy,
       lessonsCompleted: cumulativeLessons,
+      lessonsCount: Object.values(lessonProgress).filter(p => p.status === 'completed').length,
+      atomsMastered: Object.values(atomProgress).filter(a => a.accuracy >= 80).length,
+      theoryCompleted: Object.values(theoryTestsCompleted).filter(t => t.completed).length,
       events,
     })
   }
@@ -190,6 +201,18 @@ function CustomTooltip({ active, payload }: any) {
           <Calendar size={14} className="text-gray-400" />
           <span className="text-gray-700">Уроков: {data.lessonsCompleted}</span>
         </div>
+        <div className="flex items-center gap-2">
+          <BookOpen size={14} className="text-rose-500" />
+          <span className="text-gray-700">Пройдено: {data.lessonsCount}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Atom size={14} className="text-cyan-500" />
+          <span className="text-gray-700">Атомов: {data.atomsMastered}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <GraduationCap size={14} className="text-indigo-500" />
+          <span className="text-gray-700">Теория: {data.theoryCompleted}</span>
+        </div>
       </div>
       {data.events.length > 0 && (
         <div className="mt-2 pt-2 border-t border-gray-100 space-y-1">
@@ -210,14 +233,17 @@ export function GrowthTimeline() {
   const lessonProgress = useProgressStore((s) => s.lessonProgress || {})
   const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory || [])
 
+  const atomProgress = useProgressStore((s) => s.atomProgress || {})
+  const theoryTestsCompleted = useProgressStore((s) => s.theoryTestsCompleted || {})
+
   const fullData = useMemo(() => {
     try {
-      return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory)
+      return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory, atomProgress, theoryTestsCompleted)
     } catch (e) {
       console.error('Error building growth data:', e)
       return generateDemoData()
     }
-  }, [answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory])
+  }, [answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory, atomProgress, theoryTestsCompleted])
 
   const safeFullData = useMemo(() => {
     return fullData.filter((d): d is GrowthDataPoint => 
@@ -230,6 +256,9 @@ export function GrowthTimeline() {
       typeof d.accuracy === 'number' && !isNaN(d.accuracy) &&
       typeof d.level === 'number' && !isNaN(d.level) &&
       typeof d.lessonsCompleted === 'number' && !isNaN(d.lessonsCompleted) &&
+      typeof d.lessonsCount === 'number' && !isNaN(d.lessonsCount) &&
+      typeof d.atomsMastered === 'number' && !isNaN(d.atomsMastered) &&
+      typeof d.theoryCompleted === 'number' && !isNaN(d.theoryCompleted) &&
       Array.isArray(d.events)
     )
   }, [fullData])
@@ -369,7 +398,7 @@ export function GrowthTimeline() {
       {/* Current stats */}
       {currentPoint && (
         <motion.div
-          className="grid grid-cols-4 gap-3"
+          className="grid grid-cols-3 md:grid-cols-6 gap-3"
           key={currentPoint.date}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -389,6 +418,14 @@ export function GrowthTimeline() {
           <div className="bg-duo-purple/10 rounded-xl p-3 text-center">
             <p className="text-lg font-bold text-duo-purple">{currentPoint.lessonsCompleted}</p>
             <p className="text-[10px] text-gray-600 font-medium">Уроков</p>
+          </div>
+          <div className="bg-rose-500/10 rounded-xl p-3 text-center">
+            <p className="text-lg font-bold text-rose-500">{currentPoint.lessonsCount}</p>
+            <p className="text-[10px] text-gray-600 font-medium">Пройдено</p>
+          </div>
+          <div className="bg-cyan-500/10 rounded-xl p-3 text-center">
+            <p className="text-lg font-bold text-cyan-500">{currentPoint.atomsMastered}</p>
+            <p className="text-[10px] text-gray-600 font-medium">Атомов</p>
           </div>
         </motion.div>
       )}
