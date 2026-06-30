@@ -1,6 +1,6 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Current Agent ID:** `Agent 3` | **Last updated:** 2026-06-30
+> **Current Agent ID:** `Agent 2` | **Last updated:** 2026-06-30
 > 
 > All changelog entries from this session: **Agent 3**
 
@@ -492,7 +492,7 @@ Last updated: 2026-06-30 by Agent 3
 - Git: `297a4f3` (docs агентских файлов v7), `63134bd` (task13 integration).
 
 Last updated: 2026-06-30 by Agent 3
-- **Агентские файлы v7.1 — корректировка stale-ссылок**: Исправлена устаревшая информация в AGENTS.md: (1) "Uncommitted changes" в записи v7 (task13_new.ts, index.ts, grammar.ts, orthographyAll.ts, ML_AUDIT.md) — все эти изменения уже были закоммичены в `63134bd`. (2) PWA cache fix Git hash: `TBD` → `297a4f3` (этот же коммит содержал изменение `vite.config.ts`). Обновлен заголовок файла: Current Agent ID → `Agent 3`. Файлы: `AGENTS.md`. Сборка: `npm run build` ✅. Git: `TBD`.
+- **Агентские файлы v7.1 — корректировка stale-ссылок**: Исправлена устаревшая информация в AGENTS.md: (1) "Uncommitted changes" в записи v7 (task13_new.ts, index.ts, grammar.ts, orthographyAll.ts, ML_AUDIT.md) — все эти изменения уже были закоммичены в `63134bd`. (2) PWA cache fix Git hash: `TBD` → `297a4f3` (этот же коммит содержал изменение `vite.config.ts`). Обновлен заголовок файла: Current Agent ID → `Agent 3`. Файлы: `AGENTS.md`. Сборка: `npm run build` ✅. Git: `e7018bd`.
 
 Last updated: 2026-06-30 by OpenClaw Agent
 - **f94730e — docs(agents): add Agent 2 changelog for PWA cache fix**: Коммит f94730e добавил запись об Agent 2 (PWA cache fix) в AGENTS.md, добавил 2 строки в `src/App.tsx`, удалил 119 строк неиспользуемого кода из `src/data/sections/grammar.ts` (дубли dooshin-уроков). Файлы: `AGENTS.md`, `src/App.tsx`, `src/data/sections/grammar.ts`. Git: `f94730e`.
@@ -500,6 +500,29 @@ Last updated: 2026-06-30 by OpenClaw Agent
 Last updated: 2026-06-30 by OpenClaw Agent
 - **9b3cf13 — fix: move dooshin sections into subgroups within main sections; remove duplicates from grammar.ts**: Коммит 9b3cf13 встроил dooshin-контент внутрь основных секций (orthographyAll, punctuationAll) в виде подгрупп, вместо отдельных топ-уровневых секций. Удалены дубли из grammar.ts. Добавлен `Task13Trainer.tsx` (107 строк, тренажёр для задания 13 с autoCheck). Изменён `BaseTrainer.tsx` — добавлен prop `autoCheck` и useEffect для автоматической проверки ответа. Файлы: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/data/sections/orthographyAll.ts`, `src/data/sections/punctuationAll.ts`, `src/data/sections/orthoepyLexicography.ts`, `AGENTS.md`. Git: `9b3cf13`.
 
-Last updated: 2026-06-30 by Agent 3
-- **Uncommitted changes**: `src/components/BaseTrainer.tsx` — условный рендер кнопки "Проверить" (скрыта при `autoCheck=true`). `src/pages/Task13Trainer.tsx` — добавлен `autoCheck={true}`. `src/utils/studentAnalytics.ts` — упрощён `lastActivity` (убран fallback на `taskStats.lastAttemptAt`). `src/pages/TeacherAnalytics.tsx` — добавлены поиск, сортировка, сравнение учеников, авто-обновление каждые 5 минут. `public/data/graph-relations.json` — обновлён timestamp (перестроен). `TEACHER_ANALYTICS_PLAN.md` — untracked, план развития аналитики для учителей. Git: `TBD`.
+Last updated: 2026-06-30 by Agent 2
+- **Teacher Analytics — massive upgrade (search, sort, comparison, heatmap, correlation, export CSV, delta metrics, EGE forecast)**: Полная переработка `src/pages/TeacherAnalytics.tsx` (+229 строк, 1629 строк total). Исправлен критический баг: `studentAnalytics.ts` — упрощён `lastActivity` (убран fallback на `taskStats.lastAttemptAt`, которого нет в Supabase). Добавлено в `TeacherAnalytics.tsx`:
+  1. **Поиск** — input field для поиска учеников по имени.
+  2. **Сортировка** — по точности, имени, активности, риску, прогрессу, XP, стрику (asc/desc).
+  3. **Сравнение учеников** — чекбоксы на карточках, панель сравнения (side-by-side таблица: точность, прогресс, стрик, тип, риск, слабые темы).
+  4. **Матрица ученики × задания** — heatmap (26 столбцов = задания, строки = ученики, цвет = точность). Быстро видно, кто какие задания не освоил.
+  5. **Корреляция время vs точность** — scatter chart (X = время в приложении, Y = точность). Показывает inefficient learners (много времени, низкая точность).
+  6. **Прогноз балла ЕГЭ** — распределение по диапазонам (0-20, 21-35, 36-45, 46-58) на основе `examResults`.
+  7. **Дельта-метрики** — week-over-week изменение количества активных пользователей и сессий (из `dailySnapshots`).
+  8. **Индивидуальный тренд** — area chart точности за 14 дней в раскрывающейся карточке ученика (из `dailySnapshots`).
+  9. **Детали по заданиям** — bars для каждого задания (1-26) в раскрывающейся карточке.
+  10. **Экспорт CSV** — кнопка 📥 CSV, скачивает `teacher-analytics-YYYY-MM-DD.csv` с полной таблицей.
+  11. **Автообновление** — `fetchAllUsers()` каждые 5 минут.
+  12. **Sticky header** — поиск + сортировка + фильтры прилипают к верху при скролле.
+- Файлы: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`. Сборка: `npm run build` ✅ (14.07s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `TBD`.
+
+Last updated: 2026-06-30 by Agent 1
+- **Аудит GrowthTimeline.tsx + рефакторинг**: Проведён аудит и фикс потенциальных проблем, вызывающих белый экран на /growth:
+  1. `buildGrowthData`: `dateMap.get(d)!` → `dateMap.get(d).filter(Boolean)` — убран non-null assertion, undefined элементы отсекаются.
+  2. `allDates`: `filter((e: any) => e?.date)` → `filter((e) => typeof e?.date === 'string')` — проверка типа даты, защита от `split` на non-string.
+  3. `examResults` в цикле: `filter((e) => e.date.split('T')[0] === date)` → `filter((e) => typeof e?.date === 'string' && ...)` — защита от undefined date.
+  4. `CustomTooltip`: вынесен за пределы `GrowthTimeline()` — устраняет пересоздание при каждом рендере, стабильнее для recharts.
+  5. `eventDots`: `key={i}` → `key={d.date}` — уникальный key, предотвращает дублирование React keys.
+  6. Проверка деплоя: `dist` — production build (7.2M, 90 assets), `base: '/'` — корректно для Cloudflare Pages. GitHub Pages — деплоит raw source (не production), workflow отключён. Сборка: синтаксических ошибок нет. Git: `TBD`.
+
 

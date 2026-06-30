@@ -1,6 +1,6 @@
 # Техзадание для агента-исполнителя
 
-> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 3** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
+> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 2** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
 >
 > **Контекст**: React-приложение на Vite для подготовки к ЕГЭ по русскому языку. Стек: React 18 + TypeScript + Tailwind CSS + Zustand + Framer Motion + React Router (HashRouter). Данные хранятся в `localStorage` (Zustand persist). Supabase подключён, но необязателен.
 >
@@ -2010,7 +2010,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `AGENTS.md`, `AGENT_TASKS.md`
 
-**Git**: `TBD` (v7.1)
+**Git**: `e7018bd` (v7.1)
 
 **Критерий завершения**: AGENTS.md не содержит stale "uncommitted changes" или TBD для уже закоммиченных изменений. Заголовки файлов отражают актуального агента.
 
@@ -2083,7 +2083,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
 
-**Git**: `TBD`
+**Git**: `e7018bd`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о коммитах f94730e и 9b3cf13. Нет stale-ссылок. Build проходит чисто.
 
@@ -2115,6 +2115,51 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/utils/studentAnalytics.ts`, `src/pages/TeacherAnalytics.tsx`, `public/data/graph-relations.json`
 
-**Git**: `TBD`
+**Git**: `e7018bd`
 
 **Критерий завершения**: Все uncommitted changes закоммичены. Build проходит чисто. TeacherAnalytics имеет поиск и сортировку. Task13Trainer работает с autoCheck.
+
+
+---
+
+### ✅ ЗАДАЧА-А56: Teacher Analytics — массивный апгрейд (поиск, сортировка, сравнение, heatmap, корреляция, CSV, дельта, прогноз ЕГЭ)
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 2
+
+**Где**: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`
+
+**Проблема**: Страница `/teacher/analytics` показывала базовую аналитику, но не хватало:
+1. Поиска и сортировки учеников
+2. Сравнения учеников side-by-side
+3. Детальной матрицы "ученики × задания"
+4. Визуализации корреляции (время vs точность)
+5. Прогноза балла ЕГЭ
+6. Дельта-метрик (week-over-week)
+7. Индивидуальных трендов в карточках учеников
+8. Экспорта данных в CSV
+9. Критический баг: `studentAnalytics.ts` использовал `taskStats.lastAttemptAt`, которого нет в Supabase
+
+**Решение**:
+1. `studentAnalytics.ts` — `lastActivity` упрощён до `stats.lastActivityDate` (убран fallback на `taskStats.lastAttemptAt`).
+2. `TeacherAnalytics.tsx` — добавлено 12 новых функций:
+   - Поиск по имени (input + sticky header)
+   - Сортировка по 7 критериям (точность, имя, активность, риск, прогресс, XP, стрик) с asc/desc
+   - Сравнение учеников — чекбоксы + side-by-side таблица
+   - Матрица ученики × задания — heatmap (26 заданий, цвет = точность)
+   - Корреляция — scatter chart (время vs точность)
+   - Прогноз ЕГЭ — распределение по диапазонам (0-20, 21-35, 36-45, 46-58)
+   - Дельта-метрики — week-over-week активных пользователей и сессий
+   - Индивидуальный тренд — area chart в раскрывающейся карточке (14 дней из dailySnapshots)
+   - Детали по заданиям — bars для каждого задания (1-26) в карточке ученика
+   - Экспорт CSV — кнопка 📥 CSV, скачивание полной таблицы
+   - Автообновление — `fetchAllUsers()` каждые 5 минут
+   - Sticky header — поиск + фильтры прилипают к верху
+3. `TEACHER_ANALYTICS_PLAN.md` — план развития аналитики (untracked).
+
+**Файлы**: `src/pages/TeacherAnalytics.tsx` (+229 строк), `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`
+
+**Git**: `TBD`
+
+**Критерий завершения**: Build проходит чисто. TeacherAnalytics имеет полный набор аналитических инструментов.

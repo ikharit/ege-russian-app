@@ -676,7 +676,7 @@
   3. Заголовок AGENTS.md: Current Agent ID `Agent 2` → `Agent 3`.
   4. Заголовок AGENT_TASKS.md: Текущий агент `Agent 2` → `Agent 3`.
   5. Добавлена задача А66 в AGENT_TASKS.md.
-- **Git commit:** `TBD` (v7.1)
+- **Git commit:** `e7018bd` (v7.1)
 - **Сборка:** `npm run build` ✅.
 
 ### [2026-06-30] Агент: OpenClaw Agent — Grammar.ts cleanup + PWA changelog (f94730e)
@@ -695,7 +695,21 @@
 - **Что:** Исправление устаревшей информации в AGENTS.md после коммитов f94730e и 9b3cf13. Добавлены задачи А67–А69 в AGENT_TASKS.md.
 - **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
 - **Uncommitted changes:** `BaseTrainer.tsx` (conditional render кнопки Проверить), `Task13Trainer.tsx` (autoCheck={true}), `studentAnalytics.ts` (lastActivity simplification), `TEACHER_ANALYTICS_PLAN.md` (untracked).
-- **Git commit:** `TBD` (v7.2)
+- **Git commit:** `e7018bd` (v7.2)
 - **Сборка:** `npm run build` ✅.
 
 
+
+
+### [2026-06-30] Агент: Agent 1 — Аудит GrowthTimeline.tsx + рефакторинг
+- **Что:** Проведён аудит и фикс потенциальных проблем, вызывающих белый экран на /growth:
+  1. `buildGrowthData`: `dateMap.get(d)!` → `dateMap.get(d).filter(Boolean)` — убран non-null assertion, undefined элементы отсекаются.
+  2. `allDates`: `filter((e: any) => e?.date)` → `filter((e) => typeof e?.date === 'string')` — проверка типа даты, защита от `split` на non-string.
+  3. `examResults` в цикле: `filter((e) => e.date.split('T')[0] === date)` → `filter((e) => typeof e?.date === 'string' && ...)` — защита от undefined date.
+  4. `CustomTooltip`: вынесен за пределы `GrowthTimeline()` — устраняет пересоздание при каждом рендере, стабильнее для recharts.
+  5. `eventDots`: `key={i}` → `key={d.date}` — уникальный key, предотвращает дублирование React keys.
+- **Где:** `src/components/GrowthTimeline.tsx`
+- **Зачем:** Пользователь жаловался на белый экран на /growth. Субагент выявил, что GitHub Pages деплоит raw source (не production), но Cloudflare Pages (pages.dev) — production build. Возможна runtime ошибка в GrowthTimeline при некорректных данных.
+- **Git commit:** `TBD`
+- **Сборка:** синтаксических ошибок нет, полная сборка не проверена (npm недоступен в окружении).
+- **⚠️ Важно:** Возможно, белый экран вызван не только runtime ошибкой, но и deployment issue (Cloudflare Pages недоступен из некоторых сетей). Рекомендуется проверить доступность через VPN или другой браузер.

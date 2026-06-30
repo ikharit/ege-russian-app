@@ -105,12 +105,12 @@ function buildGrowthData(
     }
   }
 
-  // Build all unique dates sorted
+  // Build all unique dates sorted — only valid string dates
   const allDates = new Set<string>([
     ...dayAnswers.keys(),
     ...dayLessons.keys(),
-    ...examResults.filter((e: any) => e?.date).map((e: any) => e.date.split('T')[0]),
-    ...predictiveScoreHistory.filter((p: any) => p?.date).map((p: any) => p.date),
+    ...examResults.filter((e) => typeof e?.date === 'string').map((e) => e.date.split('T')[0]),
+    ...predictiveScoreHistory.filter((p) => typeof p?.date === 'string').map((p) => p.date),
   ])
 
   const sortedDates = Array.from(allDates).sort()
@@ -146,7 +146,7 @@ function buildGrowthData(
     const events: string[] = []
     if (levelUp) events.push(`Получен уровень ${currentLevel}`)
 
-    const examsToday = examResults.filter((e) => e.date.split('T')[0] === date)
+    const examsToday = examResults.filter((e) => typeof e?.date === 'string' && e.date.split('T')[0] === date)
     for (const exam of examsToday) {
       events.push(`Пройден вариант ${exam.variantId}`)
     }
@@ -163,7 +163,43 @@ function buildGrowthData(
     })
   }
 
-  return sortedDates.map((d) => dateMap.get(d)!)
+  return sortedDates.map((d) => dateMap.get(d)).filter((p): p is GrowthDataPoint => p !== undefined && p !== null)
+}
+
+// Custom tooltip — вынесен за пределы компонента для стабильности
+function CustomTooltip({ active, payload }: any) {
+  if (!active || !payload || payload.length === 0) return null
+  const data = payload[0].payload as GrowthDataPoint
+  return (
+    <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 p-3 shadow-md">
+      <p className="text-xs font-bold text-gray-500 mb-1">{data.date}</p>
+      <div className="space-y-1 text-sm">
+        <div className="flex items-center gap-2">
+          <TrendingUp size={14} className="text-duo-green" />
+          <span className="font-bold text-gray-800">{data.xp} XP</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Target size={14} className="text-duo-blue" />
+          <span className="text-gray-700">Точность: {data.accuracy}%</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Trophy size={14} className="text-duo-yellow" />
+          <span className="text-gray-700">Уровень {data.level}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Calendar size={14} className="text-gray-400" />
+          <span className="text-gray-700">Уроков: {data.lessonsCompleted}</span>
+        </div>
+      </div>
+      {data.events.length > 0 && (
+        <div className="mt-2 pt-2 border-t border-gray-100 space-y-1">
+          {data.events.map((ev, i) => (
+            <p key={i} className="text-xs font-bold text-duo-purple">{ev}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function GrowthTimeline() {
@@ -269,49 +305,13 @@ export function GrowthTimeline() {
     setProgressIndex(safeFullData.length - 1)
   }, [safeFullData.length])
 
-  // Custom tooltip
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload || payload.length === 0) return null
-    const data = payload[0].payload as GrowthDataPoint
-    return (
-      <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 p-3 shadow-md">
-        <p className="text-xs font-bold text-gray-500 mb-1">{data.date}</p>
-        <div className="space-y-1 text-sm">
-          <div className="flex items-center gap-2">
-            <TrendingUp size={14} className="text-duo-green" />
-            <span className="font-bold text-gray-800">{data.xp} XP</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Target size={14} className="text-duo-blue" />
-            <span className="text-gray-700">Точность: {data.accuracy}%</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Trophy size={14} className="text-duo-yellow" />
-            <span className="text-gray-700">Уровень {data.level}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar size={14} className="text-gray-400" />
-            <span className="text-gray-700">Уроков: {data.lessonsCompleted}</span>
-          </div>
-        </div>
-        {data.events.length > 0 && (
-          <div className="mt-2 pt-2 border-t border-gray-100 space-y-1">
-            {data.events.map((ev, i) => (
-              <p key={i} className="text-xs font-bold text-duo-purple">{ev}</p>
-            ))}
-          </div>
-        )}
-      </div>
-    )
-  }
-
   // Event dots
   const eventDots = useMemo(() => {
     return visibleData
       .filter((d) => d && d.events && d.events.length > 0 && d.dateLabel && d.dateLabel !== 'NaN.NaN')
-      .map((d, i) => (
+      .map((d) => (
         <ReferenceDot
-          key={i}
+          key={d.date}
           x={d.dateLabel}
           y={d.xp}
           r={5}

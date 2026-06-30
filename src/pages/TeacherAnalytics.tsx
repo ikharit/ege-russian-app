@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft, Users, AlertTriangle, TrendingUp, Target, Award, ChevronRight, Filter, BarChart3, BrainCircuit, Heart, Zap, Clock, CheckCircle, AlertCircle, BookOpen, Trophy, Flame, Activity, Lightbulb, Bell
 } from 'lucide-react'
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, CartesianGrid, BarChart, Bar, ScatterChart, Scatter } from 'recharts'
 import { useClassStore } from '../stores/classStore'
 import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
 import { analyzeClass, analyzeStudent, StudentAnalytics } from '../utils/studentAnalytics'
@@ -77,7 +77,34 @@ export function TeacherAnalytics() {
     ? analyzeClass(students.map(s => ({ profileId: s.id, name: s.name, progress: s.progress })))
     : { totalStudents: 0, avgAccuracy: 0, avgCompletionRate: 0, avgStreak: 0, riskDistribution: { low: 0, medium: 0, high: 0 }, playerTypeDistribution: {}, motivationDistribution: {}, topWeakTopics: [], insights: [], dominantType: 'achiever' as PlayerType, typeDistribution: {}, atRiskCount: 0, topPerformers: [], needAttention: [], classInsights: [] }
 
-  // Extended metrics
+  // Delta metrics (week-over-week)
+  const deltaMetrics = (() => {
+    const now = new Date()
+    const thisWeekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const prevWeekStart = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+    
+    let thisWeekUsers = 0, prevWeekUsers = 0
+    let thisWeekSessions = 0, prevWeekSessions = 0
+    
+    realStudents.forEach(s => {
+      const snaps = s.dailySnapshots || []
+      const hasThisWeek = snaps.some((sn: any) => sn.date && new Date(sn.date) >= thisWeekStart)
+      const hasPrevWeek = snaps.some((sn: any) => sn.date && new Date(sn.date) >= prevWeekStart && new Date(sn.date) < thisWeekStart)
+      if (hasThisWeek) thisWeekUsers++
+      if (hasPrevWeek) prevWeekUsers++
+      
+      snaps.forEach((sn: any) => {
+        const d = new Date(sn.date)
+        if (d >= thisWeekStart) thisWeekSessions += sn.totalSessions || 0
+        else if (d >= prevWeekStart) prevWeekSessions += sn.totalSessions || 0
+      })
+    })
+    
+    const deltaUsers = prevWeekUsers > 0 ? Math.round(((thisWeekUsers - prevWeekUsers) / prevWeekUsers) * 100) : 0
+    const deltaSessions = prevWeekSessions > 0 ? Math.round(((thisWeekSessions - prevWeekSessions) / prevWeekSessions) * 100) : 0
+    
+    return { deltaUsers, deltaSessions, thisWeekUsers, prevWeekUsers }
+  })()
   const avgExamScore = (() => {
     let totalScore = 0, count = 0
     realStudents.forEach(s => {
@@ -420,6 +447,11 @@ export function TeacherAnalytics() {
                   <span className="text-xs text-gray-500 font-bold uppercase">Пользователей</span>
                 </div>
                 <p className="text-2xl font-black text-gray-800">{summary.totalStudents}</p>
+                {deltaMetrics.deltaUsers !== 0 && (
+                  <p className={`text-xs font-bold mt-1 ${deltaMetrics.deltaUsers > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {deltaMetrics.deltaUsers > 0 ? '↑' : '↓'} {Math.abs(deltaMetrics.deltaUsers)}% за неделю
+                  </p>
+                )}
               </motion.div>
 
               <motion.div
@@ -440,16 +472,21 @@ export function TeacherAnalytics() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: 0.08 }}
                 className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 rounded-lg bg-duo-blue/10 flex items-center justify-center">
-                    <BookOpen size={18} className="text-duo-blue" />
+                    <Activity size={18} className="text-duo-blue" />
                   </div>
-                  <span className="text-xs text-gray-500 font-bold uppercase">Пройдено</span>
+                  <span className="text-xs text-gray-500 font-bold uppercase">Активных за неделю</span>
                 </div>
-                <p className="text-2xl font-black text-gray-800">{summary.avgCompletionRate}%</p>
+                <p className="text-2xl font-black text-gray-800">{deltaMetrics.thisWeekUsers}</p>
+                {deltaMetrics.deltaUsers !== 0 && (
+                  <p className={`text-xs font-bold mt-1 ${deltaMetrics.deltaUsers > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {deltaMetrics.deltaUsers > 0 ? '↑' : '↓'} {Math.abs(deltaMetrics.deltaUsers)}% vs прошлая неделя
+                  </p>
+                )}
               </motion.div>
 
               <motion.div
@@ -777,6 +814,152 @@ export function TeacherAnalytics() {
                   </div>
                 )}
 
+                {/* Student × Task Heatmap Matrix */}
+                {filtered.length > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Target size={18} className="text-duo-purple" />
+                      Матрица: ученики × задания
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <div className="min-w-[600px]">
+                        {/* Header row */}
+                        <div className="flex gap-1 mb-1">
+                          <div className="w-24 shrink-0" />
+                          {Array.from({ length: 26 }, (_, i) => (
+                            <div key={i} className="w-7 text-center text-[9px] font-bold text-gray-400">{i + 1}</div>
+                          ))}
+                        </div>
+                        {/* Data rows */}
+                        {filtered.slice(0, 20).map((a) => {
+                          const studentData = realStudents.find(s => s.studentId === a.profileId)
+                          const taskStats = studentData?.rawProgressData?.taskStats || {}
+                          return (
+                            <div key={a.profileId} className="flex gap-1 items-center mb-1">
+                              <div className="w-24 shrink-0 text-[10px] font-bold text-gray-600 truncate pr-2" title={a.name}>{a.name}</div>
+                              {Array.from({ length: 26 }, (_, i) => {
+                                const taskNum = String(i + 1)
+                                const stats = taskStats[taskNum]
+                                const accuracy = stats && stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : -1
+                                const color = accuracy >= 0
+                                  ? accuracy >= 80 ? 'bg-green-400'
+                                  : accuracy >= 60 ? 'bg-green-200'
+                                  : accuracy >= 40 ? 'bg-yellow-300'
+                                  : accuracy >= 20 ? 'bg-orange-300'
+                                  : 'bg-red-400'
+                                  : 'bg-gray-100'
+                                return (
+                                  <div key={taskNum} className="w-7 h-6 rounded-sm flex items-center justify-center" title={accuracy >= 0 ? `${a.name} — Задание ${taskNum}: ${accuracy}% (${stats.correct}/${stats.total})` : `${a.name} — Задание ${taskNum}: нет данных`}>
+                                    <div className={`w-full h-full rounded-sm ${color}`} />
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )
+                        })}
+                        {filtered.length > 20 && (
+                          <p className="text-xs text-gray-400 text-center mt-2">...и ещё {filtered.length - 20} учеников</p>
+                        )}
+                      </div>
+                    </div>
+                    {/* Legend */}
+                    <div className="flex gap-3 mt-3 justify-center">
+                      {[
+                        { color: 'bg-green-400', label: '≥80%' },
+                        { color: 'bg-green-200', label: '60-79%' },
+                        { color: 'bg-yellow-300', label: '40-59%' },
+                        { color: 'bg-orange-300', label: '20-39%' },
+                        { color: 'bg-red-400', label: '<20%' },
+                        { color: 'bg-gray-100', label: 'Нет данных' },
+                      ].map((item) => (
+                        <div key={item.label} className="flex items-center gap-1">
+                          <div className={`w-3 h-3 rounded-sm ${item.color}`} />
+                          <span className="text-[10px] text-gray-500 font-bold">{item.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Correlation: Time vs Accuracy */}
+                {filtered.length > 1 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Activity size={18} className="text-duo-blue" />
+                      Корреляция: время vs точность
+                    </h3>
+                    <div className="h-48">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <ScatterChart>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                          <XAxis type="number" dataKey="time" name="Время (мин)" tick={{fontSize: 10}} />
+                          <YAxis type="number" dataKey="accuracy" name="Точность (%)" domain={[0, 100]} tick={{fontSize: 10}} />
+                          <Tooltip contentStyle={{fontSize: 11, borderRadius: 8}} formatter={(value: any, name: string) => [name === 'time' ? `${value} мин` : `${value}%`, name === 'time' ? 'Время' : 'Точность']} />
+                          <Scatter
+                            data={filtered.map(a => {
+                              const studentData = realStudents.find(s => s.studentId === a.profileId)
+                              const time = studentData?.totalLessonTimeMinutes || 0
+                              return { name: a.name, time, accuracy: a.accuracy, risk: a.riskLevel }
+                            })}
+                            fill="#58cc02"
+                          />
+                        </ScatterChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <p className="text-[10px] text-gray-400 mt-2 text-center">
+                      Точка = ученик. Ось X = время в приложении, Y = точность. Красные точки = риск отвала.
+                    </p>
+                  </div>
+                )}
+
+                {/* EGE Forecast Distribution */}
+                {avgExamScore > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <Trophy size={18} className="text-duo-yellow" />
+                      Прогноз балла ЕГЭ (класс)
+                    </h3>
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="text-4xl font-black text-duo-yellow">{avgExamScore}</div>
+                      <div className="text-sm text-gray-500">
+                        <p>средний балл</p>
+                        <p className="text-xs">из 58 возможных</p>
+                      </div>
+                    </div>
+                    {(() => {
+                      const bins = [
+                        { min: 0, max: 20, label: '0-20', color: 'bg-red-400' },
+                        { min: 21, max: 35, label: '21-35', color: 'bg-orange-400' },
+                        { min: 36, max: 45, label: '36-45', color: 'bg-yellow-400' },
+                        { min: 46, max: 58, label: '46-58', color: 'bg-green-400' },
+                      ]
+                      const dist = bins.map(b => ({
+                        ...b,
+                        count: realStudents.filter(s => {
+                          const best = s.examResults && s.examResults.length > 0
+                            ? Math.max(...s.examResults.map((r: any) => r.secondaryScore || r.primaryScore || 0))
+                            : 0
+                          return best >= b.min && best <= b.max
+                        }).length
+                      }))
+                      const maxCount = Math.max(...dist.map(d => d.count), 1)
+                      return (
+                        <div className="space-y-2">
+                          {dist.map(d => (
+                            <div key={d.label} className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-gray-500 w-10">{d.label}</span>
+                              <div className="flex-1 bg-gray-100 rounded-full h-3">
+                                <div className={`${d.color} h-3 rounded-full transition-all`} style={{ width: `${(d.count / maxCount) * 100}%` }} />
+                              </div>
+                              <span className="text-xs font-bold text-gray-600 w-6 text-right">{d.count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })()}
+                  </div>
+                )}
+
                 {/* Search, Sort, Filters */}
                 <div className="flex flex-col gap-3 sticky top-0 z-20 bg-gray-50 py-2">
                   {/* Search row */}
@@ -791,6 +974,40 @@ export function TeacherAnalytics() {
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
                     </div>
+                    <button
+                      onClick={() => {
+                        // Export CSV
+                        const rows = [
+                          ['Имя', 'Точность (%)', 'Прогресс (%)', 'Стрик', 'Риск', 'Тип мотивации', 'Последняя активность (дней)', 'XP', 'Время (мин)', 'Слабые темы'].join(','),
+                          ...filtered.map(a => {
+                            const studentData = realStudents.find(s => s.studentId === a.profileId)
+                            return [
+                              `"${a.name}"`,
+                              a.accuracy,
+                              a.completionRate,
+                              a.streak,
+                              a.riskLevel,
+                              getPlayerTypeLabel(a.playerProfile.type),
+                              a.lastActivityDays === 999 ? '—' : a.lastActivityDays,
+                              studentData?.xp || 0,
+                              studentData?.totalLessonTimeMinutes || 0,
+                              `"${a.weaknesses.join('; ')}"`,
+                            ].join(',')
+                          })
+                        ].join('\n')
+                        const blob = new Blob([rows], { type: 'text/csv;charset=utf-8;' })
+                        const url = URL.createObjectURL(blob)
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.download = `teacher-analytics-${new Date().toISOString().split('T')[0]}.csv`
+                        link.click()
+                        URL.revokeObjectURL(url)
+                      }}
+                      className="px-4 py-2 rounded-xl bg-white text-duo-green border border-duo-green text-xs font-bold hover:bg-duo-green/5"
+                      title="Экспорт CSV"
+                    >
+                      📥 CSV
+                    </button>
                     <button
                       onClick={() => setShowComparison(!showComparison)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
