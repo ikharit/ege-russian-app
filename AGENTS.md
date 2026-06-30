@@ -491,3 +491,6 @@ Last updated: 2026-06-30 by Agent 3
 - Сборка: `npm run build` ✅ (13.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors, 0 warnings).
 - Git: `297a4f3`.
 
+Last updated: 2026-06-30 by Agent 2
+- **PWA cache fix: increase maximumFileSizeToCacheInBytes to 10 MB**: В `vite.config.ts` увеличен `maximumFileSizeToCacheInBytes` с 4 MB до 10 MB (10 * 1024 * 1024). Причина: index chunk вырос до ~6.8 MB, и Workbox не кешировал его, что приводило к отсутствию offline-функциональности. Файл: `vite.config.ts`. Сборка: не требовалась (конфигурационное изменение). Git: `TBD`.
+

@@ -73,6 +73,7 @@ const Task9Trainer = lazy(() => import('./pages/Task9Trainer').then(m => ({ defa
 const Task10Trainer = lazy(() => import('./pages/Task10Trainer').then(m => ({ default: m.Task10Trainer })))
 const Task11Trainer = lazy(() => import('./pages/Task11Trainer').then(m => ({ default: m.Task11Trainer })))
 const Task12Trainer = lazy(() => import('./pages/Task12Trainer').then(m => ({ default: m.Task12Trainer })))
+const Task13Trainer = lazy(() => import('./pages/Task13Trainer').then(m => ({ default: m.Task13Trainer })))
 const Task14Trainer = lazy(() => import('./pages/Task14Trainer').then(m => ({ default: m.Task14Trainer })))
 const Task15Trainer = lazy(() => import('./pages/Task15Trainer').then(m => ({ default: m.Task15Trainer })))
 const Task16Trainer = lazy(() => import('./pages/Task16Trainer').then(m => ({ default: m.Task16Trainer })))
@@ -618,6 +619,7 @@ export default function App() {
             <Route path="/task10-trainer" element={<Task10Trainer />} />
             <Route path="/task11-trainer" element={<Task11Trainer />} />
             <Route path="/task12-trainer" element={<Task12Trainer />} />
+            <Route path="/task13-trainer" element={<Task13Trainer />} />
             <Route path="/task14-trainer" element={<Task14Trainer />} />
             <Route path="/task15-trainer" element={<Task15Trainer />} />
             <Route path="/task1-trainer" element={<Task1Trainer />} />
