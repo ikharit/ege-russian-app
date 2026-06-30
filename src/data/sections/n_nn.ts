@@ -64,7 +64,7 @@ export const nnnSections: Section[] = [
         ]
       },
       {
-        id: 'lesson-dooshin-15-1',
+        id: 'lesson-nnn-15-3',
         sectionId: 'section-nnn-15',
         title: 'Задание 15. Дощинский (2026)',
         type: 'practice',

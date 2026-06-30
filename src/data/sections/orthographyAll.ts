@@ -65,7 +65,7 @@ export const orthographyAllSections: Section[] = [
         title: 'Задание 15',
         subtitle: 'Н / НН',
         lessons: allLessons.filter(l => 
-          l.id.startsWith('lesson-nnn') || 
+          l.id.startsWith('lesson-nnn-15') || 
           l.id.startsWith('q15-') || 
           l.id.startsWith('lesson-dooshin-15') || 
           l.id.startsWith('lesson-shkolkovo-task15')
