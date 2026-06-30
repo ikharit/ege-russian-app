@@ -663,7 +663,7 @@
   4. `f45c43f` — fix: integrate task20 into punctuationAll, task21 into orthoepyLex; remove examTasks; add dooshin sections to course; remove broken task13. Файлы: `dooshinSections.ts` (1652 строки), `orthoepyLexicography.ts` (21 строка), удалены `examTasks.ts`, `task13.ts`, `task13_dooshin.ts`, `Task13Trainer.tsx`, `examQuestionLoader.ts`. 23 файла, 1714 insertions, 7712 deletions.
   5. `63134bd` — fix: add task19 dooshin sections, remove from task19.ts to avoid duplication. Добавлены `task13_ege.ts` (143 вопроса), `task13_atom.ts` (699 вопросов). Файлы: `task13_ege.ts`, `task13_atom.ts`, `task19.ts`, `dooshinSections.ts`, `punctuationAll.ts`.
 - **Uncommitted changes:** `index.ts` (импорт task13NewQuestions), `grammar.ts` (уроки lesson-gram-13-ege/atom), `orthographyAll.ts` (group-task13), `task13_new.ts` (untracked), `ML_AUDIT.md` (untracked от Agent 2).
-- **Git commit:** `TBD` (agent files commit)
+- **Git commit:** `297a4f3` (agent files v7 audit)
 - **Сборка:** `npm run build` ✅ (13.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors, 0 warnings).
 
 

@@ -1980,6 +1980,6 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`, `memory/agent-registry.md`
 
-**Git**: `TBD`
+**Git**: `297a4f3`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах и uncommitted changes. Build и validate проходят без ошибок. Нет stale-ссылок.

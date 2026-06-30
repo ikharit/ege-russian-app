@@ -489,5 +489,5 @@ Last updated: 2026-06-30 by Agent 3
   5. `63134bd` — fix: add task19 dooshin sections, remove from task19.ts to avoid duplication. Добавлены `task13_ege.ts` (143 вопроса в ЕГЭ формате), `task13_atom.ts` (699 вопросов, атомарный формат). Обновлён `dooshinSections.ts` (task19 dooshin sections), `punctuationAll.ts`. Удалены дубли из `task19.ts`. Файлы: `src/data/questions/task13_ege.ts`, `task13_atom.ts`, `task19.ts`, `src/data/sections/dooshinSections.ts`, `punctuationAll.ts`, `telegram-bot/src/types.ts`.
 - **Uncommitted changes**: `src/data/questions/index.ts` — импорт `task13NewQuestions` из `task13_new.ts`. `src/data/sections/grammar.ts` — добавлены уроки `lesson-gram-13-ege` (ЕГЭ формат, 80 XP) и `lesson-gram-13-atom` (атомарный, 200 XP). `src/data/sections/orthographyAll.ts` — добавлена группа `group-task13` (НЕ/НИ с частями речи). `src/data/questions/task13_new.ts` — untracked, реэкспорт `task13EgeQuestions` + `task13AtomQuestions`. `ML_AUDIT.md` — untracked, отчёт об аудите ML/аналитических систем (Agent 2).
 - Сборка: `npm run build` ✅ (13.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors, 0 warnings).
-- Git: `TBD` (agent files commit).
+- Git: `297a4f3`.
 
