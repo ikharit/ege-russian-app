@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, BookOpen, TrendingDown, Calendar, Award, ArrowLeft, BarChart3, Mail, AlertTriangle, CheckCircle, XCircle, Clock, ChevronRight, UserPlus, TrendingUp, Target, SwitchCamera } from 'lucide-react'
 import { useProgressStore } from '../stores/progressStore'
 import { useStudentStore } from '../stores/studentStore'
+import { useTeacherAnalyticsStore } from '../stores/teacherAnalyticsStore'
 import { course } from '../data/courseData'
 import { useNavigate } from 'react-router-dom'
 import { allHomework, nonstandardStudents } from '../data/gsheets/homeworkData'
@@ -18,7 +19,13 @@ export function Teacher() {
   const getProfileStats = useStudentStore((s) => s.getProfileStats)
   const switchProfile = useStudentStore((s) => s.switchProfile)
 
-  // Combine real profiles + mock data for display
+  // Supabase real data
+  const teacherAnalyticsStore = useTeacherAnalyticsStore()
+  const { students: supabaseRawStudents, loading: supabaseLoading, error: supabaseError, fetchAllUsers } = teacherAnalyticsStore
+
+  useEffect(() => {
+    fetchAllUsers()
+  }, [fetchAllUsers])
   const realStudents = profiles.map(p => {
     const stats = getProfileStats(p.id)
     return {
@@ -35,7 +42,41 @@ export function Teacher() {
     }
   })
 
-  const students: any[] = realStudents.length > 0 ? realStudents : mockStudents
+  // Map Supabase students to Teacher format
+  const supabaseStudents = supabaseRawStudents.map(s => {
+    const raw = s.rawProgressData
+    const lessons = raw?.lessonProgress || {}
+    const completedCount = Object.values(lessons).filter((l: any) => l.status === 'completed').length
+    const taskStats = raw?.taskStats || {}
+    const taskStatArr = Object.values(taskStats) as { total: number; correct: number; wrong: number }[]
+    const totalAttempts = taskStatArr.reduce((sum, t) => sum + (t.total || 0), 0)
+    const correctAnswers = taskStatArr.reduce((sum, t) => sum + (t.correct || 0), 0)
+    const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0
+
+    // Weak topics from taskStats (tasks with accuracy < 70%)
+    const weakTopics = Object.entries(taskStats)
+      .filter(([_, t]: [string, any]) => t.total > 0 && (t.correct / t.total) < 0.7)
+      .map(([taskNumber, _]: [string, any]) => `Задание ${taskNumber}`)
+
+    return {
+      id: s.studentId,
+      name: s.studentName,
+      lastActive: s.lastActive || '—',
+      lessonsCompleted: completedCount,
+      totalAttempts,
+      averageScore: accuracy,
+      weakTopics,
+      emoji: '👨‍🎓',
+      className: undefined,
+      history: [],
+    }
+  })
+
+  const students: any[] = supabaseStudents.length > 0
+    ? supabaseStudents
+    : realStudents.length > 0
+      ? realStudents
+      : mockStudents
 
   if (!isTeacher) {
     return (
