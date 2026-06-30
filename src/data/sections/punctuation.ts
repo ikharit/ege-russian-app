@@ -70,7 +70,6 @@ export const punctuationSections: Section[] = [
         description: 'Запятые между частями сложного предложения',
         xpReward: 60,
         prerequisites: [],
-        isComingSoon: true,
         questions: [
           { id: 'q17-1', type: 'single', text: 'Сколько запятых нужно поставить?\n\nВетер усилился и пошёл дождь.', options: ['0', '1', '2'], correctAnswer: ['1'], explanation: 'Союз «и» между частями ССП выделяется запятой: «Ветер усилился, и пошёл дождь».', difficulty: 'easy', xpReward: 10, atoms: ['task17', 'punctuation'] }
         ]

@@ -109,8 +109,8 @@ function buildGrowthData(
   const allDates = new Set<string>([
     ...dayAnswers.keys(),
     ...dayLessons.keys(),
-    ...examResults.map((e) => e.date.split('T')[0]),
-    ...predictiveScoreHistory.map((p) => p.date),
+    ...examResults.filter((e: any) => e?.date).map((e: any) => e.date.split('T')[0]),
+    ...predictiveScoreHistory.filter((p: any) => p?.date).map((p: any) => p.date),
   ])
 
   const sortedDates = Array.from(allDates).sort()
@@ -167,9 +167,9 @@ export function GrowthTimeline() {
   const navigate = useNavigate()
   const answerHistory = useProgressStore((s) => s.answerHistory || [])
   const examResults = useProgressStore((s) => s.examResults || [])
-  const userStats = useProgressStore((s) => s.userStats)
+  const userStats = useProgressStore((s) => s.userStats || { xp: 0, level: 1 })
   const lessonProgress = useProgressStore((s) => s.lessonProgress || {})
-  const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory ?? [])
+  const predictiveScoreHistory = useProgressStore((s) => s.predictiveScoreHistory || [])
 
   const fullData = useMemo(() => {
     return buildGrowthData(answerHistory, examResults, userStats, lessonProgress, predictiveScoreHistory)
