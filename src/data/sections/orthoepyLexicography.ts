@@ -48,26 +48,30 @@ export const orthoepyLexicographySections: Section[] = [
         title: 'Задание 5',
         subtitle: 'Паронимы',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-task5') || l.id.startsWith('q5-')),
-        subgroups: task5DooshinSections[0]?.lessons.map(l => ({
-          id: l.id.replace('lesson-', 'subgroup-'),
-          title: l.title,
-          subtitle: 'Дощинский',
-          lessons: [l],
-          isReviewSubgroup: true,
-        })) || [],
+        subgroups: task5DooshinSections.length > 0 ? [
+          {
+            id: 'subgroup-task5-dooshin',
+            title: 'Отработки из Дощинского',
+            subtitle: 'Дополнительные вопросы',
+            lessons: task5DooshinSections.flatMap(s => s.lessons),
+            isReviewSubgroup: true,
+          }
+        ] : [],
       },
       {
         id: 'group-task6',
         title: 'Задание 6',
         subtitle: 'Лексическая сочетаемость',
         lessons: allLessons.filter(l => l.id.startsWith('lesson-task6') || l.id.startsWith('q6-')),
-        subgroups: task6DooshinSections[0]?.lessons.map(l => ({
-          id: l.id.replace('lesson-', 'subgroup-'),
-          title: l.title,
-          subtitle: 'Дощинский',
-          lessons: [l],
-          isReviewSubgroup: true,
-        })) || [],
+        subgroups: task6DooshinSections.length > 0 ? [
+          {
+            id: 'subgroup-task6-dooshin',
+            title: 'Отработки из Дощинского',
+            subtitle: 'Дополнительные вопросы',
+            lessons: task6DooshinSections.flatMap(s => s.lessons),
+            isReviewSubgroup: true,
+          }
+        ] : [],
       },
       {
         id: 'group-task21',

@@ -223,10 +223,14 @@ export function GrowthTimeline() {
     return fullData.filter((d): d is GrowthDataPoint => 
       d !== null && d !== undefined && 
       typeof d.dateLabel === 'string' &&
+      d.dateLabel.trim() !== '' &&
       d.dateLabel !== 'NaN.NaN' &&
       !d.dateLabel.includes('NaN') &&
       typeof d.xp === 'number' && !isNaN(d.xp) &&
-      typeof d.accuracy === 'number' && !isNaN(d.accuracy)
+      typeof d.accuracy === 'number' && !isNaN(d.accuracy) &&
+      typeof d.level === 'number' && !isNaN(d.level) &&
+      typeof d.lessonsCompleted === 'number' && !isNaN(d.lessonsCompleted) &&
+      Array.isArray(d.events)
     )
   }, [fullData])
 
@@ -265,6 +269,21 @@ export function GrowthTimeline() {
   }
 
   const currentPoint = visibleData[visibleData.length - 1]
+
+  // Deduplicate dateLabels (recharts needs unique XAxis keys)
+  const dedupedData = useMemo(() => {
+    const seen = new Set<string>()
+    return visibleData.map((d) => {
+      let label = d.dateLabel
+      let counter = 1
+      while (seen.has(label)) {
+        label = `${d.dateLabel}-${counter}`
+        counter++
+      }
+      seen.add(label)
+      return { ...d, dateLabel: label }
+    })
+  }, [visibleData])
 
   // Play animation
   useEffect(() => {
@@ -377,48 +396,54 @@ export function GrowthTimeline() {
       {/* Chart */}
       <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={visibleData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="xpGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#58cc02" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#58cc02" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="accuracyGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1cb0f6" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#1cb0f6" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
-              <XAxis dataKey="dateLabel" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
-              <YAxis yAxisId="left" tick={{ fontSize: 11 }} />
-              <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} domain={[0, 100]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Area
-                yAxisId="left"
-                type="monotone"
-                dataKey="xp"
-                stroke="#58cc02"
-                strokeWidth={2}
-                fill="url(#xpGradient)"
-                animationDuration={playing ? 300 : 2000}
-                animationEasing="ease-out"
-                isAnimationActive={true}
-              />
-              <Area
-                yAxisId="right"
-                type="monotone"
-                dataKey="accuracy"
-                stroke="#1cb0f6"
-                strokeWidth={2}
-                fill="url(#accuracyGradient)"
-                animationDuration={playing ? 300 : 2000}
-                animationEasing="ease-out"
-                isAnimationActive={true}
-              />
-              {eventDots}
-            </AreaChart>
-          </ResponsiveContainer>
+          {dedupedData.length >= 2 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={dedupedData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="xpGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#58cc02" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#58cc02" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="accuracyGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1cb0f6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#1cb0f6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
+                <XAxis dataKey="dateLabel" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+                <YAxis yAxisId="left" tick={{ fontSize: 11 }} />
+                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} domain={[0, 100]} />
+                <Tooltip content={<CustomTooltip />} />
+                <Area
+                  yAxisId="left"
+                  type="linear"
+                  dataKey="xp"
+                  stroke="#58cc02"
+                  strokeWidth={2}
+                  fill="url(#xpGradient)"
+                  animationDuration={playing ? 300 : 2000}
+                  animationEasing="ease-out"
+                  isAnimationActive={true}
+                />
+                <Area
+                  yAxisId="right"
+                  type="linear"
+                  dataKey="accuracy"
+                  stroke="#1cb0f6"
+                  strokeWidth={2}
+                  fill="url(#accuracyGradient)"
+                  animationDuration={playing ? 300 : 2000}
+                  animationEasing="ease-out"
+                  isAnimationActive={true}
+                />
+                {dedupedData.length >= 5 && eventDots}
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-full flex items-center justify-center text-gray-400">
+              Недостаточно данных для графика
+            </div>
+          )}
         </div>
       </div>
 
