@@ -300,7 +300,7 @@ export function CourseMap() {
               className={`flex flex-col gap-4 transition-all duration-300 ${
                 isOtherFocused ? 'opacity-15 pointer-events-none' : ''
               } ${isFocused ? 'scale-[1.02]' : ''}`}
-              layout="position"
+              // layout="position" removed — caused nested AnimatePresence to collapse
             >
               {/* Section Header */}
               <div className="flex items-center gap-3">
@@ -385,7 +385,10 @@ export function CourseMap() {
                         return (
                           <div key={group.id} className="border border-gray-200 rounded-xl overflow-hidden">
                             <button
-                              onClick={() => toggleGroup(group.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                toggleGroup(group.id)
+                              }}
                               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                             >
                               <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500">
@@ -443,7 +446,8 @@ export function CourseMap() {
                                       return (
                                         <div key={subgroup.id} className="border border-gray-200 rounded-xl overflow-hidden mt-2">
                                           <button
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                              e.stopPropagation()
                                               if (!allPrerequisitesMet) return
                                               toggleGroup(subgroup.id)
                                             }}
