@@ -324,10 +324,10 @@ export function GrowthTimeline() {
     setProgressIndex(safeFullData.length - 1)
   }, [safeFullData.length])
 
-  // Event dots
+  // Event dots — use dedupedData to match chart data keys
   const eventDots = useMemo(() => {
-    return visibleData
-      .filter((d) => d && d.events && d.events.length > 0 && d.dateLabel && d.dateLabel !== 'NaN.NaN')
+    return dedupedData
+      .filter((d) => d && d.events && d.events.length > 0)
       .map((d) => (
         <ReferenceDot
           key={d.date}
@@ -339,7 +339,7 @@ export function GrowthTimeline() {
           strokeWidth={2}
         />
       ))
-  }, [visibleData])
+  }, [dedupedData])
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
