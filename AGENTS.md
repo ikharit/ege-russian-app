@@ -517,12 +517,12 @@ Last updated: 2026-06-30 by Agent 2
 - Файлы: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`. Сборка: `npm run build` ✅ (14.07s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `0ba0d6d`.
 
 Last updated: 2026-06-30 by Agent 1
-- **Аудит GrowthTimeline.tsx + рефакторинг**: Проведён аудит и фикс потенциальных проблем, вызывающих белый экран на /growth:
-  1. `buildGrowthData`: `dateMap.get(d)!` → `dateMap.get(d).filter(Boolean)` — убран non-null assertion, undefined элементы отсекаются.
-  2. `allDates`: `filter((e: any) => e?.date)` → `filter((e) => typeof e?.date === 'string')` — проверка типа даты, защита от `split` на non-string.
-  3. `examResults` в цикле: `filter((e) => e.date.split('T')[0] === date)` → `filter((e) => typeof e?.date === 'string' && ...)` — защита от undefined date.
-  4. `CustomTooltip`: вынесен за пределы `GrowthTimeline()` — устраняет пересоздание при каждом рендере, стабильнее для recharts.
-  5. `eventDots`: `key={i}` → `key={d.date}` — уникальный key, предотвращает дублирование React keys.
-  6. Проверка деплоя: `dist` — production build (7.2M, 90 assets), `base: '/'` — корректно для Cloudflare Pages. GitHub Pages — деплоит raw source (не production), workflow отключён. Сборка: синтаксических ошибок нет. Git: `TBD`.
+- **fix(GrowthTimeline): recharts scale error — round 2**: Пользователь подтвердил белый экран с ошибкой `Cannot read properties of undefined (reading 'scale')` в recharts. Дополнительные фиксы:
+  1. `safeFullData`: добавлена проверка `d.dateLabel.trim() !== ''` (пустые строки проходили typeof check, но ломали recharts XAxis). Добавлены guards для `level`, `lessonsCompleted`, `events` (Array.isArray).
+  2. `dedupedData`: новый `useMemo` — дедупликация `dateLabel` (добавляет `-1`, `-2` к дубликатам). Recharts требует уникальные ключи для XAxis.
+  3. `AreaChart`: `type="monotone"` → `type="linear"` — менее требовательный к данным, не падает на 2 точках.
+  4. `eventDots`: теперь использует `dedupedData` вместо `visibleData` — consistent keys. Guard: рендерится только если `dedupedData.length >= 5`.
+  5. `Chart guard`: `dedupedData.length >= 2` — если меньше, показывается fallback "Недостаточно данных".
+- Файл: `src/components/GrowthTimeline.tsx`. Git: `5ee42f2`.
 
 
