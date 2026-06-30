@@ -710,6 +710,15 @@
   5. `eventDots`: `key={i}` → `key={d.date}` — уникальный key, предотвращает дублирование React keys.
 - **Где:** `src/components/GrowthTimeline.tsx`
 - **Зачем:** Пользователь жаловался на белый экран на /growth. Субагент выявил, что GitHub Pages деплоит raw source (не production), но Cloudflare Pages (pages.dev) — production build. Возможна runtime ошибка в GrowthTimeline при некорректных данных.
-- **Git commit:** `TBD`
-- **Сборка:** синтаксических ошибок нет, полная сборка не проверена (npm недоступен в окружении).
-- **⚠️ Важно:** Возможно, белый экран вызван не только runtime ошибкой, но и deployment issue (Cloudflare Pages недоступен из некоторых сетей). Рекомендуется проверить доступность через VPN или другой браузер.
+### [2026-06-30] Агент: Agent 3 — Рефакторинг Lesson.tsx (извлечение LessonContent, упрощение hooks)
+- **Что:** Рефакторинг `src/pages/Lesson.tsx`:
+  1. Вынесен `LessonContent` в отдельную компоненту — `useParams`/`useNavigate`/`useSearchParams` теперь в обёртке `Lesson()`, бизнес-логика изолирована в `LessonContent`.
+  2. Убран `useState(courseLesson)` — `lesson` передаётся как prop, устранена лишняя перерисовка.
+  3. Упрощён `useMemo` — `rawQuestion` берётся напрямую из `lesson.questions[currentQuestionIdx]`.
+  4. Исправлено потенциальное нарушение Rules of Hooks (роутер-хуки вызывались после состояния).
+- **Где:** `src/pages/Lesson.tsx`
+- **Сборка:** `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
+- **Git commit:** TBD (will be committed in this session)
+- **Примечание:** Изменение было в working tree, не было закоммичено. Данная сессия актуализирует агентские файлы и делает commit.
+
+

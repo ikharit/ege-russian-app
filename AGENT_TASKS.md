@@ -2160,6 +2160,29 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Файлы**: `src/pages/TeacherAnalytics.tsx` (+229 строк), `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`
 
-**Git**: `TBD`
+---
 
-**Критерий завершения**: Build проходит чисто. TeacherAnalytics имеет полный набор аналитических инструментов.
+## 🆕 Новые задачи (добавлено 2026-06-30, поздняя сессия)
+
+### ✅ ЗАДАЧА-А26: Рефакторинг Lesson.tsx — извлечение LessonContent, упрощение hooks
+
+**Статус:** ✅ Выполнено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/Lesson.tsx`
+
+**Решение**:
+1. Вынесен `LessonContent` в отдельную компоненту — `useParams`/`useNavigate`/`useSearchParams` теперь в обёртке `Lesson()`, бизнес-логика изолирована.
+2. Убран `useState(courseLesson)` — `lesson` передаётся как prop, устранена лишняя перерисовка.
+3. Упрощён `useMemo` — `rawQuestion` берётся напрямую из `lesson.questions[currentQuestionIdx]`.
+4. Исправлено потенциальное нарушение Rules of Hooks (роутер-хуки вызывались после состояния).
+
+**Файлы**: `src/pages/Lesson.tsx`
+
+**Сборка**: `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
+
+**Git**: TBD (будет закоммичено в этой сессии)
+
+**Критерий завершения**: Build проходит чисто. Lesson.tsx компилируется без ошибок, функционал урока не сломан.
+

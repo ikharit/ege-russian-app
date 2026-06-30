@@ -516,13 +516,11 @@ Last updated: 2026-06-30 by Agent 2
   12. **Sticky header** — поиск + сортировка + фильтры прилипают к верху при скролле.
 - Файлы: `src/pages/TeacherAnalytics.tsx`, `src/utils/studentAnalytics.ts`, `TEACHER_ANALYTICS_PLAN.md`. Сборка: `npm run build` ✅ (14.07s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `0ba0d6d`.
 
-Last updated: 2026-06-30 by Agent 1
-- **fix(GrowthTimeline): recharts scale error — round 2**: Пользователь подтвердил белый экран с ошибкой `Cannot read properties of undefined (reading 'scale')` в recharts. Дополнительные фиксы:
-  1. `safeFullData`: добавлена проверка `d.dateLabel.trim() !== ''` (пустые строки проходили typeof check, но ломали recharts XAxis). Добавлены guards для `level`, `lessonsCompleted`, `events` (Array.isArray).
-  2. `dedupedData`: новый `useMemo` — дедупликация `dateLabel` (добавляет `-1`, `-2` к дубликатам). Recharts требует уникальные ключи для XAxis.
-  3. `AreaChart`: `type="monotone"` → `type="linear"` — менее требовательный к данным, не падает на 2 точках.
-  4. `eventDots`: теперь использует `dedupedData` вместо `visibleData` — consistent keys. Guard: рендерится только если `dedupedData.length >= 5`.
-  5. `Chart guard`: `dedupedData.length >= 2` — если меньше, показывается fallback "Недостаточно данных".
-- Файл: `src/components/GrowthTimeline.tsx`. Git: `5ee42f2`.
-
+Last updated: 2026-06-30 by Agent 3
+- **refactor(Lesson): extract LessonContent component, fix hooks order**: В `src/pages/Lesson.tsx` выполнен рефакторинг:
+  1. Вынесен `LessonContent` в отдельную компоненту — `useParams`/`useNavigate`/`useSearchParams` теперь в обёртке `Lesson()`, а бизнес-логика изолирована в `LessonContent`.
+  2. Убран `useState(courseLesson)` — `lesson` передаётся как prop, устранена лишняя перерисовка.
+  3. Упрощён `useMemo` для `questions` — `rawQuestion` берётся напрямую из `lesson.questions[currentQuestionIdx]`, `currentQuestion` useMemo сохранён для `applyQuestionEdits`.
+  4. Это исправляет потенциальное нарушение Rules of Hooks (роутер-хуки вызывались после состояния) и упрощает читаемость.
+- Файл: `src/pages/Lesson.tsx`. Сборка: `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
 
