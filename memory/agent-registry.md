@@ -83,6 +83,6 @@
 
 ---
 
-*Last updated: 2026-06-29*
+*Last updated: 2026-06-30*
 *Current Agent: Agent 3*
-*Recent changes: Profile white screen fix (ChevronDown import). Cache-bust v6 + content fixes. Cloudflare Pages workflow added. GitHub Pages restored — dual deploy. Shkolkovo content added: задания 15 (Н/НН) из Дощинского-2026 (~150 вопросов). Build + validate:rag clean.*
+*Recent changes: Agent files audit v3 — 5 undocumented commits (7b82511..8d65ac2). Leaderboard duplicate fix. Task5/6/11/13/14/16/19 dooshin content (~26,348 questions). GrowthTimeline recharts fix. Task14 garbage cleanup. Legacy JSON cleanup. Build + validate:rag clean.*
