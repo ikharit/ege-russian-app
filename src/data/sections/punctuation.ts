@@ -65,7 +65,7 @@ export const punctuationSections: Section[] = [
       {
         id: 'lesson-punct-17-1',
         sectionId: 'section-punct-2',
-        title: 'Задание 19. Сложносочинённые предложения',
+        title: 'Задание 17. Сложносочинённые предложения',
         type: 'practice',
         description: 'Запятые между частями сложного предложения',
         xpReward: 60,

@@ -94,11 +94,11 @@ export const orthographySections: Section[] = [
         xpReward: 60,
         prerequisites: [],
         questions: [
-          { id: 'q11-1', type: 'text', text: 'Впишите пропущенную букву: щегол_ватый', correctAnswer: ['е'], explanation: 'Суффикс -еват-: щеголеватый.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'suffixes'] },
-          { id: 'q11-2', type: 'text', text: 'Впишите пропущенную букву: находч_вый', correctAnswer: ['и'], explanation: 'Суффикс -ив-: находчивый.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'suffixes'] },
-          { id: 'q11-3', type: 'text', text: 'Впишите пропущенную букву: застр_вать', correctAnswer: ['е'], explanation: 'Суффикс -ева- в глаголе застревать.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'suffixes'] },
-          { id: 'q11-4', type: 'text', text: 'Впишите пропущенную букву: гел_вая (ручка)', correctAnswer: ['е'], explanation: 'От гель: гелевая.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'suffixes'] },
-          { id: 'q11-5', type: 'text', text: 'Впишите пропущенную букву: испыт_вать', correctAnswer: ['ы'], explanation: 'Суффикс -ыв-: испытывать.', difficulty: 'easy', xpReward: 10, atoms: ['task9', 'suffixes'] },
+          { id: 'q11-1', type: 'text', text: 'Впишите пропущенную букву: щегол_ватый', correctAnswer: ['е'], explanation: 'Суффикс -еват-: щеголеватый.', difficulty: 'easy', xpReward: 10, atoms: ['task11', 'suffixes'] },
+          { id: 'q11-2', type: 'text', text: 'Впишите пропущенную букву: находч_вый', correctAnswer: ['и'], explanation: 'Суффикс -ив-: находчивый.', difficulty: 'easy', xpReward: 10, atoms: ['task11', 'suffixes'] },
+          { id: 'q11-3', type: 'text', text: 'Впишите пропущенную букву: застр_вать', correctAnswer: ['е'], explanation: 'Суффикс -ева- в глаголе застревать.', difficulty: 'easy', xpReward: 10, atoms: ['task11', 'suffixes'] },
+          { id: 'q11-4', type: 'text', text: 'Впишите пропущенную букву: гел_вая (ручка)', correctAnswer: ['е'], explanation: 'От гель: гелевая.', difficulty: 'easy', xpReward: 10, atoms: ['task11', 'suffixes'] },
+          { id: 'q11-5', type: 'text', text: 'Впишите пропущенную букву: испыт_вать', correctAnswer: ['ы'], explanation: 'Суффикс -ыв-: испытывать.', difficulty: 'easy', xpReward: 10, atoms: ['task11', 'suffixes'] },
         ]
       },
       {

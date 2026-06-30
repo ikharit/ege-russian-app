@@ -628,7 +628,7 @@
 - **Что:** Task20/21 rebrand — переименование в задание 5/6 и отвязка от секции пунктуации
 - **Где:** `src/data/sections/examTasks.ts`, `src/data/sections/punctuationAll.ts`
 - **Зачем:** Незакоммиченные изменения в рабочей директории: task20→"Задание 5 (дополнительно)", task21→"Задание 6 (дополнительно)" в examTasks.ts; убраны task20/task21 из punctuationAll.ts. User-facing изменение — студенты видят задания 5 и 6 отдельно.
-- **Git commit:** будет сделан
+- **Git commit:** `1fe5f9d`
 - **Сборка:** `npm run build` ✅, `validate:rag` ✅
 
 

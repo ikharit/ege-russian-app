@@ -1744,7 +1744,7 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Решение**: Актуализированы агентские файлы (AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, memory/2026-06-30.md, agent-registry.md). Изменения закоммичены. Build + validate:rag проходят.
 
-**Git**: будет сделан
+**Git**: `1fe5f9d`
 
 **Критерий завершения**: Задания 5 и 6 отображаются как отдельные секции, не внутри пунктуации. Нет дублирования. Build и validate проходят без ошибок.
 
