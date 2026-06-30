@@ -642,7 +642,7 @@
 - **Что:** fix: restore task20/task21 taskNumber and atoms (punctuation, not paronyms/lexics) — документирование + обнаружение конфликта
 - **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
 - **Зачем:** Коммит `1d91e56` (OpenClaw Agent) откатил часть рефакторинга `f71aead` — taskNumber и atoms в `task20.ts`, `task21.ts`, `task20_dooshin.ts` восстановлены на '20'/'21'. `examTasks.ts` по-прежнему содержит title "Задание 5 (дополнительно)" / "Задание 6 (дополнительно)". Система в несогласованном состоянии: UI vs данные. Добавлена задача А58 в AGENT_TASKS.md.
-- **Git commit:** `1d91e56` (restore task20/21), `TBD` (agent docs v5+1)
+- **Git commit:** `1d91e56` (restore task20/21), `5ec016d` (agent docs v5+1)
 - **Сборка:** `npm run build` ✅, `validate:rag` ✅
 
 

@@ -1767,7 +1767,7 @@ import { getAtomById } from '../data/atomization/atoms'
 2. Закоммичены uncommitted changes: `task9_dooshin.ts` (explanation fix) + `tools/editor.html` (dev tool update).
 3. Сборка и RAG-валидация проходят чисто.
 
-**Git**: `a50797e` (task9_dooshin fix + editor.html), `f4f809c` (agent docs v5)
+**Git**: `a50797e` (task9_dooshin fix + editor.html), `f4f809c` (agent docs v5), `5ec016d` (agent docs v5+1 — document 1d91e56)
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 4 коммитах. Нет uncommitted changes в коде. Build и validate проходят без ошибок.
 
