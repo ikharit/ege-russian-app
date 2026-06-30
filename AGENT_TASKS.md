@@ -1700,6 +1700,6 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Решение**: Обновлены все агентские файлы. Запущены `npm run build:rag` и `validate:rag`. Сделан git commit.
 
-**Git**: `TBD`
+**Git**: `4a06f86`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах. Build и validate проходят без ошибок.

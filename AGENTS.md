@@ -438,7 +438,7 @@ Last updated: 2026-06-29 by Agent 3
 - **Profile white screen fix — добавлен импорт ChevronDown**: В `src/pages/Profile.tsx` отсутствовал импорт `ChevronDown` из `lucide-react`, что вызывало `ReferenceError` при открытии страницы `/profile` и приводило к белому экрану (white screen). Исправление: добавлен импорт `ChevronDown` в существующую группу импортов из `lucide-react`. Сборка: `npm run build` ✅ (проверена, 0 ошибок). Файл: `src/pages/Profile.tsx`. Git: `4313f13`.
 
 Last updated: 2026-06-30 by Agent 3
-- **Аудит агентских файлов — 5 незадокументированных коммитов**: Обнаружено, что 5 коммитов с изменениями кода (от `7b82511` до `8d65ac2`) не были отражены в агентских файлах. Проведена актуализация: AGENTS.md, AGENT_TASKS.md, TASK_REGISTRY.md, memory/AGENTS-HISTORY.md, memory/2026-06-30.md. Сборка: `npm run build` ✅, `validate:rag` ✅. Git: `TBD`.
+- **Аудит агентских файлов — 5 незадокументированных коммитов**: Обнаружено, что 5 коммитов с изменениями кода (от `7b82511` до `8d65ac2`) не были отражены в агентских файлах. Проведена актуализация: AGENTS.md, AGENT_TASKS.md, TASK_REGISTRY.md, memory/AGENTS-HISTORY.md, memory/2026-06-30.md. Сборка: `npm run build` ✅, `validate:rag` ✅. Git: `4a06f86`.
 
 Last updated: 2026-06-30 by Agent 3
 - **Leaderboard duplicate fix + task content expansion**: 5 коммитов агентов 3/4 не были отражены в агентских файлах:
@@ -447,4 +447,4 @@ Last updated: 2026-06-30 by Agent 3
   3. `bf0ebfc` — Leaderboard duplicate fix v2 + Task15 filter cleanup + Task20 moved to punctuation. Добавлены task13_dooshin.ts (5973 вопроса), task14_dooshin.ts (12049 вопросов), task16_dooshin.ts (4823 вопроса). Файлы: `src/data/questions/task13_dooshin.ts`, `task14_dooshin.ts`, `task16_dooshin.ts`, `src/pages/Leaderboard.tsx`, `src/data/sections/examTasks.ts`, `src/data/sections/n_nn.ts`, `src/data/sections/orthographyAll.ts`.
   4. `2fb67a6` — GrowthTimeline: fix recharts scale error (reset progressIndex, guard <2 data points). Добавлены task5_dooshin.ts (1969 вопросов), task6_dooshin.ts (1857 вопросов), task11.ts (+1 вопрос). Удалены legacy файлы: `src/data/atomization/task10Questions.ts`, `src/data/task17Questions.json`, `src/data/task1Questions.json`, `src/data/task2Questions.json`, `src/data/task3Questions.json`. Файлы: `src/components/GrowthTimeline.tsx`, `src/data/questions/task5_dooshin.ts`, `task6_dooshin.ts`, `task11.ts`, `src/data/hints.ts`, `src/pages/Task10Trainer.tsx`, `src/stores/task10Store.ts`.
   5. `8d65ac2` — Task14: очистка garbage questions (удалены t14-*, q14-1..20), fix subtitle (НИ/НЕ → задание 13), task14DooshinQuestions оставлены. Файлы: `src/data/questions/task14.ts`, `src/data/sections/grammar.ts`, `src/data/sections/orthographyAll.ts`.
-- Сборка: `npm run build` ✅, `validate:rag` ✅. Git: `TBD`.
+- Сборка: `npm run build` ✅, `validate:rag` ✅. Git: `4a06f86`.
