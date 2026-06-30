@@ -85,5 +85,5 @@
 
 *Last updated: 2026-06-30*
 *Current Agent: Agent 3*
-*Recent changes: Agent files audit v7 — 5 undocumented commits (d7bc1bd..63134bd) + uncommitted changes. GrowthTimeline invalid date fix, achievementChecker undefined 'now' fix, grammar cleanup, task20/21 integration + examTasks removal + broken task13 removal, task19 dooshin + task13_ege/atom. Build + validate:rag clean.*
+*Recent changes: Teacher Analytics v2 (9d520cc — Content Gap, Learning Velocity, Peer Comparison, Class Leaderboard). Supabase answer logging (ee6022a + 6dbbafd — fire-and-forget log to answer_logs, 3 new components: AnswerLogsDeepDive, EarlyWarning, SessionQuality). Build: 26.09s, 0 TS errors. validate:rag: 1350 entries, 0 errors.*
 

@@ -725,15 +725,26 @@
 - **Git commit:** `55f52e6` (fix(lesson): extract LessonContent to prevent React hook error #300 on lesson completion)
 - **Примечание:** Изменение было закоммичено OpenClaw Agent в этой сессии. Данная запись актуализирует агентские файлы после коммита.
 
-### [2026-06-30] Агент: OpenClaw Agent — GrowthTimeline: новые метрики (lessonsCount, atomsMastered, theoryCompleted)
-- **Что:** В `src/components/GrowthTimeline.tsx` добавлены 3 новые метрики в `GrowthDataPoint`:
-  1. `lessonsCount`: количество пройденных уроков.
-  2. `atomsMastered`: количество атомов с accuracy ≥ 80%.
-  3. `theoryCompleted`: количество пройденных тестов по теории.
-  4. `buildGrowthData` теперь принимает `atomProgress` и `theoryTestsCompleted`.
-- **Где:** `src/components/GrowthTimeline.tsx`
-- **Сборка:** `npm run build` ✅ (19.45s, 0 TypeScript ошибок). RAG: 1350 entries, 0 errors.
-- **Git commit:** `f4e0992` (feat(GrowthTimeline): add lessonsCount area chart with amber gradient)
-- **Примечание:** Изменение обнаружено в working tree при аудите агентских файлов.
+### [2026-06-30] Агент: OpenClaw Agent — Supabase answer logging (базовое)
+- **Что:** В `src/stores/progressStore.ts` добавлено fire-and-forget логирование ответов в Supabase таблицу `answer_logs`.
+  1. Поля: user_id, question_id, task_number, is_correct, user_answer, error_type, time_spent_ms.
+  2. Добавлено поле `userAnswer` в тип `AnswerHistory` (`src/types/index.ts`).
+  3. Передача `userAnswer` в `recordAnswer()` из `Lesson.tsx`.
+  4. Таблица `answer_logs` уже существует (RLS + indexes + trigger для student_word_errors).
+- **Где:** `src/stores/progressStore.ts`, `src/types/index.ts`, `src/pages/Lesson.tsx`
+- **Сборка:** `npm run build` ✅ (25.20s, 0 TypeScript ошибок).
+- **Git commit:** `ee6022a` (feat(supabase): log answers to answer_logs table)
+- **Примечание:** Базовое логирование — без canonical_word_id, word, rule_id. Расширенная версия в коммите `6dbbafd`.
+
+### [2026-06-30] Агент: Agent 3 — Supabase answer logging v2 + 3 компонента аналитики
+- **Что:** Расширено логирование ответов и добавлены 3 новых компонента для учительской аналитики:
+  1. `progressStore.ts` — расширены поля логирования: canonical_word_id, word, rule_id. Полный набор: user_id, question_id, canonical_word_id, word, rule_id, task_number, is_correct, user_answer, error_type, time_spent_ms.
+  2. `AnswerLogsDeepDive.tsx` — детальный анализ ответов учеников (таблица, фильтры, drill-down).
+  3. `EarlyWarning.tsx` — раннее предупреждение о проблемных учениках (падение активности, accuracy, streak).
+  4. `SessionQuality.tsx` — оценка качества сессии (время на вопрос, распределение ошибок, концентрация).
+- **Где:** `src/stores/progressStore.ts`, `src/components/teacher/AnswerLogsDeepDive.tsx`, `src/components/teacher/EarlyWarning.tsx`, `src/components/teacher/SessionQuality.tsx`
+- **Сборка:** `npm run build` ✅ (26.09s, 0 TypeScript ошибок). `validate:rag` ✅ (1350 entries, 0 errors).
+- **Git commit:** `6dbbafd` (feat(progress): fire-and-forget Supabase answer_logs logging in recordAnswer())
+- **Примечание:** 3 новых компонента пока не интегрированы в TeacherAnalytics.tsx — готовы к подключению.
 
 
