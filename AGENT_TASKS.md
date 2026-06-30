@@ -1,6 +1,6 @@
 # Техзадание для агента-исполнителя
 
-> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 2** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
+> **Агентская идентификация**: Каждый агент, выполняющий задачу, обязан указать свой номер в поле **Агент:** при закрытии задачи. Текущий агент — **Agent 3** (оркестратор). Если задачу выполнял другой агент — укажите "Agent 1", "Agent 2" и т.д. Это критично для отслеживания, кто что делал, и предотвращения дублирования работы.
 >
 > **Контекст**: React-приложение на Vite для подготовки к ЕГЭ по русскому языку. Стек: React 18 + TypeScript + Tailwind CSS + Zustand + Framer Motion + React Router (HashRouter). Данные хранятся в `localStorage` (Zustand persist). Supabase подключён, но необязателен.
 >
@@ -1983,3 +1983,138 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `297a4f3`
 
 **Критерий завершения**: Все агентские файлы содержат актуальную информацию о последних 5 коммитах и uncommitted changes. Build и validate проходят без ошибок. Нет stale-ссылок.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-30 — v7.1 корректировка)
+
+### ✅ ЗАДАЧА-А66: Агентские файлы v7.1 — корректировка stale-ссылок
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`
+
+**Проблема**: В AGENTS.md v7 остались устаревшие ссылки:
+1. "Uncommitted changes" (task13_new.ts, index.ts, grammar.ts, orthographyAll.ts, ML_AUDIT.md) — все эти изменения уже были закоммичены в `63134bd`, но в AGENTS.md продолжали числиться как "uncommitted".
+2. PWA cache fix — Git hash `TBD`, хотя изменение `vite.config.ts` было сделано в том же коммите `297a4f3`.
+3. Заголовок AGENTS.md: Current Agent ID = `Agent 2`, хотя последние изменения делал Agent 3.
+
+**Решение**:
+1. Обновлена запись v7 в AGENTS.md: "Uncommitted changes" заменены на примечание о коммите `63134bd`.
+2. Обновлён Git hash PWA cache fix: `TBD` → `297a4f3`.
+3. Обновлен заголовок AGENTS.md: Current Agent ID → `Agent 3`.
+4. Обновлен заголовок AGENT_TASKS.md: Текущий агент → `Agent 3`.
+5. Добавлена задача А66.
+
+**Файлы**: `AGENTS.md`, `AGENT_TASKS.md`
+
+**Git**: `TBD` (v7.1)
+
+**Критерий завершения**: AGENTS.md не содержит stale "uncommitted changes" или TBD для уже закоммиченных изменений. Заголовки файлов отражают актуального агента.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-30 — post-v7 commits)
+
+### ✅ ЗАДАЧА-А67: Grammar.ts cleanup — remove duplicate dooshin lessons (OpenClaw Agent)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/data/sections/grammar.ts`, `src/App.tsx`, `AGENTS.md`
+
+**Проблема**: В `grammar.ts` оставались 119 строк неиспользуемых dooshin-уроков (дубли), которые были перенесены в `dooshinSections.ts`.
+
+**Решение**:
+1. Удалены 119 строк дублирующего кода из `grammar.ts`.
+2. Добавлены 2 строки в `src/App.tsx`.
+3. Обновлена запись в `AGENTS.md` (PWA cache fix changelog).
+
+**Файлы**: `src/data/sections/grammar.ts`, `src/App.tsx`, `AGENTS.md`
+
+**Git**: `f94730e`
+
+**Критерий завершения**: grammar.ts не содержит дублирующих dooshin-уроков. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А68: Dooshin sections embedded into subgroups + Task13Trainer with autoCheck (OpenClaw Agent)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** OpenClaw Agent
+
+**Где**: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/data/sections/orthographyAll.ts`, `src/data/sections/punctuationAll.ts`, `src/data/sections/orthoepyLexicography.ts`
+
+**Проблема**: Dooshin-контент был отдельными топ-уровневыми секциями. Task13 требовал собственного тренажёра с автоматической проверкой.
+
+**Решение**:
+1. Dooshin-уроки встроены внутрь основных секций (`orthographyAll.ts`, `punctuationAll.ts`) в виде подгрупп (`group-task13`, `group-task19`, etc.).
+2. Создан `Task13Trainer.tsx` (107 строк) — тренажёр для задания 13 (НЕ/НИ) с `autoCheck`.
+3. `BaseTrainer.tsx` — добавлен prop `autoCheck` и `useEffect` для автоматической проверки ответа при выборе.
+4. `orthoepyLexicography.ts` — добавлены подгруппы для task20/task21.
+
+**Файлы**: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/data/sections/orthographyAll.ts`, `src/data/sections/punctuationAll.ts`, `src/data/sections/orthoepyLexicography.ts`, `AGENTS.md`
+
+**Git**: `9b3cf13`
+
+**Критерий завершения**: Dooshin-контент виден внутри родительских секций. Task13Trainer работает с autoCheck. Build проходит чисто.
+
+---
+
+### ✅ ЗАДАЧА-А69: Агентские файлы v7.2 — документирование f94730e + 9b3cf13 + uncommitted changes
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+
+**Проблема**: Коммиты `f94730e` и `9b3cf13` (OpenClaw Agent) не были отражены в агентских файлах. Также в working tree остались uncommitted changes: BaseTrainer.tsx (conditional render), Task13Trainer.tsx (autoCheck={true}), studentAnalytics.ts (lastActivity simplification), TEACHER_ANALYTICS_PLAN.md (untracked).
+
+**Решение**:
+1. Обновлены все агентские файлы: AGENTS.md, AGENT_TASKS.md, AGENTS-HISTORY.md, 2026-06-30.md.
+2. Добавлены задачи А67–А68 в AGENT_TASKS.md.
+3. Добавлена задача А69 (собственно этот аудит).
+4. Сборка и RAG-валидация проходят чисто.
+
+**Файлы**: `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+
+**Git**: `TBD`
+
+**Критерий завершения**: Все агентские файлы содержат актуальную информацию о коммитах f94730e и 9b3cf13. Нет stale-ссылок. Build проходит чисто.
+
+---
+
+## 🆕 Новые задачи (добавлено 2026-06-30 — uncommitted changes after 9b3cf13)
+
+### ✅ ЗАДАЧА-А70: Uncommitted changes — BaseTrainer autoCheck UI + TeacherAnalytics enhancements + graph-relations rebuild
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/utils/studentAnalytics.ts`, `src/pages/TeacherAnalytics.tsx`, `public/data/graph-relations.json`
+
+**Проблема**: В working tree остались незакоммиченные изменения после коммита 9b3cf13:
+1. `BaseTrainer.tsx` — кнопка "Проверить" не скрывалась при `autoCheck=true` (хотя autoCheck prop и useEffect были добавлены в 9b3cf13).
+2. `Task13Trainer.tsx` — не передавался `autoCheck={true}`.
+3. `studentAnalytics.ts` — `lastActivity` имел сложный fallback, который мог вызывать ошибки при отсутствии `taskStats`.
+4. `TeacherAnalytics.tsx` — не хватало функций поиска, сортировки, сравнения учеников.
+5. `graph-relations.json` — требовал перестроить после изменений секций.
+
+**Решение**:
+1. `BaseTrainer.tsx` — добавлен условный рендер: кнопка "Проверить" скрыта при `autoCheck=true`, показывается `<div className="h-12" />` как spacer.
+2. `Task13Trainer.tsx` — добавлен `autoCheck={true}`.
+3. `studentAnalytics.ts` — `lastActivity` упрощён до `stats.lastActivityDate` (убран сложный fallback).
+4. `TeacherAnalytics.tsx` — добавлены: `searchQuery`, `sortBy`, `sortDir`, `selectedForComparison`, `showComparison`, авто-обновление каждые 5 минут через `setInterval`.
+5. `graph-relations.json` — перестроен, обновлён `generatedAt`.
+
+**Файлы**: `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/utils/studentAnalytics.ts`, `src/pages/TeacherAnalytics.tsx`, `public/data/graph-relations.json`
+
+**Git**: `TBD`
+
+**Критерий завершения**: Все uncommitted changes закоммичены. Build проходит чисто. TeacherAnalytics имеет поиск и сортировку. Task13Trainer работает с autoCheck.

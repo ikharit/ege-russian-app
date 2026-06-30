@@ -666,4 +666,36 @@
 - **Git commit:** `297a4f3` (agent files v7 audit)
 - **Сборка:** `npm run build` ✅ (13.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors, 0 warnings).
 
+### [2026-06-30] Агент: Agent 3 — Агентские файлы v7.1 — корректировка stale-ссылок
+- **Что:** Исправление устаревшей информации в AGENTS.md после v7 аудита.
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`
+- **Зачем:** В записи v7 оставались "Uncommitted changes" (task13_new.ts, index.ts, grammar.ts, orthographyAll.ts, ML_AUDIT.md), которые на самом деле уже были закоммичены в `63134bd`. Также PWA cache fix имел Git hash `TBD`, хотя изменение было в `297a4f3`.
+- **Изменения:**
+  1. AGENTS.md v7: "Uncommitted changes" заменены на примечание о коммите `63134bd`.
+  2. PWA cache fix: Git hash `TBD` → `297a4f3`.
+  3. Заголовок AGENTS.md: Current Agent ID `Agent 2` → `Agent 3`.
+  4. Заголовок AGENT_TASKS.md: Текущий агент `Agent 2` → `Agent 3`.
+  5. Добавлена задача А66 в AGENT_TASKS.md.
+- **Git commit:** `TBD` (v7.1)
+- **Сборка:** `npm run build` ✅.
+
+### [2026-06-30] Агент: OpenClaw Agent — Grammar.ts cleanup + PWA changelog (f94730e)
+- **Что:** Удаление 119 строк дублирующих dooshin-уроков из grammar.ts + добавление PWA cache fix changelog.
+- **Где:** `src/data/sections/grammar.ts`, `src/App.tsx`, `AGENTS.md`
+- **Git commit:** `f94730e`
+- **Сборка:** `npm run build` ✅.
+
+### [2026-06-30] Агент: OpenClaw Agent — Dooshin sections embedded + Task13Trainer (9b3cf13)
+- **Что:** Dooshin-контент встроен внутрь основных секций (orthographyAll, punctuationAll) в виде подгрупп. Создан Task13Trainer.tsx с autoCheck. BaseTrainer.tsx — добавлен prop autoCheck и useEffect.
+- **Где:** `src/components/BaseTrainer.tsx`, `src/pages/Task13Trainer.tsx`, `src/data/sections/orthographyAll.ts`, `src/data/sections/punctuationAll.ts`, `src/data/sections/orthoepyLexicography.ts`, `AGENTS.md`
+- **Git commit:** `9b3cf13`
+- **Сборка:** `npm run build` ✅.
+
+### [2026-06-30] Агент: Agent 3 — Агентские файлы v7.2 — документирование f94730e + 9b3cf13 + uncommitted changes
+- **Что:** Исправление устаревшей информации в AGENTS.md после коммитов f94730e и 9b3cf13. Добавлены задачи А67–А69 в AGENT_TASKS.md.
+- **Где:** `AGENTS.md`, `AGENT_TASKS.md`, `memory/AGENTS-HISTORY.md`, `memory/2026-06-30.md`
+- **Uncommitted changes:** `BaseTrainer.tsx` (conditional render кнопки Проверить), `Task13Trainer.tsx` (autoCheck={true}), `studentAnalytics.ts` (lastActivity simplification), `TEACHER_ANALYTICS_PLAN.md` (untracked).
+- **Git commit:** `TBD` (v7.2)
+- **Сборка:** `npm run build` ✅.
+
 

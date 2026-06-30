@@ -82,6 +82,7 @@ export function Task13Trainer() {
       getExplanation={(q) => q.explanation}
       getAtoms={() => ['task13', 'ne_ni']}
       xpPerCorrect={5}
+      autoCheck={true}
       renderPrompt={() => (
         <p className="text-gray-700 text-sm leading-relaxed text-center">
           Выберите, как пишется слово с НЕ/НИ: <strong>слитно</strong> или <strong>раздельно</strong>

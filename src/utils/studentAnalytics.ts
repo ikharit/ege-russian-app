@@ -112,9 +112,7 @@ export function analyzeStudent(
   const totalCorrect = Object.values(taskStats).reduce((sum, t) => sum + (t.correct || 0), 0)
   const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0
 
-  const lastActivity = stats.lastActivityDate || Object.values(taskStats).sort((a, b) => 
-    new Date(b.lastAttemptAt).getTime() - new Date(a.lastAttemptAt).getTime()
-  )[0]?.lastAttemptAt
+  const lastActivity = stats.lastActivityDate
   const lastActivityDays = daysSince(lastActivity)
 
   // Find top and weakest tasks

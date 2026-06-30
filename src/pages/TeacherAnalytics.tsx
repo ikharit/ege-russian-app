@@ -40,6 +40,21 @@ export function TeacherAnalytics() {
   const [activeTab, setActiveTab] = useState<'overview' | 'trends' | 'alerts' | 'recommendations'>('overview')
   const [trendDays, setTrendDays] = useState<7 | 14 | 30>(14)
 
+  // New: search, sort, comparison
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<'accuracy' | 'name' | 'activity' | 'risk' | 'progress' | 'xp' | 'streak'>('accuracy')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
+  const [selectedForComparison, setSelectedForComparison] = useState<string[]>([])
+  const [showComparison, setShowComparison] = useState(false)
+
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      useTeacherAnalyticsStore.getState().fetchAllUsers()
+    }, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   // Real data from Supabase — ALL users, not just class-linked
   const { students: realStudents, loading: realLoading, error: realError } = useTeacherAnalyticsStore()
   useEffect(() => {
@@ -303,11 +318,35 @@ export function TeacherAnalytics() {
     })
   })()
 
-  const filtered = analytics.filter(a => {
-    if (riskFilter !== 'all' && a.riskLevel !== riskFilter) return false
-    if (typeFilter !== 'all' && a.playerProfile.type !== typeFilter) return false
-    return true
-  })
+  const filtered = (() => {
+    let result = analytics.filter(a => {
+      if (riskFilter !== 'all' && a.riskLevel !== riskFilter) return false
+      if (typeFilter !== 'all' && a.playerProfile.type !== typeFilter) return false
+      if (searchQuery && !a.name.toLowerCase().includes(searchQuery.toLowerCase())) return false
+      return true
+    })
+    result.sort((a, b) => {
+      let cmp = 0
+      switch (sortBy) {
+        case 'accuracy': cmp = a.accuracy - b.accuracy; break
+        case 'name': cmp = a.name.localeCompare(b.name); break
+        case 'activity': cmp = a.lastActivityDays - b.lastActivityDays; break
+        case 'risk':
+          const riskOrder = { high: 0, medium: 1, low: 2 }
+          cmp = riskOrder[a.riskLevel] - riskOrder[b.riskLevel]
+          break
+        case 'progress': cmp = a.completionRate - b.completionRate; break
+        case 'xp':
+          const xpA = realStudents.find(s => s.studentId === a.profileId)?.xp || 0
+          const xpB = realStudents.find(s => s.studentId === b.profileId)?.xp || 0
+          cmp = xpA - xpB
+          break
+        case 'streak': cmp = a.streak - b.streak; break
+      }
+      return sortDir === 'asc' ? cmp : -cmp
+    })
+    return result
+  })()
 
   const typeLabels: Record<PlayerType, string> = {
     achiever: 'Достиженцы',
@@ -738,41 +777,153 @@ export function TeacherAnalytics() {
                   </div>
                 )}
 
-                {/* Filters */}
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  <button
-                    onClick={() => setRiskFilter('all')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                      riskFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-200'
-                    }`}
-                  >
-                    Все
-                  </button>
-                  <button
-                    onClick={() => setRiskFilter('high')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                      riskFilter === 'high' ? 'bg-red-500 text-white' : 'bg-white text-red-500 border border-red-200'
-                    }`}
-                  >
-                    Риск отвала
-                  </button>
-                  <button
-                    onClick={() => setRiskFilter('medium')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                      riskFilter === 'medium' ? 'bg-yellow-500 text-white' : 'bg-white text-yellow-600 border border-yellow-200'
-                    }`}
-                  >
-                    Внимание
-                  </button>
-                  <button
-                    onClick={() => setRiskFilter('low')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
-                      riskFilter === 'low' ? 'bg-green-500 text-white' : 'bg-white text-green-600 border border-green-200'
-                    }`}
-                  >
-                    Всё хорошо
-                  </button>
+                {/* Search, Sort, Filters */}
+                <div className="flex flex-col gap-3 sticky top-0 z-20 bg-gray-50 py-2">
+                  {/* Search row */}
+                  <div className="flex gap-2">
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        placeholder="🔍 Поиск по имени..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-white text-sm font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-duo-green"
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+                    </div>
+                    <button
+                      onClick={() => setShowComparison(!showComparison)}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+                        showComparison
+                          ? 'bg-duo-blue text-white'
+                          : 'bg-white text-duo-blue border border-duo-blue'
+                      }`}
+                    >
+                      {showComparison ? 'Скрыть сравнение' : 'Сравнить'}
+                      {selectedForComparison.length > 0 && (
+                        <span className="ml-1 bg-white/20 text-white px-1.5 rounded-full">{selectedForComparison.length}</span>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => useTeacherAnalyticsStore.getState().fetchAllUsers()}
+                      className="px-4 py-2 rounded-xl bg-white text-gray-600 border border-gray-200 text-xs font-bold hover:bg-gray-50"
+                      title="Обновить данные"
+                    >
+                      🔄
+                    </button>
+                  </div>
+
+                  {/* Sort + Risk filters */}
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {/* Sort dropdown */}
+                    <select
+                      value={`${sortBy}-${sortDir}`}
+                      onChange={(e) => {
+                        const [by, dir] = e.target.value.split('-') as [typeof sortBy, 'asc' | 'desc']
+                        setSortBy(by)
+                        setSortDir(dir)
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-gray-600 border border-gray-200"
+                    >
+                      <option value="accuracy-desc">Точность ↓</option>
+                      <option value="accuracy-asc">Точность ↑</option>
+                      <option value="name-asc">Имя А-Я</option>
+                      <option value="name-desc">Имя Я-А</option>
+                      <option value="activity-asc">Активность ↓</option>
+                      <option value="activity-desc">Активность ↑</option>
+                      <option value="risk-asc">Риск ↑</option>
+                      <option value="risk-desc">Риск ↓</option>
+                      <option value="progress-desc">Прогресс ↓</option>
+                      <option value="progress-asc">Прогресс ↑</option>
+                      <option value="xp-desc">XP ↓</option>
+                      <option value="xp-asc">XP ↑</option>
+                      <option value="streak-desc">Стрик ↓</option>
+                      <option value="streak-asc">Стрик ↑</option>
+                    </select>
+
+                    {/* Risk pills */}
+                    {(['all', 'high', 'medium', 'low'] as const).map((risk) => (
+                      <button
+                        key={risk}
+                        onClick={() => setRiskFilter(risk)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                          riskFilter === risk
+                            ? risk === 'all' ? 'bg-gray-800 text-white'
+                              : risk === 'high' ? 'bg-red-500 text-white'
+                              : risk === 'medium' ? 'bg-yellow-500 text-white'
+                              : 'bg-green-500 text-white'
+                            : risk === 'all' ? 'bg-white text-gray-600 border border-gray-200'
+                              : risk === 'high' ? 'bg-white text-red-500 border border-red-200'
+                              : risk === 'medium' ? 'bg-white text-yellow-600 border border-yellow-200'
+                              : 'bg-white text-green-600 border border-green-200'
+                        }`}
+                      >
+                        {risk === 'all' ? 'Все' : risk === 'high' ? 'Риск отвала' : risk === 'medium' ? 'Внимание' : 'Всё хорошо'}
+                        {risk !== 'all' && (
+                          <span className="ml-1 opacity-70">
+                            ({analytics.filter(a => a.riskLevel === risk).length})
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
+                {/* Comparison panel */}
+                {showComparison && selectedForComparison.length > 0 && (
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-duo-blue/20">
+                    <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      <BarChart3 size={18} className="text-duo-blue" />
+                      Сравнение ({selectedForComparison.length} учеников)
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-left text-gray-400 text-xs">
+                            <th className="pb-2">Ученик</th>
+                            <th className="pb-2">Точность</th>
+                            <th className="pb-2">Прогресс</th>
+                            <th className="pb-2">Стрик</th>
+                            <th className="pb-2">Тип</th>
+                            <th className="pb-2">Риск</th>
+                            <th className="pb-2">Слабые темы</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedForComparison.map(id => {
+                            const a = analytics.find(an => an.profileId === id)
+                            if (!a) return null
+                            return (
+                              <tr key={id} className="border-t border-gray-100">
+                                <td className="py-2 font-bold text-gray-800">{a.name}</td>
+                                <td className="py-2">
+                                  <span className={`font-bold ${a.accuracy >= 70 ? 'text-green-600' : a.accuracy >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>
+                                    {a.accuracy}%
+                                  </span>
+                                </td>
+                                <td className="py-2">{a.completionRate}%</td>
+                                <td className="py-2">{a.streak}д</td>
+                                <td className="py-2">{getPlayerTypeLabel(a.playerProfile.type)}</td>
+                                <td className="py-2">
+                                  <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: RISK_CONFIG[a.riskLevel].color }}>
+                                    {RISK_CONFIG[a.riskLevel].label}
+                                  </span>
+                                </td>
+                                <td className="py-2 text-xs text-gray-500">{a.weaknesses.slice(0, 3).join(', ')}</td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    <button
+                      onClick={() => setSelectedForComparison([])}
+                      className="mt-2 text-xs text-gray-500 font-bold hover:text-gray-700"
+                    >
+                      Очистить выбор
+                    </button>
+                  </div>
+                )}
 
                 {/* Students List */}
                 <div className="flex flex-col gap-3">
@@ -791,6 +942,22 @@ export function TeacherAnalytics() {
                         className="p-4 flex items-center gap-3 cursor-pointer"
                         onClick={() => setExpandedStudent(expandedStudent === a.profileId ? null : a.profileId)}
                       >
+                        {/* Comparison checkbox */}
+                        {showComparison && (
+                          <input
+                            type="checkbox"
+                            checked={selectedForComparison.includes(a.profileId)}
+                            onChange={(e) => {
+                              e.stopPropagation()
+                              setSelectedForComparison(prev =>
+                                prev.includes(a.profileId)
+                                  ? prev.filter(id => id !== a.profileId)
+                                  : [...prev, a.profileId]
+                              )
+                            }}
+                            className="w-4 h-4 accent-duo-blue shrink-0"
+                          />
+                        )}
                         <div
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
                           style={{ backgroundColor: getPlayerTypeColor(a.playerProfile.type) }}
@@ -947,6 +1114,77 @@ export function TeacherAnalytics() {
                           )}
 
                           {/* Motivation & Recommendation */}
+                          {/* Individual Task Accuracy */}
+                          {(() => {
+                            const studentData = realStudents.find(s => s.studentId === a.profileId)
+                            const taskStats = studentData?.rawProgressData?.taskStats || {}
+                            const taskEntries = Object.entries(taskStats)
+                              .filter(([, t]: [string, any]) => t.total > 0)
+                              .sort((a, b) => Number(a[0]) - Number(b[0]))
+                            if (taskEntries.length === 0) return null
+                            return (
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 mb-2">Точность по заданиям</p>
+                                <div className="flex flex-col gap-1.5">
+                                  {taskEntries.map(([taskNum, stats]: [string, any]) => {
+                                    const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0
+                                    return (
+                                      <div key={taskNum} className="flex items-center gap-2">
+                                        <span className="w-8 text-[10px] font-bold text-gray-400 text-center">{taskNum}</span>
+                                        <div className="flex-1">
+                                          <div className="w-full bg-gray-100 rounded-full h-2">
+                                            <div
+                                              className={`h-2 rounded-full ${accuracy >= 70 ? 'bg-green-400' : accuracy >= 50 ? 'bg-yellow-400' : 'bg-red-400'}`}
+                                              style={{ width: `${accuracy}%` }}
+                                            />
+                                          </div>
+                                        </div>
+                                        <span className={`text-[10px] font-bold w-8 text-right ${accuracy >= 70 ? 'text-green-600' : accuracy >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>
+                                          {accuracy}%
+                                        </span>
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            )
+                          })()}
+
+                          {/* Individual Trend (mini sparkline from dailySnapshots) */}
+                          {(() => {
+                            const studentData = realStudents.find(s => s.studentId === a.profileId)
+                            const snaps = studentData?.dailySnapshots || []
+                            if (snaps.length < 2) return null
+                            const chartData = snaps.slice(-14).map((snap: any) => ({
+                              date: snap.date?.slice(5) || '',
+                              accuracy: snap.totalClicks > 0 ? Math.round((snap.totalClicks / (snap.totalClicks + 10)) * 100) : 0,
+                              xp: snap.totalSessions || 0,
+                              time: Math.round((snap.totalTimeSeconds || 0) / 60),
+                            }))
+                            return (
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 mb-2">Тренд за 14 дней</p>
+                                <div className="h-32">
+                                  <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={chartData}>
+                                      <defs>
+                                        <linearGradient id={`colorAcc-${a.profileId}`} x1="0" y1="0" x2="0" y2="1">
+                                          <stop offset="5%" stopColor="#58cc02" stopOpacity={0.3}/>
+                                          <stop offset="95%" stopColor="#58cc02" stopOpacity={0}/>
+                                        </linearGradient>
+                                      </defs>
+                                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                                      <XAxis dataKey="date" tick={{fontSize: 9}} />
+                                      <YAxis tick={{fontSize: 9}} domain={[0, 100]} />
+                                      <Tooltip contentStyle={{fontSize: 11, borderRadius: 8}} />
+                                      <Area type="monotone" dataKey="accuracy" stroke="#58cc02" fill={`url(#colorAcc-${a.profileId})`} strokeWidth={2} />
+                                    </AreaChart>
+                                  </ResponsiveContainer>
+                                </div>
+                              </div>
+                            )
+                          })()}
+
                           <div className="bg-blue-50 rounded-xl p-3">
                             <p className="text-xs font-bold text-blue-700 mb-1">Что мотивирует (тип)</p>
                             <p className="text-xs text-blue-600">{a.motivation}</p>

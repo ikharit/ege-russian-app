@@ -806,14 +806,18 @@ export function BaseTrainer<T>({
         {/* Action button */}
         <div className="w-full max-w-md">
           {answerState === 'idle' ? (
-            <button
-              onClick={handleCheck}
-              disabled={selectedAnswer.length === 0}
-              className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Проверить ответ"
-            >
-              Проверить
-            </button>
+            !autoCheck ? (
+              <button
+                onClick={handleCheck}
+                disabled={selectedAnswer.length === 0}
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Проверить ответ"
+              >
+                Проверить
+              </button>
+            ) : (
+              <div className="h-12" /> /* spacer when autoCheck is on */
+            )
           ) : (
             <button
               onClick={handleNext}
