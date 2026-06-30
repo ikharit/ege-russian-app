@@ -1793,3 +1793,49 @@ import { getAtomById } from '../data/atomization/atoms'
 
 **Критерий завершения**: `taskNumber` в questions соответствует title в `examTasks.ts`. Нет конфликта между UI и данными.
 
+---
+
+## А59 — fix(GrowthTimeline): add safeFullData filter + uncommitted orthography/Teacher changes (2026-06-30)
+
+**Описание**: Коммит `3047ff1` (Agent 4) — доработка GrowthTimeline (try/catch, safeFullData filter), изменения в orthography.ts, punctuation.ts, task9.ts. Также uncommitted changes в orthography.ts (5 explanation fixes) и Teacher.tsx (Supabase real data integration).
+
+**Приоритет:** 🟡 Средний (контент + UX)
+
+**Статус:** ✅ Завершено (2026-06-30)
+
+**Агент:** Agent 4 (GrowthTimeline), Agent 3 (documentation)
+
+**Где**: `src/components/GrowthTimeline.tsx`, `src/data/sections/orthography.ts`, `src/data/sections/punctuation.ts`, `src/data/questions/task9.ts`, `src/pages/Teacher.tsx`
+
+**Решение**:
+1. `3047ff1` — `GrowthTimeline.tsx`: try/catch вокруг `buildGrowthData`, `safeFullData` filter (null/undefined guard), `prevFullDataLength` guard.
+2. `3047ff1` — `orthography.ts`: explanation fixes, `punctuation.ts`: расширение, `task9.ts`: fix.
+3. **Uncommitted**: `orthography.ts` — 5 explanation fixes (почтитель, обжигаться, макнуть, вычитание, полагаться) с улучшенными проверочными словами.
+4. **Uncommitted**: `Teacher.tsx` — интеграция Supabase real data: `useTeacherAnalyticsStore`, `fetchAllUsers()`, mapping `supabaseRawStudents` → Teacher format с `weakTopics`, `accuracy`, `completedCount`.
+
+**Git**: `3047ff1` + `TBD`
+
+**Критерий завершения**: Build проходит чисто. GrowthTimeline не падает при <2 data points. Teacher page показывает реальные данные из Supabase.
+
+
+---
+
+### ✅ ЗАДАЧА-А33: Teacher dashboard — real Supabase data — Agent 2
+
+**Статус:** ✅ Завершено (2026-06-28)
+
+**Где**: `src/pages/Teacher.tsx`, `src/stores/teacherAnalyticsStore.ts`
+
+**Проблема**: Панель учителя (`/teacher`) показывала только demo-данные (5 учеников, 76% средний балл, 46 уроков — захардкоженные `mockStudents`). Реальные ученики из Supabase `user_progress` (4 записи) не отображались, потому что RLS блокировал чтение.
+
+**Решение**:
+1. `Teacher.tsx`: добавлен `useTeacherAnalyticsStore` + `useEffect(() => fetchAllUsers(), [])` для загрузки реальных данных при монтировании.
+2. Добавлен `supabaseStudents` mapping: `TeacherStudentView` → формат `Teacher` (lessonsCompleted из `lessonProgress`, averageScore из `taskStats`, weakTopics из `taskStats` с accuracy < 70%).
+3. Приоритет данных: Supabase > local profiles > demo fallback.
+4. `teacherAnalyticsStore.ts`: уже обновлён на `rpc('get_all_user_progress')` (SECURITY DEFINER, bypasses RLS).
+
+**Файлы**: `src/pages/Teacher.tsx` (~50 строк изменений)
+
+**Git**: `8a8efb4` — feat(teacher): integrate Supabase real data into Teacher dashboard
+
+**Критерий завершения**: Teacher dashboard показывает реальных учеников из Supabase (4 записи). Метрики (всего учеников, активных, средний балл, уроков) считаются из реальных данных. Build проходит чисто.
