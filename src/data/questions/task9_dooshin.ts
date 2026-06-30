@@ -5719,7 +5719,7 @@ export const task9DooshinQuestions: UnifiedQuestion[] = [
     type: 'text',
     text: 'Впишите пропущенную букву: парад_ксальный',
     correctAnswer: ['о'],
-    explanation: 'Корень -парадокс- (непроверяемый, иноязычный). Запомните написание.',
+    explanation: 'Иноязычный корень парадокс- (греч. paradoxos). Проверочное: парадОкс.',
     difficulty: 'easy',
     xpReward: 10,
     atoms: ['task9', 'roots'],
