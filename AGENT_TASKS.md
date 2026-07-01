@@ -2302,3 +2302,75 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `6703fde`
 
 **Критерий завершения**: Build проходит чисто. Pie Chart показывает распределение времени по категориям.
+
+---
+
+### ✅ ЗАДАЧА-А60: CourseMap — fix nested AnimatePresence collapse + stopPropagation
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/CourseMap.tsx`
+
+**Проблема**: 
+1. `layout="position"` во вложенном `<motion.div>` конфликтовал с nested `<AnimatePresence>`, вызывая некорректное сворачивание секций (коллапс анимации).
+2. Клик на group/subgroup toggle прокидывался вверх и закрывал родительскую секцию.
+
+**Решение**:
+1. Убран `layout="position"` из `<motion.div>` в `CourseMap.tsx`.
+2. Добавлен `e.stopPropagation()` на `onClick` group toggle и subgroup toggle.
+
+**Файлы**: `src/pages/CourseMap.tsx`
+
+**Git**: `8d4d1c1`
+
+**Критерий завершения**: Секции CourseMap сворачиваются/разворачиваются корректно, без коллапса. Клик на внутренний toggle не закрывает родительскую секцию.
+
+---
+
+### ✅ ЗАДАЧА-А61: Lesson — fix hasAutoCompleted hook order
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/Lesson.tsx`
+
+**Проблема**: `const [hasAutoCompleted, setHasAutoCompleted] = useState(false)` был объявлен ПОСЛЕ `useEffect`, который вызывал `setHasAutoCompleted`. Это потенциально нарушало Rules of Hooks (нестабильный порядок хуков).
+
+**Решение**: `useState` для `hasAutoCompleted` перемещён ПЕРЕД соответствующим `useEffect`.
+
+**Файлы**: `src/pages/Lesson.tsx`
+
+**Git**: `f68b80a`
+
+**Критерий завершения**: Порядок хуков стабилен, нет warning'ов React о hook order.
+
+---
+
+### ✅ ЗАДАЧА-А62: Lesson — restore missing questions useMemo and rawQuestion declaration
+
+**Статус:** ✅ Исправлено (2026-06-30)
+
+**Агент:** Agent 3
+
+**Где**: `src/pages/Lesson.tsx`
+
+**Проблема**: После рефакторинга `Lesson.tsx` (извлечение `LessonContent`) пропали:
+1. `useMemo` для `questions` (перемешивание options, кроме `ege-multiple`)
+2. Объявление `rawQuestion` — использовалось в `currentQuestion` useMemo, но было undefined
+3. Аргументы `lessonId` и `editVersion` в `applyQuestionEdits` — вызывалась без них
+
+Это приводило к runtime ошибке "rawQuestion is not defined".
+
+**Решение**:
+1. Восстановлен `useMemo(() => lesson.questions.map(...))` для `questions`.
+2. Добавлено `const rawQuestion = questions[currentQuestionIdx]` перед `currentQuestion` useMemo.
+3. `applyQuestionEdits(rawQuestion, lessonId, editVersion)` — передаются все аргументы.
+
+**Файлы**: `src/pages/Lesson.tsx`
+
+**Git**: `ce3d116`
+
+**Критерий завершения**: Lesson.tsx компилируется без ошибок, `rawQuestion` определён, questions перемешиваются корректно (кроме ege-multiple).

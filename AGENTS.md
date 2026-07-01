@@ -1,8 +1,8 @@
 # 🤖 AGENTS.md — Instructions for AI Agents
 
-> **Current Agent ID:** `Agent 2` | **Last updated:** 2026-06-30
+> **Current Agent ID:** `Agent 3` | **Last updated:** 2026-06-30
 > 
-> All changelog entries from this session: **Agent 2**
+> All changelog entries from this session: **Agent 3**
 
 > **Агентская идентификация**: Каждый агент, работающий над проектом, обязан идентифицировать себя по номеру (Agent 1, Agent 2, и т.д.). Текущий агент — **Agent 3** (оркестратор). При смене агента — обновляйте это поле в начале файла. Все записи в changelog и истории должны содержать `by Agent N`.
 
@@ -580,3 +580,22 @@ Last updated: 2026-06-30 by Agent 2
   3. **Визуализация**: PieChart (donut) с процентами, таблица с цветными индикаторами и иконками, суммарное время в часах.
   4. **Источник данных**: `analyticsStore` уже собирает `timeDistribution` через `usePageAnalytics` (hook отслеживает время на каждой странице). Синхронизируется с Supabase `user_analytics.behavior_profile`.
 - Файлы: `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`. Сборка: `npm run build` ✅ (52.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors). Git: `6703fde`.
+
+Last updated: 2026-06-30 by Agent 3
+- **CourseMap fix — remove layout=position, add stopPropagation to toggles**: Исправлена проблема с nested AnimatePresence, вызывавшая коллапс анимации.
+  1. Убран `layout="position"` из `<motion.div>` в `CourseMap.tsx` — вложенные `<AnimatePresence>` с `layout` конфликтовали и приводили к некорректному сворачиванию секций.
+  2. Добавлен `e.stopPropagation()` на `onClick` group toggle и subgroup toggle — предотвращает нежелательное закрытие родительской секции при клике на внутренний групповой тоггл.
+- Файл: `src/pages/CourseMap.tsx`. Сборка: проходит чисто. Git: `8d4d1c1`.
+
+Last updated: 2026-06-30 by Agent 3
+- **Lesson fix — hasAutoCompleted hook order**: Исправлено потенциальное нарушение Rules of Hooks.
+  1. `const [hasAutoCompleted, setHasAutoCompleted] = useState(false)` перемещён ПЕРЕД `useEffect`, который вызывает `setHasAutoCompleted`.
+  2. Раньше `useState` был объявлен после `useEffect`, что создавало риск нестабильного порядка хуков при изменении условий рендера.
+- Файл: `src/pages/Lesson.tsx`. Сборка: проходит чисто. Git: `f68b80a`.
+
+Last updated: 2026-06-30 by Agent 3
+- **Lesson fix — restore missing questions useMemo and rawQuestion declaration**: Исправлена runtime ошибка "rawQuestion is not defined" после рефакторинга Lesson.tsx.
+  1. Восстановлен `useMemo` для `questions` (перемешивание options, кроме `ege-multiple`).
+  2. Добавлено объявление `rawQuestion` перед `currentQuestion` useMemo.
+  3. `applyQuestionEdits` теперь вызывается с `lessonId` и `editVersion` (ранее missing аргументы).
+- Файл: `src/pages/Lesson.tsx`. Сборка: проходит чисто. Git: `ce3d116`.

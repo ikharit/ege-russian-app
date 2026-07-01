@@ -748,3 +748,30 @@
 - **Примечание:** 3 новых компонента пока не интегрированы в TeacherAnalytics.tsx — готовы к подключению.
 
 
+
+### [2026-06-30] Агент: Agent 3 — CourseMap fix: nested AnimatePresence collapse + stopPropagation
+- **Что:** Исправлена проблема с некорректным сворачиванием секций в CourseMap.
+  1. Убран `layout="position"` из `<motion.div>` — вложенные `<AnimatePresence>` с `layout` конфликтовали и вызывали коллапс анимации.
+  2. Добавлен `e.stopPropagation()` на `onClick` group toggle и subgroup toggle — предотвращает закрытие родительской секции при клике на внутренний тоггл.
+- **Где:** `src/pages/CourseMap.tsx`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `8d4d1c1` (fix: remove layout=position causing nested AnimatePresence collapse; add stopPropagation to group/subgroup toggles)
+- **Примечание:** Одновременно добавлен компонент `TimeDistribution.tsx` (для таба "Время" в TeacherAnalytics), но основной фикс — CourseMap.
+
+### [2026-06-30] Агент: Agent 3 — Lesson fix: hasAutoCompleted hook order
+- **Что:** Исправлено потенциальное нарушение Rules of Hooks.
+  1. `const [hasAutoCompleted, setHasAutoCompleted] = useState(false)` перемещён ПЕРЕД `useEffect`, который вызывает `setHasAutoCompleted`.
+  2. Раньше `useState` был объявлен после `useEffect`, что создавало риск нестабильного порядка хуков при изменении условий рендера.
+- **Где:** `src/pages/Lesson.tsx`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `f68b80a` (fix(lesson): move hasAutoCompleted state before useEffect that uses it)
+
+### [2026-06-30] Агент: Agent 3 — Lesson fix: restore missing questions useMemo and rawQuestion declaration
+- **Что:** Исправлена runtime ошибка "rawQuestion is not defined" после рефакторинга Lesson.tsx (извлечение LessonContent).
+  1. Восстановлен `useMemo` для `questions` (перемешивание options, кроме `ege-multiple`).
+  2. Добавлено объявление `rawQuestion` перед `currentQuestion` useMemo.
+  3. `applyQuestionEdits` теперь вызывается с `lessonId` и `editVersion` (ранее missing аргументы).
+- **Где:** `src/pages/Lesson.tsx`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `ce3d116` (fix(lesson): restore missing questions useMemo and rawQuestion declaration)
+- **Примечание:** Этот фикс восстанавливает функциональность, потерянную при рефакторинге (коммит `55f52e6`).
