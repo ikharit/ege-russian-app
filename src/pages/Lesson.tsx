@@ -92,9 +92,9 @@ function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchPara
 
   const rawQuestion = questions[currentQuestionIdx]
   const currentQuestion = useMemo(() => {
-    if (!rawQuestion) return rawQuestion
-    return applyQuestionEdits(rawQuestion as any, lessonId, editVersion) as typeof rawQuestion
-  }, [rawQuestion, lessonId, editVersion])
+    if (!rawQuestion || !rawQuestion.id) return undefined
+    return applyQuestionEdits(rawQuestion as any)
+  }, [rawQuestion, editVersion])
 
   // Navigate to specific question via ?q= parameter
   useEffect(() => {

@@ -33,7 +33,11 @@ export function saveLocalEdits(edits: Record<string, QuestionEdit>) {
 }
 
 /** Apply edits to a question */
-export function applyQuestionEdits(question: Question): Question {
+export function applyQuestionEdits(question: Question | undefined): Question | undefined {
+  if (!question || !question.id) {
+    console.warn('applyQuestionEdits: invalid question', question)
+    return question
+  }
   const edits = loadLocalEdits()
   const edit = edits[question.id]
   if (!edit) return question
