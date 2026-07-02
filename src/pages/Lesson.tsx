@@ -18,7 +18,7 @@ import { playCorrectSound, playWrongSound, playLessonCompleteSound, playComboSou
 import { detectErrorType } from '../utils/errorPatternAnalyzer'
 import { getCanonicalWordId, getRuleId, extractWordFromQuestion } from '../data/questionMapping'
 
-function LessonContent({ lesson, lessonId, navigate, searchParams, setSearchParams }: { lesson: any; lessonId: string; navigate: any; searchParams: any; setSearchParams: any }) {
+function LessonContent({ lesson, section, lessonId, navigate, searchParams, setSearchParams }: { lesson: any; section: any; lessonId: string; navigate: any; searchParams: any; setSearchParams: any }) {
   const startLesson = useProgressStore((s) => s.startLesson)
   const completeLesson = useProgressStore((s) => s.completeLesson)
   const loseHeart = useProgressStore((s) => s.loseHeart)
@@ -496,6 +496,7 @@ export function Lesson() {
   return (
     <LessonContent
       lesson={lesson}
+      section={section}
       lessonId={lessonId}
       navigate={navigate}
       searchParams={searchParams}
