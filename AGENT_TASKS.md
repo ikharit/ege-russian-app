@@ -2374,3 +2374,52 @@ import { getAtomById } from '../data/atomization/atoms'
 **Git**: `ce3d116`
 
 **Критерий завершения**: Lesson.tsx компилируется без ошибок, `rawQuestion` определён, questions перемешиваются корректно (кроме ege-multiple).
+
+---
+
+### ✅ ЗАДАЧА-А63: Lesson — null-safety для applyQuestionEdits и Lesson.tsx
+
+**Статус:** ✅ Исправлено (2026-07-02)
+
+**Агент:** Agent 3
+
+**Где**: `src/lib/questionEdits.ts`, `src/pages/Lesson.tsx`
+
+**Проблема**: 
+1. `applyQuestionEdits` вызывалась с `rawQuestion` который мог быть `undefined`, что приводило к runtime ошибке.
+2. В `Lesson.tsx` передавались аргументы `lessonId` и `editVersion` в `applyQuestionEdits`, которых функция не принимает.
+3. Отсутствовала проверка на `rawQuestion.id`.
+
+**Решение**:
+1. `applyQuestionEdits` теперь принимает `Question | undefined`, возвращает `undefined` для невалидных вопросов с `console.warn`.
+2. `Lesson.tsx` проверяет `rawQuestion?.id` перед вызовом.
+3. Убраны `lessonId` и `editVersion` из вызова `applyQuestionEdits` (зависимости useMemo: `[rawQuestion, editVersion]`).
+
+**Файлы**: `src/lib/questionEdits.ts`, `src/pages/Lesson.tsx`
+
+**Git**: `38a6ca8`
+
+**Критерий завершения**: Build проходит чисто. Нет runtime ошибок при переключении вопросов в Lesson.
+
+---
+
+### ✅ ЗАДАЧА-А64: PWA — cache-busting для Service Worker
+
+**Статус:** ✅ Исправлено (2026-07-02)
+
+**Агент:** Agent 3
+
+**Где**: `vite.config.ts`
+
+**Проблема**: Service Worker кэшировал старые версии JS/CSS, и пользователи видели runtime ошибки (например, "rawQuestion is not defined") из-за закэшированного старого `Lesson.tsx` после деплоя.
+
+**Решение**:
+1. `manifestTransforms` в `workbox` — добавляет timestamp к `revision` для `.js`, `.css` и `index.html`.
+2. `cleanupOutdatedCaches: true` — удаляет устаревшие кэши при активации нового SW.
+3. Гарантирует, что после каждого деплоя SW загружает свежие файлы.
+
+**Файлы**: `vite.config.ts`
+
+**Git**: `844cb9b`
+
+**Критерий завершения**: Build проходит чисто. SW revision обновляется при каждом деплое.

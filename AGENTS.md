@@ -603,3 +603,17 @@ Last updated: 2026-06-30 by Agent 3
 Last updated: 2026-07-02 by Agent 3
 - **Актуализация агентских файлов**: В `memory/AGENTS-HISTORY.md` добавлена архивная запись о коммите `6703fde` (Teacher Analytics — Time Distribution tab with Pie Chart), которая отсутствовала в истории. Создан `memory/2026-07-02.md`.
 - Файлы: `memory/AGENTS-HISTORY.md`, `memory/2026-07-02.md`. 
+
+Last updated: 2026-07-02 by Agent 3
+- **Lesson null-safety fix**: Исправлена runtime ошибка при вызове `applyQuestionEdits` с невалидным вопросом.
+  1. `applyQuestionEdits` теперь принимает `Question | undefined` и возвращает `undefined` для невалидных вопросов (с `console.warn`).
+  2. `Lesson.tsx` проверяет `rawQuestion?.id` перед вызовом `applyQuestionEdits`.
+  3. Убраны некорректные аргументы `lessonId` и `editVersion` из вызова `applyQuestionEdits` (функция их не принимает).
+- Файлы: `src/lib/questionEdits.ts`, `src/pages/Lesson.tsx`. Сборка: проходит чисто. Git: `38a6ca8`.
+
+Last updated: 2026-07-02 by Agent 3
+- **PWA cache-busting fix**: Добавлен `manifestTransforms` в `vite.config.ts` для предотвращения stale Service Worker cache.
+  1. `manifestTransforms` добавляет timestamp к `revision` для `.js`, `.css` и `index.html` — гарантирует, что SW кэширует новые версии файлов после каждого деплоя.
+  2. Добавлен `cleanupOutdatedCaches: true` — удаляет устаревшие кэши.
+  3. Исправляет ошибку "rawQuestion is not defined", вызванную тем, что старый SW отдавал закэшированный `Lesson.tsx`.
+- Файл: `vite.config.ts`. Сборка: проходит чисто. Git: `844cb9b`. 

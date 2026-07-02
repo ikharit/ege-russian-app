@@ -785,3 +785,21 @@
 - **Где:** `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`
 - **Сборка:** `npm run build` ✅ (52.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors).
 - **Git commit:** `6703fde` (feat(teacher-analytics): add Time Distribution tab with Pie Chart)
+
+### [2026-07-02] Агент: Agent 3 — Lesson null-safety fix
+- **Что:** Исправлена runtime ошибка при вызове `applyQuestionEdits`.
+  1. `applyQuestionEdits` теперь принимает `Question | undefined`, возвращает `undefined` для невалидных вопросов с `console.warn`.
+  2. `Lesson.tsx` проверяет `rawQuestion?.id` перед вызовом `applyQuestionEdits`.
+  3. Убраны некорректные аргументы `lessonId` и `editVersion` из вызова (функция их не принимает).
+- **Где:** `src/lib/questionEdits.ts`, `src/pages/Lesson.tsx`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `38a6ca8` (fix(lesson): add null-safety to applyQuestionEdits and Lesson.tsx)
+
+### [2026-07-02] Агент: Agent 3 — PWA cache-busting fix
+- **Что:** Добавлен `manifestTransforms` в `vite.config.ts` для предотвращения stale Service Worker cache.
+  1. `manifestTransforms` добавляет timestamp к `revision` для `.js`, `.css` и `index.html`.
+  2. `cleanupOutdatedCaches: true` — удаляет устаревшие кэши при активации нового SW.
+  3. Исправляет ошибку "rawQuestion is not defined", вызванную тем, что старый SW отдавал закэшированный `Lesson.tsx`.
+- **Где:** `vite.config.ts`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `844cb9b` (fix(pwa): add manifestTransforms for cache-busting SW revisions)

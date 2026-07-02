@@ -83,9 +83,9 @@
 
 ---
 
-*Last updated: 2026-06-30*
+*Last updated: 2026-07-02*
 *Current Agent: Agent 3*
-*Recent changes: CourseMap fix (8d4d1c1 — remove layout=position, add stopPropagation). Lesson fixes (f68b80a — hook order; ce3d116 — restore questions useMemo + rawQuestion). Build: clean, 0 TS errors. validate:rag: 1350 entries, 0 errors.*
+*Recent changes: Lesson null-safety (38a6ca8 — applyQuestionEdits accepts undefined, checks rawQuestion?.id). PWA cache-busting (844cb9b — manifestTransforms with timestamp revision, cleanupOutdatedCaches). Build: clean, 0 TS errors.*
 
 *This file was updated by Agent 3.*
 
