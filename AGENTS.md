@@ -599,3 +599,7 @@ Last updated: 2026-06-30 by Agent 3
   2. Добавлено объявление `rawQuestion` перед `currentQuestion` useMemo.
   3. `applyQuestionEdits` теперь вызывается с `lessonId` и `editVersion` (ранее missing аргументы).
 - Файл: `src/pages/Lesson.tsx`. Сборка: проходит чисто. Git: `ce3d116`.
+
+Last updated: 2026-07-02 by Agent 3
+- **Актуализация агентских файлов**: В `memory/AGENTS-HISTORY.md` добавлена архивная запись о коммите `6703fde` (Teacher Analytics — Time Distribution tab with Pie Chart), которая отсутствовала в истории. Создан `memory/2026-07-02.md`.
+- Файлы: `memory/AGENTS-HISTORY.md`, `memory/2026-07-02.md`. 

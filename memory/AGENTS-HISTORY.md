@@ -775,3 +775,13 @@
 - **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
 - **Git commit:** `ce3d116` (fix(lesson): restore missing questions useMemo and rawQuestion declaration)
 - **Примечание:** Этот фикс восстанавливает функциональность, потерянную при рефакторинге (коммит `55f52e6`).
+
+### [2026-06-30] Агент: Agent 2 — Teacher Analytics: Time Distribution tab with Pie Chart
+- **Что:** Добавлена визуализация распределения времени по категориям активности.
+  1. **TimeDistribution.tsx** — компонент с PieChart (recharts) + легенда + таблица. 18 категорий с цветами и иконками.
+  2. **TeacherAnalytics.tsx** — новый таб "Время" (11-й таб). Агрегирует `behaviorProfile.timeDistribution` по всем ученикам класса.
+  3. **Визуализация**: PieChart (donut) с процентами, таблица с цветными индикаторами, суммарное время в часах.
+  4. **Источник данных**: `analyticsStore` собирает время через `usePageAnalytics` (hook отслеживает время на каждой странице). Синхронизируется с Supabase `user_analytics.behavior_profile`.
+- **Где:** `src/components/teacher/TimeDistribution.tsx`, `src/pages/TeacherAnalytics.tsx`
+- **Сборка:** `npm run build` ✅ (52.62s, 0 TypeScript ошибок). `validate:rag` ✅ (0 errors).
+- **Git commit:** `6703fde` (feat(teacher-analytics): add Time Distribution tab with Pie Chart)
