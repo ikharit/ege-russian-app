@@ -45,7 +45,19 @@ export default defineConfig({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
+        cleanupOutdatedCaches: true,
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB — покрывает index chunk ~6.8 MB
+        manifestTransforms: [
+          async (manifestEntries) => {
+            const manifest = manifestEntries.map((entry) => {
+              if (entry.url.endsWith('.js') || entry.url.endsWith('.css') || entry.url === 'index.html') {
+                return { ...entry, revision: `${entry.revision}-${Date.now()}` }
+              }
+              return entry
+            })
+            return { manifest, warnings: [] }
+          }
+        ],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
