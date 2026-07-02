@@ -13,7 +13,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       // Для локальной сборки (vite preview) SW самоуничтожается, чтобы не было проблем с устаревшим кэшем.
       // Для GitHub Pages работает нормально.
-      selfDestroying: false,
+      selfDestroying: true,
       manifest: {
         name: 'ЕГЭ Русский',
         short_name: 'ЕГЭ Русский',
