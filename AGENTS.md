@@ -617,3 +617,11 @@ Last updated: 2026-07-02 by Agent 3
   2. Добавлен `cleanupOutdatedCaches: true` — удаляет устаревшие кэши.
   3. Исправляет ошибку "rawQuestion is not defined", вызванную тем, что старый SW отдавал закэшированный `Lesson.tsx`.
 - Файл: `vite.config.ts`. Сборка: проходит чисто. Git: `844cb9b`. 
+
+Last updated: 2026-07-02 by Agent 3
+- **PWA self-destruct fix (emergency)**: Отключено кэширование Service Worker'ом — `selfDestroying: true` в `vite.config.ts`.
+  1. SW теперь самоуничтожается при активации и полностью очищает все кэши (`selfDestroying: true`).
+  2. Браузер всегда загружает свежие JS/CSS с сервера, игнорируя любой SW-кэш.
+  3. Это emergency-фикс на случай, если `manifestTransforms` (844cb9b) не сработал и stale SW продолжает отдавать старый `Lesson.tsx`.
+  4. Исправляет ошибку "rawQuestion is not defined", вызванную stale кэшем.
+- Файл: `vite.config.ts`. Сборка: проходит чисто. Git: `5c81c10`.

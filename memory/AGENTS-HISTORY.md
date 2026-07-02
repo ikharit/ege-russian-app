@@ -795,7 +795,16 @@
 - **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
 - **Git commit:** `38a6ca8` (fix(lesson): add null-safety to applyQuestionEdits and Lesson.tsx)
 
-### [2026-07-02] Агент: Agent 3 — PWA cache-busting fix
+### [2026-07-02] Агент: Agent 3 — PWA self-destruct fix (emergency)
+- **Что:** Отключено кэширование Service Worker'ом — `selfDestroying: true` в `vite.config.ts`.
+  1. `selfDestroying: true` — SW самоуничтожается при активации и очищает все кэши.
+  2. Браузер всегда загружает свежие JS/CSS с сервера, игнорируя SW-кэш.
+  3. Emergency-фикс на случай, если `manifestTransforms` (844cb9b) не сработал и stale SW продолжает отдавать старый `Lesson.tsx`.
+  4. Исправляет ошибку "rawQuestion is not defined", вызванную stale кэшем.
+- **Где:** `vite.config.ts`
+- **Сборка:** `npm run build` ✅ (0 TypeScript ошибок).
+- **Git commit:** `5c81c10` (fix(pwa): disable Service Worker caching (selfDestroying: true) to prevent stale code)
+
 - **Что:** Добавлен `manifestTransforms` в `vite.config.ts` для предотвращения stale Service Worker cache.
   1. `manifestTransforms` добавляет timestamp к `revision` для `.js`, `.css` и `index.html`.
   2. `cleanupOutdatedCaches: true` — удаляет устаревшие кэши при активации нового SW.
