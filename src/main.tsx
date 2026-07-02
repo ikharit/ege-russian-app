@@ -4,33 +4,28 @@ import { HashRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 
-// PWA registration — non-blocking, with user-controlled update
-import { registerSW } from 'virtual:pwa-register'
-
-// Track if update is available
-let updateAvailable = false
-let updateServiceWorker: (() => Promise<void>) | null = null
-
-const swRegistration = registerSW({
-  onNeedRefresh() {
-    updateAvailable = true
-    console.log('[PWA] Update available')
-    // Dispatch custom event so UI can show update button
-    window.dispatchEvent(new CustomEvent('pwa-update-available'))
-  },
-  onOfflineReady() {
-    console.log('[PWA] App ready to work offline')
-  },
-  onRegisterError(error) {
-    console.error('[PWA] Registration error:', error)
-  },
-})
-
-// Store the update function for UI access
-updateServiceWorker = swRegistration ? () => swRegistration(false) : null
-
-// @ts-ignore — expose for PWAUpdateToast component
-window.__updateServiceWorker = updateServiceWorker
+// PWA registration temporarily disabled to fix stale cache issues
+// import { registerSW } from 'virtual:pwa-register'
+// 
+// let updateAvailable = false
+// let updateServiceWorker: (() => Promise<void>) | null = null
+// 
+// const swRegistration = registerSW({
+//   onNeedRefresh() {
+//     updateAvailable = true
+//     console.log('[PWA] Update available')
+//     window.dispatchEvent(new CustomEvent('pwa-update-available'))
+//   },
+//   onOfflineReady() {
+//     console.log('[PWA] App ready to work offline')
+//   },
+//   onRegisterError(error) {
+//     console.error('[PWA] Registration error:', error)
+//   },
+// })
+// 
+// updateServiceWorker = swRegistration ? () => swRegistration(false) : null
+// window.__updateServiceWorker = updateServiceWorker
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -1,0 +1,12 @@
+# This file is used to configure the build process for Cloudflare Pages
+# For more information, visit https://developers.cloudflare.com/pages/platform/build-configuration/
+
+[build]
+command = "npm run build"
+output_dir = "dist"
+
+# SPA routing — all paths serve index.html
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
